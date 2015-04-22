@@ -10,11 +10,17 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <commons/temporal.h>
+#include <commons/config.h>
 
 int main(void) {
-	char* tiempo = temporal_get_string_time();
-	puts(tiempo);
-	free(tiempo);
+	t_config* archivo_configuracion;
+
+	archivo_configuracion = config_create("/home/utnso/git/tp-2015-1c-machistons/Configuracion/job.conf");
+
+	int puerto_marta = config_get_int_value(archivo_configuracion, "PUERTO_MARTA");
+	char* ip_marta = config_get_string_value(archivo_configuracion, "IP_MARTA");
+
+
+	config_destroy(archivo_configuracion);
 	return EXIT_SUCCESS;
 }
