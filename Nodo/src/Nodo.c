@@ -14,9 +14,6 @@
 #include <commons/log.h>
 #include <commons/string.h>
 
-int cliente_filesystem(int PUERTO,char* ip_fs){
-	return 0;
-}
 
 int main(void) {
 
@@ -32,7 +29,7 @@ int main(void) {
 	char* archivo_bin;
 	char* dir_temp;
 	char* nodo_nuevo;
-	int ip_nodo;
+	char* ip_nodo;
 	int puerto_nodo;
 
 ///////    Validacion y Carga del archivo de configuracion       ///////////////////////////////////////////
@@ -55,7 +52,7 @@ int main(void) {
 	}
 
 	if(true == config_has_property(archivoConfiguracion,"ARCHIVO_BIN")){
-			archivo_bin = config_get_string_value(archivoConfiguracion, "ARCHVO_BIN");
+			archivo_bin = config_get_string_value(archivoConfiguracion, "ARCHIVO_BIN");
 		}else{
 			log_error(logger, "Falta Archivo Bin");
 			return EXIT_FAILURE;
@@ -68,22 +65,22 @@ int main(void) {
 			return EXIT_FAILURE;
 	}
 
-	if(true == config_has_property(archivoConfiguracion,"NODO NUEVO")){
-		    nodo_nuevo = config_get_int_value(archivoConfiguracion, "NODO NUEVO");
+	if(true == config_has_property(archivoConfiguracion,"NODO_NUEVO")){
+		    nodo_nuevo = config_get_string_value(archivoConfiguracion, "NODO_NUEVO");
 		}else{
 			log_error(logger, "Falta Nodo Nuevo");
 			return EXIT_FAILURE;
 	}
 
 	if(true == config_has_property(archivoConfiguracion,"IP_NODO")){
-		    ip_nodo = config_get_int_value(archivoConfiguracion, "IP_NODO");
+		    ip_nodo = config_get_string_value(archivoConfiguracion, "IP_NODO");
 		}else{
 			log_error(logger, "Falta IP Nodo");
 			return EXIT_FAILURE;
 	}
 
-	if(true == config_has_property(archivoConfiguracion,"PUERTO NODO")){
-			puerto_nodo = config_get_int_value(archivoConfiguracion, "PUERTO NODO	");
+	if(true == config_has_property(archivoConfiguracion,"PUERTO_NODO")){
+			puerto_nodo = config_get_int_value(archivoConfiguracion, "PUERTO_NODO");
 		}else{
 			log_error(logger, "Falta Puerto Nodo");
 			return EXIT_FAILURE;
@@ -91,19 +88,18 @@ int main(void) {
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+	printf("%s\n%i\n%s\n%i\n%s\n%s\n%s\n",ip_fs,puerto_fs,ip_nodo,puerto_nodo,archivo_bin,dir_temp,nodo_nuevo);
+
 	log_info(logger, "Correcta lectura del archivo de configuracion");
 
-	int socketFs = cliente_fs(puerto_fs,ip_fs);
-	printf("%i\n",socketFs);
 
 	config_destroy(archivoConfiguracion);
 	log_destroy(logger);
 	free(rutaArchivoConfiguracion);
 	free(ip_fs);
+	free(ip_nodo);
 	free(archivo_bin);
 	free(dir_temp);
 	free(nodo_nuevo);
-
 	return EXIT_SUCCESS;
-
 }
