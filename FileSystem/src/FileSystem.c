@@ -29,7 +29,7 @@ int main(void) {
 
 	//list_destroy_and_destroy_elements(listaArchivos, (void*) archivo_destroy);
 
-	//list_add(listaArchivos, archivo_create("archivo1.txt", 2, "No disponible"));
+	list_add(listaArchivos, archivo_create("archivo1.txt", 2, "No disponible"));
 
 	char* rutaArchivoConfiguracion = "/home/utnso/git/tp-2015-1c-machistons/Configuracion/filesystem.conf";
 

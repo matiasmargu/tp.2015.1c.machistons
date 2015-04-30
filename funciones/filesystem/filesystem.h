@@ -36,7 +36,7 @@ typedef struct {
 } t_archivo;
 
 void imprimirMenu(void);
-static t_archivo *archivo_create(char *nombre, int direccion, char* estado );
-static void archivo_destroy(t_archivo *self);
+t_archivo *archivo_create(char *nombre, int direccion, char* estado );
+void archivo_destroy(t_archivo *self);
 
 #endif /* FILESYSTEM_FILESYSTEM_H_ */

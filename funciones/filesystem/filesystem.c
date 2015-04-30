@@ -11,7 +11,7 @@
 #include <string.h>
 #include "filesystem.h"
 
-static t_archivo *archivo_create(char *nombre, int direccion, char* estado ) {
+t_archivo *archivo_create(char *nombre, int direccion, char* estado ) {
     t_archivo *new = malloc(sizeof(t_archivo));
     new->nombre = strdup(nombre);
     new->direccion = direccion;
@@ -19,7 +19,7 @@ static t_archivo *archivo_create(char *nombre, int direccion, char* estado ) {
     return new;
 }
 
-static void archivo_destroy(t_archivo *self) {
+void archivo_destroy(t_archivo *self) {
     free(self->nombre);
     free(self->estado);
     free(self);
