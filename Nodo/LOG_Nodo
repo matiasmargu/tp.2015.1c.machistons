@@ -1,6 +1,2 @@
-[INFO] 00:19:52:218 log_nodo/(4648:4648): Se creo correctamente el archivo de configuracion
-[ERROR] 00:19:52:218 log_nodo/(4648:4648): Falta Nodo Nuevo
-[INFO] 00:21:11:782 log_nodo/(4725:4725): Se creo correctamente el archivo de configuracion
-[INFO] 00:21:11:783 log_nodo/(4725:4725): Correcta lectura del archivo de configuracion
-[INFO] 00:22:22:266 log_nodo/(4787:4787): Se creo correctamente el archivo de configuracion
-[INFO] 00:22:22:268 log_nodo/(4787:4787): Correcta lectura del archivo de configuracion
+[INFO] 20:35:04:183 log_nodo/(6361:6361): Se creo correctamente el archivo de configuracion
+[INFO] 20:35:04:183 log_nodo/(6361:6361): Correcta lectura del archivo de configuracion

@@ -1,4 +1,12 @@
-[INFO] 00:29:03:999 log_filesystem/(4996:4996): Se creo correctamente el archivo de configuracion
-[INFO] 00:29:03:999 log_filesystem/(4996:4996): Correcta lectura del archivo de configuracion
-[INFO] 00:31:06:250 log_filesystem/(5064:5064): Se creo correctamente el archivo de configuracion
-[INFO] 00:31:06:251 log_filesystem/(5064:5064): Correcta lectura del archivo de configuracion
+[INFO] 18:07:59:435 log_filesystem/(3548:3548): Se creo correctamente el archivo de configuracion
+[INFO] 18:07:59:435 log_filesystem/(3548:3548): Correcta lectura del archivo de configuracion
+[INFO] 18:35:10:819 log_filesystem/(4056:4056): Se creo correctamente el archivo de configuracion
+[INFO] 18:35:10:822 log_filesystem/(4056:4056): Correcta lectura del archivo de configuracion
+[INFO] 20:17:51:275 log_filesystem/(5579:5579): Se creo correctamente el archivo de configuracion
+[INFO] 20:17:51:275 log_filesystem/(5579:5579): Correcta lectura del archivo de configuracion
+[INFO] 20:18:30:708 log_filesystem/(5625:5625): Se creo correctamente el archivo de configuracion
+[INFO] 20:18:30:708 log_filesystem/(5625:5625): Correcta lectura del archivo de configuracion
+[INFO] 20:27:53:404 log_filesystem/(6228:6228): Se creo correctamente el archivo de configuracion
+[INFO] 20:27:53:404 log_filesystem/(6228:6228): Correcta lectura del archivo de configuracion
+[INFO] 21:15:20:308 log_filesystem/(7039:7039): Se creo correctamente el archivo de configuracion
+[INFO] 21:15:20:308 log_filesystem/(7039:7039): Correcta lectura del archivo de configuracion

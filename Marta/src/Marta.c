@@ -10,12 +10,11 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <commons/temporal.h>
+
+#include <filesystem/filesystem.h>
 
 int main(void) {
-	char* tiempo = temporal_get_string_time();
-	puts(tiempo);
-	free(tiempo);
+	imprimirMenu();
 	return EXIT_SUCCESS;
 }
 

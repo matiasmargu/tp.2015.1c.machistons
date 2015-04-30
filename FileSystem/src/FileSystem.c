@@ -10,66 +10,27 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
+#include <string.h>
 #include <commons/config.h>
 #include <commons/log.h>
 #include <commons/string.h>
 #include <commons/collections/list.h>
+#include <filesystem/filesystem.h>
+#include <cspecs/cspec.h>
 
-typedef struct {
-	int socket; // Socket del Nodo para comunicacion
-	char* nodo; // Nombre del Nodo
-	char* estado; // Estado disponible o no disponible del nodo
-	t_list bloque; // Lista de bloques libres
-} t_socket_bloqueslibres;
-
-typedef struct {
-	int index; // Socket del Nodo para comunicacion
-	char* directorio; // Nombre del Nodo
-	int padre;
-} t_directorio;
-
-typedef struct {
-	int bloque;
-
-} t_bloque_copias;
-
-typedef struct {
-	char* nombre;
-	char* direccion;
-	char* estado;
-	t_bloque_copias bloque;
-} t_archivo;
-
-void imprimirMenu(void){
-
-	printf("> Los comandos se ingresan con su numero \n"
-			"> 		COMANDOS \n"
-			"	Formatear el MDFS: 0 \n"
-			"	Operaciones sobre Archivos  \n"
-			"	  Eliminar: 1 \n"
-			"	  Renonmbrar: 2 \n"
-			"	  Mover: 3 \n"
-			"	Operaciones sobre Directorios  \n"
-			"	  Crear: 4 \n"
-			"	  Eliminar: 5 \n"
-			"	  Renombrar: 6 \n"
-			"	  Mover: 7 \n"
-			"	Operaciones sobre bloques de un archivo \n"
-			" 	  Ver: 8 \n"
-			" 	  Borrar: 9 \n"
-			" 	  Copiar: 10 \n"
-			" 	Operaciones sobre nodos de datos:\n"
-			"	  Agregar: 11 \n"
-			"	  Eliminar: 12 \n"
-			"	Copiar un archivo local al MDFS: 13 \n"
-			"	Copiar un archivo del MDFS al filesystem local: 14 \n"
-			"	Solicitar el MD5 de un archivo en MDFS: 15 \n"
-			"	SALIR 16 \n");
-	return ;
-}
 int main(void) {
 
 	imprimirMenu();
+
+	t_list *listaArchivos;
+
+	listaArchivos = list_create();
+
+	//list_destroy_and_destroy_elements(listaArchivos, (void*) archivo_destroy);
+
+	//list_add(listaArchivos, archivo_create("archivo1.txt", 2, "No disponible"));
+
 	char* rutaArchivoConfiguracion = "/home/utnso/git/tp-2015-1c-machistons/Configuracion/filesystem.conf";
 
 	t_config* archivoConfiguracion;
@@ -109,5 +70,6 @@ int main(void) {
 	log_destroy(logger);
 	free(rutaArchivoConfiguracion);
 	free(lista_nodos);
+	list_destroy(listaArchivos);
 	return EXIT_SUCCESS;
 }
