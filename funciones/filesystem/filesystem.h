@@ -35,11 +35,11 @@ typedef struct {
 } t_bloque_copias;
 
 typedef struct {
-	char* nombre;
-	u_int32_t tam;
-	int direccion;
-	char* estado;
-	t_list bloques_copias;
+	char* nombre; //Nombre
+	u_int32_t tam; // Tamaño
+	int direccion; // Direccion Padre
+	char* estado; // Estado
+	t_list bloques_copias; // Lista de bloques
 } t_archivo;
 
 void imprimirMenu(void);

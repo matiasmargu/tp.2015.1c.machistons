@@ -34,3 +34,5 @@
 [INFO] 15:36:00:942 log_filesystem/(2978:2978): Correcta lectura del archivo de configuracion
 [INFO] 15:37:03:728 log_filesystem/(3389:3389): Se creo correctamente el archivo de configuracion
 [INFO] 15:37:03:728 log_filesystem/(3389:3389): Correcta lectura del archivo de configuracion
+[INFO] 17:50:01:396 log_filesystem/(2371:2371): Se creo correctamente el archivo de configuracion
+[INFO] 17:50:53:887 log_filesystem/(2371:2371): Correcta lectura del archivo de configuracion
