@@ -18,17 +18,24 @@
 #include <commons/collections/list.h>
 #include <filesystem/filesystem.h>
 #include <cspecs/cspec.h>
+#include <pthread.h>
 
 int main(void) {
 
 	imprimirMenu();
 
 	t_list *listaArchivos;
+	//t_list *listaBloquesCopias;
+
+	//pthread_t h1,h2;
 
 	listaArchivos = list_create();
+	//listaBloquesCopias = list_create();
 
 	list_add(listaArchivos, archivo_create("archivo1.txt", 2, "No disponible"));
-	list_get(listaArchivos,1);
+
+	//pthread_create(&h1, NULL, atenderConsola, NULL);
+
 	printf("%i\n",list_size(listaArchivos));
 
 	char* rutaArchivoConfiguracion = "/home/utnso/git/tp-2015-1c-machistons/Configuracion/filesystem.conf";
@@ -68,7 +75,7 @@ int main(void) {
 
 	config_destroy(archivoConfiguracion);
 	log_destroy(logger);
-	free(rutaArchivoConfiguracion);
+	//free(rutaArchivoConfiguracion);
 	free(lista_nodos);
 	list_destroy(listaArchivos);
 	return EXIT_SUCCESS;
