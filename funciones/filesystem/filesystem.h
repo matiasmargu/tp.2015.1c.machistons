@@ -32,7 +32,7 @@ typedef struct {
 	char* nombre;
 	int direccion;
 	char* estado;
-	t_bloque_copias bloque;
+	//t_bloque_copias bloque;
 } t_archivo;
 
 void imprimirMenu(void);

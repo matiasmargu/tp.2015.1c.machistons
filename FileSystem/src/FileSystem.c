@@ -27,9 +27,9 @@ int main(void) {
 
 	listaArchivos = list_create();
 
-	//list_destroy_and_destroy_elements(listaArchivos, (void*) archivo_destroy);
-
 	list_add(listaArchivos, archivo_create("archivo1.txt", 2, "No disponible"));
+	list_get(listaArchivos,1);
+	printf("%i\n",list_size(listaArchivos));
 
 	char* rutaArchivoConfiguracion = "/home/utnso/git/tp-2015-1c-machistons/Configuracion/filesystem.conf";
 
