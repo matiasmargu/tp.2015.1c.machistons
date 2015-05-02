@@ -17,7 +17,6 @@
 #include <commons/string.h>
 #include <commons/collections/list.h>
 #include <filesystem/filesystem.h>
-#include <cspecs/cspec.h>
 #include <pthread.h>
 
 int main(void) {
@@ -28,14 +27,14 @@ int main(void) {
 	//t_list *listaBloquesCopias;
 
 	pthread_t h1;
-	char* m1 = "h1";
+	//char* m1 = "h1";
 
 	listaArchivos = list_create();
 	//listaBloquesCopias = list_create();
 
 	list_add(listaArchivos, archivo_create("archivo1.txt", 2, "No disponible"));
 
-	pthread_create(&h1, NULL, atenderConsola, NULL);
+	//pthread_create(&h1, NULL, atenderConsola, NULL);
 
 	printf("%i\n",list_size(listaArchivos));
 
