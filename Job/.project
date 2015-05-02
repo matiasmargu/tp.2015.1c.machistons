@@ -3,7 +3,7 @@
 	<name>Job</name>
 	<comment></comment>
 	<projects>
-		<project>commons</project>
+		<project>funciones</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

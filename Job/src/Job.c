@@ -97,6 +97,7 @@ int main(void) {
 
 	int socketMarta = cliente_marta(puerto_marta,ip_marta);
 	printf("%i\n",socketMarta);
+	printf("prueba\n");
 
 	config_destroy(archivoConfiguracion);
 	log_destroy(logger);
