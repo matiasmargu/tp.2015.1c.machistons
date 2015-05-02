@@ -6,7 +6,7 @@
  */
 
 
-void nicogay (void){
+void prueba (void){
 	printf("matias\n");
 	return ;
 }

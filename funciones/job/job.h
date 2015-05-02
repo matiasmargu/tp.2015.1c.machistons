@@ -8,6 +8,6 @@
 #ifndef JOB_JOB_H_
 #define JOB_JOB_H_
 
-void nicogay (void);
+void prueba(void);
 
 #endif /* JOB_JOB_H_ */
