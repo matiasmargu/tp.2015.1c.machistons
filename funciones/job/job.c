@@ -6,3 +6,7 @@
  */
 
 
+void nicogay (void){
+	printf("matias\n");
+	return ;
+}
