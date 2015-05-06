@@ -15,7 +15,11 @@
 #include <commons/config.h>
 #include <commons/log.h>
 #include <commons/string.h>
-
+#include <socket/servidor.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netdb.h>
+#include <unistd.h>
 
 int main(void) {
 
@@ -33,6 +37,19 @@ int main(void) {
 	char* nodo_nuevo;
 	char* ip_nodo;
 	int puerto_nodo;
+
+	int socketCliente = crearServidor("6667");
+
+	char package[PACKAGESIZE];
+	int status = 1;		// Estructura que manjea el status de los recieve.
+	printf("Cliente conectado. Esperando mensajes:\n");
+
+	while (status != 0){
+		status = recv(socketCliente, (void*) package, PACKAGESIZE, 0);
+		if (status != 0) printf("%s", package);
+		}
+
+	close(socketCliente);
 
 ///////    Carga del archivo de configuracion       ///////////////////////////////////////////
 
