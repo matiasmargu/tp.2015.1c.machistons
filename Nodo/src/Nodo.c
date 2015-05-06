@@ -38,7 +38,7 @@ int main(void) {
 
 	archivoConfiguracion = config_create(rutaArchivoConfiguracion);
 
-	ylog_info(logger, "Se creo correctamente el archivo de configuracion");
+	log_info(logger, "Se creo correctamente el archivo de configuracion");
 	puerto_fs = config_get_int_value(archivoConfiguracion, "PUERTO_FS");
 
 	ip_fs = config_get_string_value(archivoConfiguracion, "IP_FS");

@@ -19,6 +19,7 @@
 #include <commons/collections/list.h>
 #include <filesystem/filesystem.h>
 #include <pthread.h>
+#include <socket/servidor.h>
 
 int main(void) {
 
@@ -35,7 +36,7 @@ int main(void) {
 
 	list_add(listaArchivos, archivo_create("archivo1.txt", 2, "No disponible"));
 
-	pthread_create(&h1, NULL, atenderConsola, NULL);
+	//pthread_create(&h1, NULL, atenderConsola, NULL);
 
 	//pthread_create(&h1, NULL, atenderConsola, NULL);
 
