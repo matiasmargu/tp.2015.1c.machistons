@@ -23,6 +23,7 @@ int cliente_marta(int PUERTO,char* ip_marta){
 
 int main(void) {
 	prueba();
+
 	char* rutaArchivoConfiguracion = "/home/utnso/git/tp-2015-1c-machistons/Configuracion/job.conf";
 
 	t_config* archivoConfiguracion;
