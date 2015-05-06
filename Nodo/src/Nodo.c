@@ -37,16 +37,12 @@ int main(void) {
 ///////    Carga del archivo de configuracion       ///////////////////////////////////////////
 
 	archivoConfiguracion = config_create(rutaArchivoConfiguracion);
-
 	log_info(logger, "Se creo correctamente el archivo de configuracion");
 	puerto_fs = config_get_int_value(archivoConfiguracion, "PUERTO_FS");
-
 	ip_fs = config_get_string_value(archivoConfiguracion, "IP_FS");
 	archivo_bin = config_get_string_value(archivoConfiguracion, "ARCHIVO_BIN");
-
 	dir_temp = config_get_string_value(archivoConfiguracion, "DIR_TEMP");
 	nodo_nuevo = config_get_string_value(archivoConfiguracion, "NODO_NUEVO");
-
 	ip_nodo = config_get_string_value(archivoConfiguracion, "IP_NODO");
 	puerto_nodo = config_get_int_value(archivoConfiguracion, "PUERTO_NODO");
 
