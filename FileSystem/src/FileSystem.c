@@ -8,6 +8,7 @@
  ============================================================================
  */
 
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
@@ -33,6 +34,8 @@ int main(void) {
 	//listaBloquesCopias = list_create();
 
 	list_add(listaArchivos, archivo_create("archivo1.txt", 2, "No disponible"));
+
+	pthread_create(&h1, NULL, atenderConsola, NULL);
 
 	//pthread_create(&h1, NULL, atenderConsola, NULL);
 

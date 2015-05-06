@@ -10,7 +10,7 @@
 #include <assert.h>
 #include <string.h>
 #include "filesystem.h"
-#include <commons/string.h>
+#include "../commons/string.h"
 
 t_archivo *archivo_create(char *nombre, int direccion, char* estado ) {
     t_archivo *new = malloc(sizeof(t_archivo));
