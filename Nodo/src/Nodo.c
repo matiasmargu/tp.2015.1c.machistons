@@ -34,65 +34,29 @@ int main(void) {
 	char* ip_nodo;
 	int puerto_nodo;
 
-///////    Validacion y Carga del archivo de configuracion       ///////////////////////////////////////////
+///////    Carga del archivo de configuracion       ///////////////////////////////////////////
 
 	archivoConfiguracion = config_create(rutaArchivoConfiguracion);
-	log_info(logger, "Se creo correctamente el archivo de configuracion");
 
-	if(true == config_has_property(archivoConfiguracion,"PUERTO_FS")){
-			puerto_fs = config_get_int_value(archivoConfiguracion, "PUERTO_FS");
-		}else{
-			log_error(logger, "Falta Puerto Filesystem");
-			return EXIT_FAILURE;
-	}
+	ylog_info(logger, "Se creo correctamente el archivo de configuracion");
+	puerto_fs = config_get_int_value(archivoConfiguracion, "PUERTO_FS");
 
-	if(true == config_has_property(archivoConfiguracion,"IP_FS")){
-			ip_fs = config_get_string_value(archivoConfiguracion, "IP_FS");
-		}else{
-			log_error(logger, "Falta IP Filesystem");
-			return EXIT_FAILURE;
-	}
+	ip_fs = config_get_string_value(archivoConfiguracion, "IP_FS");
+	archivo_bin = config_get_string_value(archivoConfiguracion, "ARCHIVO_BIN");
 
-	if(true == config_has_property(archivoConfiguracion,"ARCHIVO_BIN")){
-			archivo_bin = config_get_string_value(archivoConfiguracion, "ARCHIVO_BIN");
-		}else{
-			log_error(logger, "Falta Archivo Bin");
-			return EXIT_FAILURE;
-	}
+	dir_temp = config_get_string_value(archivoConfiguracion, "DIR_TEMP");
+	nodo_nuevo = config_get_string_value(archivoConfiguracion, "NODO_NUEVO");
 
-	if(true == config_has_property(archivoConfiguracion,"DIR_TEMP")){
-			dir_temp = config_get_string_value(archivoConfiguracion, "DIR_TEMP");
-		}else{
-			log_error(logger, "Falta Dir Temp");
-			return EXIT_FAILURE;
-	}
-
-	if(true == config_has_property(archivoConfiguracion,"NODO_NUEVO")){
-		    nodo_nuevo = config_get_string_value(archivoConfiguracion, "NODO_NUEVO");
-		}else{
-			log_error(logger, "Falta Nodo Nuevo");
-			return EXIT_FAILURE;
-	}
-
-	if(true == config_has_property(archivoConfiguracion,"IP_NODO")){
-		    ip_nodo = config_get_string_value(archivoConfiguracion, "IP_NODO");
-		}else{
-			log_error(logger, "Falta IP Nodo");
-			return EXIT_FAILURE;
-	}
-
-	if(true == config_has_property(archivoConfiguracion,"PUERTO_NODO")){
-			puerto_nodo = config_get_int_value(archivoConfiguracion, "PUERTO_NODO");
-		}else{
-			log_error(logger, "Falta Puerto Nodo");
-			return EXIT_FAILURE;
-	}
+	ip_nodo = config_get_string_value(archivoConfiguracion, "IP_NODO");
+	puerto_nodo = config_get_int_value(archivoConfiguracion, "PUERTO_NODO");
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	printf("%s\n%i\n%s\n%i\n%s\n%s\n%s\n",ip_fs,puerto_fs,ip_nodo,puerto_nodo,archivo_bin,dir_temp,nodo_nuevo);
 
 	log_info(logger, "Correcta lectura del archivo de configuracion");
+
+
 
 
 	config_destroy(archivoConfiguracion);
