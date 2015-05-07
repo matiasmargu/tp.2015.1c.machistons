@@ -1,18 +1,14 @@
 /*
- * filesystem.h
+ * manejoDeListas.h
  *
- *  Created on: 29/4/2015
+ *  Created on: 6/5/2015
  *      Author: gcrivelli
  */
 
-#ifndef FILESYSTEM_FILESYSTEM_H_
-#define FILESYSTEM_FILESYSTEM_H_
+#ifndef MANEJODELISTAS_H_
+#define MANEJODELISTAS_H_
 
 #include "../commons/collections/list.h"
-
-#define MAXSIZE_COMANDO 50
-#define MAXCOMANDOS 6
-#define MAXBUFERTECLADO 1000
 
 typedef struct {
 	int socket; // Socket del Nodo para comunicacion
@@ -42,9 +38,7 @@ typedef struct {
 	t_list bloques_copias; // Lista de bloques
 } t_archivo;
 
-void imprimirMenu(void);
 t_archivo *archivo_create(char *nombre, int direccion, char* estado );
 void archivo_destroy(t_archivo *self);
-void *atenderConsola(void*arg);
 
-#endif /* FILESYSTEM_FILESYSTEM_H_ */
+#endif /* MANEJODELISTAS_H_ */

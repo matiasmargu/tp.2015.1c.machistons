@@ -12,21 +12,22 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <string.h>
-#include <commons/config.h>
-#include <commons/log.h>
-#include <commons/string.h>
-#include <socket/servidor.h>
+#include <../commons/config.h>
+#include <../commons/log.h>
+#include <../commons/string.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netdb.h>
+#include <socket/socket.h>
 #include <unistd.h>
+
+t_log* logger; // Log Global
 
 int main(void) {
 
 	char* rutaArchivoConfiguracion = "/home/utnso/git/tp-2015-1c-machistons/Configuracion/nodo.conf";
 
 	t_config* archivoConfiguracion;
-	t_log* logger;
 
 	logger = log_create("LOG_Nodo", "log_nodo" ,false, LOG_LEVEL_INFO);
 

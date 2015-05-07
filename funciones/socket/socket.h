@@ -5,12 +5,13 @@
  *      Author: utnso
  */
 
-#ifndef SOCKET_SERVIDOR_H_
-#define SOCKET_SERVIDOR_H_
+#ifndef SOCKET_SOCKET_H_
+#define SOCKET_SOCKET_H_
 
 #define BACKLOG 5			// Define cuantas conexiones vamos a mantener pendientes al mismo tiempo
 #define PACKAGESIZE 1024	// Define cual va a ser el size maximo del paquete a enviar
 
 int crearServidor(char* PUERTO);
+int crearCliente (char *IP, char *PUERTO);
 
-#endif /* SOCKET_SERVIDOR_H_ */
+#endif /* SOCKET_SOCKET_H_ */

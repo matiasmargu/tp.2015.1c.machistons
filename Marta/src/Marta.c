@@ -10,11 +10,21 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
+#include <string.h>
+#include <../commons/config.h>
+#include <../commons/log.h>
+#include <../commons/string.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netdb.h>
+#include <socket/socket.h>
+#include <unistd.h>
 
-#include <filesystem/filesystem.h>
+t_log* logger; // Log Global
 
 int main(void) {
-	imprimirMenu();
+
 	return EXIT_SUCCESS;
 }
 
