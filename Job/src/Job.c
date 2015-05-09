@@ -30,7 +30,7 @@ int main(void) {
 	t_config* archivoConfiguracion;
 
 	logger = log_create("LOG_JOB", "log_job" ,false, LOG_LEVEL_INFO);
-
+    int status;
 	int puerto_marta;
 	char* ip_marta;
 	char* mapper;
@@ -40,7 +40,7 @@ int main(void) {
 	char* archivo_resultado;
 
 	archivoConfiguracion = config_create(rutaArchivoConfiguracion);
-	puerto_marta = config_get_int_value(archivoConfiguracion, "PUERTO_MARTA");
+	puerto_marta = config_get_string_value(archivoConfiguracion, "PUERTO_MARTA");
 	ip_marta = config_get_string_value(archivoConfiguracion, "IP_MARTA");
 	mapper = config_get_string_value(archivoConfiguracion, "MAPPER");
 	reduce = config_get_string_value(archivoConfiguracion, "REDUCE");
@@ -49,6 +49,23 @@ int main(void) {
 	archivo_resultado = config_get_string_value(archivoConfiguracion, "RESULTADO");
 
 	printf("%i\n",puerto_marta);
+
+	int servidor = crearCliente (ip_marta, puerto_marta);
+		int enviar = 1;
+		char message[PACKAGESIZE];
+
+		printf("Conectado al servidor. Bienvenido al sistema, ya puede enviar mensajes. Escriba 'exit' para salir\n");
+
+		while(true){
+			fgets(message, PACKAGESIZE, stdin);			// Lee una linea en el stdin (lo que escribimos en la consola) hasta encontrar un \n (y lo incluye) o llegar a PACKAGESIZE.
+			if (!strcmp(message,"exit\n")) enviar = 0;			// Chequeo que el usuario no quiera salir
+			if (enviar) send(servidor, message, strlen(message) + 1, 0); 	// Solo envio si el usuario no quiere salir.
+			status = recv(servidor, (void*) message , PACKAGESIZE, 0);
+			if (status != 0 ) printf("%s", message);
+		}
+
+		close(servidor);
+
 
 	config_destroy(archivoConfiguracion);
 	log_destroy(logger);
@@ -60,4 +77,5 @@ int main(void) {
 	free(ip_marta);
 	free(combiner);
 	return EXIT_SUCCESS;
+
 }
