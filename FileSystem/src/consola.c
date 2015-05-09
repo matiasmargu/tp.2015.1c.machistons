@@ -69,7 +69,6 @@ void *atenderConsola(void*arg) {
 					break;
 				case Salir:
 					break;
-
 				default:
 							{
 								printf("Nro. de comando mal ingresado. Ingrese 0 para imprimir menu. \n");
