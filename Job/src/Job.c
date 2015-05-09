@@ -20,11 +20,12 @@
 #include <netdb.h>
 #include <socket/socket.h>
 #include <unistd.h>
+#include "funciones.h"
 
 t_log* logger; // Log Global
 
 int main(void) {
-
+	imprimir();
 	char* rutaArchivoConfiguracion = "/home/utnso/git/tp-2015-1c-machistons/Configuracion/job.conf";
 
 	t_config* archivoConfiguracion;
