@@ -43,19 +43,6 @@ int main(void) {
 	char* ip_nodo;
 	int puerto_nodo;
 
-	int socketCliente = crearServidor("6667");
-
-	char package[PACKAGESIZE];
-	int status = 1;		// Estructura que manjea el status de los recieve.
-	printf("Cliente conectado. Esperando mensajes:\n");
-
-	while (status != 0){
-		status = recv(socketCliente, (void*) package, PACKAGESIZE, 0);
-		if (status != 0) printf("%s", package);
-		}
-
-	close(socketCliente);
-
 ///////    Carga del archivo de configuracion       ///////////////////////////////////////////
 
 	archivoConfiguracion = config_create(rutaArchivoConfiguracion);
@@ -67,12 +54,6 @@ int main(void) {
 	nodo_nuevo = config_get_string_value(archivoConfiguracion, "NODO_NUEVO");
 	ip_nodo = config_get_string_value(archivoConfiguracion, "IP_NODO");
 	puerto_nodo = config_get_int_value(archivoConfiguracion, "PUERTO_NODO");
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-	printf("%s\n%i\n%s\n%i\n%s\n%s\n%s\n",ip_fs,puerto_fs,ip_nodo,puerto_nodo,archivo_bin,dir_temp,nodo_nuevo);
-
-	log_info(logger, "Correcta lectura del archivo de configuracion");
 
 ////////////////////// Creo El Select ////////////////////////////////////////////////////
 
@@ -99,10 +80,6 @@ int main(void) {
 		listaArchivos = list_create();
 
 		list_add(listaArchivos, archivo_create("archivo1.txt", 2, "No disponible"));
-
-
-		// que funcion hace el hilo ??
-		// pthread_create(&h1, NULL, ------xxxxxx-----, NULL);
 
 		FD_ZERO(&master);
 		FD_ZERO(&read_fds);
@@ -140,11 +117,15 @@ int main(void) {
 					// Nueva coneccion
 					// inet_ntoa(clientaddr.sin_addr) -> es la IP de donde se conecto. // creo que es 127.0.0.2
 					// newfd -> es el socket nuevo
+					// Aca tienen que crear los hilos, aca deben hacer el handshake de si es Nodo, FS o Job y por aca uno levantar un hilo para atenderlo.
+					// Ejemplo:
+					// Si lo que se conecto es un hilo de job: pthread_create(&h1, NULL, atenderJob, NULL);
+					// Si lo que se conecto es un Nodo: pthread_create(&h1, NULL, atenderNodo, NULL);
+					// Si lo que se conecto es el FS: pthread_create(&h1, NULL, atenderFS, NULL);
 				}
 				else
 				{
-					status_s = recv(i, (void*) buf, PACKAGESIZE, 0);
-					if (status_s != 0) printf("%s", buf);
+					// Aca entra cuando la coneccion ya existe, todavia no sabemos bien que hacer con esto. Hay que definir bien que hacer.
 				}
 			}
         }
