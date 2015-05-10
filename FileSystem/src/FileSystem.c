@@ -26,86 +26,31 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
-
-t_log* logger; // Log Global
-
-#define PORT 2020
-
-int main(int argc, char *argv[])
+int main()
 {
-fd_set master;
-fd_set read_fds;
+	fd_set master;
+	fd_set read_fds;
 
-struct sockaddr_in serveraddr;
-struct sockaddr_in clientaddr;
+	struct sockaddr_in serveraddr;
+	struct sockaddr_in clientaddr;
 
-int fdmax;
-int listener;
+	int fdmax;
+	int listener;
 
-int newfd;
-char buf[1024];
-int yes = 1;
-int addrlen;
-int i;
-int status;
+	int newfd;
+	char buf[1024];
+	int yes = 1;
+	int addrlen;
+	int i;
+	int status;
 
-FD_ZERO(&master);
-FD_ZERO(&read_fds);
+	logger = log_create("LOG_FILESYSTEM", "log_filesystem" ,false, LOG_LEVEL_INFO);
 
-listener = socket(AF_INET, SOCK_STREAM, 0);
-setsockopt(listener, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int));
-
-serveraddr.sin_family = AF_INET;
-serveraddr.sin_addr.s_addr = INADDR_ANY;
-serveraddr.sin_port = htons(PORT);
-memset(&(serveraddr.sin_zero), '\0', 8);
-bind(listener, (struct sockaddr *)&serveraddr, sizeof(serveraddr));
-listen(listener, 10);
-FD_SET(listener, &master);
-
-fdmax = listener;
-
-for(;;)
-{
-read_fds = master;
-select(fdmax+1, &read_fds, NULL, NULL, NULL);
-printf("Server-select() is OK...\n");
-
-for(i = 0; i <= fdmax; i++)
-{
-    if(FD_ISSET(i, &read_fds))
-    {
-    if(i == listener)
-     {
-        addrlen = sizeof(clientaddr);
-        if((newfd = accept(listener, (struct sockaddr *)&clientaddr, &addrlen)) == -1)
-        {
-        	perror("Server-accept() error lol!");
-        }
-        else
-        {
-        	printf("Server-accept() is OK...\n");
-
-        	FD_SET(newfd, &master);
-        	if(newfd > fdmax)
-        	{
-        		fdmax = newfd;
-        	}
-        	printf("%s: New connection from %s on socket %d\n", argv[0], inet_ntoa(clientaddr.sin_addr), newfd);
-        }
-     }
-    else
-    {
-    	status = recv(i, (void*) buf, PACKAGESIZE, 0);
-    	if (status != 0) printf("%s", buf);
-    }
-    }
-}
-}
-return 0;
-}
-
-/*
+	char* rutaArchivoConfiguracion = "/home/utnso/git/tp-2015-1c-machistons/Configuracion/filesystem.conf";
+	t_config* archivoConfiguracion;
+	archivoConfiguracion = config_create(rutaArchivoConfiguracion);
+	int puerto_listen = config_get_int_value(archivoConfiguracion, "PUERTO_LISTEN");
+	char** lista_nodos = config_get_array_value(archivoConfiguracion, "LISTA_NODOS");
 
 	t_list *listaArchivos;
 	//t_list *listaBloquesCopias;
@@ -119,22 +64,54 @@ return 0;
 
 	pthread_create(&h1, NULL, atenderConsola, NULL);
 
-	printf("%i\n",list_size(listaArchivos));
+	FD_ZERO(&master);
+	FD_ZERO(&read_fds);
 
-	char* rutaArchivoConfiguracion = "/home/utnso/git/tp-2015-1c-machistons/Configuracion/filesystem.conf";
-	t_config* archivoConfiguracion;
-	logger = log_create("LOG_FILESYSTEM", "log_filesystem" ,false, LOG_LEVEL_INFO);
-	int puerto_listen;
-	char** lista_nodos;
-	archivoConfiguracion = config_create(rutaArchivoConfiguracion);
-	puerto_listen = config_get_int_value(archivoConfiguracion, "PUERTO_LISTEN");
-	lista_nodos = config_get_array_value(archivoConfiguracion, "LISTA_NODOS");
+	listener = socket(AF_INET, SOCK_STREAM, 0);
+	setsockopt(listener, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int));
 
-	printf("%i\n",puerto_listen);
+	serveraddr.sin_family = AF_INET;
+	serveraddr.sin_addr.s_addr = INADDR_ANY;
+	serveraddr.sin_port = htons(puerto_listen);
+	memset(&(serveraddr.sin_zero), '\0', 8);
+	bind(listener, (struct sockaddr *)&serveraddr, sizeof(serveraddr));
+	listen(listener, 10);
+	FD_SET(listener, &master);
 
+	fdmax = listener;
+
+	for(;;)
+	{
+	read_fds = master;
+	select(fdmax+1, &read_fds, NULL, NULL, NULL);
+	for(i = 0; i <= fdmax; i++)
+	{
+		if(FD_ISSET(i, &read_fds))
+		{
+			if(i == listener)
+			{
+				addrlen = sizeof(clientaddr);
+				newfd = accept(listener, (struct sockaddr *)&clientaddr, &addrlen);
+				FD_SET(newfd, &master);
+				if(newfd > fdmax)
+				{
+					fdmax = newfd;
+				}
+				// Nueva coneccion
+				// inet_ntoa(clientaddr.sin_addr) -> es la IP de donde se conecto.
+				// newfd -> es el socket nuevo
+			}
+			else
+			{
+				status = recv(i, (void*) buf, PACKAGESIZE, 0);
+				if (status != 0) printf("%s", buf);
+			}
+		}
+	}
+	}
 	config_destroy(archivoConfiguracion);
 	log_destroy(logger);
 	free(lista_nodos);
 	list_destroy(listaArchivos);
 	return EXIT_SUCCESS;
-	*/
+}
