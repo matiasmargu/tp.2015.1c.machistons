@@ -12,6 +12,8 @@
 #define MAXCOMANDOS 6
 #define MAXBUFERTECLADO 1000
 
+#include "manejoDeListas.h"
+
 void imprimirMenu(void);
 void *atenderConsola(void*arg);
 

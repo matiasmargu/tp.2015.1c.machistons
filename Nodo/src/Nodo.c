@@ -65,21 +65,13 @@ int main(void) {
 
 		int fdmax;
 		int listener;
-
 		int newfd;
-		char buf[1024];
 		int yes = 1;
 		int addrlen;
 		int i;
-		int status_s;
 
-		t_list *listaArchivos;
 
-		pthread_t h1;
-
-		listaArchivos = list_create();
-
-		list_add(listaArchivos, archivo_create("archivo1.txt", 2, "No disponible"));
+		//pthread_t h1;
 
 		FD_ZERO(&master);
 		FD_ZERO(&read_fds);
@@ -138,6 +130,5 @@ int main(void) {
 	free(archivo_bin);
 	free(dir_temp);
 	free(nodo_nuevo);
-	list_destroy(listaArchivos);
 	return EXIT_SUCCESS;
 }

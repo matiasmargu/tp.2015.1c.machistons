@@ -72,7 +72,7 @@ void *atenderConsola(void*arg) {
 				default:
 							{
 								printf("Nro. de comando mal ingresado. Ingrese 0 para imprimir menu. \n");
-								//log_error(logger,"Opcion mal ingresada por teclado en la consola");
+								log_error(logger,"Opcion mal ingresada por teclado en la consola");
 							}
 			}
 	}

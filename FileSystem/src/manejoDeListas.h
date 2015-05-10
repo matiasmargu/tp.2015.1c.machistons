@@ -44,6 +44,8 @@ typedef struct {
 t_archivo *archivo_create(char *nombre, int direccion, char* estado );
 void archivo_destroy(t_archivo *self);
 
+//Varibables globales
+
 t_log* logger; // Log Global
 
 #endif /* MANEJODELISTAS_H_ */
