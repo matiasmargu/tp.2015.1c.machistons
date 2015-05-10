@@ -21,11 +21,13 @@
 #include <socket/socket.h>
 #include <unistd.h>
 #include "funciones.h"
+#include <pthread.h>
 
 t_log* logger; // Log Global
 
+
 int main(void) {
-	imprimir();
+
 	char* rutaArchivoConfiguracion = "/home/utnso/git/tp-2015-1c-machistons/Configuracion/job.conf";
 
 	t_config* archivoConfiguracion;
@@ -49,7 +51,20 @@ int main(void) {
 	lista_archivos = config_get_array_value(archivoConfiguracion, "ARCHIVOS");
 	archivo_resultado = config_get_string_value(archivoConfiguracion, "RESULTADO");
 
-	printf("%i\n",puerto_marta);
+	printf("%i\n\n",puerto_marta);
+
+	// PROBANDO HILOS - COMIENZO
+
+	pthread_t hiloA;
+		pthread_create(&hiloA, NULL, (void*) decrementar, NULL);
+
+		pthread_t hiloB;
+		pthread_create(&hiloB, NULL, (void*) incrementar , NULL);
+
+		pthread_join(hiloA, NULL);
+		pthread_join(hiloB, NULL);
+
+// PROBANDO HILOS- FIN
 
 	int servidor = crearCliente (ip_marta, puerto_marta);
 		int enviar = 1;
@@ -66,6 +81,13 @@ int main(void) {
 		}
 
 		close(servidor);
+
+
+
+
+
+
+
 
 
 	config_destroy(archivoConfiguracion);
