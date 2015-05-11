@@ -114,6 +114,25 @@ int main(void) {
 					// Si lo que se conecto es un hilo de job: pthread_create(&h1, NULL, atenderJob, NULL);
 					// Si lo que se conecto es un Nodo: pthread_create(&h1, NULL, atenderNodo, NULL);
 					// Si lo que se conecto es el FS: pthread_create(&h1, NULL, atenderFS, NULL);
+
+
+					/* podemos hacer un switch en base a la direccion del cliente, y con los case vamos haciendo los distintos hilos
+					   tendria que tener algo de cada caso, que me indique que es
+
+
+					   switch () {
+					 * case "respecto al job":
+					 *    pthread_create(&h_job, NULL, atenderJob, NULL);
+					 *    break;
+					 * case "respecto al Nodo":
+					 *    pthread_create(&h_nodo, NULL, atenderJob, NULL);
+					 *    break;
+					 * case "respecto al FS":
+					 *    pthread_create(&h_FS, NULL, atenderJob, NULL);
+					 *    break;
+					 * }
+					 *
+					 */
 				}
 				else
 				{
