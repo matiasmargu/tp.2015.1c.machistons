@@ -12,10 +12,10 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <string.h>
-#include <../commons/config.h>
-#include <../commons/log.h>
-#include <../commons/string.h>
-#include <../commons/collections/list.h>
+#include <./commons/config.h>
+#include <./commons/log.h>
+#include <./commons/string.h>
+#include <./commons/collections/list.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netdb.h>
