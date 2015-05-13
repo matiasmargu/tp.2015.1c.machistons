@@ -8,7 +8,7 @@
 #include "funciones.h"
 #include <pthread.h>
 
-
+/* PROBANDO HILOS INICIO
 int valor = 9000;
 pthread_mutex_t mutex;
 
@@ -49,3 +49,5 @@ void imprimir2(){
     while(1)
 	printf("me llamo pepe");
 }
+*/ //PROBANDO HILOS FIN
+

@@ -54,7 +54,7 @@ int main(void) {
 	printf("%i\n\n",puerto_marta);
 
 	// PROBANDO HILOS - COMIENZO
-
+/*
 	pthread_t hiloA;
 		pthread_create(&hiloA, NULL, (void*) decrementar, NULL);
 
@@ -64,7 +64,7 @@ int main(void) {
 		pthread_join(hiloA, NULL);
 		pthread_join(hiloB, NULL);
 
-// PROBANDO HILOS- FIN
+// PROBANDO HILOS- FIN */
 
 	int servidor = crearCliente (ip_marta, puerto_marta);
 		int enviar = 1;
