@@ -9,6 +9,9 @@
 #define MANEJODELISTAS_H_
 
 #include "../commons/collections/list.h"
+#include <../commons/config.h>
+#include <../commons/log.h>
+#include <../commons/string.h>
 
 typedef struct {
 	int socket; // Socket del Nodo para comunicacion
@@ -40,5 +43,9 @@ typedef struct {
 
 t_archivo *archivo_create(char *nombre, int direccion, char* estado );
 void archivo_destroy(t_archivo *self);
+
+//Varibables globales
+
+t_log* logger; // Log Global
 
 #endif /* MANEJODELISTAS_H_ */

@@ -14,7 +14,7 @@
 
 void *atenderConsola(void*arg) {
 
-	enum {Imprimir_Menu,Formatear, Eliminar_Arch, Renombrar_Arch, Mover_Arch, Crear_Directorio, Eliminar_Directorio,
+	enum {Formatear, Eliminar_Arch, Renombrar_Arch, Mover_Arch, Crear_Directorio, Eliminar_Directorio,
 		Renombrar_Directorio, Mover_Directorio, Ver_Bloque_Arch, Borrar_Bloque_Arch, Copiar_Bloque_Arch, Agregar_Nodo, Eliminar_Nodo,
 		Copiar_Arch_Al_MDFS, Copiar_Arch_Al_FSLocal, Solicitar_MD5, Salir};
 
@@ -25,16 +25,11 @@ void *atenderConsola(void*arg) {
 	//char *bufferLectura;
 	//int i;
 
-	imprimirMenu();
-	printf("\n Consola Filesystem> ");
-
 	while(1){
+			imprimirMenu();
 			fgets(bufferComando,MAXSIZE_COMANDO, stdin);
 			comandoSeparado=string_split(bufferComando, separator);
 			switch(atoi(comandoSeparado[0])){
-				case Imprimir_Menu:
-					imprimirMenu();
-					break;
 				case Formatear:
 					break;
 				case Eliminar_Arch:
@@ -72,7 +67,7 @@ void *atenderConsola(void*arg) {
 				default:
 							{
 								printf("Nro. de comando mal ingresado. Ingrese 0 para imprimir menu. \n");
-								//log_error(logger,"Opcion mal ingresada por teclado en la consola");
+								log_error(logger,"Opcion mal ingresada por teclado en la consola");
 							}
 			}
 	}
