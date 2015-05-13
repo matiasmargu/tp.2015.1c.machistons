@@ -42,7 +42,6 @@ int main()
 	int yes = 1;
 	int addrlen;
 	int i;
-	int status;
 
 	logger = log_create("LOG_FILESYSTEM", "log_filesystem" ,false, LOG_LEVEL_INFO);
 
@@ -86,32 +85,44 @@ int main()
 	select(fdmax+1, &read_fds, NULL, NULL, NULL);
 	for(i = 0; i <= fdmax; i++)
 	{
-		if(FD_ISSET(i, &read_fds))
-		{
-			if(i == listener)
-			{
-				addrlen = sizeof(clientaddr);
-				newfd = accept(listener, (struct sockaddr *)&clientaddr, &addrlen);
-				FD_SET(newfd, &master);
-				if(newfd > fdmax)
-				{
-					fdmax = newfd;
-				}
-				// Nueva coneccion
-				// inet_ntoa(clientaddr.sin_addr) -> es la IP de donde se conecto.
-				// newfd -> es el socket nuevo
-			}
-			else
-			{
-				status = recv(i, (void*) buf, PACKAGESIZE, 0);
-				if (status != 0) printf("%s", buf);
-			}
-		}
+	    if(FD_ISSET(i, &read_fds))
+	    {
+	    	if(i == listener)
+	    	{
+	        addrlen = sizeof(clientaddr);
+	        if((newfd = accept(listener, (struct sockaddr *)&clientaddr, &addrlen)) == -1)
+	        {
+	        }
+	        else
+	        {
+	        	FD_SET(newfd, &master);
+	        	if(newfd > fdmax)
+	        	{
+	        		fdmax = newfd;
+	        	}
+	        	printf("Nueva coneccion %s en %d\n", inet_ntoa(clientaddr.sin_addr), newfd);
+	        }
+	    	}
+	    	else
+	    	{
+	    		if((recv(i, buf, sizeof(buf), 0)) <= 0)
+	    		{
+	    			close(i); // Coneccion perdida
+	    			FD_CLR(i, &master);
+	    		}
+	    		else
+	    		{
+
+	    		}
+	    	}
+	    }
 	}
 	}
+
 	config_destroy(archivoConfiguracion);
 	log_destroy(logger);
 	free(lista_nodos);
 	list_destroy(listaArchivos);
 	return EXIT_SUCCESS;
 }
+
