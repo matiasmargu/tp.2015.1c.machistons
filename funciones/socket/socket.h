@@ -13,33 +13,55 @@
 
 #include <sys/socket.h>
 
-typedef struct {
-	int fdmax;
-	fd_set master;
-	int listener;
-} t_socket_select;
 
 //Marta->Job
-typedef struct {
-	char* nodo;
-	char** bloques;
+struct Marta_Job {
+	int prueba3;
+	int prueba4;
 } t_marta_job;
 
 //Job->Marta
-typedef struct {
-	char* estado;
+struct Job_Marta {
+	int prueba;
+	int prueba2;
 } t_job_marta;
 
 //Marta->FS
-typedef struct {
+struct Marta_FileSystem {
 	char* nodo;
 	char** bloques;
 } t_marta_fs;
 
 //FS->Marta
-typedef struct {
+struct FileSystem_Marta{
 	char* estado;
 } t_fs_marta;
+
+//Nodo->FS
+struct Nodo_FileSystem{}t_nodo_fs;
+
+//FS->Nodo
+struct FileSystem_Nodo{
+	char** bloques;
+}t_fs_nodo;
+
+//Nodo->Nodo
+struct Nodo_Nodo{}t_nodo_nodo;
+
+//Nodo->Job
+struct Nodo_Job{}t_nodo_job;
+
+//Job->Nodo
+struct Job_Nodo{
+	int numero_bloque;
+	char* nombre;
+
+}t_job_nodo;
+
+
+
+
+
 
 int crearServidor(char* PUERTO);
 int crearCliente (char *IP, char *PUERTO);
