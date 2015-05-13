@@ -28,6 +28,8 @@ t_log* logger; // Log Global
 
 int main(void) {
 
+
+
 	char* rutaArchivoConfiguracion = "/home/utnso/git/tp-2015-1c-machistons/Configuracion/job.conf";
 
 	t_config* archivoConfiguracion;
@@ -51,7 +53,7 @@ int main(void) {
 	lista_archivos = config_get_array_value(archivoConfiguracion, "ARCHIVOS");
 	archivo_resultado = config_get_string_value(archivoConfiguracion, "RESULTADO");
 
-	printf("%i\n\n",puerto_marta);
+	//printf("%i\n\n",puerto_marta);
 
 	// PROBANDO HILOS - COMIENZO
 /*
@@ -65,26 +67,15 @@ int main(void) {
 		pthread_join(hiloB, NULL);
 
 // PROBANDO HILOS- FIN */
-
+struct Job_Marta prueba;
+struct Job_Marta pruebarecibo;
+prueba.prueba = 34;
+prueba.prueba2 = 21;
 	int servidor = crearCliente (ip_marta, puerto_marta);
-		int enviar = 1;
-		char message[PACKAGESIZE];
-
-		printf("Conectado al servidor. Bienvenido al sistema, ya puede enviar mensajes. Escriba 'exit' para salir\n");
-
-		while(true){
-			fgets(message, PACKAGESIZE, stdin);			// Lee una linea en el stdin (lo que escribimos en la consola) hasta encontrar un \n (y lo incluye) o llegar a PACKAGESIZE.
-			if (!strcmp(message,"exit\n")) enviar = 0;			// Chequeo que el usuario no quiera salir
-			if (enviar) send(servidor, message, strlen(message) + 1, 0); 	// Solo envio si el usuario no quiere salir.
-			status = recv(servidor, (void*) message , PACKAGESIZE, 0);
-			if (status != 0 ) printf("%s", message);
-		}
-
+		send(servidor,&prueba,sizeof(struct Job_Marta),0);
+        recv(servidor,&pruebarecibo,sizeof(struct Job_Marta),0);
+        printf("%i%i",pruebarecibo.prueba,pruebarecibo.prueba2);
 		close(servidor);
-
-
-
-
 
 
 
