@@ -67,25 +67,27 @@ int main(void) {
 		pthread_join(hiloB, NULL);
 
 // PROBANDO HILOS- FIN */
-struct Job_Marta prueba;
-struct Job_Marta pruebarecibo;
-prueba.prueba = 34;
-prueba.prueba2 = 21;
+	struct Job_Marta prueba;
+	struct Job_Marta pruebarecibo;
+
 	int servidor = crearCliente (ip_marta, puerto_marta);
-		send(servidor,&prueba,sizeof(struct Job_Marta),0);
-        recv(servidor,&pruebarecibo,sizeof(struct Job_Marta),0);
-        printf("%i%i",pruebarecibo.prueba,pruebarecibo.prueba2);
-		close(servidor);
 
+	prueba.prueba = 34;
+	prueba.prueba2 = 21;
+	send(servidor,&prueba,sizeof(struct Job_Marta),0);
 
+	status = recv(servidor, &pruebarecibo, sizeof(struct Job_Marta),0 );
+	if (status != 0) printf("%i%i\n", pruebarecibo.prueba, pruebarecibo.prueba2);
 
+	prueba.prueba = 78;
+	prueba.prueba2 = 23;
+	send(servidor,&prueba,sizeof(struct Job_Marta),0);
 
+	close(servidor);
 
 	config_destroy(archivoConfiguracion);
 	log_destroy(logger);
-	free(rutaArchivoConfiguracion);
 	free(lista_archivos);
-	free(archivo_resultado);
 	free(mapper);
 	free(reduce);
 	free(ip_marta);

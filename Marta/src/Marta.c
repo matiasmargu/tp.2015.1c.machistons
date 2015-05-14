@@ -28,12 +28,20 @@ int main(void) {
 
 	struct Job_Marta pruebaRecibo;
 	struct Marta_Job pruebaEnvio;
+
+	int socketEscucha = crearServidor("3000");
+
+	int status = recv(socketEscucha, &pruebaRecibo, sizeof(struct Job_Marta),0 );
+	if (status != 0) printf("%i%i\n", pruebaRecibo.prueba, pruebaRecibo.prueba2);
+
 	pruebaEnvio.prueba3 = 56;
 	pruebaEnvio.prueba4 = 75;
-	int socketEscucha = crearServidor("2020");
-	recv(socketEscucha,&pruebaRecibo,sizeof(struct Job_Marta),0);
-	printf("%i%i",pruebaRecibo.prueba,pruebaRecibo.prueba2);
-	send(socketEscucha,&pruebaEnvio,sizeof(struct Job_Marta),0);
+
+	send(socketEscucha, &pruebaEnvio, sizeof(struct Job_Marta),0 );
+
+	int status2 = recv(socketEscucha, &pruebaRecibo, sizeof(struct Job_Marta),0 );
+	if (status2 != 0) printf("%i%i\n", pruebaRecibo.prueba, pruebaRecibo.prueba2);
+
 	close(socketEscucha);
 	return EXIT_SUCCESS;
 }
