@@ -21,28 +21,31 @@
 #include <socket/socket.h>
 #include <unistd.h>
 
-
 t_log* logger; // Log Global
 
 int main(void) {
 
-	struct Job_Marta pruebaRecibo;
-	struct Marta_Job pruebaEnvio;
+	struct Job_Marta recibo_Job;
+	struct Marta_Job envio_Job;
+	struct Marta_FileSystem envio_FS;
+	struct FileSystem_Marta recibo_FS;
 
-	int socketEscucha = crearServidor("3000");
+	int socketJob = crearServidor("3000");
+	int socketFS = crearCliente("127.0.0.1","3000");
 
-	int status = recv(socketEscucha, &pruebaRecibo, sizeof(struct Job_Marta),0 );
-	if (status != 0) printf("%i%i\n", pruebaRecibo.prueba, pruebaRecibo.prueba2);
+	int status = recv(socketJob, &recibo_Job, sizeof(struct Job_Marta),0 );
+	if (status != 0) printf("%i%i\n", recibo_Job.prueba, recibo_Job.prueba2);
 
-	pruebaEnvio.prueba3 = 56;
-	pruebaEnvio.prueba4 = 75;
+	envio_FS.prueba3 = 56;
+	envio_FS.prueba4 = "holis";
 
-	send(socketEscucha, &pruebaEnvio, sizeof(struct Job_Marta),0 );
+	send(socketFS, &envio_FS, sizeof(struct Marta_FileSystem),0 );
 
-	int status2 = recv(socketEscucha, &pruebaRecibo, sizeof(struct Job_Marta),0 );
-	if (status2 != 0) printf("%i%i\n", pruebaRecibo.prueba, pruebaRecibo.prueba2);
+	int status2 = recv(socketFS, &recibo_FS, sizeof(struct Job_Marta),0 );
+	if (status2 != 0) printf("%i%s\n", recibo_FS.prueba, recibo_FS.prueba2);
 
-	close(socketEscucha);
+	close(socketFS);
+	close(socketJob);
 	return EXIT_SUCCESS;
 }
 

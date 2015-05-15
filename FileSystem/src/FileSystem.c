@@ -34,6 +34,9 @@ int main()
 	struct sockaddr_in serveraddr;
 	struct sockaddr_in clientaddr;
 
+	struct Marta_FileSystem recibo_Marta;
+	struct FileSystem_Marta envio_Marta;
+
 	int fdmax;
 	int listener;
 
@@ -105,13 +108,19 @@ int main()
 	    	}
 	    	else
 	    	{
-	    		if((recv(i, buf, sizeof(buf), 0)) <= 0)
+	    		if((recv(i, &recibo_Marta, sizeof(struct Marta_FileSystem),0 )) <= 0)
 	    		{
 	    			close(i); // Coneccion perdida
 	    			FD_CLR(i, &master);
 	    		}
 	    		else
 	    		{
+	    			printf("%i%s\n",recibo_Marta.prueba3,recibo_Marta.prueba4);
+
+	    			envio_Marta.prueba = 46;
+	    			envio_Marta.prueba2 = "asdasdasdasdasds";
+
+	    			send(i, &envio_Marta, sizeof(struct FileSystem_Marta),0 );
 	    		}
 	    	}
 	    }

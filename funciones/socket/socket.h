@@ -28,13 +28,14 @@ struct Job_Marta {
 
 //Marta->FS
 struct Marta_FileSystem {
-	char* nodo;
-	char** bloques;
+	int prueba3;
+	char prueba4;
 } t_marta_fs;
 
 //FS->Marta
 struct FileSystem_Marta{
-	char* estado;
+	int prueba;
+	char prueba2;
 } t_fs_marta;
 
 //Nodo->FS
