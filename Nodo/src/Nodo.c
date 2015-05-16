@@ -141,6 +141,21 @@ int main(void) {
 			}
         }
    }
+
+	int socket_fs = crearCliente(ip_fs,(void*) puerto_fs);
+
+	int prueba = 3;
+	int pruebarecibo;
+	int status;
+
+	send(socket_fs,&prueba,sizeof(int),0);
+
+	status = recv(socket_fs, &pruebarecibo, sizeof(int),0 );
+	if (status != 0)
+		printf("%i\n", pruebarecibo);
+
+
+	close(socket_fs);
 	config_destroy(archivoConfiguracion);
 	log_destroy(logger);
 	free(rutaArchivoConfiguracion);
