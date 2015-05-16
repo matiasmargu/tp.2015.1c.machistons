@@ -28,15 +28,14 @@ t_log* logger; // Log Global
 
 int main(void) {
 
-
-
 	char* rutaArchivoConfiguracion = "/home/utnso/git/tp-2015-1c-machistons/Configuracion/job.conf";
 
 	t_config* archivoConfiguracion;
 
 	logger = log_create("LOG_JOB", "log_job" ,false, LOG_LEVEL_INFO);
     int status;
-	int puerto_marta;
+    int entero; // Lo uso para el handshake
+	char* puerto_marta;
 	char* ip_marta;
 	char* mapper;
 	char* reduce;
@@ -67,27 +66,15 @@ int main(void) {
 		pthread_join(hiloB, NULL);
 
 // PROBANDO HILOS- FIN */
-	struct Job_Marta prueba;
-	struct Job_Marta pruebarecibo;
+	int socketMarta = crearCliente (ip_marta, puerto_marta);
+	while(1){
+	entero = 2;
 
-	int servidor = crearCliente (ip_marta, puerto_marta);
+	send(socketMarta,&entero,sizeof(int),0);
+	}
+	close(socketMarta);
 
-	prueba.prueba = 34;
-	prueba.prueba2 = 21;
-	send(servidor,&prueba,sizeof(struct Job_Marta),0);
-
-	status = recv(servidor, &pruebarecibo, sizeof(struct Job_Marta),0 );
-	if (status != 0) printf("%i%i\n", pruebarecibo.prueba, pruebarecibo.prueba2);
-
-	prueba.prueba = 78;
-	prueba.prueba2 = 23;
-	send(servidor,&prueba,sizeof(struct Job_Marta),0);
-
-	close(servidor);
-
-	config_destroy(archivoConfiguracion);
 	log_destroy(logger);
-	free(lista_archivos);
 	free(mapper);
 	free(reduce);
 	free(ip_marta);

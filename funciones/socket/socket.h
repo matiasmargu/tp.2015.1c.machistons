@@ -17,7 +17,6 @@
 //Marta->Job
 struct Marta_Job {
 	int prueba3;
-	int prueba4;
 } t_marta_job;
 
 //Job->Marta
