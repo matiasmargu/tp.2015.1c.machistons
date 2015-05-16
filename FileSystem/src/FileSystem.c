@@ -45,6 +45,7 @@ int main()
 	int yes = 1;
 	int addrlen;
 	int i;
+	int entero; //Para el handshake
 
 	logger = log_create("LOG_FILESYSTEM", "log_filesystem" ,false, LOG_LEVEL_INFO);
 
@@ -108,19 +109,24 @@ int main()
 	    	}
 	    	else
 	    	{
-	    		if((recv(i, &recibo_Marta, sizeof(struct Marta_FileSystem),0 )) <= 0)
+	    		if((recv(i, &entero, sizeof(int),0 )) <= 0)
 	    		{
+	    			printf("socket caido\n");
 	    			close(i); // Coneccion perdida
 	    			FD_CLR(i, &master);
 	    		}
 	    		else
 	    		{
-	    			printf("%i%s\n",recibo_Marta.prueba3,recibo_Marta.prueba4);
-
-	    			envio_Marta.prueba = 46;
-	    			envio_Marta.prueba2 = "asdasdasdasdasds";
-
-	    			send(i, &envio_Marta, sizeof(struct FileSystem_Marta),0 );
+	    			switch(entero){
+	    			case 3: // Este es Marta
+	    				printf("Se conecto Marta\n");
+	    				entero = 45;
+	    				send(i,&entero, sizeof(int),0);
+	    				break;
+	    			case 2: // Este es Nodo
+	    				printf("Se conecto Nodo\n");
+	    				break;
+	    			}
 	    		}
 	    	}
 	    }

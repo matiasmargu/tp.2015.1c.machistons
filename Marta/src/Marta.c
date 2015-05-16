@@ -23,29 +23,35 @@
 
 t_log* logger; // Log Global
 
+/*void atenderJob (void){
+
+	return ;
+}*/
+
 int main(void) {
 
-	struct Job_Marta recibo_Job;
-	struct Marta_Job envio_Job;
-	struct Marta_FileSystem envio_FS;
-	struct FileSystem_Marta recibo_FS;
+	int entero;
+	//pthread_t h1;
 
 	int socketJob = crearServidor("3000");
-	int socketFS = crearCliente("127.0.0.1","3000");
+	int socketFS = crearCliente("127.0.0.1","3001");
 
-	int status = recv(socketJob, &recibo_Job, sizeof(struct Job_Marta),0 );
-	if (status != 0) printf("%i%i\n", recibo_Job.prueba, recibo_Job.prueba2);
+	if ((recv(socketJob, &entero, sizeof(int),0 )) != 0){
+		printf("se conecto el Job %i\n",entero);
+		//pthread_create(&h1,NULL, (void*) atenderJob,NULL);
+	}
+	entero = 3;
 
-	envio_FS.prueba3 = 56;
-	envio_FS.prueba4 = "holis";
+	send(socketFS,&entero, sizeof(int),0);
 
-	send(socketFS, &envio_FS, sizeof(struct Marta_FileSystem),0 );
+	if ((recv(socketFS, &entero, sizeof(int),0 )) != 0){
+		printf("fs me respondio esto: %i\n",entero);
+		//pthread_create(&h1,NULL, (void*) atenderJob,NULL);
+	}
 
-	int status2 = recv(socketFS, &recibo_FS, sizeof(struct Job_Marta),0 );
-	if (status2 != 0) printf("%i%s\n", recibo_FS.prueba, recibo_FS.prueba2);
 
-	close(socketFS);
 	close(socketJob);
+	close(socketFS);
 	return EXIT_SUCCESS;
 }
 
