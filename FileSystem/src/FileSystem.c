@@ -34,14 +34,9 @@ int main()
 	struct sockaddr_in serveraddr;
 	struct sockaddr_in clientaddr;
 
-	struct Marta_FileSystem recibo_Marta;
-	struct FileSystem_Marta envio_Marta;
-
 	int fdmax;
 	int listener;
-
 	int newfd;
-	char buf[1024];
 	int yes = 1;
 	int addrlen;
 	int i;
