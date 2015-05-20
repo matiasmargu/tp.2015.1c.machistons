@@ -74,7 +74,6 @@ int main(void) {
 
 	config_destroy(archivoConfiguracion);
 	log_destroy(logger);
-	free(ip_fs);
 	free(ip_nodo);
 	free(archivo_bin);
 	free(dir_temp);
