@@ -40,8 +40,11 @@ int main(void) {
 	char* archivo_bin;
 	char* dir_temp;
 	char* nodo_nuevo;
+//Estos los vamos a usar cuando probemos las conecciones entre nodo y nodo
+
 	char* ip_nodo;
-	int puerto_nodo;
+	char* puerto_nodo;
+
 
 ///////    Carga del archivo de configuracion       ///////////////////////////////////////////
 
@@ -53,15 +56,28 @@ int main(void) {
 	dir_temp = config_get_string_value(archivoConfiguracion, "DIR_TEMP");
 	nodo_nuevo = config_get_string_value(archivoConfiguracion, "NODO_NUEVO");
 	ip_nodo = config_get_string_value(archivoConfiguracion, "IP_NODO");
-	puerto_nodo = config_get_int_value(archivoConfiguracion, "PUERTO_NODO");
+	puerto_nodo = config_get_string_value(archivoConfiguracion, "PUERTO_NODO");
 
 	int socket_fs = crearCliente(ip_fs,puerto_fs);
+	int socket_job = crearServidor(puerto_nodo);
 
-	int prueba = 2;
+	int prueba; //para el handshake con el fs(2), job () y nodo (1)
 
+
+	while(1){
+	prueba = 2;
 	send(socket_fs,&prueba,sizeof(int),0);
+	}
+
+	if((recv(socket_fs,&prueba,sizeof(int),0)) <= 0){
+		printf("socket_fs se cayo\n");
+	}else{
+		printf("%i cantidad de trabas q se comio gaston\n",prueba);
+	}
+
 
 	close(socket_fs);
+	close(socket_job);
 
 	config_destroy(archivoConfiguracion);
 	log_destroy(logger);
