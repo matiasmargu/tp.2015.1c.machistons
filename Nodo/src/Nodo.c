@@ -69,6 +69,14 @@ int main(void) {
 		printf("socket_fs se cayo\n");
 	}else{
 		printf("%i cantidad de trabas q se comio gaston\n",prueba);
+		prueba = 42;
+		send(socket_fs,&prueba,sizeof(int),0);
+		if((recv(socket_fs,&prueba,sizeof(int),0)) <= 0){
+
+		}else{
+			printf("%i",prueba);
+		}
+
 	}
 	close(socket_fs);
 
