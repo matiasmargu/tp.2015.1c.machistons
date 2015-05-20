@@ -52,6 +52,7 @@ int main(void) {
 	lista_archivos = config_get_array_value(archivoConfiguracion, "ARCHIVOS");
 	archivo_resultado = config_get_string_value(archivoConfiguracion, "RESULTADO");
 
+
 	//printf("%i\n\n",puerto_marta);
 
 	// PROBANDO HILOS - COMIENZO
@@ -71,8 +72,18 @@ int main(void) {
 	entero = 2;
 
 	send(socketMarta,&entero,sizeof(int),0);
+
 	}
 	close(socketMarta);
+
+/*int socketNodo = crearCliente ("192.168.3.6", "3001");
+		while(1){
+		entero = 2;
+
+		send(socketNodo,&entero,sizeof(int),0);
+		}
+		close(socketNodo);
+*/
 
 	log_destroy(logger);
 	free(mapper);
