@@ -24,7 +24,28 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <sys/mman.h>
 #include <arpa/inet.h>
+
+void *atenderNodo(void*arg){
+
+	int socketNodo = (int)arg;
+	int entero;
+
+	entero = 56;
+
+	send(socketNodo, &entero, sizeof(int),0);
+
+	if((recv(socketNodo, &entero, sizeof(int),0 )) <= 0)
+	{
+		printf("socket Nodo caido\n");
+	}
+	else
+	{
+		printf("%i\n",entero);
+	}
+	return NULL;
+}
 
 int main()
 {
@@ -41,6 +62,7 @@ int main()
 	int addrlen;
 	int i;
 	int entero; //Para el handshake
+	int nodofd;
 
 	logger = log_create("LOG_FILESYSTEM", "log_filesystem" ,false, LOG_LEVEL_INFO);
 
@@ -54,6 +76,7 @@ int main()
 	//t_list *listaBloquesCopias;
 
 	pthread_t h1;
+	pthread_t* hilosNodo;
 
 	listaArchivos = list_create();
 	//listaBloquesCopias = list_create();
@@ -82,6 +105,7 @@ int main()
 	{
 	read_fds = master;
 	select(fdmax+1, &read_fds, NULL, NULL, NULL);
+	printf("select activo\n");
 	for(i = 0; i <= fdmax; i++)
 	{
 	    if(FD_ISSET(i, &read_fds))
@@ -114,12 +138,18 @@ int main()
 	    		{
 	    			switch(entero){
 	    			case 3: // Este es Marta
-	    				printf("Se conecto Marta\n");
 	    				entero = 45;
 	    				send(i,&entero, sizeof(int),0);
+	    				log_info(logger,"Hilo Marta creado satisfactoriamente");
 	    				break;
 	    			case 2: // Este es Nodo
-	    				printf("Se conecto Nodo\n");
+	    				entero = 45;
+	    				printf("socket nodo\n");
+	    				send(i,&entero, sizeof(int),0);
+	    				/*nodofd = i;
+	    				hilosNodo = realloc(hilosNodo, sizeof(pthread_t)*i);
+	    				pthread_create(hilosNodo+i, NULL, atenderNodo, (void *)nodofd);
+	    				log_info(logger,"Hilo Nodo creado satisfactoriamente");*/
 	    				break;
 	    			}
 	    		}
@@ -127,11 +157,10 @@ int main()
 	    }
 	}
 	}
-
+	free(hilosNodo);
 	config_destroy(archivoConfiguracion);
 	log_destroy(logger);
 	free(lista_nodos);
 	list_destroy(listaArchivos);
 	return EXIT_SUCCESS;
 }
-

@@ -40,13 +40,12 @@ int main(void) {
 		printf("se conecto el Job %i\n",entero);
 		//pthread_create(&h1,NULL, (void*) atenderJob,NULL);
 	}
-	entero = 3;
 
+	entero = 3;    // handshake con FS
 	send(socketFS,&entero, sizeof(int),0);
 
 	if ((recv(socketFS, &entero, sizeof(int),0 )) != 0){
 		printf("fs me respondio esto: %i\n",entero);
-		//pthread_create(&h1,NULL, (void*) atenderJob,NULL);
 	}
 
 
