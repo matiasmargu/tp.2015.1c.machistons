@@ -59,30 +59,29 @@ int main(void) {
 	puerto_nodo = config_get_string_value(archivoConfiguracion, "PUERTO_NODO");
 
 	int socket_fs = crearCliente(ip_fs,puerto_fs);
-	int socket_job = crearServidor(puerto_nodo);
 
 	int prueba; //para el handshake con el fs(2), job () y nodo (1)
 
-
-	while(1){
 	prueba = 2;
 	send(socket_fs,&prueba,sizeof(int),0);
-	}
 
 	if((recv(socket_fs,&prueba,sizeof(int),0)) <= 0){
 		printf("socket_fs se cayo\n");
 	}else{
 		printf("%i cantidad de trabas q se comio gaston\n",prueba);
+		prueba = 42;
+		send(socket_fs,&prueba,sizeof(int),0);
+		if((recv(socket_fs,&prueba,sizeof(int),0)) <= 0){
+
+		}else{
+			printf("%i",prueba);
+		}
+
 	}
-
-
 	close(socket_fs);
-	close(socket_job);
 
 	config_destroy(archivoConfiguracion);
 	log_destroy(logger);
-	free(rutaArchivoConfiguracion);
-	free(ip_fs);
 	free(ip_nodo);
 	free(archivo_bin);
 	free(dir_temp);
