@@ -38,7 +38,9 @@ struct FileSystem_Marta{
 } t_fs_marta;
 
 //Nodo->FS
-struct Nodo_FileSystem{}t_nodo_fs;
+struct Nodo_FileSystem{
+
+}t_nodo_fs;
 
 //FS->Nodo
 struct FileSystem_Nodo{
