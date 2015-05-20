@@ -73,6 +73,7 @@ int main(void) {
 
 	send(socketMarta,&entero,sizeof(int),0);
 
+
 	}
 	close(socketMarta);
 
