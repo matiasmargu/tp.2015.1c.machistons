@@ -68,23 +68,26 @@ int main(void) {
 
 // PROBANDO HILOS- FIN */
 	int socketMarta = crearCliente (ip_marta, puerto_marta);
-	while(1){
+
 	entero = 2;
 
 	send(socketMarta,&entero,sizeof(int),0);
 
 
+	if((recv(socketMarta, &entero, sizeof(int),0)) != 0){
+		printf("%i\n",entero);
 	}
+
 	close(socketMarta);
 
-/*int socketNodo = crearCliente ("192.168.3.6", "3001");
-		while(1){
-		entero = 2;
+int socketNodo = crearCliente ("192.168.3.6", "3001");
 
-		send(socketNodo,&entero,sizeof(int),0);
-		}
+ int entero2 = 8;
+
+		send(socketNodo,&entero2,sizeof(int),0);
+
 		close(socketNodo);
-*/
+
 
 	log_destroy(logger);
 	free(mapper);
