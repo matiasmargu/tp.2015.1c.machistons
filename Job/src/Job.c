@@ -89,6 +89,13 @@ int socketNodo = crearCliente ("192.168.3.6", "3001");
 		close(socketNodo);
 
 
+
+
+
+
+
+
+
 	log_destroy(logger);
 	free(mapper);
 	free(reduce);

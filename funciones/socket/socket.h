@@ -19,6 +19,26 @@ struct Marta_Job {
 	int prueba3;
 } t_marta_job;
 
+/*//Marta->Job
+struct Marta_Job {
+    char* operacionID;  //identifica el numero de operacion
+	char* rutina; //mapper o reducer
+	char** bloqueDeDatos; //donde aplicar el mapper o reduce
+	char* nombreNodo;
+	char* ipNodo;
+	char* archivo_resultado; //donde va a devolverle el resultado
+}t_marta_job
+
+//Job->Marta
+ * struct Job_Marta {
+   char* operacionID;
+   char* archivo_resultado;
+   char* combiner;
+   }t_job_marta
+
+*/
+
+
 //Job->Marta
 struct Job_Marta {
 	int prueba;
@@ -50,16 +70,26 @@ struct FileSystem_Nodo{
 //Nodo->Nodo
 struct Nodo_Nodo{}t_nodo_nodo;
 
-//Nodo->Job
-struct Nodo_Job{}t_nodo_job;
+/*//Nodo->Job
+struct Nodo_Job{
+	char* operacionID;
+	char* archivo_resultado;
 
+}t_nodo_job;
+
+*/
+/*
 //Job->Nodo
 struct Job_Nodo{
-	int numero_bloque;
+    char* operacionID;
+	char* ip_nodo;
 	char* nombre;
+	char* archivo_resultado;
+    char* rutina;
+    char** bloqueDeDAtos;
 
 }t_job_nodo;
-
+*/
 
 
 
