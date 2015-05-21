@@ -23,23 +23,19 @@
 
 t_log* logger; // Log Global
 
-/*void atenderJob (void){
-
-	return ;
-}*/
-
 int main(void) {
 
 	int entero;
-	//pthread_t h1;
 
 	int socketJob = crearServidor("3000");
 	int socketFS = crearCliente("127.0.0.1","3001");
 
 	if ((recv(socketJob, &entero, sizeof(int),0 )) != 0){
 		printf("se conecto el Job %i\n",entero);
-		//pthread_create(&h1,NULL, (void*) atenderJob,NULL);
 	}
+
+	entero = 98;
+	send(socketJob, &entero, sizeof(int),0);
 
 	entero = 3;    // handshake con FS
 	send(socketFS,&entero, sizeof(int),0);
@@ -47,7 +43,6 @@ int main(void) {
 	if ((recv(socketFS, &entero, sizeof(int),0 )) != 0){
 		printf("fs me respondio esto: %i\n",entero);
 	}
-
 
 	close(socketJob);
 	close(socketFS);

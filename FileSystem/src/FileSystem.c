@@ -42,8 +42,12 @@ void *atenderNodo(void*arg){
 	}
 	else
 	{
-		printf("%i\n",entero);
+		printf("me mando esto adentro del hilo:%i\n",entero);
 	}
+
+	entero = 106;
+	send(socketNodo, &entero, sizeof(int),0);
+
 	return NULL;
 }
 
@@ -123,7 +127,8 @@ int main()
 	        	{
 	        		fdmax = newfd;
 	        	}
-	        	printf("Nueva coneccion %s en %d\n", inet_ntoa(clientaddr.sin_addr), newfd);
+	        	//inet_ntoa(clientaddr.sin_addr) ip del nodo conectado.
+	        	//newfd socket nuevo conectado
 	        }
 	    	}
 	    	else
@@ -143,13 +148,9 @@ int main()
 	    				log_info(logger,"Hilo Marta creado satisfactoriamente");
 	    				break;
 	    			case 2: // Este es Nodo
-	    				entero = 45;
-	    				printf("socket nodo\n");
-	    				send(i,&entero, sizeof(int),0);
-	    				/*nodofd = i;
-	    				hilosNodo = realloc(hilosNodo, sizeof(pthread_t)*i);
+	    				nodofd = i;
 	    				pthread_create(hilosNodo+i, NULL, atenderNodo, (void *)nodofd);
-	    				log_info(logger,"Hilo Nodo creado satisfactoriamente");*/
+	    				log_info(logger,"Hilo Nodo creado satisfactoriamente");
 	    				break;
 	    			}
 	    		}
