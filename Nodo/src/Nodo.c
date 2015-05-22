@@ -23,6 +23,7 @@
 #include <unistd.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <pthread.h>
 
 
 t_log* logger; // Log Global
@@ -40,6 +41,21 @@ int main(void) {
 	char* archivo_bin;
 	char* dir_temp;
 	char* nodo_nuevo;
+	fd_set master;
+	fd_set read_fds;
+
+	struct sockaddr_in serveraddr;
+	struct sockaddr_in clientaddr;
+
+	int fdmax;
+	int listener;
+	int newfd;
+	int yes = 1;
+	int addrlen;
+	int i;
+	int entero; //Para el handshake
+	int nodofd;
+
 
 //Estos los vamos a usar cuando probemos las conecciones entre nodo y nodo
 	char* ip_nodo;
@@ -60,28 +76,16 @@ int main(void) {
 
 
 	int socket_fs = crearCliente(ip_fs,puerto_fs);
+	entero = 2; // handshake con FS
+	send(socket_fs,&entero,sizeof(int),0);
+	pthread_create();
 	int socket_job = crearServidor(ip_nodo);
 
 	int prueba; //para el handshake con el fs(2), job () y nodo (1)
 //Viejo
-	fd_set master;
-	fd_set read_fds;
-
-	struct sockaddr_in serveraddr;
-	struct sockaddr_in clientaddr;
-
-	int fdmax;
-	int listener;
-	int newfd;
-	int yes = 1;
-	int addrlen;
-	int i;
-	int entero; //Para el handshake
-	int nodofd;
 
 
-	prueba = 2;
-	send(socket_fs,&prueba,sizeof(int),0);
+
 
 	FD_ZERO(&master);
 	FD_ZERO(&read_fds);
@@ -135,26 +139,18 @@ int main(void) {
 	    		else
 	    		{
 	    			switch(entero){
-	    			case 1: // Este es Job
+	    			case 8: // Este es Job
 	    				entero = 45;
 	    				send(i,&entero, sizeof(int),0);
 	    				log_info(logger,"Hilo Job creado satisfactoriamente");
 	    				break;
-	    			case 2: // Este es FileSystem o los Nodos?
-	    				printf("%i\n",prueba);
-	    				entero = 42;
-	    				send(socket_fs,&entero,sizeof(int),0);
-	    				if((recv(socket_fs,&entero,sizeof(int),0)) <= 0){
-	    				}else{
-	    					printf("%i",entero);
-	    				}
-
-	    			}
+	    				    			}
 	    		}
 	    	}
 	    }
 	}
 	}
+
 
 	close(socket_fs);
 	close(socket_job);
