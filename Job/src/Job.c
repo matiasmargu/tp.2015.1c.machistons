@@ -43,6 +43,8 @@ int main(void) {
 	char** lista_archivos;
 	char* archivo_resultado;
 
+
+
 	archivoConfiguracion = config_create(rutaArchivoConfiguracion);
 	puerto_marta = config_get_string_value(archivoConfiguracion, "PUERTO_MARTA");
 	ip_marta = config_get_string_value(archivoConfiguracion, "IP_MARTA");
@@ -69,9 +71,9 @@ int main(void) {
 // PROBANDO HILOS- FIN */
 	int socketMarta = crearCliente (ip_marta, puerto_marta);
 
-	entero = 2;
 
-	send(socketMarta,&entero,sizeof(int),0);
+
+	//send(socketMarta,&job_marta_inicio,sizeof(struct Job_Marta_Inicio),0);
 
 
 	if((recv(socketMarta, &entero, sizeof(int),0)) != 0){

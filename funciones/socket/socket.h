@@ -14,36 +14,32 @@
 #include <sys/socket.h>
 
 
-//Marta->Job
-struct Marta_Job {
-	int prueba3;
-} t_marta_job;
 
-/*//Marta->Job
-struct Marta_Job {
+//Marta->Job
+struct Marta_Job{
     char* operacionID;  //identifica el numero de operacion
 	char* rutina; //mapper o reducer
-	char** bloqueDeDatos; //donde aplicar el mapper o reduce
+	int NumerobloqueDeDatos; //donde aplicar el mapper o reduce
 	char* nombreNodo;
 	char* ipNodo;
 	char* archivo_resultado; //donde va a devolverle el resultado
-}t_marta_job
+}t_marta_job;
+
+//Job->Marta(inicio)
+struct Job_Marta_Inicio{
+	char* operacionID;
+	char** lista_archivos;
+};
+
 
 //Job->Marta
- * struct Job_Marta {
+  struct Job_Marta_Resultado{
    char* operacionID;
    char* archivo_resultado;
    char* combiner;
-   }t_job_marta
-
-*/
+   }t_job_marta_resultado;
 
 
-//Job->Marta
-struct Job_Marta {
-	int prueba;
-	int prueba2;
-} t_job_marta;
 
 //Marta->FS
 struct Marta_FileSystem {
@@ -86,7 +82,7 @@ struct Job_Nodo{
 	char* nombre;
 	char* archivo_resultado;
     char* rutina;
-    char** bloqueDeDAtos;
+    int NumerobloqueDeDAtos;
 
 }t_job_nodo;
 */
