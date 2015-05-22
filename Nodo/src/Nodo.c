@@ -40,8 +40,8 @@ int main(void) {
 	char* archivo_bin;
 	char* dir_temp;
 	char* nodo_nuevo;
-//Estos los vamos a usar cuando probemos las conecciones entre nodo y nodo
 
+//Estos los vamos a usar cuando probemos las conecciones entre nodo y nodo
 	char* ip_nodo;
 	char* puerto_nodo;
 
@@ -58,27 +58,106 @@ int main(void) {
 	ip_nodo = config_get_string_value(archivoConfiguracion, "IP_NODO");
 	puerto_nodo = config_get_string_value(archivoConfiguracion, "PUERTO_NODO");
 
+
 	int socket_fs = crearCliente(ip_fs,puerto_fs);
+	int socket_job = crearServidor(ip_nodo);
 
 	int prueba; //para el handshake con el fs(2), job () y nodo (1)
+//Viejo
+	fd_set master;
+	fd_set read_fds;
+
+	struct sockaddr_in serveraddr;
+	struct sockaddr_in clientaddr;
+
+	int fdmax;
+	int listener;
+	int newfd;
+	int yes = 1;
+	int addrlen;
+	int i;
+	int entero; //Para el handshake
+	int nodofd;
+
 
 	prueba = 2;
 	send(socket_fs,&prueba,sizeof(int),0);
 
-	if((recv(socket_fs,&prueba,sizeof(int),0)) <= 0){
-		printf("socket_fs se cayo\n");
-	}else{
-		printf("%i cantidad de trabas q se comio gaston\n",prueba);
-		prueba = 42;
-		send(socket_fs,&prueba,sizeof(int),0);
-		if((recv(socket_fs,&prueba,sizeof(int),0)) <= 0){
+	FD_ZERO(&master);
+	FD_ZERO(&read_fds);
 
-		}else{
-			printf("%i",prueba);
-		}
+	listener = socket(AF_INET, SOCK_STREAM, 0);
+	setsockopt(listener, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int));
 
+	serveraddr.sin_family = AF_INET;
+	serveraddr.sin_addr.s_addr = INADDR_ANY;
+	serveraddr.sin_port = htons("6890");
+	memset(&(serveraddr.sin_zero), '\0', 8);
+	bind(listener, (struct sockaddr *)&serveraddr, sizeof(serveraddr));
+	listen(listener, 10);
+	FD_SET(listener, &master);
+
+	fdmax = listener;
+
+	for(;;)
+	{
+	read_fds = master;
+	select(fdmax+1, &read_fds, NULL, NULL, NULL);
+	printf("select activo\n");
+	for(i = 0; i <= fdmax; i++)
+	{
+	    if(FD_ISSET(i, &read_fds))
+	    {
+	    	if(i == listener)
+	    	{
+	        addrlen = sizeof(clientaddr);
+	        if((newfd = accept(listener, (struct sockaddr *)&clientaddr, &addrlen)) == -1)
+	        {
+	        }
+	        else
+	        {
+	        	FD_SET(newfd, &master);
+	        	if(newfd > fdmax)
+	        	{
+	        		fdmax = newfd;
+	        	}
+	        	printf("Nueva coneccion %s en %d\n", inet_ntoa(clientaddr.sin_addr), newfd);
+	        }
+	    	}
+	    	else
+	    	{
+	    		if((recv(i, &entero, sizeof(int),0 )) <= 0)
+	    		{
+	    			printf("socket caido\n");
+	    			close(i); // Coneccion perdida
+	    			FD_CLR(i, &master);
+	    		}
+	    		else
+	    		{
+	    			switch(entero){
+	    			case 1: // Este es Job
+	    				entero = 45;
+	    				send(i,&entero, sizeof(int),0);
+	    				log_info(logger,"Hilo Job creado satisfactoriamente");
+	    				break;
+	    			case 2: // Este es FileSystem o los Nodos?
+	    				printf("%i\n",prueba);
+	    				entero = 42;
+	    				send(socket_fs,&entero,sizeof(int),0);
+	    				if((recv(socket_fs,&entero,sizeof(int),0)) <= 0){
+	    				}else{
+	    					printf("%i",entero);
+	    				}
+
+	    			}
+	    		}
+	    	}
+	    }
 	}
+	}
+
 	close(socket_fs);
+	close(socket_job);
 
 	config_destroy(archivoConfiguracion);
 	log_destroy(logger);
