@@ -28,6 +28,34 @@
 
 t_log* logger; // Log Global
 
+
+void *atenderNFS(void* arg){
+	int socket=(int) arg;
+	int entero; // handshake para saber quien es: FS(23)
+	int ok;
+
+	while((recv(socket, &entero, sizeof(int),0)>0)){
+		switch(entero){
+		//getBloque(numero);
+			case 1:
+				ok = 20;
+				send(socket,&ok, sizeof(int),0);
+			break;
+		//setBloque(numero,[datos]);
+			case 2:
+				ok = 20;
+				send(socket,&ok, sizeof(int),0);
+			break;
+		//getFileContent(nombre);
+			case 3:
+				ok = 20;
+				send(socket,&ok, sizeof(int),0);
+			break;
+		}
+	}
+	return NULL;
+}
+
 int main(void) {
 
 	char* rutaArchivoConfiguracion = "/home/utnso/git/tp-2015-1c-machistons/Configuracion/nodo.conf";
@@ -57,6 +85,8 @@ int main(void) {
 	int nodofd;
 
 
+	pthread_t fs;
+
 //Estos los vamos a usar cuando probemos las conecciones entre nodo y nodo
 	char* ip_nodo;
 	char* puerto_nodo;
@@ -78,14 +108,10 @@ int main(void) {
 	int socket_fs = crearCliente(ip_fs,puerto_fs);
 	entero = 2; // handshake con FS
 	send(socket_fs,&entero,sizeof(int),0);
-	pthread_create();
+	pthread_create(&fs,NULL,atenderNFS, (void *) socket_fs);
 	int socket_job = crearServidor(ip_nodo);
 
-	int prueba; //para el handshake con el fs(2), job () y nodo (1)
-//Viejo
-
-
-
+	int prueba;
 
 	FD_ZERO(&master);
 	FD_ZERO(&read_fds);
