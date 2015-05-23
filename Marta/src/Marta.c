@@ -23,19 +23,26 @@
 
 t_log* logger; // Log Global
 
+
+
 int main(void) {
 
 	int entero;
-
+	struct t_marta_job Marta_Job;
+	struct t_job_marta_inicio Job_Marta_Inicio;
+	struct t_job_marta_resultado Job_Marta_Resultado;
 	int socketJob = crearServidor("3000");
 	int socketFS = crearCliente("127.0.0.1","3001");
 
-	if ((recv(socketJob, &entero, sizeof(int),0 )) != 0){
-		printf("se conecto el Job %i\n",entero);
+
+
+	if ((recv(socketJob, &Job_Marta_Inicio, sizeof(struct t_job_marta_inicio),0 )) != 0){
+		printf("se conecto el Job con la operacion numero %i\n",Job_Marta_Inicio.operacionID);
 	}
 
-	entero = 98;
-	send(socketJob, &entero, sizeof(int),0);
+	Marta_Job.NumeroBloqueDeDatos = 152;
+
+	send(socketJob, &Marta_Job, sizeof(struct t_marta_job),0);
 
 	entero = 3;    // handshake con FS
 	send(socketFS,&entero, sizeof(int),0);

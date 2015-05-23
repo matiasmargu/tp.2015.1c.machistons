@@ -74,12 +74,15 @@ int main(void) {
 // PROBANDO HILOS- FIN */
 	int socketMarta = crearCliente (ip_marta, puerto_marta);
 
+	Job_Marta_Inicio.operacionID = 1;
+	Job_Marta_Inicio.lista_archivos = lista_archivos;
 
 
-	send(socketMarta,&Job_Marta_Inicio,sizeof(struct job_marta_inicio),0);
+
+	send(socketMarta,&Job_Marta_Inicio,sizeof(struct t_job_marta_inicio),0);
 
 
-	if((recv(socketMarta, &Marta_Job, sizeof(struct marta_job),0)) != 0){
+	if((recv(socketMarta, &Marta_Job, sizeof(struct t_marta_job),0)) != 0){
 		printf("%i\n",Marta_Job.NumeroBloqueDeDatos);
 	}
 
