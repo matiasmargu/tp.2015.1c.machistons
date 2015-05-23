@@ -43,15 +43,21 @@ struct Job_Marta_Inicio{
 
 //Marta->FS
 struct Marta_FileSystem {
-	int prueba3;
-	char prueba4;
+	char** lista_archivos;
 } t_marta_fs;
 
 //FS->Marta
-struct FileSystem_Marta{
-	int prueba;
-	char prueba2;
+
+struct infoNodos{
+	char* ip_nodo;
+	char* nombre;
+	char* puerto;
 } t_fs_marta;
+
+struct infoArchivos{
+	char* nombre;
+
+}t_fsarchivo_marta;
 
 //Nodo->FS
 struct Nodo_FileSystem{
