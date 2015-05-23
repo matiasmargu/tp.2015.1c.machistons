@@ -15,15 +15,23 @@
 
 
 
+
 //Marta->Job
-struct Marta_Job{
+struct Marta_Job {
+	int prueba3;
+} t_marta_job;
+
+/*
+//Marta->Job2
+struct Marta_Job2{
     char* operacionID;  //identifica el numero de operacion
 	char* rutina; //mapper o reducer
 	int NumerobloqueDeDatos; //donde aplicar el mapper o reduce
 	char* nombreNodo;
 	char* ipNodo;
 	char* archivo_resultado; //donde va a devolverle el resultado
-}t_marta_job;
+}t_marta_job2;
+*/
 
 //Job->Marta(inicio)
 struct Job_Marta_Inicio{

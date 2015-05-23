@@ -23,9 +23,38 @@
 #include <unistd.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <pthread.h>
 
 
 t_log* logger; // Log Global
+
+
+void *atenderNFS(void* arg){
+	int socket=(int) arg;
+	int entero; // handshake para saber quien es: FS(23)
+	int ok;
+
+	while((recv(socket, &entero, sizeof(int),0)>0)){
+		switch(entero){
+		//getBloque(numero);
+			case 1:
+				ok = 20;
+				send(socket,&ok, sizeof(int),0);
+			break;
+		//setBloque(numero,[datos]);
+			case 2:
+				ok = 20;
+				send(socket,&ok, sizeof(int),0);
+			break;
+		//getFileContent(nombre);
+			case 3:
+				ok = 20;
+				send(socket,&ok, sizeof(int),0);
+			break;
+		}
+	}
+	return NULL;
+}
 
 int main(void) {
 
@@ -37,9 +66,26 @@ int main(void) {
 
 	char* puerto_fs;
 	char* ip_fs;
-	char* archivo_bin;
+	FILE *archivo_bin;
 	char* dir_temp;
 	char* nodo_nuevo;
+	fd_set master;
+	fd_set read_fds;
+
+	struct sockaddr_in serveraddr;
+	struct sockaddr_in clientaddr;
+
+	int fdmax;
+	int listener;
+	int newfd;
+	int yes = 1;
+	int addrlen;
+	int i;
+	int entero; //Para el handshake
+	int nodofd;
+
+
+	pthread_t fs;
 
 //Estos los vamos a usar cuando probemos las conecciones entre nodo y nodo
 	char* ip_nodo;
@@ -58,30 +104,29 @@ int main(void) {
 	ip_nodo = config_get_string_value(archivoConfiguracion, "IP_NODO");
 	puerto_nodo = config_get_string_value(archivoConfiguracion, "PUERTO_NODO");
 
+	/// hacemos mmap sobre el archivo_bin
+
+	size_t tamaño_Bloque = 20*1024;
+
+	 void *mmap (void *archivo_bin, size_t tamaño_Bloque, int __prot,
+			   int __flags, int __fd, __off_t __offset)
+	 // addr direccion del archivo
+	 //len tamaño de los bloques
+	 //prot es para escribir leer o ejecutar
+	 // flags si es publica o privada
+	 // fd stdin o stdout
+	 // offset pone el puntero donde queremos que empiece a dividir
+
+
+	 //////
 
 	int socket_fs = crearCliente(ip_fs,puerto_fs);
+	entero = 2; // handshake con FS
+	send(socket_fs,&entero,sizeof(int),0);
+	pthread_create(&fs,NULL,atenderNFS, (void *) socket_fs);
 	int socket_job = crearServidor(ip_nodo);
 
-	int prueba; //para el handshake con el fs(2), job () y nodo (1)
-//Viejo
-	fd_set master;
-	fd_set read_fds;
-
-	struct sockaddr_in serveraddr;
-	struct sockaddr_in clientaddr;
-
-	int fdmax;
-	int listener;
-	int newfd;
-	int yes = 1;
-	int addrlen;
-	int i;
-	int entero; //Para el handshake
-	int nodofd;
-
-
-	prueba = 2;
-	send(socket_fs,&prueba,sizeof(int),0);
+	int prueba;
 
 	FD_ZERO(&master);
 	FD_ZERO(&read_fds);
@@ -135,26 +180,18 @@ int main(void) {
 	    		else
 	    		{
 	    			switch(entero){
-	    			case 1: // Este es Job
+	    			case 8: // Este es Job
 	    				entero = 45;
 	    				send(i,&entero, sizeof(int),0);
 	    				log_info(logger,"Hilo Job creado satisfactoriamente");
 	    				break;
-	    			case 2: // Este es FileSystem o los Nodos?
-	    				printf("%i\n",prueba);
-	    				entero = 42;
-	    				send(socket_fs,&entero,sizeof(int),0);
-	    				if((recv(socket_fs,&entero,sizeof(int),0)) <= 0){
-	    				}else{
-	    					printf("%i",entero);
-	    				}
-
-	    			}
+	    				    			}
 	    		}
 	    	}
 	    }
 	}
 	}
+
 
 	close(socket_fs);
 	close(socket_job);
