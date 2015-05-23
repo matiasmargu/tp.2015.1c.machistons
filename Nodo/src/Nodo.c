@@ -66,7 +66,7 @@ int main(void) {
 
 	char* puerto_fs;
 	char* ip_fs;
-	char* archivo_bin;
+	FILE *archivo_bin;
 	char* dir_temp;
 	char* nodo_nuevo;
 	fd_set master;
@@ -104,6 +104,21 @@ int main(void) {
 	ip_nodo = config_get_string_value(archivoConfiguracion, "IP_NODO");
 	puerto_nodo = config_get_string_value(archivoConfiguracion, "PUERTO_NODO");
 
+	/// hacemos mmap sobre el archivo_bin
+
+	size_t tamaño_Bloque = 20*1024;
+
+	 void *mmap (void *archivo_bin, size_t tamaño_Bloque, int __prot,
+			   int __flags, int __fd, __off_t __offset)
+	 // addr direccion del archivo
+	 //len tamaño de los bloques
+	 //prot es para escribir leer o ejecutar
+	 // flags si es publica o privada
+	 // fd stdin o stdout
+	 // offset pone el puntero donde queremos que empiece a dividir
+
+
+	 //////
 
 	int socket_fs = crearCliente(ip_fs,puerto_fs);
 	entero = 2; // handshake con FS

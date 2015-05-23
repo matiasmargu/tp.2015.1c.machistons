@@ -8,10 +8,10 @@
 #ifndef MANEJODELISTAS_H_
 #define MANEJODELISTAS_H_
 
-#include "../commons/collections/list.h"
-#include <../commons/config.h>
-#include <../commons/log.h>
-#include <../commons/string.h>
+#include <commons/collections/list.h>
+#include <commons/config.h>
+#include <commons/log.h>
+#include <commons/string.h>
 
 typedef struct {
 	int socket; // Socket del Nodo para comunicacion

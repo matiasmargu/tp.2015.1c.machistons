@@ -12,10 +12,10 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <string.h>
-#include <../commons/config.h>
-#include <../commons/log.h>
-#include <../commons/string.h>
-#include <../commons/collections/list.h>
+#include <commons/config.h>
+#include <commons/log.h>
+#include <commons/string.h>
+#include <commons/collections/list.h>
 #include "consola.h"
 #include "manejoDeListas.h"
 #include <pthread.h>
@@ -30,23 +30,7 @@
 void *atenderNodo(void*arg){
 
 	int socketNodo = (int)arg;
-	int entero;
-
-	entero = 56;
-
-	send(socketNodo, &entero, sizeof(int),0);
-
-	if((recv(socketNodo, &entero, sizeof(int),0 )) <= 0)
-	{
-		printf("socket Nodo caido\n");
-	}
-	else
-	{
-		printf("me mando esto adentro del hilo:%i\n",entero);
-	}
-
-	entero = 106;
-	send(socketNodo, &entero, sizeof(int),0);
+	printf("%i",socketNodo);
 
 	return NULL;
 }
@@ -109,7 +93,6 @@ int main()
 	{
 	read_fds = master;
 	select(fdmax+1, &read_fds, NULL, NULL, NULL);
-	printf("select activo\n");
 	for(i = 0; i <= fdmax; i++)
 	{
 	    if(FD_ISSET(i, &read_fds))
@@ -135,7 +118,6 @@ int main()
 	    	{
 	    		if((recv(i, &entero, sizeof(int),0 )) <= 0)
 	    		{
-	    			printf("socket caido\n");
 	    			close(i); // Coneccion perdida
 	    			FD_CLR(i, &master);
 	    		}

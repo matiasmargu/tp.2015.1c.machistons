@@ -13,7 +13,6 @@
 
 #include <sys/socket.h>
 
-
 //Marta->Job
 struct Marta_Job {
 	int prueba3;
