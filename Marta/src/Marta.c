@@ -41,6 +41,8 @@ int main(void) {
 	}
 
 	Marta_Job.NumeroBloqueDeDatos = 152;
+	Marta_Job.rutina = "mapper";
+    Marta_Job.operacionID = 5;
 
 	send(socketJob, &Marta_Job, sizeof(struct marta_job),0);
 

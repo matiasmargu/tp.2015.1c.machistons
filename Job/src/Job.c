@@ -100,8 +100,11 @@ int main(void) {
 
 		int socketNodo = crearCliente (Marta_Job.ipNodo, Marta_Job.puertoNodo);
 
-		      if(Marta_Job.rutina == "mapper"){
-			   pthread_t hiloA;
+		           int comparacion = strcmp(Marta_Job.rutina,"mapper");
+		           //PROBLEMA EN LA COMPARACION DE STRINGS
+		      if(comparacion == 0){
+		    	//  printf("el numero es %i\n",Marta_Job.NumeroBloqueDeDatos);}else{printf("no paso el if %i\n",Marta_Job.NumeroBloqueDeDatos);};
+			  pthread_t hiloA;
 		      pthread_create(&hiloA, NULL, (void*) conectarseAlNodoMapper,(socketNodo, &Job_Nodo));
 		      pthread_join(hiloA, NULL);
 		      recv(socketNodo, &Nodo_Job, sizeof(struct nodo_job),0); //HAY QUE SINCRONIZAR
@@ -114,11 +117,12 @@ int main(void) {
 			     recv(socketNodo, &Nodo_Job, sizeof(struct nodo_job),0); //HAY QUE SINCRONIZAR
 			     send(socketMarta, &Job_Marta_Resultado, sizeof(struct job_marta_resultado),0);
 		      }
-
+		close(socketNodo);
 		recv(socketMarta, &Marta_Job, sizeof(struct marta_job),0);
 	}
 
 	close(socketMarta);
+
 /*
 int socketNodo = crearCliente ("192.168.3.6", "3001");
 
