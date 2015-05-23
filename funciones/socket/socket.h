@@ -78,14 +78,14 @@ struct FileSystem_Nodo{
 struct Nodo_Nodo{}t_nodo_nodo;
 
 //Nodo->Job
-typedef struct{
+struct{
 	int operacionID;
 	char* archivo_resultado;
 
-}t_nodo_job;
+};
 
 //Job->Nodo
-typedef struct{
+struct{
     int operacionID;
 	char* ip_nodo;
 	char* nombre;
@@ -93,7 +93,7 @@ typedef struct{
     char* rutina;
     int NumerobloqueDeDAtos;
 
-}t_job_nodo;
+};
 
 
 

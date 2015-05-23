@@ -42,6 +42,7 @@ int main(void) {
 	char* combiner;
 	char** lista_archivos;
 	char* archivo_resultado;
+	int ID;
 
 
     struct job_marta_inicio Job_Marta_Inicio;
@@ -87,6 +88,18 @@ int main(void) {
 
 	if((recv(socketMarta, &Marta_Job, sizeof(struct marta_job),0)) != 0){
 		printf("el numero es %i\n",Marta_Job.NumeroBloqueDeDatos);
+		ID = Marta_Job.operacionID;
+
+		if(ID == Marta_Job.operacionID){
+		int socketNodo = crearCliente (Marta_Job.ipNodo, Marta_Job.puertoNodo);
+
+		      if(Marta_Job.rutina == "mapper"){
+			   pthread_t hiloA;
+		      pthread_create(&hiloA, NULL, (void*) conectarseAlNodoMapper, (socketNodo,Marta_Job.rutina,Marta_Job.NumeroBloqueDeDatos));
+		       }else {pthread_t hiloB;
+			     // pthread_create(&hiloB, NULL, (void*) conectarseAlNodoReducer, (socketNodo,Marta_Job.rutina,));  FALTA HACER ESTO
+		       }
+	    }
 	}
 
 	close(socketMarta);

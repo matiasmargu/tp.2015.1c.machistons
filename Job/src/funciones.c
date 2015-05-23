@@ -8,6 +8,17 @@
 #include "funciones.h"
 #include <pthread.h>
 
+
+void conectarseAlNodoMapper(int socketNodo,char* rutina,int numeroBloque){
+	send(socketNodo,&rutina,sizeof(char*),0);
+
+	send(socketNodo,&numeroBloque,sizeof(int),0);
+
+}
+
+//void conectarseAlNodoReducer();FALTA HACER
+
+
 /* PROBANDO HILOS INICIO
 int valor = 9000;
 pthread_mutex_t mutex;
