@@ -42,9 +42,9 @@ int main(void) {
 	char* combiner;
 	char** lista_archivos;
 	char* archivo_resultado;
-	struct t_marta_job Marta_Job;
-	struct t_job_marta_inicio Job_Marta_Inicio;
-	struct t_job_marta_resultado Job_Marta_Resultado;
+	 t_marta_job Marta_Job;
+	 job_marta_inicio Job_Marta_Inicio;
+	 t_job_marta_resultado Job_Marta_Resultado;
 
 	//Marta_Job.ipNodo = "aaa";
 
@@ -79,11 +79,11 @@ int main(void) {
 
 
 
-	send(socketMarta,&Job_Marta_Inicio,sizeof(struct t_job_marta_inicio),0);
+	send(socketMarta,&Job_Marta_Inicio,sizeof(t_job_marta_inicio),0);
 
 
-	if((recv(socketMarta, &Marta_Job, sizeof(struct t_marta_job),0)) != 0){
-		printf("%i\n",Marta_Job.NumeroBloqueDeDatos);
+	if((recv(socketMarta, &Marta_Job, sizeof(t_marta_job),0)) != 0){
+		printf("el numero es %i\n",Marta_Job.NumeroBloqueDeDatos);
 	}
 
 	close(socketMarta);

@@ -31,10 +31,10 @@ typedef struct{
 
 
 //Job->Marta(inicio)
-typedef struct{
+ typedef struct{
 	int operacionID;
 	char** lista_archivos;
-}t_job_marta_inicio;
+}job_marta_inicio;
 
 
 //Job->Marta
