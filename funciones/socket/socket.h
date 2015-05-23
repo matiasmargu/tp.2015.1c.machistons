@@ -19,25 +19,26 @@
 
 
 //Marta->Job
-struct Marta_Job{
-    char* operacionID;  //identifica el numero de operacion
+typedef struct{
+    int operacionID;  //identifica el numero de operacion
 	char* rutina; //mapper o reducer
-	int NumerobloqueDeDatos; //donde aplicar el mapper o reduce
+	int NumeroBloqueDeDatos; //donde aplicar el mapper o reduce
 	char* nombreNodo;
 	char* ipNodo;
+	char* puertoNodo;
 	char* archivo_resultado; //donde va a devolverle el resultado
 }t_marta_job;
 
 
 //Job->Marta(inicio)
-struct Job_Marta_Inicio{
-	char* operacionID;
+ typedef struct{
+	int operacionID;
 	char** lista_archivos;
-};
+}job_marta_inicio;
 
 
 //Job->Marta
-  struct Job_Marta_Resultado{
+ typedef struct{
    char* operacionID;
    char* archivo_resultado;
    char* combiner;
@@ -48,7 +49,7 @@ struct Job_Marta_Inicio{
 //Marta->FS
 struct Marta_FileSystem {
 	char** lista_archivos;
-} t_marta_fs;
+}t_marta_fs;
 
 //FS->Marta
 
@@ -76,18 +77,16 @@ struct FileSystem_Nodo{
 //Nodo->Nodo
 struct Nodo_Nodo{}t_nodo_nodo;
 
-/*//Nodo->Job
-struct Nodo_Job{
-	char* operacionID;
+//Nodo->Job
+typedef struct{
+	int operacionID;
 	char* archivo_resultado;
 
 }t_nodo_job;
 
-*/
-/*
 //Job->Nodo
-struct Job_Nodo{
-    char* operacionID;
+typedef struct{
+    int operacionID;
 	char* ip_nodo;
 	char* nombre;
 	char* archivo_resultado;
@@ -95,7 +94,6 @@ struct Job_Nodo{
     int NumerobloqueDeDAtos;
 
 }t_job_nodo;
-*/
 
 
 
