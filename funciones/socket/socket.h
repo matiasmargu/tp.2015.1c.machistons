@@ -19,7 +19,7 @@
 
 
 //Marta->Job
-typedef struct{
+ struct marta_job{
     int operacionID;  //identifica el numero de operacion
 	char* rutina; //mapper o reducer
 	int NumeroBloqueDeDatos; //donde aplicar el mapper o reduce
@@ -27,22 +27,22 @@ typedef struct{
 	char* ipNodo;
 	char* puertoNodo;
 	char* archivo_resultado; //donde va a devolverle el resultado
-}t_marta_job;
+};
 
 
 //Job->Marta(inicio)
- typedef struct{
+ struct job_marta_inicio{
 	int operacionID;
 	char** lista_archivos;
-}job_marta_inicio;
+};
 
 
 //Job->Marta
- typedef struct{
+struct job_marta_resultado{
    char* operacionID;
    char* archivo_resultado;
    char* combiner;
-   }t_job_marta_resultado;
+   };
 
 
 

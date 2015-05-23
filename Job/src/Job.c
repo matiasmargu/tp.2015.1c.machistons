@@ -42,9 +42,11 @@ int main(void) {
 	char* combiner;
 	char** lista_archivos;
 	char* archivo_resultado;
-	 t_marta_job Marta_Job;
-	 job_marta_inicio Job_Marta_Inicio;
-	 t_job_marta_resultado Job_Marta_Resultado;
+
+
+    struct job_marta_inicio Job_Marta_Inicio;
+    struct marta_job Marta_Job;
+    struct job_marta_resultado Job_Marta_Resultado;
 
 	//Marta_Job.ipNodo = "aaa";
 
@@ -56,6 +58,7 @@ int main(void) {
 	combiner = config_get_string_value(archivoConfiguracion, "COMBINER");
 	lista_archivos = config_get_array_value(archivoConfiguracion, "ARCHIVOS");
 	archivo_resultado = config_get_string_value(archivoConfiguracion, "RESULTADO");
+
 
 
 	//printf("%i\n\n",puerto_marta);
@@ -74,15 +77,15 @@ int main(void) {
 // PROBANDO HILOS- FIN */
 	int socketMarta = crearCliente (ip_marta, puerto_marta);
 
-	Job_Marta_Inicio.operacionID = 1;
+	Job_Marta_Inicio.operacionID = 150;
 	Job_Marta_Inicio.lista_archivos = lista_archivos;
 
 
 
-	send(socketMarta,&Job_Marta_Inicio,sizeof(t_job_marta_inicio),0);
+	send(socketMarta,&Job_Marta_Inicio,sizeof(struct job_marta_inicio),0);
 
 
-	if((recv(socketMarta, &Marta_Job, sizeof(t_marta_job),0)) != 0){
+	if((recv(socketMarta, &Marta_Job, sizeof(struct marta_job),0)) != 0){
 		printf("el numero es %i\n",Marta_Job.NumeroBloqueDeDatos);
 	}
 
