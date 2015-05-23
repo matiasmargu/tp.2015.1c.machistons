@@ -7,12 +7,16 @@
 
 #include "funciones.h"
 #include <pthread.h>
+#include <socket/socket.h>
 
 
-void conectarseAlNodoMapper(int socketNodo,char* rutina,int numeroBloque){
-	send(socketNodo,&rutina,sizeof(char*),0);
+void conectarseAlNodoMapper(int socketNodo,struct job_nodo Job_Nodo){
+	send(socketNodo,&Job_Nodo,sizeof(struct job_nodo),0);
 
-	send(socketNodo,&numeroBloque,sizeof(int),0);
+}
+
+void conectarseAlNodoReducer(int socketNodo,struct job_nodo Job_Nodo){
+	send(socketNodo,&Job_Nodo,sizeof(struct job_nodo),0);
 
 }
 

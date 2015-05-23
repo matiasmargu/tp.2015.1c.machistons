@@ -45,9 +45,17 @@ int main(void) {
 	int ID;
 
 
+
     struct job_marta_inicio Job_Marta_Inicio;
     struct marta_job Marta_Job;
     struct job_marta_resultado Job_Marta_Resultado;
+    struct nodo_job Nodo_Job;
+    struct job_nodo Job_Nodo;
+    char* lista_nodos;
+    char* lista_archivos_a_reducir;
+    lista_nodos = malloc(sizeof(char*));
+    lista_archivos_a_reducir  = malloc(sizeof(char*));
+    pthread_mutex_t mutex;
 
 	//Marta_Job.ipNodo = "aaa";
 
@@ -85,21 +93,29 @@ int main(void) {
 
 	send(socketMarta,&Job_Marta_Inicio,sizeof(struct job_marta_inicio),0);
 
+	recv(socketMarta, &Marta_Job, sizeof(struct marta_job),0);
 
-	if((recv(socketMarta, &Marta_Job, sizeof(struct marta_job),0)) != 0){
-		printf("el numero es %i\n",Marta_Job.NumeroBloqueDeDatos);
-		ID = Marta_Job.operacionID;
+	while(Marta_Job.operacionID != 0){
+	//	printf("el numero es %i\n",Marta_Job.NumeroBloqueDeDatos);
 
-		if(ID == Marta_Job.operacionID){
 		int socketNodo = crearCliente (Marta_Job.ipNodo, Marta_Job.puertoNodo);
 
 		      if(Marta_Job.rutina == "mapper"){
 			   pthread_t hiloA;
-		      pthread_create(&hiloA, NULL, (void*) conectarseAlNodoMapper, (socketNodo,Marta_Job.rutina,Marta_Job.NumeroBloqueDeDatos));
-		       }else {pthread_t hiloB;
-			     // pthread_create(&hiloB, NULL, (void*) conectarseAlNodoReducer, (socketNodo,Marta_Job.rutina,));  FALTA HACER ESTO
-		       }
-	    }
+		      pthread_create(&hiloA, NULL, (void*) conectarseAlNodoMapper,(socketNodo, &Job_Nodo));
+		      pthread_join(hiloA, NULL);
+		      recv(socketNodo, &Nodo_Job, sizeof(struct nodo_job),0); //HAY QUE SINCRONIZAR
+		      send(socketMarta, &Job_Marta_Resultado, sizeof(struct job_marta_resultado),0);
+		      }
+		      else {
+		    	  pthread_t hiloB;
+			     pthread_create(&hiloB, NULL, (void*) conectarseAlNodoReducer,(socketNodo, &Job_Nodo));
+			     pthread_join(hiloB, NULL);
+			     recv(socketNodo, &Nodo_Job, sizeof(struct nodo_job),0); //HAY QUE SINCRONIZAR
+			     send(socketMarta, &Job_Marta_Resultado, sizeof(struct job_marta_resultado),0);
+		      }
+
+		recv(socketMarta, &Marta_Job, sizeof(struct marta_job),0);
 	}
 
 	close(socketMarta);
@@ -121,6 +137,8 @@ int socketNodo = crearCliente ("192.168.3.6", "3001");
 
 
 	log_destroy(logger);
+	free(lista_nodos);
+	free(lista_archivos_a_reducir);
 	free(mapper);
 	free(reduce);
 	free(ip_marta);

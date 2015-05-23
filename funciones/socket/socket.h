@@ -78,14 +78,14 @@ struct FileSystem_Nodo{
 struct Nodo_Nodo{}t_nodo_nodo;
 
 //Nodo->Job
-struct{
+struct nodo_job{
 	int operacionID;
 	char* archivo_resultado;
 
 };
 
 //Job->Nodo
-struct{
+struct job_nodo{
     int operacionID;
 	char* ip_nodo;
 	char* nombre;
@@ -96,7 +96,14 @@ struct{
 };
 
 
-
+struct datosNodoReduce{
+	int socketNodo;
+	char* reduce;
+	char** archivo_resultado;
+	char* nombres;
+	char* lista_nodos;
+	char* lista_archivos_a_reducir;
+};
 
 
 int crearServidor(char* PUERTO);
