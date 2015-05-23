@@ -42,8 +42,11 @@ int main(void) {
 	char* combiner;
 	char** lista_archivos;
 	char* archivo_resultado;
+	struct t_marta_job Marta_Job;
+	struct t_job_marta_inicio Job_Marta_Inicio;
+	struct t_job_marta_resultado Job_Marta_Resultado;
 
-
+	//Marta_Job.ipNodo = "aaa";
 
 	archivoConfiguracion = config_create(rutaArchivoConfiguracion);
 	puerto_marta = config_get_string_value(archivoConfiguracion, "PUERTO_MARTA");
@@ -73,15 +76,15 @@ int main(void) {
 
 
 
-	//send(socketMarta,&job_marta_inicio,sizeof(struct Job_Marta_Inicio),0);
+	send(socketMarta,&Job_Marta_Inicio,sizeof(struct job_marta_inicio),0);
 
 
-	if((recv(socketMarta, &entero, sizeof(int),0)) != 0){
-		printf("%i\n",entero);
+	if((recv(socketMarta, &Marta_Job, sizeof(struct marta_job),0)) != 0){
+		printf("%i\n",Marta_Job.NumeroBloqueDeDatos);
 	}
 
 	close(socketMarta);
-
+/*
 int socketNodo = crearCliente ("192.168.3.6", "3001");
 
  int entero2 = 8;
@@ -89,7 +92,7 @@ int socketNodo = crearCliente ("192.168.3.6", "3001");
 		send(socketNodo,&entero2,sizeof(int),0);
 
 		close(socketNodo);
-
+*/
 
 
 
