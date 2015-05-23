@@ -14,13 +14,6 @@
 #include <commons/string.h>
 
 typedef struct {
-	int socket; // Socket del Nodo para comunicacion
-	char* nodo; // Nombre del Nodo
-	char* estado; // Estado disponible o no disponible del nodo
-	t_list bloque; // Lista de bloques libres
-} t_socket_bloqueslibres;
-
-typedef struct {
 	int index; // Indice del directorio
 	char* directorio; // Nombre de la direccion
 	int padre; // En caso de ser 0, es el origen
@@ -28,14 +21,26 @@ typedef struct {
 
 typedef struct {
 	int bloque;
-	char* copia1;
+	char* nodoCopia1;
+
 	char* copia2;
 	char* copia3;
 } t_bloque_copias;
 
 typedef struct {
+	char nombre;
+	int socket;
+	unsigned long espacioTotal;
+	unsigned long espacioOcupado;
+	t_list bloque;
+	char* ip;
+	char* puerto;
+	char estado;
+}t_nodo;
+
+typedef struct {
 	char* nombre; //Nombre
-	u_int32_t tam; // Tamaño
+	unsigned long tam; // Tamaño
 	int direccion; // Direccion Padre
 	char* estado; // Estado
 	t_list bloques_copias; // Lista de bloques

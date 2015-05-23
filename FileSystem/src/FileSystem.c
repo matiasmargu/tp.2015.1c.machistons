@@ -27,10 +27,10 @@
 #include <sys/mman.h>
 #include <arpa/inet.h>
 
-void *atenderNodo(void*arg){
+void *atenderMarta(void*arg){
 
-	int socketNodo = (int)arg;
-	printf("%i",socketNodo);
+	int socketMarta = (int)arg;
+	printf("%i",socketMarta);
 
 	return NULL;
 }
@@ -40,38 +40,21 @@ int main()
 	fd_set master;
 	fd_set read_fds;
 
+	pthread_t hiloConsola;
+	pthread_t hiloMarta;
+
 	struct sockaddr_in serveraddr;
 	struct sockaddr_in clientaddr;
 
-	int fdmax;
-	int listener;
-	int newfd;
-	int yes = 1;
-	int addrlen;
-	int i;
+	int fdmax, listener, newfd, yes = 1, addrlen, i;
 	int entero; //Para el handshake
-	int nodofd;
-
-	logger = log_create("LOG_FILESYSTEM", "log_filesystem" ,false, LOG_LEVEL_INFO);
+	int martafd; //Socket de coneccion con Marta
 
 	char* rutaArchivoConfiguracion = "/home/utnso/git/tp-2015-1c-machistons/Configuracion/filesystem.conf";
 	t_config* archivoConfiguracion;
 	archivoConfiguracion = config_create(rutaArchivoConfiguracion);
 	int puerto_listen = config_get_int_value(archivoConfiguracion, "PUERTO_LISTEN");
-	char** lista_nodos = config_get_array_value(archivoConfiguracion, "LISTA_NODOS");
-
-	t_list *listaArchivos;
-	//t_list *listaBloquesCopias;
-
-	pthread_t h1;
-	pthread_t* hilosNodo;
-
-	listaArchivos = list_create();
-	//listaBloquesCopias = list_create();
-
-	list_add(listaArchivos, archivo_create("archivo1.txt", 2, "No disponible"));
-
-	pthread_create(&h1, NULL, atenderConsola, NULL);
+	int nodosNecesarios = config_get_int_value(archivoConfiguracion, "LISTA_NODOS");
 
 	FD_ZERO(&master);
 	FD_ZERO(&read_fds);
@@ -89,6 +72,34 @@ int main()
 
 	fdmax = listener;
 
+
+
+	logger = log_create("LOG_FILESYSTEM", "log_filesystem" ,false, LOG_LEVEL_INFO);
+
+	t_list *listaArchivos;
+	//t_list *listaBloquesCopias;
+
+
+
+	listaArchivos = list_create();
+	//listaBloquesCopias = list_create();
+
+	list_add(listaArchivos, archivo_create("archivo1.txt", 2, "No disponible"));
+
+
+
+
+	pthread_create(&hiloConsola, NULL, atenderConsola, NULL);
+
+
+
+
+
+
+
+
+
+
 	for(;;)
 	{
 	read_fds = master;
@@ -99,20 +110,18 @@ int main()
 	    {
 	    	if(i == listener)
 	    	{
-	        addrlen = sizeof(clientaddr);
-	        if((newfd = accept(listener, (struct sockaddr *)&clientaddr, &addrlen)) == -1)
-	        {
-	        }
-	        else
-	        {
-	        	FD_SET(newfd, &master);
-	        	if(newfd > fdmax)
-	        	{
-	        		fdmax = newfd;
-	        	}
-	        	//inet_ntoa(clientaddr.sin_addr) ip del nodo conectado.
-	        	//newfd socket nuevo conectado
-	        }
+				addrlen = sizeof(clientaddr);
+				if((newfd = accept(listener, (struct sockaddr *)&clientaddr, &addrlen)) == -1)
+				{
+				}
+				else
+				{
+					FD_SET(newfd, &master);
+					if(newfd > fdmax)
+					{
+						fdmax = newfd;
+					}
+				}
 	    	}
 	    	else
 	    	{
@@ -125,14 +134,11 @@ int main()
 	    		{
 	    			switch(entero){
 	    			case 3: // Este es Marta
-	    				entero = 45;
-	    				send(i,&entero, sizeof(int),0);
+	    				martafd = i;
+	    				pthread_create(&hiloMarta, NULL, atenderMarta, (void *)martafd);
 	    				log_info(logger,"Hilo Marta creado satisfactoriamente");
 	    				break;
 	    			case 2: // Este es Nodo
-	    				nodofd = i;
-	    				pthread_create(hilosNodo+i, NULL, atenderNodo, (void *)nodofd);
-	    				log_info(logger,"Hilo Nodo creado satisfactoriamente");
 	    				break;
 	    			}
 	    		}
@@ -140,10 +146,11 @@ int main()
 	    }
 	}
 	}
-	free(hilosNodo);
+
+
+
 	config_destroy(archivoConfiguracion);
 	log_destroy(logger);
-	free(lista_nodos);
 	list_destroy(listaArchivos);
 	return EXIT_SUCCESS;
 }

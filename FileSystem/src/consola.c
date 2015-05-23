@@ -10,7 +10,7 @@
 #include <assert.h>
 #include <string.h>
 #include "consola.h"
-#include "../commons/string.h"
+#include <commons/string.h>
 
 void *atenderConsola(void*arg) {
 
