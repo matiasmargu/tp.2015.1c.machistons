@@ -40,12 +40,18 @@ int main(void) {
 		printf("se conecto el Job con la operacion numero %i\n",Job_Marta_Inicio.operacionID);
 	}
 
-	Marta_Job.NumeroBloqueDeDatos = 152;
+	Marta_Job.NumeroBloqueDeDatos = 12;
 	Marta_Job.rutina = "mapper";
-    Marta_Job.operacionID = 5;
+    Marta_Job.operacionID = 3;
 
 	send(socketJob, &Marta_Job, sizeof(struct marta_job),0);
 
+	/*Marta_Job.rutina = "reduc";
+	Marta_Job.operacionID = 4;
+	Marta_Job.NumeroBloqueDeDatos = 16;
+
+	send(socketJob, &Marta_Job, sizeof(struct marta_job),0);
+*/
 	entero = 3;    // handshake con FS
 	send(socketFS,&entero, sizeof(int),0);
 

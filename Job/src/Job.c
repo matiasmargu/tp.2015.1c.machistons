@@ -94,23 +94,23 @@ int main(void) {
 	send(socketMarta,&Job_Marta_Inicio,sizeof(struct job_marta_inicio),0);
 
 	recv(socketMarta, &Marta_Job, sizeof(struct marta_job),0);
+	printf("recibo la operacion %i\n",Marta_Job.operacionID);
 
 	while(Marta_Job.operacionID != 0){
-	//	printf("el numero es %i\n",Marta_Job.NumeroBloqueDeDatos);
+	//printf("entra al while %i\n",Marta_Job.NumeroBloqueDeDatos);
 
 		int socketNodo = crearCliente (Marta_Job.ipNodo, Marta_Job.puertoNodo);
 
-		           int comparacion = strcmp(Marta_Job.rutina,"mapper");
-		           //PROBLEMA EN LA COMPARACION DE STRINGS
-		      if(comparacion == 0){
-		    	//  printf("el numero es %i\n",Marta_Job.NumeroBloqueDeDatos);}else{printf("no paso el if %i\n",Marta_Job.NumeroBloqueDeDatos);};
+
+		         //PROBLEMA EN LA COMPARACION DE STRINGS
+		      if(strcmp("mapper",Marta_Job.rutina) == 0){
+		    	//  printf("el numero es %i\n",Marta_Job.NumeroBloqueDeDatos);}else{printf("no paso el if %i\n",Marta_Job.NumeroBloqueDeDatos);}
 			  pthread_t hiloA;
 		      pthread_create(&hiloA, NULL, (void*) conectarseAlNodoMapper,(socketNodo, &Job_Nodo));
 		      pthread_join(hiloA, NULL);
 		      recv(socketNodo, &Nodo_Job, sizeof(struct nodo_job),0); //HAY QUE SINCRONIZAR
 		      send(socketMarta, &Job_Marta_Resultado, sizeof(struct job_marta_resultado),0);
-		      }
-		      else {
+		      }else {
 		    	  pthread_t hiloB;
 			     pthread_create(&hiloB, NULL, (void*) conectarseAlNodoReducer,(socketNodo, &Job_Nodo));
 			     pthread_join(hiloB, NULL);
@@ -119,7 +119,7 @@ int main(void) {
 		      }
 		close(socketNodo);
 		recv(socketMarta, &Marta_Job, sizeof(struct marta_job),0);
-	}
+}
 
 	close(socketMarta);
 
