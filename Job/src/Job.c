@@ -87,46 +87,60 @@ int main(void) {
 // PROBANDO HILOS- FIN */
 
 
+	pthread_t* hiloNodo;
+
 	int socketMarta = crearCliente (ip_marta, puerto_marta);
 
-	Job_Marta_Inicio.operacionID = 150;
-	Job_Marta_Inicio.lista_archivos = lista_archivos;
 
 
 
-	send(socketMarta,&Job_Marta_Inicio,sizeof(struct job_marta_inicio),0);
 
-	recv(socketMarta, &Marta_Job, sizeof(struct marta_job),0);
+	send(socketMarta,&lista_archivos,sizeof(char**),0);
 
-//	printf("recibo la operacion %i\n",Marta_Job.operacionID);
+/*
+while(...){
+
+
+	if (recv(socketMarta, &Marta_Job, sizeof(struct marta_job),0)) != 0 );
+
+
+
+	for(//CANTIDAD DE BLOQUES QE ME MANDA MARTA){
+
+			pthread_create(&hiloNodo+i, NULL, (void*) conectarseAlNodo,( &Marta_Job,socketMarta));
+
+                                                 }
+
+     if (recv(socketMarta, &Marta_Job, sizeof(struct marta_job),0)) != 0 )
+
+}
+
+
+
+
+
+
 
     int socketNodo = crearCliente (Marta_Job.ipNodo, Marta_Job.puertoNodo);
 
     operacionAnterior = 0;
+    int i = 1;
 
 	while((strcmp("mapper",Marta_Job.rutina) == 0) && (Marta_Job.operacionID != operacionAnterior) ){//PROBLEMA EN LA COMPARACION DE STRINGS
 
-			  pthread_t hiloA;
-		      pthread_create(&hiloA, NULL, (void*) conectarseAlNodoMapper,(socketNodo, &Marta_Job,socketMarta));
-              operacionAnterior = Marta_Job.operacionID;
+		      pthread_create(&hiloNodo+i, NULL, (void*) conectarseAlNodo,(socketNodo, &Marta_Job,socketMarta));
+              i ++;
+		      operacionAnterior = Marta_Job.operacionID;
 
 		      recv(socketMarta, &Marta_Job, sizeof(struct marta_job),0);
 
 		      }
 
-    while(strcmp("reduce",Marta_Job.rutina) == 0 && (Marta_Job.operacionID != operacionAnterior)){
 
-		    	  pthread_t hiloB;
-			     pthread_create(&hiloB, NULL, (void*) conectarseAlNodoReducer,(socketNodo, &Marta_Job, socketMarta));
-			     operacionAnterior = Marta_Job.operacionID;
-
-			     recv(socketMarta, &Marta_Job, sizeof(struct marta_job),0);
-		      }
+*/
 
 
-
-
-	close(socketNodo);
+	//close(socketNodo);
 	close(socketMarta);
 	log_destroy(logger);
 	free(lista_nodos);

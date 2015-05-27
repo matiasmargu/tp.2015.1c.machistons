@@ -21,7 +21,7 @@
 //Marta->Job
  struct marta_job{
     int operacionID;  //identifica el numero de operacion
-	char* rutina; //mapper o reducer
+	int rutina; //1=mapper o 2=reducer
 	int NumeroBloqueDeDatos; //donde aplicar el mapper o reduce
 	char* nombreNodo;
 	char* ipNodo;
