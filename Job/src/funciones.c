@@ -9,14 +9,37 @@
 #include <pthread.h>
 #include <socket/socket.h>
 
+struct job_marta_inicio Job_Marta_Inicio;
+    struct job_marta_resultado Job_Marta_Resultado;
+    struct nodo_job Nodo_Job;
+    struct job_nodo Job_Nodo;
 
-void conectarseAlNodoMapper(int socketNodo,struct job_nodo Job_Nodo){
+
+void conectarseAlNodoMapper(int socketNodo,struct marta_job Marta_Job, int socketMarta){
+
+	Job_Nodo.NumerobloqueDeDAtos = Marta_Job.NumeroBloqueDeDatos; //HACER ASI CON TODO LO QUE LE PASO AL JOB
+
+
 	send(socketNodo,&Job_Nodo,sizeof(struct job_nodo),0);
+	 recv(socketNodo, &Nodo_Job, sizeof(struct nodo_job),0);
+
+	 Job_Marta_Resultado.archivo_resultado = Nodo_Job.archivo_resultado; //AGREGAR LAS DEMAS COSAS QUE LE MANDO A MARTA
+
+   send(socketMarta, &Job_Marta_Resultado, sizeof(struct job_marta_resultado),0);
+
 
 }
 
-void conectarseAlNodoReducer(int socketNodo,struct job_nodo Job_Nodo){
+void conectarseAlNodoReducer(int socketNodo,struct marta_job Marta_Job, int socketMarta){
+
+	Job_Nodo.NumerobloqueDeDAtos = Marta_Job.NumeroBloqueDeDatos; //HACER ASI CON TODO LO QUE LE PASO AL JOB
+
 	send(socketNodo,&Job_Nodo,sizeof(struct job_nodo),0);
+	recv(socketNodo, &Nodo_Job, sizeof(struct nodo_job),0);
+
+	Job_Marta_Resultado.archivo_resultado = Nodo_Job.archivo_resultado;//AGREGAR LAS DEMAS COSAS QUE LE MANDO A MARTA
+
+    send(socketMarta, &Job_Marta_Resultado, sizeof(struct job_marta_resultado),0);
 
 }
 

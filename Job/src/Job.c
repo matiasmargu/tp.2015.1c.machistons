@@ -43,6 +43,7 @@ int main(void) {
 	char** lista_archivos;
 	char* archivo_resultado;
 	int ID;
+	int operacionAnterior;
 
 
 
@@ -84,6 +85,8 @@ int main(void) {
 		pthread_join(hiloB, NULL);
 
 // PROBANDO HILOS- FIN */
+
+
 	int socketMarta = crearCliente (ip_marta, puerto_marta);
 
 	Job_Marta_Inicio.operacionID = 150;
@@ -94,52 +97,37 @@ int main(void) {
 	send(socketMarta,&Job_Marta_Inicio,sizeof(struct job_marta_inicio),0);
 
 	recv(socketMarta, &Marta_Job, sizeof(struct marta_job),0);
-	printf("recibo la operacion %i\n",Marta_Job.operacionID);
 
-	while(Marta_Job.operacionID != 0){
-	//printf("entra al while %i\n",Marta_Job.NumeroBloqueDeDatos);
+//	printf("recibo la operacion %i\n",Marta_Job.operacionID);
 
-		int socketNodo = crearCliente (Marta_Job.ipNodo, Marta_Job.puertoNodo);
+    int socketNodo = crearCliente (Marta_Job.ipNodo, Marta_Job.puertoNodo);
 
+    operacionAnterior = 0;
 
-		         //PROBLEMA EN LA COMPARACION DE STRINGS
-		      if(strcmp("mapper",Marta_Job.rutina) == 0){
-		    	//  printf("el numero es %i\n",Marta_Job.NumeroBloqueDeDatos);}else{printf("no paso el if %i\n",Marta_Job.NumeroBloqueDeDatos);}
+	while((strcmp("mapper",Marta_Job.rutina) == 0) && (Marta_Job.operacionID != operacionAnterior) ){//PROBLEMA EN LA COMPARACION DE STRINGS
+
 			  pthread_t hiloA;
-		      pthread_create(&hiloA, NULL, (void*) conectarseAlNodoMapper,(socketNodo, &Job_Nodo));
-		      pthread_join(hiloA, NULL);
-		      recv(socketNodo, &Nodo_Job, sizeof(struct nodo_job),0); //HAY QUE SINCRONIZAR
-		      send(socketMarta, &Job_Marta_Resultado, sizeof(struct job_marta_resultado),0);
-		      }else {
-		    	  pthread_t hiloB;
-			     pthread_create(&hiloB, NULL, (void*) conectarseAlNodoReducer,(socketNodo, &Job_Nodo));
-			     pthread_join(hiloB, NULL);
-			     recv(socketNodo, &Nodo_Job, sizeof(struct nodo_job),0); //HAY QUE SINCRONIZAR
-			     send(socketMarta, &Job_Marta_Resultado, sizeof(struct job_marta_resultado),0);
+		      pthread_create(&hiloA, NULL, (void*) conectarseAlNodoMapper,(socketNodo, &Marta_Job,socketMarta));
+              operacionAnterior = Marta_Job.operacionID;
+
+		      recv(socketMarta, &Marta_Job, sizeof(struct marta_job),0);
+
 		      }
-		close(socketNodo);
-		recv(socketMarta, &Marta_Job, sizeof(struct marta_job),0);
-}
 
+    while(strcmp("reduce",Marta_Job.rutina) == 0 && (Marta_Job.operacionID != operacionAnterior)){
+
+		    	  pthread_t hiloB;
+			     pthread_create(&hiloB, NULL, (void*) conectarseAlNodoReducer,(socketNodo, &Marta_Job, socketMarta));
+			     operacionAnterior = Marta_Job.operacionID;
+
+			     recv(socketMarta, &Marta_Job, sizeof(struct marta_job),0);
+		      }
+
+
+
+
+	close(socketNodo);
 	close(socketMarta);
-
-/*
-int socketNodo = crearCliente ("192.168.3.6", "3001");
-
- int entero2 = 8;
-
-		send(socketNodo,&entero2,sizeof(int),0);
-
-		close(socketNodo);
-*/
-
-
-
-
-
-
-
-
 	log_destroy(logger);
 	free(lista_nodos);
 	free(lista_archivos_a_reducir);
