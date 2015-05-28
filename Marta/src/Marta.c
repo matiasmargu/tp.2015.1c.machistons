@@ -28,17 +28,29 @@ t_log* logger; // Log Global
 int main(void) {
 
 	int entero;
-	struct job_marta_inicio Job_Marta_Inicio;
-	    struct marta_job Marta_Job;
-	    struct job_marta_resultado Job_Marta_Resultado;
+    char** lista_archivos;
+	struct marta_job Marta_Job;
+	struct job_marta_resultado Job_Marta_Resultado;
 	int socketJob = crearServidor("3000");
 	int socketFS = crearCliente("127.0.0.1","3001");
 
 
 
-	if ((recv(socketJob, &Job_Marta_Inicio, sizeof(struct job_marta_inicio),0 )) != 0){
-		printf("se conecto el Job con la operacion numero %i\n",Job_Marta_Inicio.operacionID);
-	}
+	if ((recv(socketJob, &lista_archivos, sizeof(lista_archivos),0 )) != 0){// recibo lista nombres de archivos del job
+		send(socketFS,&lista_archivos,sizeof(lista_archivos),0);
+/* aca hay que ver la forma en que el FS nos pasa la lista de bloques
+
+		if ((recv(socketFS, &lista de bloques, sizeof(lista de bloques),0 )) != 0){
+
+			send(socketJob, &lista de bloques, sizeof(lista de bloques),0 ); aca le mando los bloques al job perp
+tambien le tengo que mandar que hacer con que rutina y todo eso, yo creo que habria que hacer una estructura que indique
+la lista de bloques si es mapping o reduce y no se si algo mas...
+
+		}
+*/	}
+
+
+
 
 	Marta_Job.NumeroBloqueDeDatos = 12;
 	Marta_Job.rutina = "mapper";
