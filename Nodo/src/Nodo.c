@@ -105,12 +105,16 @@ int main(void) {
 	puerto_nodo = config_get_string_value(archivoConfiguracion, "PUERTO_NODO");
 
 	/// hacemos mmap sobre el archivo_bin
+	//el mmap tiene q estar en una variable de la cual se pueda acceder facilmente,
+	//la misma retorna una direccion a la particion de memoria
+	//Estaria copado usar una lista de la cual creamos y llenamos particiones
+	//segun el tamaño del archivo y no andar viendo cuantas variables crear.
 
-	size_t tamaño_Bloque = 20*1024;
+	int tamanioBloque = 20*1024;//el size_t era como ejemplo en el man mmap() de linux
 
-	 void *mmap (void *archivo_bin, size_t tamaño_Bloque, int __prot,
-			   int __flags, int __fd, __off_t __offset)
-	 // addr direccion del archivo
+	 void *mmap (void *archivo_bin, int tamanioBloque, int __prot,int __flags, int __fd, __off_t __offset);
+
+	 // addr direccion del archivo, puede ser NULL
 	 //len tamaño de los bloques
 	 //prot es para escribir leer o ejecutar
 	 // flags si es publica o privada
