@@ -112,7 +112,7 @@ int main(void) {
 
 	int tamanioBloque = 20*1024;//el size_t era como ejemplo en el man mmap() de linux
 
-	 void *mmap (void *archivo_bin, int tamanioBloque, int __prot,int __flags, int __fd, __off_t __offset);
+	void *mmap (void *archivo_bin, int tamanioBloque, int __prot,int __flags, int __fd, __off_t __offset);
 
 	 // addr direccion del archivo, puede ser NULL
 	 //len tamaño de los bloques
