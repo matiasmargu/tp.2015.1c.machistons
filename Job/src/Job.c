@@ -42,8 +42,6 @@ int main(void) {
 	char* combiner;
 	char** lista_archivos;
 	char* archivo_resultado;
-	int ID;
-	int operacionAnterior;
 
 
 
@@ -52,10 +50,8 @@ int main(void) {
     struct job_marta_resultado Job_Marta_Resultado;
     struct nodo_job Nodo_Job;
     struct job_nodo Job_Nodo;
-    char* lista_nodos;
-    char* lista_archivos_a_reducir;
-    lista_nodos = malloc(sizeof(char*));
-    lista_archivos_a_reducir  = malloc(sizeof(char*));
+
+
     pthread_mutex_t mutex;
 
 	//Marta_Job.ipNodo = "aaa";
@@ -97,55 +93,29 @@ int main(void) {
 
 	send(socketMarta,&lista_archivos,sizeof(char**),0);
 
-/*
-while(...){
 
-
-	if (recv(socketMarta, &Marta_Job, sizeof(struct marta_job),0)) != 0 );
+while(((recv(socketMarta, &Marta_Job, sizeof(struct marta_job),0)) != 0 )){
 
 
 
-	for(//CANTIDAD DE BLOQUES QE ME MANDA MARTA){
+	for(int i = 0; i< sizeof(Marta_Job.ListaDeBloques); i++){
 
-			pthread_create(&hiloNodo+i, NULL, (void*) conectarseAlNodo,( &Marta_Job,socketMarta));
+            numeroDeBloque = (Marta_Job.ListaDeBloques)[i];
+			pthread_create(&hiloNodo+i, NULL, (void*) conectarseAlNodo,( Marta_Job,socketMarta, numeroDeBloque));
 
                                                  }
 
-     if (recv(socketMarta, &Marta_Job, sizeof(struct marta_job),0)) != 0 )
 
 }
 
 
 
 
-
-
-
-    int socketNodo = crearCliente (Marta_Job.ipNodo, Marta_Job.puertoNodo);
-
-    operacionAnterior = 0;
-    int i = 1;
-
-	while((strcmp("mapper",Marta_Job.rutina) == 0) && (Marta_Job.operacionID != operacionAnterior) ){//PROBLEMA EN LA COMPARACION DE STRINGS
-
-		      pthread_create(&hiloNodo+i, NULL, (void*) conectarseAlNodo,(socketNodo, &Marta_Job,socketMarta));
-              i ++;
-		      operacionAnterior = Marta_Job.operacionID;
-
-		      recv(socketMarta, &Marta_Job, sizeof(struct marta_job),0);
-
-		      }
-
-
-*/
-
-
-	//close(socketNodo);
 	close(socketMarta);
 	log_destroy(logger);
-	free(lista_nodos);
-	free(lista_archivos_a_reducir);
 	free(mapper);
+	free(lista_archivos);
+	free(archivo_resultado);
 	free(reduce);
 	free(ip_marta);
 	free(combiner);

@@ -22,7 +22,7 @@
  struct marta_job{
     int operacionID;  //identifica el numero de operacion
 	int rutina; //1=mapper o 2=reducer
-	int NumeroBloqueDeDatos; //donde aplicar el mapper o reduce
+	char** ListaDeBloques;
 	char* nombreNodo;
 	char* ipNodo;
 	char* puertoNodo;
@@ -96,14 +96,7 @@ struct job_nodo{
 };
 
 
-struct datosNodoReduce{
-	int socketNodo;
-	char* reduce;
-	char** archivo_resultado;
-	char* nombres;
-	char* lista_nodos;
-	char* lista_archivos_a_reducir;
-};
+
 
 
 int crearServidor(char* PUERTO);
