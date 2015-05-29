@@ -45,16 +45,14 @@ int main(void) {
 
 
 
-    struct job_marta_inicio Job_Marta_Inicio;
+
     struct marta_job Marta_Job;
-    struct job_marta_resultado Job_Marta_Resultado;
-    struct nodo_job Nodo_Job;
-    struct job_nodo Job_Nodo;
 
 
-    pthread_mutex_t mutex;
 
-	//Marta_Job.ipNodo = "aaa";
+
+
+
 
 	archivoConfiguracion = config_create(rutaArchivoConfiguracion);
 	puerto_marta = config_get_string_value(archivoConfiguracion, "PUERTO_MARTA");
@@ -97,11 +95,12 @@ int main(void) {
 while(((recv(socketMarta, &Marta_Job, sizeof(struct marta_job),0)) != 0 )){
 
 
-
 	for(int i = 0; i< sizeof(Marta_Job.ListaDeBloques); i++){
 
-            numeroDeBloque = (Marta_Job.ListaDeBloques)[i];
+            int numeroDeBloque = (Marta_Job.ListaDeBloques)[i];
+
 			pthread_create(&hiloNodo+i, NULL, (void*) conectarseAlNodo,( Marta_Job,socketMarta, numeroDeBloque));
+
 
                                                  }
 
