@@ -93,14 +93,13 @@ int main(void) {
 
 
 ///////    Carga del archivo de configuracion       ///////////////////////////////////////////
-
 	archivoConfiguracion = config_create(rutaArchivoConfiguracion);
 	log_info(logger, "Se creo correctamente el archivo de configuracion");
-	puerto_fs = config_get_string_value(archivoConfiguracion, "PUERTO_FS");
-	ip_fs = config_get_string_value(archivoConfiguracion, "IP_FS");
-	archivo_bin = config_get_string_value(archivoConfiguracion, "ARCHIVO_BIN");
-	dir_temp = config_get_string_value(archivoConfiguracion, "DIR_TEMP");
-	nodo_nuevo = config_get_string_value(archivoConfiguracion, "NODO_NUEVO");
+	//puerto_fs = config_get_string_value(archivoConfiguracion, "PUERTO_FS");
+	//ip_fs = config_get_string_value(archivoConfiguracion, "IP_FS");
+	//archivo_bin = config_get_string_value(archivoConfiguracion, "ARCHIVO_BIN");
+	//dir_temp = config_get_string_value(archivoConfiguracion, "DIR_TEMP");
+	//nodo_nuevo = config_get_string_value(archivoConfiguracion, "NODO_NUEVO");
 	ip_nodo = config_get_string_value(archivoConfiguracion, "IP_NODO");
 	puerto_nodo = config_get_string_value(archivoConfiguracion, "PUERTO_NODO");
 
@@ -109,11 +108,11 @@ int main(void) {
 	//la misma retorna una direccion a la particion de memoria
 	//Estaria copado usar una lista de la cual creamos y llenamos particiones
 	//segun el tamaño del archivo y no andar viendo cuantas variables crear.
-
+/*
 	int tamanioBloque = 20*1024;//el size_t era como ejemplo en el man mmap() de linux
 
 	void *mmap (void *archivo_bin, int tamanioBloque, int __prot,int __flags, int __fd, __off_t __offset);
-
+*/
 	 // addr direccion del archivo, puede ser NULL
 	 //len tamaño de los bloques
 	 //prot es para escribir leer o ejecutar
@@ -123,12 +122,14 @@ int main(void) {
 
 
 	 //////
-
+/*
 	int socket_fs = crearCliente(ip_fs,puerto_fs);
 	entero = 2; // handshake con FS
 	send(socket_fs,&entero,sizeof(int),0);
 	pthread_create(&fs,NULL,atenderNFS, (void *) socket_fs);
-	int socket_job = crearServidor(ip_nodo);
+*/
+
+	int socket_job = crearServidor(puerto_nodo);
 
 	int prueba;
 
@@ -140,7 +141,7 @@ int main(void) {
 
 	serveraddr.sin_family = AF_INET;
 	serveraddr.sin_addr.s_addr = INADDR_ANY;
-	serveraddr.sin_port = htons("6890");
+	serveraddr.sin_port = htons(puerto_nodo);
 	memset(&(serveraddr.sin_zero), '\0', 8);
 	bind(listener, (struct sockaddr *)&serveraddr, sizeof(serveraddr));
 	listen(listener, 10);
@@ -197,14 +198,14 @@ int main(void) {
 	}
 
 
-	close(socket_fs);
+//	close(socket_fs);
 	close(socket_job);
 
 	config_destroy(archivoConfiguracion);
 	log_destroy(logger);
-	free(ip_nodo);
-	free(archivo_bin);
-	free(dir_temp);
-	free(nodo_nuevo);
+	//free(ip_nodo);
+	//free(archivo_bin);
+	//free(dir_temp);
+	//free(nodo_nuevo);
 	return EXIT_SUCCESS;
 }
