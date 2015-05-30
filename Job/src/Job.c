@@ -85,7 +85,11 @@ int main(void) {
 
 	int socketMarta = crearCliente (ip_marta, puerto_marta);
 
- Job_Marta_Inicio.operacionID = 99;
+ Job_Marta_Inicio.operacionID = 01;
+
+ Job_Marta_Inicio.lista_archivos = lista_archivos;
+// Job_Marta_Inicio.combiner = combiner;
+
 
 	send(socketMarta,&Job_Marta_Inicio,sizeof(struct job_marta_inicio),0);
 
@@ -104,7 +108,7 @@ int socketNodo = crearCliente("192.168.3.34","6000");
 
 
 
-
+/*
 
 while(((recv(socketMarta, &Marta_Job, sizeof(struct marta_job),0)) != 0 )){
 
@@ -121,7 +125,7 @@ while(((recv(socketMarta, &Marta_Job, sizeof(struct marta_job),0)) != 0 )){
 
 }
 
-
+*/
 
 
 

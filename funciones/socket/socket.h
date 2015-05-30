@@ -33,8 +33,9 @@
 //Job->Marta(inicio)
  struct job_marta_inicio{
 	int operacionID;
-	char** lista_archivos;
 	char* combiner;
+	char** lista_archivos;
+
 };
 
 
@@ -54,11 +55,17 @@ struct Marta_FileSystem {
 
 //FS->Marta
 
+struct fs_marta{
+
+};
+
+
 struct infoNodos{
 	char* ip_nodo;
 	char* nombre;
 	char* puerto;
 } t_fs_marta;
+
 
 struct infoArchivos{
 	char* nombre;

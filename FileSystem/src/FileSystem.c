@@ -35,8 +35,9 @@ void *atenderMarta(void*arg){
 	return NULL;
 }
 
-int main()
-{
+int main(){
+
+
 	fd_set master;
 	fd_set read_fds;
 
