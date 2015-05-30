@@ -27,10 +27,10 @@ t_log* logger; // Log Global
 
 int main(void) {
 
-	char* rutaArchivoConfiguracion = "/home/utnso/git/tp-2015-1c-machistons/Configuracion/marta.conf";
+	/*char* rutaArchivoConfiguracion = "/home/utnso/git/tp-2015-1c-machistons/Configuracion/marta.conf";
 	char* puerto_fs = config_get_string_value(archivoConfiguracion, "PUERTO_FS");
 	char* ip_fs = config_get_string_value(archivoConfiguracion, "IP_FS");
-
+*/
 	int entero;
 
 		struct job_marta_inicio Job_Marta_Inicio;
@@ -47,25 +47,25 @@ int main(void) {
 		printf("se conecto el Job con la operacion numero %i\n",Job_Marta_Inicio.operacionID);
 	}
 
-	Marta_Job.NumeroBloqueDeDatos = 12;
+/*	Marta_Job.NumeroBloqueDeDatos = 12;
 	Marta_Job.rutina = "mapper";
     Marta_Job.operacionID = 3;
 
 	send(socketJob, &Marta_Job, sizeof(struct marta_job),0);
 
-	/*Marta_Job.rutina = "reduc";
+	Marta_Job.rutina = "reduc";
 	Marta_Job.operacionID = 4;
 	Marta_Job.NumeroBloqueDeDatos = 16;
 
 	send(socketJob, &Marta_Job, sizeof(struct marta_job),0);
-*/
+
 	entero = 3;    // handshake con FS
 	send(socketFS,&entero, sizeof(int),0);
 
 	if ((recv(socketFS, &entero, sizeof(int),0 )) != 0){
 		printf("fs me respondio esto: %i\n",entero);
 	}
-
+*/
 	close(socketJob);
 	close(socketFS);
 	return EXIT_SUCCESS;

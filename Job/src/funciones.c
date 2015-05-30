@@ -8,7 +8,7 @@
 #include "funciones.h"
 #include <pthread.h>
 #include <socket/socket.h>
-#include "Job.c"
+
 
 struct job_nodo Job_Nodo;
 char* handshake = "Se conecto el Job";
@@ -19,11 +19,10 @@ struct nodo_job Nodo_Job;
 
 char* rutaArchivoConfiguracion = "/home/utnso/git/tp-2015-1c-machistons/Configuracion/job.conf";
 
-
+/*
 t_log* logger; // Log Global
 
-
-
+/*
 archivoConfiguracion = config_create(rutaArchivoConfiguracion);
 mapper = config_get_string_value(archivoConfiguracion, "MAPPER");
 reduce = config_get_string_value(archivoConfiguracion, "REDUCE");

@@ -83,20 +83,25 @@ int main(void) {
 
 	pthread_t* hiloNodo;
 
-	int socketMarta = crearCliente (ip_marta, puerto_marta);
+	//int socketMarta = crearCliente (ip_marta, puerto_marta);
+
+int enter = 98;
+
+int socketNodo = crearCliente("192.168.3.34","6000");
+
+
+	 send(socketNodo,&enter,sizeof(int),0);
 
 
 
-
-
-	send(socketMarta,&lista_archivos,sizeof(char**),0);
-
+	//send(socketMarta,&lista_archivos,sizeof(char**),0);
+/*
 
 while(((recv(socketMarta, &Marta_Job, sizeof(struct marta_job),0)) != 0 )){
 
 
 	for(int i = 0; i< sizeof(Marta_Job.ListaDeBloques); i++){
-
+ob_Nodo
             int numeroDeBloque = (Marta_Job.ListaDeBloques)[i];
 
 			pthread_create(&hiloNodo+i, NULL, (void*) conectarseAlNodo,( Marta_Job,socketMarta, numeroDeBloque));
@@ -108,9 +113,12 @@ while(((recv(socketMarta, &Marta_Job, sizeof(struct marta_job),0)) != 0 )){
 }
 
 
+*/
 
 
-	close(socketMarta);
+close(socketNodo);
+	//close(socketMarta);
+	/*
 	log_destroy(logger);
 	free(mapper);
 	free(lista_archivos);
@@ -118,6 +126,6 @@ while(((recv(socketMarta, &Marta_Job, sizeof(struct marta_job),0)) != 0 )){
 	free(reduce);
 	free(ip_marta);
 	free(combiner);
+	*/
 	return EXIT_SUCCESS;
-
 }
