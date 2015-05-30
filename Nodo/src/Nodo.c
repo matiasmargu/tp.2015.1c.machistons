@@ -125,7 +125,7 @@ int main(void) {
 /*
 	int socket_fs = crearCliente(ip_fs,puerto_fs);
 	entero = 2; // handshake con FS
-	send(socket_fs,&entero,sizeof(int),0);
+	send(socket_fs,&entero,siszeof(int),0);
 	pthread_create(&fs,NULL,atenderNFS, (void *) socket_fs);
 */
 
@@ -149,8 +149,7 @@ int main(void) {
 
 	fdmax = listener;
 
-	for(;;)
-	{
+	for(;;){
 	read_fds = master;
 	select(fdmax+1, &read_fds, NULL, NULL, NULL);
 	printf("select activo\n");
@@ -160,19 +159,19 @@ int main(void) {
 	    {
 	    	if(i == listener)
 	    	{
-	        addrlen = sizeof(clientaddr);
-	        if((newfd = accept(listener, (struct sockaddr *)&clientaddr, &addrlen)) == -1)
-	        {
-	        }
-	        else
-	        {
-	        	FD_SET(newfd, &master);
-	        	if(newfd > fdmax)
-	        	{
-	        		fdmax = newfd;
-	        	}
-	        	printf("Nueva coneccion %s en %d\n", inet_ntoa(clientaddr.sin_addr), newfd);
-	        }
+	    		addrlen = sizeof(clientaddr);
+	    		if((newfd = accept(listener, (struct sockaddr *)&clientaddr, &addrlen)) == -1)
+	    		{
+	    			}
+	    		else
+	    		{
+	    			FD_SET(newfd, &master);
+	    			if(newfd > fdmax)
+	    			{
+	    				fdmax = newfd;
+	    			}
+	    			printf("Nueva coneccion %s en %d\n", inet_ntoa(clientaddr.sin_addr), newfd);
+	    		}
 	    	}
 	    	else
 	    	{
