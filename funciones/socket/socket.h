@@ -26,7 +26,7 @@
 	char* nombreNodo;
 	char* ipNodo;
 	char* puertoNodo;
-	char* archivo_resultado; //donde va a devolverle el resultado
+	char* nombre_archivo_resultado; //donde va a devolverle el resultado
 };
 
 
@@ -34,6 +34,7 @@
  struct job_marta_inicio{
 	int operacionID;
 	char** lista_archivos;
+	char* combiner;
 };
 
 
@@ -41,7 +42,7 @@
 struct job_marta_resultado{
    char* operacionID;
    char* archivo_resultado;
-   char* combiner;
+
    };
 
 

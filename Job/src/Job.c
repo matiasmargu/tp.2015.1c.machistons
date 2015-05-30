@@ -47,7 +47,7 @@ int main(void) {
 
 
     struct marta_job Marta_Job;
-
+    struct job_marta_inicio Job_Marta_Inicio;
 
 
 
@@ -81,27 +81,36 @@ int main(void) {
 // PROBANDO HILOS- FIN */
 
 
-	pthread_t* hiloNodo;
+//	pthread_t* hiloNodo;
 
-	//int socketMarta = crearCliente (ip_marta, puerto_marta);
+	int socketMarta = crearCliente (ip_marta, puerto_marta);
 
+ Job_Marta_Inicio.operacionID = 99;
+
+	send(socketMarta,&Job_Marta_Inicio,sizeof(struct job_marta_inicio),0);
+
+
+
+	/* PRUEBA DE CONEXION CON NODO
 int enter = 98;
 
 int socketNodo = crearCliente("192.168.3.34","6000");
 
 
 	 send(socketNodo,&enter,sizeof(int),0);
+	 close(socketNodo);
+
+*/
 
 
 
-	//send(socketMarta,&lista_archivos,sizeof(char**),0);
-/*
+
 
 while(((recv(socketMarta, &Marta_Job, sizeof(struct marta_job),0)) != 0 )){
 
 
 	for(int i = 0; i< sizeof(Marta_Job.ListaDeBloques); i++){
-ob_Nodo
+
             int numeroDeBloque = (Marta_Job.ListaDeBloques)[i];
 
 			pthread_create(&hiloNodo+i, NULL, (void*) conectarseAlNodo,( Marta_Job,socketMarta, numeroDeBloque));
@@ -113,12 +122,11 @@ ob_Nodo
 }
 
 
-*/
 
 
-close(socketNodo);
-	//close(socketMarta);
-	/*
+
+	close(socketMarta);
+
 	log_destroy(logger);
 	free(mapper);
 	free(lista_archivos);
@@ -126,6 +134,6 @@ close(socketNodo);
 	free(reduce);
 	free(ip_marta);
 	free(combiner);
-	*/
+
 	return EXIT_SUCCESS;
 }
