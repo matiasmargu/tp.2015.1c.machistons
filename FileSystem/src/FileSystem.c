@@ -27,6 +27,12 @@
 #include <sys/mman.h>
 #include <arpa/inet.h>
 
+typedef struct{
+	int dni;
+	int name;
+	int lastname;
+}t_person;
+
 void *atenderMarta(void*arg){
 
 	int socketMarta = (int)arg;
@@ -35,8 +41,28 @@ void *atenderMarta(void*arg){
 	return NULL;
 }
 
+
+void serializarPersona(t_person persona, char** message){
+	int offset = 0;
+	memcpy(*message, &(persona.dni), sizeof(int));
+	offset = sizeof(persona.dni);
+	memcpy(*message + offset, &((persona).name), sizeof(int));
+	offset = sizeof(int) + offset;
+	memcpy(*message + offset, &((persona).lastname), sizeof(int));
+}
+
 int main()
 {
+
+	t_person persona;
+	persona.dni = 37;
+	persona.name = 25;
+	persona.lastname = 69;
+
+	int packageSize = sizeof(int) + sizeof(int) + sizeof(int);
+	char *message = malloc(packageSize);
+
+
 	fd_set master;
 	fd_set read_fds;
 
@@ -50,7 +76,10 @@ int main()
 	int entero; //Para el handshake
 	int martafd; //Socket de coneccion con Marta
 
+	pthread_create(&hiloConsola, NULL, atenderConsola, NULL);
+
 	char* rutaArchivoConfiguracion = "/home/utnso/git/tp-2015-1c-machistons/Configuracion/filesystem.conf";
+
 	t_config* archivoConfiguracion;
 	archivoConfiguracion = config_create(rutaArchivoConfiguracion);
 	int puerto_listen = config_get_int_value(archivoConfiguracion, "PUERTO_LISTEN");
@@ -72,38 +101,24 @@ int main()
 
 	fdmax = listener;
 
-
-
 	logger = log_create("LOG_FILESYSTEM", "log_filesystem" ,false, LOG_LEVEL_INFO);
 
 	t_list *listaArchivos;
 	//t_list *listaBloquesCopias;
 
-
-
 	listaArchivos = list_create();
 	//listaBloquesCopias = list_create();
 
-	list_add(listaArchivos, archivo_create("archivo1.txt", 2, "No disponible"));
-
-
-
-
-	pthread_create(&hiloConsola, NULL, atenderConsola, NULL);
-
-
-
-
-
-
-
-
+	int z = list_add(listaArchivos, archivo_create("archivo1.txt", 2, "No disponible"));
+	int a = list_add(listaArchivos, archivo_create("archivo2.txt", 2, "No disponible"));
+	int j = list_add(listaArchivos, archivo_create("archivo3.txt", 2, "No disponible"));
 
 
 	for(;;)
 	{
 	read_fds = master;
 	select(fdmax+1, &read_fds, NULL, NULL, NULL);
+	printf("select activo\n");
 	for(i = 0; i <= fdmax; i++)
 	{
 	    if(FD_ISSET(i, &read_fds))
@@ -139,6 +154,8 @@ int main()
 	    				log_info(logger,"Hilo Marta creado satisfactoriamente");
 	    				break;
 	    			case 2: // Este es Nodo
+	    				serializarPersona(persona, &message);
+    					send(i, message, packageSize, 0);
 	    				break;
 	    			}
 	    		}
@@ -147,10 +164,9 @@ int main()
 	}
 	}
 
-
-
 	config_destroy(archivoConfiguracion);
 	log_destroy(logger);
 	list_destroy(listaArchivos);
 	return EXIT_SUCCESS;
 }
+
