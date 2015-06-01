@@ -28,9 +28,10 @@
 #include <arpa/inet.h>
 
 typedef struct{
-	int dni;
-	int name;
-	int lastname;
+	uint32_t dni;
+	char* name;
+	char* lastname;
+	uint32_t tamanioTotal;
 }t_person;
 
 void *atenderMarta(void*arg){
@@ -41,25 +42,47 @@ void *atenderMarta(void*arg){
 	return NULL;
 }
 
-void serializarPersona(t_person persona, char** message){
+char* serializarPersona(t_person *persona){
+	char *serializedPackage = malloc(persona->tamanioTotal);
+
 	int offset = 0;
-	memcpy(*message, &(persona.dni), sizeof(int));
-	offset = sizeof(persona.dni);
-	memcpy(*message + offset, &((persona).name), sizeof(int));
-	offset = sizeof(int) + offset;
-	memcpy(*message + offset, &((persona).lastname), sizeof(int));
+	int size_to_send;
+
+	size_to_send =  sizeof(persona->dni);
+	memcpy(serializedPackage + offset, &(persona->dni), size_to_send);
+	offset += size_to_send;
+
+	size_to_send =  sizeof(strlen(persona->name) + 1);
+	memcpy(serializedPackage + offset, persona->name, size_to_send);
+	offset += size_to_send;
+
+	size_to_send =  sizeof(persona->lastname);
+	memcpy(serializedPackage + offset, &(persona->lastname), size_to_send);
+	offset += size_to_send;
+
+	return serializedPackage;
+}
+
+void liberarMensaje(char **package){
+	free(*package);
+}
+
+void completarMensajePersona(t_person *persona){
+	//(persona->name)[strlen(persona.name)] = '\0';
+	(persona->lastname)[strlen(persona->lastname)] = '\0';
+	persona->tamanioTotal = sizeof(persona->dni) + sizeof(strlen(persona->name) + 1) + sizeof(persona->lastname);
 }
 
 int main()
 {
-
 	t_person persona;
 	persona.dni = 37;
-	persona.name = 25;
-	persona.lastname = 69;
+	persona.name = "holis";
+	persona.lastname = "a ver si anda";
 
-	int packageSize = sizeof(int) + sizeof(int) + sizeof(int);
-	char *message = malloc(packageSize);
+	char *mensaje;
+
+	completarMensajePersona(&persona);
 
 	fd_set master;
 	fd_set read_fds;
@@ -152,8 +175,9 @@ int main()
 	    				log_info(logger,"Hilo Marta creado satisfactoriamente");
 	    				break;
 	    			case 2: // Este es Nodo
-	    				serializarPersona(persona, &message);
-    					send(i, message, packageSize, 0);
+	    				mensaje = serializarPersona(&persona);
+    					send(i, mensaje, persona.tamanioTotal, 0);
+    					liberarMensaje(&mensaje);
 	    				break;
 	    			}
 	    		}
