@@ -26,14 +26,16 @@
 	char* nombreNodo;
 	char* ipNodo;
 	char* puertoNodo;
-	char* archivo_resultado; //donde va a devolverle el resultado
+	char* nombre_archivo_resultado; //donde va a devolverle el resultado
 };
 
 
 //Job->Marta(inicio)
  struct job_marta_inicio{
 	int operacionID;
+	char* combiner;
 	char** lista_archivos;
+
 };
 
 
@@ -41,7 +43,7 @@
 struct job_marta_resultado{
    char* operacionID;
    char* archivo_resultado;
-   char* combiner;
+
    };
 
 
@@ -53,11 +55,17 @@ struct Marta_FileSystem {
 
 //FS->Marta
 
+struct fs_marta{
+
+};
+
+
 struct infoNodos{
 	char* ip_nodo;
 	char* nombre;
 	char* puerto;
 } t_fs_marta;
+
 
 struct infoArchivos{
 	char* nombre;

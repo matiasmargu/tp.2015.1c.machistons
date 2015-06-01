@@ -41,7 +41,6 @@ void *atenderMarta(void*arg){
 	return NULL;
 }
 
-
 void serializarPersona(t_person persona, char** message){
 	int offset = 0;
 	memcpy(*message, &(persona.dni), sizeof(int));
@@ -61,7 +60,6 @@ int main()
 
 	int packageSize = sizeof(int) + sizeof(int) + sizeof(int);
 	char *message = malloc(packageSize);
-
 
 	fd_set master;
 	fd_set read_fds;
