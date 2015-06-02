@@ -47,7 +47,6 @@ int main(void) {
 	puerto_fs = config_get_string_value(archivoConfiguracion, "PUERTO_FS") ;
 	ip_fs = config_get_string_value(archivoConfiguracion, "IP_FS");
 
-	// printf("el ip de fs es %i y su puerto %i\n",ip_fs,puerto_fs );
 
 
 	struct addrinfo hints;
@@ -58,9 +57,7 @@ int main(void) {
 	hints.ai_flags = AI_PASSIVE;		// Asigna el address del localhost: 127.0.0.1
 	hints.ai_socktype = SOCK_STREAM;	// Indica que usaremos el protocolo TCP
 
-	getaddrinfo(NULL, puerto, &hints, &serverInfo); // Notar que le pasamos NULL como IP, ya que le indicamos que use localhost en AI_PASSIVE
-
- 	//Mediante socket(), obtengo el File Descriptor que me proporciona el sistema (un integer identificador).
+	getaddrinfo(NULL, puerto, &hints, &serverInfo);
 
 	/* Necesitamos un socket que escuche las conecciones entrantes */
 
@@ -74,15 +71,16 @@ int main(void) {
 	 * 	Necesito decirle al sistema que voy a utilizar el archivo que me proporciono para escuchar las conexiones por un puerto especifico.
 	 *  Todavia no estoy escuchando las conexiones entrantes!
 	  */
+
+
 	bind(servidorEscucha,serverInfo->ai_addr, serverInfo->ai_addrlen);
 	freeaddrinfo(serverInfo);
 
-	/*
-	 * 	Ya tengo un medio de comunicacion (el socket)
-	*/
+	// * 	Ya tengo un medio de comunicacion (el socket)
 
 	listen(servidorEscucha, BACKLOG); //listen() es una syscall BLOQUEANTE.
 	 //* 	El sistema esperara hasta que reciba una conexion entrante...
+
 
 	struct sockaddr_in addr;			// Esta estructura contendra los datos de la conexion del cliente. IP, puerto, etc.
 	socklen_t addrlen = sizeof(addr);
@@ -91,26 +89,21 @@ int main(void) {
 
 	struct t_Package package;
 
-	int status = 1;		// Estructura que manjea el status de los recieve.
+	int status = 1;		// Estructura que maneja el status de los recieve.
 
-			printf("Cliente conectado. Esperando Envío de mensajes.\n");
-
+	printf("Cliente conectado. Esperando Envío de mensajes.\n");
+/*
 			while (status){
 				status = recieve_and_deserialize(&package, socketJob);					// Ver el "Deserializando estructuras dinamicas" en el comentario de la funcion.
 				if (status) printf("%s says: %s", package.username, package.message);
 			}
 
 
-			printf("Cliente Desconectado.\n");
-			/*
-			 * 	Terminado el intercambio de paquetes, cerramos todas las conexiones y nos vamos a mirar Game of Thrones, que seguro nos vamos a divertir mas...
-			 *
-			 *
-			 * 																					~ Divertido es Disney ~
-			 *
-			 */
+			printf("Cliente Desconectado.\n");*/
+
 			close(socketJob);
 			close(servidorEscucha);
+
 
 
 			return 0;
