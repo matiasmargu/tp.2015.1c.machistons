@@ -14,18 +14,19 @@
 #include <sys/socket.h>
 
 
-
-
+struct infoNodo{
+	char* ip_nodo;
+	char* nombre;
+	char* puerto;
+};
 
 
 //Marta->Job
  struct marta_job{
     int operacionID;  //identifica el numero de operacion
 	int rutina; //1=mapper o 2=reducer
+	struct infoNodo InfoNodo; // estructura que contiene el nombre, ip y puerto del nodo
 	char** ListaDeBloques;
-	char* nombreNodo;
-	char* ipNodo;
-	char* puertoNodo;
 	char* nombre_archivo_resultado; //donde va a devolverle el resultado
 };
 
@@ -59,12 +60,6 @@ struct fs_marta{
 
 };
 
-
-struct infoNodos{
-	char* ip_nodo;
-	char* nombre;
-	char* puerto;
-} t_fs_marta;
 
 
 struct infoArchivos{

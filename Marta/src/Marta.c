@@ -27,20 +27,29 @@ t_log* logger; // Log Global
 
 int main(void) {
 
-	/*char* rutaArchivoConfiguracion = "/home/utnso/git/tp-2015-1c-machistons/Configuracion/marta.conf";
-	char* puerto_fs = config_get_string_value(archivoConfiguracion, "PUERTO_FS");
-	char* ip_fs = config_get_string_value(archivoConfiguracion, "IP_FS");
-*/
+	char* rutaArchivoConfiguracion = "/home/utnso/git/tp-2015-1c-machistons/Configuracion/marta.conf";
+	char* puerto_fs ;
+	char* ip_fs ;
+	char* puerto ;
 	int entero;
 
-		struct job_marta_inicio Job_Marta_Inicio;
-			    struct marta_job Marta_Job;
-			    struct job_marta_resultado Job_Marta_Resultado;
-			    struct fs_marta Fs_Marta;
+	struct job_marta_inicio Job_Marta_Inicio;
+	struct marta_job Marta_Job;
+	struct job_marta_resultado Job_Marta_Resultado;
+	struct fs_marta Fs_Marta;
 
-	int socketJob = crearServidor("3000");
+	t_config* archivoConfiguracion;
 
-	int socketFS = crearCliente("10.0.2.15","3001");
+	puerto = "3000" ;
+
+	archivoConfiguracion = config_create(rutaArchivoConfiguracion);
+	puerto_fs = config_get_string_value(archivoConfiguracion, "PUERTO_FS") ;
+	ip_fs = config_get_string_value(archivoConfiguracion, "IP_FS");
+
+	// printf("el ip de fs es %i y su puerto %i\n",ip_fs,puerto_fs );
+
+	int socketJob = crearServidor(puerto);
+	int socketFS = crearCliente(ip_fs, puerto_fs);
 
 
 
@@ -75,7 +84,7 @@ int main(void) {
 	if ((recv(socketFS, &entero, sizeof(int),0 )) != 0){
 		printf("fs me respondio esto: %i\n",entero);
 	}
-*/
+ */
 	close(socketJob);
 	close(socketFS);
 	return EXIT_SUCCESS;
