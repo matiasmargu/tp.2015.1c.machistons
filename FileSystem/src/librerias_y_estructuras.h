@@ -5,13 +5,26 @@
  *      Author: gcrivelli
  */
 
-#ifndef MANEJODELISTAS_H_
-#define MANEJODELISTAS_H_
+#ifndef LIBRERIAS_Y_ESTRUCTURAS_H_
+#define LIBRERIAS_Y_ESTRUCTURAS_H_
 
-#include <commons/collections/list.h>
+#include <pthread.h>
+#include <socket/socket.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <sys/mman.h>
+#include <arpa/inet.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+#include <string.h>
 #include <commons/config.h>
 #include <commons/log.h>
 #include <commons/string.h>
+#include <commons/collections/list.h>
+#include "consola.h"
 
 typedef struct {
 	int index; // Indice del directorio
@@ -52,4 +65,4 @@ void archivo_destroy(t_archivo *self);
 
 t_log* logger; // Log Global
 
-#endif /* MANEJODELISTAS_H_ */
+#endif /* LIBRERIAS_Y_ESTRUCTURAS_H_ */

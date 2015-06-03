@@ -8,24 +8,7 @@
  ============================================================================
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <assert.h>
-#include <string.h>
-#include <commons/config.h>
-#include <commons/log.h>
-#include <commons/string.h>
-#include <commons/collections/list.h>
-#include "consola.h"
-#include "manejoDeListas.h"
-#include <pthread.h>
-#include <socket/socket.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <sys/mman.h>
-#include <arpa/inet.h>
+#include "librerias_y_estructuras.h"
 
 typedef struct{
 	uint32_t dni;
@@ -69,7 +52,7 @@ void liberarMensaje(char **package){
 
 void completarMensajePersona(t_person *persona){
 	//(persona->name)[strlen(persona.name)] = '\0';
-	(persona->lastname)[strlen(persona->lastname)] = '\0';
+	//(persona->lastname)[strlen(persona->lastname)] = '\0';
 	persona->tamanioTotal = sizeof(persona->dni) + sizeof(strlen(persona->name) + 1) + sizeof(persona->lastname);
 }
 
@@ -77,12 +60,9 @@ int main()
 {
 	t_person persona;
 	persona.dni = 37;
-	persona.name = "holis";
+	persona.name = "holisadass";
 	persona.lastname = "a ver si anda";
-
 	char *mensaje;
-
-	completarMensajePersona(&persona);
 
 	fd_set master;
 	fd_set read_fds;
@@ -175,6 +155,7 @@ int main()
 	    				log_info(logger,"Hilo Marta creado satisfactoriamente");
 	    				break;
 	    			case 2: // Este es Nodo
+	    				completarMensajePersona(&persona);
 	    				mensaje = serializarPersona(&persona);
     					send(i, mensaje, persona.tamanioTotal, 0);
     					liberarMensaje(&mensaje);

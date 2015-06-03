@@ -9,8 +9,8 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <string.h>
-#include "manejoDeListas.h"
 #include <commons/string.h>
+#include "librerias_y_estructuras.h"
 
 t_archivo *archivo_create(char *nombre, int direccion, char* estado ) {
     t_archivo *new = malloc(sizeof(t_archivo));

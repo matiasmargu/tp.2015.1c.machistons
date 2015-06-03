@@ -12,7 +12,7 @@
 #define MAXCOMANDOS 6
 #define MAXBUFERTECLADO 1000
 
-#include "manejoDeListas.h"
+#include "librerias_y_estructuras.h"
 
 void imprimirMenu(void);
 void *atenderConsola(void*arg);
