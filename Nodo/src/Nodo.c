@@ -25,18 +25,21 @@
 #include <arpa/inet.h>
 #include <pthread.h>
 
+typedef struct{
+	int rutina;
+	int bloques;
+	FILE *script;
+}t_rutina_simple;
+
+typedef struct{
+	int rutina;
+	int bloques;
+	FILE *script;
+	char* puerto_nodo;
+	char* ip_nodo;
+}t_rutina_completa;
 
 t_log* logger; // Log Global
-
-void *atenderJob(void* arg){
-	/*int proceso;
-
-	if(proceso == 0){
-
-	}else{
-
-	}*/
-}
 
 
 void *atenderNFS(void* arg){
@@ -68,7 +71,7 @@ void *atenderNFS(void* arg){
 
 int main(void) {
 
-	printf("afaf\n");
+	printf("Arranca el Nodo\n");
 
 	setvbuf(stdout, NULL, _IOLBF, 0);
 	setvbuf(stdout, NULL, _IONBF, 0);
@@ -142,18 +145,18 @@ int main(void) {
 	send(socket_fs,&entero,sizeof(int),0);
 	pthread_create(&fs,NULL,atenderNFS, (void *) socket_fs);
 */
-	printf("adakndka28\n");
+	printf("antes de crear el servidor\n");
 
 	int socket_job = crearServidor(puerto_nodo);
 
-	printf("anda\n");
+	printf("creo correctamente el servidor\n");
 
 
 	int prueba;
 
 	FD_ZERO(&master);
 	FD_ZERO(&read_fds);
-/*
+
 	listener = socket(AF_INET, SOCK_STREAM, 0);
 	setsockopt(listener, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int));
 
@@ -164,12 +167,12 @@ int main(void) {
 	bind(listener, (struct sockaddr *)&serveraddr, sizeof(serveraddr));
 	listen(listener, 10);
 
-	*/
+
 	FD_SET(listener, &master);
 
 	fdmax = listener;
 
-	printf("adakndka\n");
+	printf("Se establecio correctamente el listen\n");
 
 	for(;;){
 	read_fds = master;
@@ -213,7 +216,13 @@ int main(void) {
 	    				// ahora van a venir hilos de mapper o reduce a decirme que aplique las rutinas mapping o reduce
 	    				// hay que hacer un handshake para ver que onda, si es una rutina mapping o una rutina reduce, a traves de
 	    				// una estructura, o sea la estructura tendria que tener un numero ( 1 o 2 ponele) que diga es mapping es reduce
-	    				//pthread_create(&job,NULL,atenderJob, (void *) socket_job);
+
+	    				if(entero==1){
+	    					//pthread_create(&job,NULL,rutinaMapping, (void *) socket_job);
+	    				}else{
+	    					//pthread_create(&job,NULL,rutinaReduce, (void *) socket_job);
+	    				}
+
 	    				break;
 	    				    			}
 	    		}
