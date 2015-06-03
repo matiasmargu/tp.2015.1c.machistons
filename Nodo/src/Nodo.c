@@ -58,6 +58,11 @@ void *atenderNFS(void* arg){
 
 int main(void) {
 
+	printf("afaf\n");
+
+	setvbuf(stdout, NULL, _IOLBF, 0);
+	setvbuf(stdout, NULL, _IONBF, 0);
+
 	char* rutaArchivoConfiguracion = "/home/utnso/git/tp-2015-1c-machistons/Configuracion/nodo.conf";
 
 	t_config* archivoConfiguracion;
@@ -120,24 +125,24 @@ int main(void) {
 	 // fd stdin o stdout
 	 // offset pone el puntero donde queremos que empiece a dividir
 
-
+/*
 	int socket_fs = crearCliente(ip_fs,puerto_fs);
 	entero = 2; // handshake con FS
 	send(socket_fs,&entero,sizeof(int),0);
 	pthread_create(&fs,NULL,atenderNFS, (void *) socket_fs);
-
+*/
 	printf("adakndka28\n");
 
 	int socket_job = crearServidor(puerto_nodo);
 
-
+	printf("anda\n");
 
 
 	int prueba;
 
 	FD_ZERO(&master);
 	FD_ZERO(&read_fds);
-
+/*
 	listener = socket(AF_INET, SOCK_STREAM, 0);
 	setsockopt(listener, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int));
 
@@ -147,6 +152,8 @@ int main(void) {
 	memset(&(serveraddr.sin_zero), '\0', 8);
 	bind(listener, (struct sockaddr *)&serveraddr, sizeof(serveraddr));
 	listen(listener, 10);
+
+	*/
 	FD_SET(listener, &master);
 
 	fdmax = listener;
@@ -207,7 +214,7 @@ int main(void) {
 	}
 	}
 
-	close(socket_fs);
+	//close(socket_fs);
 	close(socket_job);
 
 	config_destroy(archivoConfiguracion);
