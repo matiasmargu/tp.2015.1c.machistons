@@ -93,7 +93,6 @@ int main(void) {
 
 
 ///////    Carga del archivo de configuracion       ///////////////////////////////////////////
-
 	archivoConfiguracion = config_create(rutaArchivoConfiguracion);
 	log_info(logger, "Se creo correctamente el archivo de configuracion");
 	puerto_fs = config_get_string_value(archivoConfiguracion, "PUERTO_FS");
@@ -104,13 +103,13 @@ int main(void) {
 	ip_nodo = config_get_string_value(archivoConfiguracion, "IP_NODO");
 	puerto_nodo = config_get_string_value(archivoConfiguracion, "PUERTO_NODO");
 
-	/// hacemos mmap sobre el archivo_bin
+	///hacemos mmap sobre el archivo_bin
 	//el mmap tiene q estar en una variable de la cual se pueda acceder facilmente,
 	//la misma retorna una direccion a la particion de memoria
 	//Estaria copado usar una lista de la cual creamos y llenamos particiones
 	//segun el tamaño del archivo y no andar viendo cuantas variables crear.
 
-	int tamanioBloque = 20*1024;//el size_t era como ejemplo en el man mmap() de linux
+	int tamanioBloque = 20*1024*1024;//el size_t era como ejemplo en el man mmap() de linux
 
 	void *mmap (void *archivo_bin, int tamanioBloque, int __prot,int __flags, int __fd, __off_t __offset);
 
@@ -122,13 +121,13 @@ int main(void) {
 	 // offset pone el puntero donde queremos que empiece a dividir
 
 
-	 //////
-
 	int socket_fs = crearCliente(ip_fs,puerto_fs);
 	entero = 2; // handshake con FS
-	send(socket_fs,&entero,sizeof(int),0);
+	send(socket_fs,&entero,siszeof(int),0);
 	pthread_create(&fs,NULL,atenderNFS, (void *) socket_fs);
-	int socket_job = crearServidor(ip_nodo);
+
+
+	int socket_job = crearServidor(puerto_nodo);
 
 
 
@@ -143,7 +142,7 @@ int main(void) {
 
 	serveraddr.sin_family = AF_INET;
 	serveraddr.sin_addr.s_addr = INADDR_ANY;
-	serveraddr.sin_port = htons("6890");
+	serveraddr.sin_port = htons(puerto_nodo);
 	memset(&(serveraddr.sin_zero), '\0', 8);
 	bind(listener, (struct sockaddr *)&serveraddr, sizeof(serveraddr));
 	listen(listener, 10);
@@ -151,8 +150,7 @@ int main(void) {
 
 	fdmax = listener;
 
-	for(;;)
-	{
+	for(;;){
 	read_fds = master;
 	select(fdmax+1, &read_fds, NULL, NULL, NULL);
 	printf("select activo\n");
@@ -162,19 +160,19 @@ int main(void) {
 	    {
 	    	if(i == listener)
 	    	{
-	        addrlen = sizeof(clientaddr);
-	        if((newfd = accept(listener, (struct sockaddr *)&clientaddr, &addrlen)) == -1)
-	        {
-	        }
-	        else
-	        {
-	        	FD_SET(newfd, &master);
-	        	if(newfd > fdmax)
-	        	{
-	        		fdmax = newfd;
-	        	}
-	        	printf("Nueva coneccion %s en %d\n", inet_ntoa(clientaddr.sin_addr), newfd);
-	        }
+	    		addrlen = sizeof(clientaddr);
+	    		if((newfd = accept(listener, (struct sockaddr *)&clientaddr, &addrlen)) == -1)
+	    		{
+	    			}
+	    		else
+	    		{
+	    			FD_SET(newfd, &master);
+	    			if(newfd > fdmax)
+	    			{
+	    				fdmax = newfd;
+	    			}
+	    			printf("Nueva coneccion %s en %d\n", inet_ntoa(clientaddr.sin_addr), newfd);
+	    		}
 	    	}
 	    	else
 	    	{
@@ -189,8 +187,15 @@ int main(void) {
 	    			switch(entero){
 	    			case 8: // Este es Job
 	    				entero = 45;
-	    				send(i,&entero, sizeof(int),0);
+	    				send(i,&entero, sizeof(int),0); // al mandarle este entero le estamos diciendo que recibimos la conexion
 	    				log_info(logger,"Hilo Job creado satisfactoriamente");
+	    				// ahora van a venir hilos de mapper o reduce a decirme que aplique las rutinas mapping o reduce
+	    				// hay que hacer un handshake para ver que onda, si es una rutina mapping o una rutina reduce, a traves de
+	    				// una estructura, o sea la estructura tendria que tener un numero ( 1 o 2 ponele) que diga es mapping es reduce
+
+
+
+
 	    				break;
 	    				    			}
 	    		}
@@ -199,14 +204,14 @@ int main(void) {
 	}
 	}
 
-	close(socket_fs);
+//	close(socket_fs);
 	close(socket_job);
 
 	config_destroy(archivoConfiguracion);
 	log_destroy(logger);
-	free(ip_nodo);
-	free(archivo_bin);
-	free(dir_temp);
-	free(nodo_nuevo);
+	//free(ip_nodo);
+	//free(archivo_bin);
+	//free(dir_temp);
+	//free(nodo_nuevo);
 	return EXIT_SUCCESS;
 }

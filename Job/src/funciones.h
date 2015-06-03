@@ -10,9 +10,7 @@
 #include <sys/socket.h>
 #include <socket/socket.h>
 
-void conectarseAlNodoMapper(int,struct marta_job,int);
-void conectarseAlNodoReducer(int,struct marta_job,int);
-
+void conectarseAlNodo(int,struct marta_job,int);
 
 /*void decrementar();
 void imprimir();

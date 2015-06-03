@@ -22,7 +22,6 @@ typedef struct {
 typedef struct {
 	int bloque;
 	char* nodoCopia1;
-
 	char* copia2;
 	char* copia3;
 } t_bloque_copias;

@@ -12,9 +12,9 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <string.h>
-#include <../commons/config.h>
-#include <../commons/log.h>
-#include <../commons/string.h>
+#include <./commons/config.h>
+#include <./commons/log.h>
+#include <./commons/string.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netdb.h>
@@ -42,23 +42,17 @@ int main(void) {
 	char* combiner;
 	char** lista_archivos;
 	char* archivo_resultado;
-	int ID;
-	int operacionAnterior;
 
 
 
-    struct job_marta_inicio Job_Marta_Inicio;
+
     struct marta_job Marta_Job;
-    struct job_marta_resultado Job_Marta_Resultado;
-    struct nodo_job Nodo_Job;
-    struct job_nodo Job_Nodo;
-    char* lista_nodos;
-    char* lista_archivos_a_reducir;
-    lista_nodos = malloc(sizeof(char*));
-    lista_archivos_a_reducir  = malloc(sizeof(char*));
-    pthread_mutex_t mutex;
+    struct job_marta_inicio Job_Marta_Inicio;
 
-	//Marta_Job.ipNodo = "aaa";
+
+
+
+
 
 	archivoConfiguracion = config_create(rutaArchivoConfiguracion);
 	puerto_marta = config_get_string_value(archivoConfiguracion, "PUERTO_MARTA");
@@ -87,68 +81,63 @@ int main(void) {
 // PROBANDO HILOS- FIN */
 
 
-	pthread_t* hiloNodo;
+//	pthread_t* hiloNodo;
 
 	int socketMarta = crearCliente (ip_marta, puerto_marta);
 
+ Job_Marta_Inicio.operacionID = 1001;
+
+ Job_Marta_Inicio.lista_archivos =  lista_archivos;
+// Job_Marta_Inicio.combiner = combiner;
+
+
+	send(socketMarta,&Job_Marta_Inicio,sizeof(struct job_marta_inicio),0);
 
 
 
+	/* PRUEBA DE CONEXION CON NODO
+int enter = 98;
 
-	send(socketMarta,&lista_archivos,sizeof(char**),0);
-
-/*
-while(...){
-
-
-	if (recv(socketMarta, &Marta_Job, sizeof(struct marta_job),0)) != 0 );
+int socketNodo = crearCliente("192.168.3.34","6000");
 
 
-
-	for(//CANTIDAD DE BLOQUES QE ME MANDA MARTA){
-
-			pthread_create(&hiloNodo+i, NULL, (void*) conectarseAlNodo,( &Marta_Job,socketMarta));
-
-                                                 }
-
-     if (recv(socketMarta, &Marta_Job, sizeof(struct marta_job),0)) != 0 )
-
-}
-
-
-
-
-
-
-
-    int socketNodo = crearCliente (Marta_Job.ipNodo, Marta_Job.puertoNodo);
-
-    operacionAnterior = 0;
-    int i = 1;
-
-	while((strcmp("mapper",Marta_Job.rutina) == 0) && (Marta_Job.operacionID != operacionAnterior) ){//PROBLEMA EN LA COMPARACION DE STRINGS
-
-		      pthread_create(&hiloNodo+i, NULL, (void*) conectarseAlNodo,(socketNodo, &Marta_Job,socketMarta));
-              i ++;
-		      operacionAnterior = Marta_Job.operacionID;
-
-		      recv(socketMarta, &Marta_Job, sizeof(struct marta_job),0);
-
-		      }
-
+	 send(socketNodo,&enter,sizeof(int),0);
+	 close(socketNodo);
 
 */
 
 
-	//close(socketNodo);
+
+/*
+
+while(((recv(socketMarta, &Marta_Job, sizeof(struct marta_job),0)) != 0 )){
+
+
+	for(int i = 0; i< sizeof(Marta_Job.ListaDeBloques); i++){
+
+            int numeroDeBloque = (Marta_Job.ListaDeBloques)[i];
+
+			pthread_create(&hiloNodo+i, NULL, (void*) conectarseAlNodo,( Marta_Job,socketMarta, numeroDeBloque));
+
+
+                                                 }
+
+
+}
+
+*/
+
+
+
 	close(socketMarta);
+
 	log_destroy(logger);
-	free(lista_nodos);
-	free(lista_archivos_a_reducir);
 	free(mapper);
+	free(lista_archivos);
+	free(archivo_resultado);
 	free(reduce);
 	free(ip_marta);
 	free(combiner);
-	return EXIT_SUCCESS;
 
+	return EXIT_SUCCESS;
 }

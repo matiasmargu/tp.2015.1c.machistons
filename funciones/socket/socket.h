@@ -14,26 +14,29 @@
 #include <sys/socket.h>
 
 
-
-
+struct infoNodo{
+	char* ip_nodo;
+	char* nombre;
+	char* puerto;
+};
 
 
 //Marta->Job
  struct marta_job{
     int operacionID;  //identifica el numero de operacion
 	int rutina; //1=mapper o 2=reducer
-	int NumeroBloqueDeDatos; //donde aplicar el mapper o reduce
-	char* nombreNodo;
-	char* ipNodo;
-	char* puertoNodo;
-	char* archivo_resultado; //donde va a devolverle el resultado
+	struct infoNodo InfoNodo; // estructura que contiene el nombre, ip y puerto del nodo
+	char** ListaDeBloques;
+	char* nombre_archivo_resultado; //donde va a devolverle el resultado
 };
 
 
 //Job->Marta(inicio)
  struct job_marta_inicio{
 	int operacionID;
+	char* combiner;
 	char** lista_archivos;
+
 };
 
 
@@ -41,7 +44,7 @@
 struct job_marta_resultado{
    char* operacionID;
    char* archivo_resultado;
-   char* combiner;
+
    };
 
 
@@ -53,11 +56,11 @@ struct Marta_FileSystem {
 
 //FS->Marta
 
-struct infoNodos{
-	char* ip_nodo;
-	char* nombre;
-	char* puerto;
-} t_fs_marta;
+struct fs_marta{
+
+};
+
+
 
 struct infoArchivos{
 	char* nombre;
@@ -96,14 +99,7 @@ struct job_nodo{
 };
 
 
-struct datosNodoReduce{
-	int socketNodo;
-	char* reduce;
-	char** archivo_resultado;
-	char* nombres;
-	char* lista_nodos;
-	char* lista_archivos_a_reducir;
-};
+
 
 
 int crearServidor(char* PUERTO);

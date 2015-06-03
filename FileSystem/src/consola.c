@@ -31,8 +31,11 @@ void *atenderConsola(void*arg) {
 			comandoSeparado=string_split(bufferComando, separator);
 			switch(atoi(comandoSeparado[0])){
 				case Formatear:
+					// vaciar las tablas de la base de datos
+					//
 					break;
 				case Eliminar_Arch:
+
 					break;
 				case Renombrar_Arch:
 					break;
@@ -57,6 +60,7 @@ void *atenderConsola(void*arg) {
 				case Eliminar_Nodo:
 					break;
 				case Copiar_Arch_Al_MDFS:
+
 					break;
 				case Copiar_Arch_Al_FSLocal:
 					break;

@@ -9,29 +9,55 @@
 #include <pthread.h>
 #include <socket/socket.h>
 
+
+struct job_nodo Job_Nodo;
+char* handshake = "Se conecto el Job";
+struct job_marta_resultado Job_Marta_Resultado;
+struct nodo_job Nodo_Job;
+
+
+
+char* rutaArchivoConfiguracion = "/home/utnso/git/tp-2015-1c-machistons/Configuracion/job.conf";
+
 /*
+t_log* logger; // Log Global
+
+/*
+archivoConfiguracion = config_create(rutaArchivoConfiguracion);
+mapper = config_get_string_value(archivoConfiguracion, "MAPPER");
+reduce = config_get_string_value(archivoConfiguracion, "REDUCE");
 
 
-void conectarseAlNodo(struct marta_job Marta_Job, int socketMarta){
+void conectarseAlNodo(struct marta_job Marta_Job, int socketMarta, int numeroDeBloque){
 
 	int socketNodo = crearCliente (Marta_Job.ipNodo, Marta_Job.puertoNodo);
 
-//	send(socketNodo,&handshake,sizeof(),0);
+	send(socketNodo,&handshake,sizeof(char*),0);
 
    switch(Marta_Job.rutina ){
    case 1:
 
-	   send(socketNodo,&Job_Nodo//MAAPP,sizeof(struct job_nodo),0);
+	   Job_Nodo.rutina = mapper;
+	   Job_Nodo.NumerobloqueDeDAtos = numeroDeBloque;
+
+
+	   send(socketNodo,&Job_Nodo,sizeof(struct job_nodo),0);
+			   break;
 
    case 2:
 
-	   send(socketNodo,&Job_Nodo//MAAPP,sizeof(struct job_nodo),0);
+	   Job_Nodo.rutina = reduce;
+	   Job_Nodo.NumerobloqueDeDAtos = numeroDeBloque;
 
+	   send(socketNodo,&Job_Nodo,sizeof(struct job_nodo),0);
+			   break;
    }
 
    recv(socketNodo, &Nodo_Job, sizeof(struct nodo_job),0);
 
    send(socketMarta, &Job_Marta_Resultado, sizeof(struct job_marta_resultado),0);
+
+   close(socketNodo);
 
 /*
 
