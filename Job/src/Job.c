@@ -87,7 +87,7 @@ int main(void) {
 
  Job_Marta_Inicio.operacionID = 1001;
 
- Job_Marta_Inicio.lista_archivos = lista_archivos;
+ Job_Marta_Inicio.lista_archivos =  lista_archivos;
 // Job_Marta_Inicio.combiner = combiner;
 
 

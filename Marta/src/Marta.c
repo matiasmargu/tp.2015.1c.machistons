@@ -87,19 +87,19 @@ int main(void) {
 
 	int socketJob = accept(servidorEscucha, (struct sockaddr *) &addr, &addrlen);
 
-	struct t_Package package;
+	struct job_marta_inicio package;
 
 	int status = 1;		// Estructura que maneja el status de los recieve.
 
 	printf("Cliente conectado. Esperando Envío de mensajes.\n");
-/*
+
 			while (status){
-				status = recieve_and_deserialize(&package, socketJob);					// Ver el "Deserializando estructuras dinamicas" en el comentario de la funcion.
-				if (status) printf("%s says: %s", package.username, package.message);
+				status = recieve_and_deserialize(&package, socketJob);
+				if (status) printf("%d es: %p \n", package.operacionID, package.lista_archivos);
 			}
 
 
-			printf("Cliente Desconectado.\n");*/
+			printf("Cliente Desconectado.\n");
 
 			close(socketJob);
 			close(servidorEscucha);

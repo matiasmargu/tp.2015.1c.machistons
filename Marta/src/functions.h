@@ -33,7 +33,7 @@ struct t_Package {
  * 	Definicion de funciones
  */
 
-int recieve_and_deserialize(struct t_Package *,int);
+int recieve_and_deserialize(struct job_marta_inicio *,int);
 
 
 #endif /* FUNCTIONS_H_ */
