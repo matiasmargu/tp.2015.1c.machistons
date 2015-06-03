@@ -37,11 +37,11 @@ int main(void) {
     int entero; // Lo uso para el handshake
 	char* puerto_marta;
 	char* ip_marta;
-	char* mapper;
-	char* reduce;
+	FILE* mapper;
+	FILE* reduce;
 	char* combiner;
 	char** lista_archivos;
-	char* archivo_resultado;
+	FILE* archivo_resultado;
 
 
 
@@ -83,7 +83,7 @@ int main(void) {
 
 //	pthread_t* hiloNodo;
 
-	int socketMarta = crearCliente (ip_marta, puerto_marta);
+int socketMarta = crearCliente (ip_marta, puerto_marta);
 
  Job_Marta_Inicio.operacionID = 1001;
 
@@ -95,16 +95,18 @@ int main(void) {
 
 
 
-	/* PRUEBA DE CONEXION CON NODO
+	// PRUEBA DE CONEXION CON NODO
 int enter = 98;
 
-int socketNodo = crearCliente("192.168.3.34","6000");
+
+int socketNodo = crearCliente("192.168.3.99","6000");
 
 
-	 send(socketNodo,&enter,sizeof(int),0);
+	while(1){ send(socketNodo,&mapper,sizeof(FILE*),0);
+	}printf("%i\n\n",55);
 	 close(socketNodo);
 
-*/
+
 
 
 
@@ -129,7 +131,7 @@ while(((recv(socketMarta, &Marta_Job, sizeof(struct marta_job),0)) != 0 )){
 
 
 
-	close(socketMarta);
+	//close(socketMarta);
 
 	log_destroy(logger);
 	free(mapper);

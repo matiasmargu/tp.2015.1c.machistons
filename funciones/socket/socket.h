@@ -88,17 +88,20 @@ struct nodo_job{
 };
 
 //Job->Nodo
-struct job_nodo{
-    int operacionID;
-	char* ip_nodo;
-	char* nombre;
-	char* archivo_resultado;
-    char* rutina;
+typedef struct{
+
+
+	char* resultado;
+	int nombreRutina; //1=mapper o 2=reducer
     int NumerobloqueDeDAtos;
 
-};
+}t_job_nodo_mapper;
 
+typedef struct{
 
+}t_job_nodo_reduce;
+
+// // FILE* rutinaEjecutable;
 
 
 
