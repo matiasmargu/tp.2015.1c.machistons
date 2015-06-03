@@ -28,6 +28,16 @@
 
 t_log* logger; // Log Global
 
+void *atenderJob(void* arg){
+	/*int proceso;
+
+	if(proceso == 0){
+
+	}else{
+
+	}*/
+}
+
 
 void *atenderNFS(void* arg){
 	int socket=(int) arg;
@@ -91,6 +101,7 @@ int main(void) {
 
 
 	pthread_t fs;
+	pthread_t job;
 
 //Estos los vamos a usar cuando probemos las conecciones entre nodo y nodo
 	char* ip_nodo;
@@ -202,10 +213,7 @@ int main(void) {
 	    				// ahora van a venir hilos de mapper o reduce a decirme que aplique las rutinas mapping o reduce
 	    				// hay que hacer un handshake para ver que onda, si es una rutina mapping o una rutina reduce, a traves de
 	    				// una estructura, o sea la estructura tendria que tener un numero ( 1 o 2 ponele) que diga es mapping es reduce
-
-
-
-
+	    				//pthread_create(&job,NULL,atenderJob, (void *) socket_job);
 	    				break;
 	    				    			}
 	    		}
