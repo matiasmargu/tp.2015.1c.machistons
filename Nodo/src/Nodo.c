@@ -130,6 +130,9 @@ int main(void) {
 	pthread_create(&fs,NULL,atenderNFS, (void *) socket_fs);
 	int socket_job = crearServidor(ip_nodo);
 
+
+
+
 	int prueba;
 
 	FD_ZERO(&master);
@@ -195,7 +198,6 @@ int main(void) {
 	    }
 	}
 	}
-
 
 	close(socket_fs);
 	close(socket_job);
