@@ -111,7 +111,7 @@ int main(void) {
 
 	int tamanioBloque = 20*1024*1024;//el size_t era como ejemplo en el man mmap() de linux
 
-	void *mmap (void *archivo_bin, int tamanioBloque, int __prot,int __flags, int __fd, __off_t __offset);
+	//void *mmap (void *archivo_bin, int tamanioBloque, int __prot,int __flags, int __fd, __off_t __offset);
 
 	 // addr direccion del archivo, puede ser NULL
 	 //len tamaño de los bloques
@@ -123,9 +123,10 @@ int main(void) {
 
 	int socket_fs = crearCliente(ip_fs,puerto_fs);
 	entero = 2; // handshake con FS
-	send(socket_fs,&entero,siszeof(int),0);
+	send(socket_fs,&entero,sizeof(int),0);
 	pthread_create(&fs,NULL,atenderNFS, (void *) socket_fs);
 
+	printf("adakndka28\n");
 
 	int socket_job = crearServidor(puerto_nodo);
 
@@ -149,6 +150,8 @@ int main(void) {
 	FD_SET(listener, &master);
 
 	fdmax = listener;
+
+	printf("adakndka\n");
 
 	for(;;){
 	read_fds = master;
@@ -204,14 +207,14 @@ int main(void) {
 	}
 	}
 
-//	close(socket_fs);
+	close(socket_fs);
 	close(socket_job);
 
 	config_destroy(archivoConfiguracion);
 	log_destroy(logger);
-	//free(ip_nodo);
-	//free(archivo_bin);
-	//free(dir_temp);
-	//free(nodo_nuevo);
+	free(ip_nodo);
+	free(archivo_bin);
+	free(dir_temp);
+	free(nodo_nuevo);
 	return EXIT_SUCCESS;
 }
