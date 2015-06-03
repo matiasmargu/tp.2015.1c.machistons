@@ -65,6 +65,11 @@ int main(void) {
 
 	servidorEscucha = socket(serverInfo->ai_family, serverInfo->ai_socktype, serverInfo->ai_protocol);
 
+	if (servidorEscucha <0)
+	 {
+		 perror("Error de apertura de socket");
+	     exit(-1);
+	 }
 	/*
 	 * ya tengo un archivo que puedo utilizar para analizar las conexiones entrantes.... ¿Por donde?
 	 *
@@ -73,14 +78,30 @@ int main(void) {
 	  */
 
 
-	bind(servidorEscucha,serverInfo->ai_addr, serverInfo->ai_addrlen);
+	// bind(servidorEscucha,serverInfo->ai_addr, serverInfo->ai_addrlen);
+
+
+	if(bind(servidorEscucha,serverInfo->ai_addr, serverInfo->ai_addrlen)==-1)
+		{
+			printf("error en bind() \n");
+		    exit(-1);
+		};
+
 	freeaddrinfo(serverInfo);
 
 	// * 	Ya tengo un medio de comunicacion (el socket)
 
-	listen(servidorEscucha, BACKLOG); //listen() es una syscall BLOQUEANTE.
-	 //* 	El sistema esperara hasta que reciba una conexion entrante...
+	// listen(servidorEscucha, BACKLOG); //listen() es una syscall BLOQUEANTE.
 
+	 //Establecer el socket en modo escucha
+	 if(listen(servidorEscucha, BACKLOG) == -1)
+	   {
+	     printf("error en listen()\n");
+	     exit(-1);
+	   }
+	//* 	El sistema esperara hasta que reciba una conexion entrante...
+
+	printf("SERVIDOR EN ESPERA...\n");
 
 	struct sockaddr_in addr;			// Esta estructura contendra los datos de la conexion del cliente. IP, puerto, etc.
 	socklen_t addrlen = sizeof(addr);
@@ -95,7 +116,7 @@ int main(void) {
 
 			while (status){
 				status = recieve_and_deserialize(&package, socketJob);
-				if (status) printf("%d es: %p \n", package.operacionID, package.lista_archivos);
+				if (status) printf("%i es: %s \n", package.operacionID, package.lista_archivos);
 			}
 
 
