@@ -35,12 +35,22 @@ char* serializarPersona(t_person *persona){
 	memcpy(serializedPackage + offset, &(persona->dni), size_to_send);
 	offset += size_to_send;
 
-	size_to_send =  sizeof(strlen(persona->name) + 1);
+	int tamanioNombre = strlen(persona->name) + 1;
+	size_to_send = sizeof(int);
+	memcpy(serializedPackage + offset, &tamanioNombre, size_to_send);
+	offset += size_to_send;
+
+	size_to_send =  strlen(persona->name) + 1;
 	memcpy(serializedPackage + offset, persona->name, size_to_send);
 	offset += size_to_send;
 
-	size_to_send =  sizeof(persona->lastname);
-	memcpy(serializedPackage + offset, &(persona->lastname), size_to_send);
+	tamanioNombre = strlen(persona->lastname) + 1;
+	size_to_send = sizeof(int);
+	memcpy(serializedPackage + offset, &tamanioNombre, size_to_send);
+	offset += size_to_send;
+
+	size_to_send =  strlen(persona->lastname) + 1;
+	memcpy(serializedPackage + offset, persona->lastname, size_to_send);
 	offset += size_to_send;
 
 	return serializedPackage;
@@ -51,9 +61,9 @@ void liberarMensaje(char **package){
 }
 
 void completarMensajePersona(t_person *persona){
-	//(persona->name)[strlen(persona.name)] = '\0';
+	//(persona->name)[strlen(persona->name)] = '\0';
 	//(persona->lastname)[strlen(persona->lastname)] = '\0';
-	persona->tamanioTotal = sizeof(persona->dni) + sizeof(strlen(persona->name) + 1) + sizeof(persona->lastname);
+	persona->tamanioTotal = sizeof(persona->dni) + sizeof(int) + sizeof(int) + strlen(persona->name) + 1 + strlen(persona->lastname) + 1;
 }
 
 int main()
@@ -114,7 +124,6 @@ int main()
 	int a = list_add(listaArchivos, archivo_create("archivo2.txt", 2, "No disponible"));
 	int j = list_add(listaArchivos, archivo_create("archivo3.txt", 2, "No disponible"));
 
-
 	for(;;)
 	{
 	read_fds = master;
@@ -156,6 +165,7 @@ int main()
 	    				break;
 	    			case 2: // Este es Nodo
 	    				completarMensajePersona(&persona);
+	    				send(i, &persona.tamanioTotal, sizeof(persona.tamanioTotal),0);
 	    				mensaje = serializarPersona(&persona);
     					send(i, mensaje, persona.tamanioTotal, 0);
     					liberarMensaje(&mensaje);
