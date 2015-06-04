@@ -10,9 +10,11 @@
 #include <sys/socket.h>
 #include <socket/socket.h>
 
-void conectarseAlNodo(int,struct marta_job,int);
+void conectarseAlNodo(t_conectarseAlNodo);
 void serializarMapper();
 void serializadorJob_Marta_Inicio();
+
+void liberarMensaje(char **);
 /*void decrementar();
 void imprimir();
 void imprimir2();

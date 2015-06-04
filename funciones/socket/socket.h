@@ -15,7 +15,7 @@
 
 
 
-
+int cantidadDeBloques;
 
 //Marta->Job
  typedef struct{
@@ -24,8 +24,10 @@
 	char* ip_nodo;
 	char* nombreNodo;
 	char* puerto;
-	char** ListaDeBloques;
+	int cantidadDeBloques;
+	int ListaDeBloques[];
 	char* nombre_archivo_resultado; //donde va a devolverle el resultado
+
 }t_marta_job;
 
 
@@ -101,6 +103,13 @@ typedef struct{
 // // FILE* rutinaEjecutable;
 
 
+
+
+typedef struct{
+	t_marta_job Marta_Job;
+	int	socketMarta;
+	int	numeroDeBloque;
+	}t_conectarseAlNodo;
 
 int crearServidor(char* PUERTO);
 int crearCliente (char *IP, char *PUERTO);

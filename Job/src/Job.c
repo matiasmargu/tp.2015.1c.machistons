@@ -44,6 +44,12 @@ int main(void) {
 	char** lista_archivos;
 	FILE* archivo_resultado;
 
+	typedef struct{
+	t_marta_job Marta_Job;
+	int	socketMarta;
+	int	numeroDeBloque;
+	}t_conectarseAlNodo;
+
 
 
 
@@ -115,14 +121,20 @@ int socketNodo = crearCliente("192.168.3.99","6000");
 
 
 
-while(((recv(socketMarta, &Marta_Job, sizeof(struct marta_job),0)) != 0 )){
+while(((recv(socketMarta, &Marta_Job, ((sizeof(int)+sizeof(int)+sizeof(int)+sizeof(int)+(strlen(Marta_Job.ip_nodo)+1)+(strlen(Marta_Job.nombreNodo)+1+(strlen(Marta_Job.nombre_archivo_resultado)+1)+strlen(Marta_Job.puerto)+1))),0)) != 0 )){
 
 
-	for(int i = 0; i< sizeof(Marta_Job.ListaDeBloques); i++){
+	for(int i = 0; i< Marta_Job.cantidadDeBloques; i++){
 
-            int numeroDeBloque = (Marta_Job.ListaDeBloques)[i];
+            int numeroDeBloque = &((Marta_Job.ListaDeBloques)[i]);
+            pthread_t (hiloNodo_i);
 
-			pthread_create(&hiloNodo+i, NULL, (void*) conectarseAlNodo,( Marta_Job,socketMarta, numeroDeBloque));
+            t_conectarseAlNodo CAN;
+            CAN.Marta_Job = Marta_Job;
+            CAN.numeroDeBloque = numeroDeBloque;
+            CAN.socketMarta = socketMarta;
+
+			pthread_create(&hiloNodo_i, NULL, (void*) conectarseAlNodo, &CAN);
 
 
                                                  }
