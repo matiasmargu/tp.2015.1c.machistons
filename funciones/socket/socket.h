@@ -15,7 +15,7 @@
 
 
 
-int cantidadDeBloques;
+//int cantidadDeBloques;
 
 //Marta->Job
  typedef struct{
@@ -25,7 +25,7 @@ int cantidadDeBloques;
 	char* nombreNodo;
 	char* puerto;
 	int cantidadDeBloques;
-	int ListaDeBloques[];
+//	int ListaDeBloques[cantidadDeBloques];
 	char* nombre_archivo_resultado; //donde va a devolverle el resultado
 
 }t_marta_job;

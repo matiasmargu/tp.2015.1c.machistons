@@ -8,16 +8,21 @@
 #include "funciones.h"
 #include <pthread.h>
 #include <socket/socket.h>
+#include <sys/socket.h>
 
 
-struct job_nodo Job_Nodo;
+
 char* handshake = "Se conecto el Job";
 
-
+typedef struct{
+	t_marta_job Marta_Job;
+	int	socketMarta;
+	int	numeroDeBloque;
+	}t_conectarseAlNodo;
 
 
 char* rutaArchivoConfiguracion = "/home/utnso/git/tp-2015-1c-machistons/Configuracion/job.conf";
-
+t_job_nodo_mapper Job_Nodo_Mapper;
 
 t_log* logger; // Log Global
 
@@ -30,31 +35,39 @@ t_conectarseAlNodo CAN;
 
 void conectarseAlNodo(t_conectarseAlNodo CAN){
 
-	int socketNodo = crearCliente (CAN.Marta_Job.ipNodo, CAN.Marta_Job.puertoNodo);
+	int socketNodo = crearCliente (CAN.Marta_Job.ip_nodo, CAN.Marta_Job.puerto);
 
 	send(socketNodo,&handshake,sizeof(char*),0);
 
    switch(CAN.Marta_Job.rutina ){
    case 1:
 
-	   Job_Nodo.CANrutina = mapper;
-	   Job_Nodo.NumerobloqueDeDAtos = CAN.numeroDeBloque;
 
 
-	   send(socketNodo,&Job_Nodo,sizeof(struct job_nodo),0);
+	   Job_Nodo_Mapper.NumerobloqueDeDAtos = CAN.numeroDeBloque;
+	   Job_Nodo_Mapper.nombreRutina = CAN.Marta_Job.rutina;
+	   Job_Nodo_Mapper.resultado = CAN.Marta_Job.nombre_archivo_resultado;
+
+	  //SERIALIZAR
+
+	   send(socketNodo,&Job_Nodo_Mapper,(sizeof(int)+sizeof(int)+strlen(CAN.Marta_Job.nombre_archivo_resultado)+1),0);
 			   break;
 
    case 2:
 
-	   Job_Nodo.rutina = reduce;
-	   Job_Nodo.NumerobloqueDeDAtos = CAN.numeroDeBloque;
+
+	    Job_Nodo_Mapper.NumerobloqueDeDAtos = CAN.numeroDeBloque;
+	  	Job_Nodo_Mapper.nombreRutina = CAN.Marta_Job.rutina;
+	  	Job_Nodo_Mapper.resultado = CAN.Marta_Job.nombre_archivo_resultado;;
+
+	  	//SERIALIZAR
 
 	   send(socketNodo,&Job_Nodo,sizeof(struct job_nodo),0);
 			   break;
    }
-
+//SERIALIZAR
    recv(socketNodo, &Nodo_Job, sizeof(struct nodo_job),0);
-
+//SERIALIZAR
    send(socketMarta, &Job_Marta_Resultado, sizeof(struct job_marta_resultado),0);
 
    close(socketNodo);

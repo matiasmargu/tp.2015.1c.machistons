@@ -51,8 +51,6 @@ int main(void) {
 	}t_conectarseAlNodo;
 
 
-
-
     t_marta_job Marta_Job;
     t_job_marta_inicio Job_Marta_Inicio;
 
@@ -72,23 +70,7 @@ int main(void) {
 
 
 
-	//printf("%i\n\n",puerto_marta);
 
-	// PROBANDO HILOS - COMIENZO
-/*
-	pthread_t hiloA;
-		pthread_create(&hiloA, NULL, (void*) decrementar, NULL);
-
-		pthread_t hiloB;
-		pthread_create(&hiloB, NULL, (void*) incrementar , NULL);
-
-		pthread_join(hiloA, NULL);
-		pthread_join(hiloB, NULL);
-
-// PROBANDO HILOS- FIN */
-
-
-//	pthread_t* hiloNodo;
 
 int socketMarta = crearCliente (ip_marta, puerto_marta);
 
@@ -102,27 +84,23 @@ int socketMarta = crearCliente (ip_marta, puerto_marta);
 	send(socketMarta,&Job_Marta_Inicio,sizeof(struct job_marta_inicio),0);
 
 
-/*
-	// PRUEBA DE CONEXION CON NODO
-int enter = 8;
-int caca = 9;
-
-int socketNodo = crearCliente("192.168.3.99","6000");
-
-
-	 send(socketNodo,&enter,sizeof(int),0);
-	 send(socketNodo,&caca,sizeof(int),0);
-	printf("%i\n\n",55);
-	 close(socketNodo);
-
-*/
-
-
 
 
 
 while(((recv(socketMarta, &Marta_Job, ((sizeof(int)+sizeof(int)+sizeof(int)+sizeof(int)+(strlen(Marta_Job.ip_nodo)+1)+(strlen(Marta_Job.nombreNodo)+1+(strlen(Marta_Job.nombre_archivo_resultado)+1)+strlen(Marta_Job.puerto)+1))),0)) != 0 )){
 
+
+	int socketNodo = crearCliente (Marta_Job.ip_nodo, Marta_Job.puerto);
+
+	if(Marta_Job.rutina == 1){
+	char* mensajeMapper = serializarMapper(&mapper);
+
+	send(socketNodo,mensajeMapper,strlen(mensajeMapper)+1,0);
+	}else{
+		char* mensajeReduce = serializarMapper(&reduce);
+
+			send(socketNodo,mensajeReduce,strlen(mensajeReduce)+1,0);
+	}
 
 	for(int i = 0; i< Marta_Job.cantidadDeBloques; i++){
 
@@ -145,6 +123,20 @@ while(((recv(socketMarta, &Marta_Job, ((sizeof(int)+sizeof(int)+sizeof(int)+size
 
 
 
+/*
+	// PRUEBA DE CONEXION CON NODO
+int enter = 8;
+int caca = 9;
+
+int socketNodo = crearCliente("192.168.3.99","6000");
+
+
+	 send(socketNodo,&enter,sizeof(int),0);
+	 send(socketNodo,&caca,sizeof(int),0);
+	printf("%i\n\n",55);
+	 close(socketNodo);
+
+*/
 
 
 
@@ -162,3 +154,20 @@ while(((recv(socketMarta, &Marta_Job, ((sizeof(int)+sizeof(int)+sizeof(int)+size
 
 	return EXIT_SUCCESS;
 }
+
+
+
+//printf("%i\n\n",puerto_marta);
+
+	// PROBANDO HILOS - COMIENZO
+/*
+	pthread_t hiloA;
+		pthread_create(&hiloA, NULL, (void*) decrementar, NULL);
+
+		pthread_t hiloB;
+		pthread_create(&hiloB, NULL, (void*) incrementar , NULL);
+
+		pthread_join(hiloA, NULL);
+		pthread_join(hiloB, NULL);
+
+// PROBANDO HILOS- FIN */
