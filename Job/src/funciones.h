@@ -11,7 +11,8 @@
 #include <socket/socket.h>
 
 void conectarseAlNodo(int,struct marta_job,int);
-
+void serializarMapper();
+void serializadorJob_Marta_Inicio();
 /*void decrementar();
 void imprimir();
 void imprimir2();

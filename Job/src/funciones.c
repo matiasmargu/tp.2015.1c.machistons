@@ -19,10 +19,10 @@ struct nodo_job Nodo_Job;
 
 char* rutaArchivoConfiguracion = "/home/utnso/git/tp-2015-1c-machistons/Configuracion/job.conf";
 
-/*
+
 t_log* logger; // Log Global
 
-/*
+
 archivoConfiguracion = config_create(rutaArchivoConfiguracion);
 mapper = config_get_string_value(archivoConfiguracion, "MAPPER");
 reduce = config_get_string_value(archivoConfiguracion, "REDUCE");
@@ -58,6 +58,61 @@ void conectarseAlNodo(struct marta_job Marta_Job, int socketMarta, int numeroDeB
    send(socketMarta, &Job_Marta_Resultado, sizeof(struct job_marta_resultado),0);
 
    close(socketNodo);
+}
+
+void serializadorMapper(){
+	char* serializarMapper(FILE *mapper){
+		char *serializedPackage = malloc(sizeof(FILE));
+
+		int offset = 0;
+		int size_to_send;
+
+		size_to_send =  sizeof(FILE);
+		memcpy(serializedPackage + offset, &(mapper), size_to_send);
+		offset += size_to_send;
+
+		return serializedPackage;
+	}
+
+
+void serializadorJob_Marta_Inicio() {
+
+
+	char* serializarInicio(t_job_marta_inicio *inicio){
+		char *serializedPackage = malloc((strlen(inicio->combiner)+1)+ (strlen(inicio->lista_archivos)+1));
+
+		int offset = 0;
+		int size_to_send;
+
+
+		int tamanioCombiner = strlen(inicio->combiner) + 1;
+		size_to_send = sizeof(int);
+		memcpy(serializedPackage + offset, &tamanioCombiner, size_to_send);
+		offset += size_to_send;
+
+		size_to_send =  strlen(inicio->combiner) + 1;
+		memcpy(serializedPackage + offset, inicio->combiner, size_to_send);
+		offset += size_to_send;
+
+		tamanioLista = strlen(inicio->lista_archivos) + 1;
+		size_to_send = sizeof(int);
+		memcpy(serializedPackage + offset, &tamanioLista, size_to_send);
+		offset += size_to_send;
+
+		size_to_send =  strlen(inicio->lista_archivos) + 1;
+		memcpy(serializedPackage + offset, inicio->lista_archivos, size_to_send);
+		offset += size_to_send;
+
+		return serializedPackage;
+	}
+
+
+}
+}
+
+
+
+
 
 /*
 

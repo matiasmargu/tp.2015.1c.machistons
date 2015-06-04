@@ -14,38 +14,36 @@
 #include <sys/socket.h>
 
 
-struct infoNodo{
-	char* ip_nodo;
-	char* nombre;
-	char* puerto;
-};
+
 
 
 //Marta->Job
- struct marta_job{
+ typedef struct{
     int operacionID;  //identifica el numero de operacion
 	int rutina; //1=mapper o 2=reducer
-	struct infoNodo InfoNodo; // estructura que contiene el nombre, ip y puerto del nodo
+	char* ip_nodo;
+	char* nombreNodo;
+	char* puerto;
 	char** ListaDeBloques;
 	char* nombre_archivo_resultado; //donde va a devolverle el resultado
-};
+}t_marta_job;
 
 
 //Job->Marta(inicio)
- struct job_marta_inicio{
-	int operacionID;
+typedef struct{
+
 	char* combiner;
 	char** lista_archivos;
 
-};
+}t_job_marta_inicio;
 
 
 //Job->Marta
-struct job_marta_resultado{
+typedef struct{
    char* operacionID;
    char* archivo_resultado;
 
-   };
+   }t_job_marta_resultado;
 
 
 
@@ -81,11 +79,10 @@ struct FileSystem_Nodo{
 struct Nodo_Nodo{}t_nodo_nodo;
 
 //Nodo->Job
-struct nodo_job{
-	int operacionID;
-	char* archivo_resultado;
+typedef struct {
+	int resultado; // 1 = EXITOSO; 2 = FALLO
 
-};
+}nodo_job;
 
 //Job->Nodo
 typedef struct{
