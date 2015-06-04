@@ -96,14 +96,15 @@ int socketMarta = crearCliente (ip_marta, puerto_marta);
 
 
 	// PRUEBA DE CONEXION CON NODO
-int enter = 98;
-
+int enter = 8;
+int caca = 9;
 
 int socketNodo = crearCliente("192.168.3.99","6000");
 
 
-	while(1){ send(socketNodo,&mapper,sizeof(FILE*),0);
-	}printf("%i\n\n",55);
+	 send(socketNodo,&enter,sizeof(int),0);
+	 send(socketNodo,&caca,sizeof(int),0);
+	printf("%i\n\n",55);
 	 close(socketNodo);
 
 
@@ -126,8 +127,26 @@ while(((recv(socketMarta, &Marta_Job, sizeof(struct marta_job),0)) != 0 )){
 
 
 }
+*/
+/*
+char* serializarPersona(FILE *mapper){
+	char *serializedPackage = malloc(sizeof(FILE));
+
+	int offset = 0;
+	int size_to_send;
+
+	size_to_send =  sizeof(FILE);
+	memcpy(serializedPackage + offset, &(mapper), size_to_send);
+	offset += size_to_send;
+
+	return serializedPackage;
+}
 
 */
+
+
+
+
 
 
 
