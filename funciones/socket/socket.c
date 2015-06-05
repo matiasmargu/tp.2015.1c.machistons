@@ -69,7 +69,7 @@ int crearServidor(char* PUERTO){
 	struct sockaddr_in addr;			// Esta estructura contendra los datos de la conexion del cliente. IP, puerto, etc.
 	socklen_t addrlen = sizeof(addr);
 	int socketCliente = accept(listenningSocket, (struct sockaddr *) &addr, &addrlen);
-	close(listenningSocket);
+//	close(listenningSocket);
 	return socketCliente;
 }
 /* Ejemplo de uso:

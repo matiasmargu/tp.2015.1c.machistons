@@ -26,6 +26,7 @@
 t_log* logger; // Log Global
 
 
+
 int main(void) {
 
 	char* rutaArchivoConfiguracion = "/home/utnso/git/tp-2015-1c-machistons/Configuracion/job.conf";
@@ -33,21 +34,25 @@ int main(void) {
 	t_config* archivoConfiguracion;
 
 	logger = log_create("LOG_JOB", "log_job" ,false, LOG_LEVEL_INFO);
-    int status;
+
     int entero; // Lo uso para el handshake
 	char* puerto_marta;
 	char* ip_marta;
-	char* mapper;
-	char* reduce;
+	FILE* mapper;
+	FILE* reduce;
 	char* combiner;
 	char** lista_archivos;
-	char* archivo_resultado;
+	FILE* archivo_resultado;
+
+	typedef struct{
+	t_marta_job Marta_Job;
+	int	socketMarta;
+	int	numeroDeBloque;
+	}t_conectarseAlNodo;
 
 
-
-
-    struct marta_job Marta_Job;
-    struct job_marta_inicio Job_Marta_Inicio;
+    t_marta_job Marta_Job;
+    t_job_marta_inicio Job_Marta_Inicio;
 
 
 
@@ -65,7 +70,94 @@ int main(void) {
 
 
 
-	//printf("%i\n\n",puerto_marta);
+
+
+int socketMarta = crearCliente (ip_marta, puerto_marta);
+
+
+ Job_Marta_Inicio.lista_archivos =  lista_archivos;
+  Job_Marta_Inicio.combiner = combiner;
+
+  serializadorJob_Marta_Inicio();
+
+
+	send(socketMarta,&Job_Marta_Inicio,sizeof(struct job_marta_inicio),0);
+
+
+
+
+
+while(((recv(socketMarta, &Marta_Job, ((sizeof(int)+sizeof(int)+sizeof(int)+sizeof(int)+(strlen(Marta_Job.ip_nodo)+1)+(strlen(Marta_Job.nombreNodo)+1+(strlen(Marta_Job.nombre_archivo_resultado)+1)+strlen(Marta_Job.puerto)+1))),0)) != 0 )){
+
+
+	int socketNodo = crearCliente (Marta_Job.ip_nodo, Marta_Job.puerto);
+
+	if(Marta_Job.rutina == 1){
+	char* mensajeMapper = serializarMapper(&mapper);
+
+	send(socketNodo,mensajeMapper,strlen(mensajeMapper)+1,0);
+	}else{
+		char* mensajeReduce = serializarMapper(&reduce);
+
+			send(socketNodo,mensajeReduce,strlen(mensajeReduce)+1,0);
+	}
+
+	for(int i = 0; i< Marta_Job.cantidadDeBloques; i++){
+
+            int numeroDeBloque = &((Marta_Job.ListaDeBloques)[i]);
+            pthread_t (hiloNodo_i);
+
+            t_conectarseAlNodo CAN;
+            CAN.Marta_Job = Marta_Job;
+            CAN.numeroDeBloque = numeroDeBloque;
+            CAN.socketMarta = socketMarta;
+
+			pthread_create(&hiloNodo_i, NULL, (void*) conectarseAlNodo, &CAN);
+
+
+                                                 }
+
+
+}
+
+
+
+
+/*
+	// PRUEBA DE CONEXION CON NODO
+int enter = 8;
+int caca = 9;
+
+int socketNodo = crearCliente("192.168.3.99","6000");
+
+
+	 send(socketNodo,&enter,sizeof(int),0);
+	 send(socketNodo,&caca,sizeof(int),0);
+	printf("%i\n\n",55);
+	 close(socketNodo);
+
+*/
+
+
+
+
+
+	//close(socketMarta);
+
+	log_destroy(logger);
+	free(mapper);
+	free(lista_archivos);
+	free(archivo_resultado);
+	free(reduce);
+	free(ip_marta);
+	free(combiner);
+
+	return EXIT_SUCCESS;
+}
+
+
+
+//printf("%i\n\n",puerto_marta);
 
 	// PROBANDO HILOS - COMIENZO
 /*
@@ -79,65 +171,3 @@ int main(void) {
 		pthread_join(hiloB, NULL);
 
 // PROBANDO HILOS- FIN */
-
-
-//	pthread_t* hiloNodo;
-
-	int socketMarta = crearCliente (ip_marta, puerto_marta);
-
- Job_Marta_Inicio.operacionID = 1001;
-
- Job_Marta_Inicio.lista_archivos =  lista_archivos;
-// Job_Marta_Inicio.combiner = combiner;
-
-
-	send(socketMarta,&Job_Marta_Inicio,sizeof(struct job_marta_inicio),0);
-
-
-
-	/* PRUEBA DE CONEXION CON NODO
-int enter = 98;
-
-int socketNodo = crearCliente("192.168.3.34","6000");
-
-
-	 send(socketNodo,&enter,sizeof(int),0);
-	 close(socketNodo);
-
-*/
-
-
-
-/*
-
-while(((recv(socketMarta, &Marta_Job, sizeof(struct marta_job),0)) != 0 )){
-
-
-	for(int i = 0; i< sizeof(Marta_Job.ListaDeBloques); i++){
-
-            int numeroDeBloque = (Marta_Job.ListaDeBloques)[i];
-
-			pthread_create(&hiloNodo+i, NULL, (void*) conectarseAlNodo,( Marta_Job,socketMarta, numeroDeBloque));
-
-
-                                                 }
-
-
-}
-
-*/
-
-
-
-	close(socketMarta);
-
-	log_destroy(logger);
-	free(mapper);
-	free(lista_archivos);
-	free(archivo_resultado);
-	free(reduce);
-	free(ip_marta);
-	free(combiner);
-
-	return EXIT_SUCCESS;
-}

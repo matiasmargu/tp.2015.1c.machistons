@@ -25,22 +25,7 @@
 #include <arpa/inet.h>
 #include <pthread.h>
 
-typedef struct{
-	int rutina;
-	int bloques;
-	FILE *script;
-}t_rutina_simple;
-
-typedef struct{
-	int rutina;
-	int bloques;
-	FILE *script;
-	char* puerto_nodo;
-	char* ip_nodo;
-}t_rutina_completa;
-
 t_log* logger; // Log Global
-
 
 void *atenderNFS(void* arg){
 	int socket=(int) arg;
@@ -82,7 +67,6 @@ int main(void) {
 
 	logger = log_create("LOG_Nodo", "log_nodo" ,false, LOG_LEVEL_INFO);
 
-	char* puerto_fs;
 	char* ip_fs;
 	FILE *archivo_bin;
 	char* dir_temp;
@@ -102,25 +86,24 @@ int main(void) {
 	int entero; //Para el handshake
 	int nodofd;
 
-
 	pthread_t fs;
 	pthread_t job;
 
 //Estos los vamos a usar cuando probemos las conecciones entre nodo y nodo
 	char* ip_nodo;
-	char* puerto_nodo;
-
 
 ///////    Carga del archivo de configuracion       ///////////////////////////////////////////
+
 	archivoConfiguracion = config_create(rutaArchivoConfiguracion);
 	log_info(logger, "Se creo correctamente el archivo de configuracion");
-	puerto_fs = config_get_string_value(archivoConfiguracion, "PUERTO_FS");
 	ip_fs = config_get_string_value(archivoConfiguracion, "IP_FS");
 	archivo_bin = config_get_string_value(archivoConfiguracion, "ARCHIVO_BIN");
 	dir_temp = config_get_string_value(archivoConfiguracion, "DIR_TEMP");
 	nodo_nuevo = config_get_string_value(archivoConfiguracion, "NODO_NUEVO");
 	ip_nodo = config_get_string_value(archivoConfiguracion, "IP_NODO");
-	puerto_nodo = config_get_string_value(archivoConfiguracion, "PUERTO_NODO");
+
+	int puerto_fs = config_get_int_value(archivoConfiguracion, "PUERTO_FS");
+	int puerto_nodo = config_get_int_value(archivoConfiguracion, "PUERTO_NODO");
 
 	///hacemos mmap sobre el archivo_bin
 	//el mmap tiene q estar en una variable de la cual se pueda acceder facilmente,
@@ -147,7 +130,7 @@ int main(void) {
 */
 	printf("antes de crear el servidor\n");
 
-	int socket_job = crearServidor(puerto_nodo);
+	//int socket_job = crearServidor(puerto_nodo);
 
 	printf("creo correctamente el servidor\n");
 
@@ -166,43 +149,42 @@ int main(void) {
 	memset(&(serveraddr.sin_zero), '\0', 8);
 	bind(listener, (struct sockaddr *)&serveraddr, sizeof(serveraddr));
 	listen(listener, 10);
-
-
 	FD_SET(listener, &master);
 
 	fdmax = listener;
 
+	FILE* script;
+
 	printf("Se establecio correctamente el listen\n");
 
-	for(;;){
+	for(;;)
+	{
 	read_fds = master;
 	select(fdmax+1, &read_fds, NULL, NULL, NULL);
 	printf("select activo\n");
 	for(i = 0; i <= fdmax; i++)
 	{
-	    if(FD_ISSET(i, &read_fds))
+		if(FD_ISSET(i, &read_fds))
 	    {
 	    	if(i == listener)
 	    	{
-	    		addrlen = sizeof(clientaddr);
-	    		if((newfd = accept(listener, (struct sockaddr *)&clientaddr, &addrlen)) == -1)
-	    		{
-	    			}
-	    		else
-	    		{
-	    			FD_SET(newfd, &master);
-	    			if(newfd > fdmax)
-	    			{
-	    				fdmax = newfd;
-	    			}
-	    			printf("Nueva coneccion %s en %d\n", inet_ntoa(clientaddr.sin_addr), newfd);
-	    		}
+				addrlen = sizeof(clientaddr);
+				if((newfd = accept(listener, (struct sockaddr *)&clientaddr, &addrlen)) == -1)
+				{
+				}
+				else
+				{
+					FD_SET(newfd, &master);
+					if(newfd > fdmax)
+					{
+						fdmax = newfd;
+					}
+				}
 	    	}
-	    	else
+	    	 else
 	    	{
 	    		if((recv(i, &entero, sizeof(int),0 )) <= 0)
 	    		{
-	    			printf("socket caido\n");
 	    			close(i); // Coneccion perdida
 	    			FD_CLR(i, &master);
 	    		}
@@ -216,23 +198,20 @@ int main(void) {
 	    				// ahora van a venir hilos de mapper o reduce a decirme que aplique las rutinas mapping o reduce
 	    				// hay que hacer un handshake para ver que onda, si es una rutina mapping o una rutina reduce, a traves de
 	    				// una estructura, o sea la estructura tendria que tener un numero ( 1 o 2 ponele) que diga es mapping es reduce
-
-	    				if(entero==1){
-	    					//pthread_create(&job,NULL,rutinaMapping, (void *) socket_job);
-	    				}else{
-	    					//pthread_create(&job,NULL,rutinaReduce, (void *) socket_job);
-	    				}
-
+	    				//if(entero==1){
+	   					//pthread_create(&job,NULL,rutinaMapping, (void *) socket_job);
+	   					//}else{
+	   					//pthread_create(&job,NULL,rutinaReduce, (void *) socket_job);
 	    				break;
-	    				    			}
-	    		}
-	    	}
-	    }
-	}
+	   				}
+	   			}
+	   		}
+	   	}
+		}
 	}
 
-	//close(socket_fs);
-	close(socket_job);
+//	close(socket_fs);
+//	close(socket_job);
 
 	config_destroy(archivoConfiguracion);
 	log_destroy(logger);
@@ -240,5 +219,6 @@ int main(void) {
 	free(archivo_bin);
 	free(dir_temp);
 	free(nodo_nuevo);
+
 	return EXIT_SUCCESS;
 }

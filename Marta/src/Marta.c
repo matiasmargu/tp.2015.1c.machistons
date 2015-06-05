@@ -72,14 +72,11 @@ int main(void) {
 	 }
 	/*
 	 * ya tengo un archivo que puedo utilizar para analizar las conexiones entrantes.... ¿Por donde?
-	 *
 	 * 	Necesito decirle al sistema que voy a utilizar el archivo que me proporciono para escuchar las conexiones por un puerto especifico.
 	 *  Todavia no estoy escuchando las conexiones entrantes!
 	  */
 
-
 	// bind(servidorEscucha,serverInfo->ai_addr, serverInfo->ai_addrlen);
-
 
 	if(bind(servidorEscucha,serverInfo->ai_addr, serverInfo->ai_addrlen)==-1)
 		{
