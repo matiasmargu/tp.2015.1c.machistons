@@ -128,11 +128,11 @@ int main(void) {
 	send(socket_fs,&entero,sizeof(int),0);
 	pthread_create(&fs,NULL,atenderNFS, (void *) socket_fs);
 */
-	//printf("antes de crear el servidor\n");
+	printf("antes de crear el servidor\n");
 
-//	int socket_job = crearServidor(puerto_nodo);
+	//int socket_job = crearServidor(puerto_nodo);
 
-	//printf("creo correctamente el servidor\n");
+	printf("creo correctamente el servidor\n");
 
 
 	int prueba;
@@ -164,7 +164,7 @@ int main(void) {
 	printf("select activo\n");
 	for(i = 0; i <= fdmax; i++)
 	{
-	    if(FD_ISSET(i, &read_fds))
+		if(FD_ISSET(i, &read_fds))
 	    {
 	    	if(i == listener)
 	    	{
