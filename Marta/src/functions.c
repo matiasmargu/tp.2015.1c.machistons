@@ -53,6 +53,108 @@ int recieve_and_deserialize(struct job_marta_inicio *package, int socketCliente)
 			return status;
 		}
 
+//Programa que guarda una matriz de tamanio mxn, usando memoria dinamica
+
+
+void getDatos(int* rows, int* cols);
+int** getMatrix(int rows,int cols);
+void fillMatrix(int** matrix,int rows,int cols);
+void printMatrix(int** matrix, int rows, int cols);
+void freeMemory(int** matrix,int rows);
+
+int main(void){
+   int rows=0,cols=0;
+   int** matrix=NULL;
+
+   getDatos(&rows,&cols);
+   matrix=getMatrix(rows,cols);
+   fillMatrix(matrix,rows,cols);
+   printMatrix(matrix,rows,cols);
+   freeMemory(matrix,rows);
+return 0;
+}
+
+void getDatos(int* rows,int* cols){
+   printf("Renglones=");
+   scanf("%d",rows);
+   printf("Columnas=");
+   scanf("%d",cols);
+}
+
+int** getMatrix(int rows,int cols){
+   int i;
+   int** matrix=NULL;
+   matrix=(int**)malloc(sizeof(int*)*rows);
+   for(i=0;i<rows;i++){
+      *(matrix+i)=(int*)malloc(sizeof(int)*cols);
+   }
+   return matrix;
+}
+
+void fillMatrix(int** matrix,int rows,int cols){
+   int i,j;
+   for(i=0;i<rows;i++){
+      for(j=0;j<cols;j++){
+         *(*(matrix+i)+j)=i+j;
+      }
+   }
+}
+
+void printMatrix(int** matrix,int rows,int cols){
+   int i,j;
+   for(i=0;i<rows;i++){
+      for(j=0;j<cols;j++){
+         printf("\t%d",*(*(matrix+i)+j));
+      }
+      printf("\n");
+   }
+}
+
+void freeMemory(int** matrix,int rows){
+   int i;
+   for(i=0;i<rows;i++){
+      free(*(matrix+i));
+   }
+   free(matrix);
+}
+
+typedef struct{
+	struct nodo* siguiente;
+	char* nombre;
+} nodo;
+nodo* primer = NULL;
+nodo* ultimo = NULL;
+
+void agregar(nodo* _nodo){
+	_nodo -> siguiente = NULL;
+	if(primer == NULL){
+		primer = _nodo;
+		ultimo = _nodo;
+	}else{
+		ultimo -> siguiente = _nodo;
+		ultimo = _nodo;
+	}
+}
+
+int main(){
+	nodo* primerNodo = malloc(sizeof(nodo));
+	primerNodo -> nombre = "Primer Elemento";
+	nodo* segundoNodo = malloc(sizeof(nodo));
+	segundoNodo -> nombre = "Segundo Elemento";
+	nodo* tercerNodo = malloc(sizeof(nodo));
+	tercerNodo -> nombre = "Tercer Elemento";
+	agregar(primerNodo);
+	agregar(segundoNodo);
+	agregar(tercerNodo);
+	nodo* i = primerNodo;
+	while(i != NULL){
+		printf("%s\n", i -> nombre);
+		i = i -> siguiente;
+	}
+	return 0;
+}
+
+
 
 
 
