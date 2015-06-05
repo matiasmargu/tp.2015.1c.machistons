@@ -25,6 +25,8 @@
 #include <commons/string.h>
 #include <commons/collections/list.h>
 #include "consola.h"
+#include <bson.h>
+#include <mongoc.h>
 
 typedef struct {
 	int index; // Indice del directorio
@@ -64,5 +66,12 @@ void archivo_destroy(t_archivo *self);
 //Varibables globales
 
 t_log* logger; // Log Global
+
+mongoc_client_t *client;
+mongoc_collection_t *collection;
+mongoc_cursor_t *cursor;
+const bson_t *doc;
+bson_t *query;
+char *str;
 
 #endif /* LIBRERIAS_Y_ESTRUCTURAS_H_ */

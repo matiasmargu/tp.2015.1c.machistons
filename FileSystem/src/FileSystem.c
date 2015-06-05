@@ -71,7 +71,7 @@ int main()
 	t_person persona;
 	persona.dni = 37;
 	persona.name = "holisadass";
-	persona.lastname = "a ver si anda";
+	persona.lastname = "DAVID LA PUTA QUE TE PARIO";
 	char *mensaje;
 
 	fd_set master;
@@ -114,15 +114,10 @@ int main()
 
 	logger = log_create("LOG_FILESYSTEM", "log_filesystem" ,false, LOG_LEVEL_INFO);
 
-	t_list *listaArchivos;
-	//t_list *listaBloquesCopias;
-
-	listaArchivos = list_create();
-	//listaBloquesCopias = list_create();
-
-	int z = list_add(listaArchivos, archivo_create("archivo1.txt", 2, "No disponible"));
-	int a = list_add(listaArchivos, archivo_create("archivo2.txt", 2, "No disponible"));
-	int j = list_add(listaArchivos, archivo_create("archivo3.txt", 2, "No disponible"));
+	// Inicializo la base MongoDB
+	mongoc_init ();
+	client = mongoc_client_new ("mongodb://localhost:27017/");
+	collection = mongoc_client_get_collection (client, "test", "test");
 
 	for(;;)
 	{
@@ -177,9 +172,10 @@ int main()
 	}
 	}
 
+	mongoc_collection_destroy (collection);
+	mongoc_client_destroy (client);
 	config_destroy(archivoConfiguracion);
 	log_destroy(logger);
-	list_destroy(listaArchivos);
 	return EXIT_SUCCESS;
 }
 
