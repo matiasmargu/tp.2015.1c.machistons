@@ -190,7 +190,7 @@ int main()
 	    			case 2: // Este es Nodo
 	    				enviarBloqueAEscribir.numero = 72;
 	    				enviarBloqueAEscribir.bloque = "david la puta que te pario";
-	    				enviarBloqueAEscribir.tamanioDatos = strlen(enviarBloqueAEscribir.bloque);
+	    				enviarBloqueAEscribir.tamanioDatos = sizeof(int) + sizeof(int) + strlen(enviarBloqueAEscribir.bloque) + 1;
 	    				send(i, &enviarBloqueAEscribir.tamanioDatos, sizeof(enviarBloqueAEscribir.tamanioDatos), 0);
 	    				mensaje = serializarParaGetBloque(&enviarBloqueAEscribir);
 	    				send(i, mensaje, enviarBloqueAEscribir.tamanioDatos, 0);
