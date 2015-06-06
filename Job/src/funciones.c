@@ -73,7 +73,7 @@ void conectarseAlNodo(t_conectarseAlNodo CAN){
    close(socketNodo);
 }
 
-void serializadorMapper(){
+void serializadorMapper(){ ///AGREGAR INT PARA DECIRLE QE ES MAP AL NODO
 	char* serializarMapper(FILE *mapper){
 		char *serializedPackage = malloc(sizeof(FILE));
 

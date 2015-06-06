@@ -15,6 +15,7 @@
 #include <./commons/config.h>
 #include <./commons/log.h>
 #include <./commons/string.h>
+#include <./commons/collections/list.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netdb.h>
@@ -35,14 +36,15 @@ int main(void) {
 
 	logger = log_create("LOG_JOB", "log_job" ,false, LOG_LEVEL_INFO);
 
-    int entero; // Lo uso para el handshake
 	char* puerto_marta;
 	char* ip_marta;
 	FILE* mapper;
 	FILE* reduce;
 	char* combiner;
-	char** lista_archivos;
+	char* lista_archivos;
 	FILE* archivo_resultado;
+	int c;
+	int numero;
 
 	typedef struct{
 	t_marta_job Marta_Job;
@@ -52,7 +54,6 @@ int main(void) {
 
 
     t_marta_job Marta_Job;
-    t_job_marta_inicio Job_Marta_Inicio;
 
 
 
@@ -75,13 +76,24 @@ int main(void) {
 int socketMarta = crearCliente (ip_marta, puerto_marta);
 
 
- Job_Marta_Inicio.lista_archivos =  lista_archivos;
-  Job_Marta_Inicio.combiner = combiner;
-
-  serializadorJob_Marta_Inicio();
 
 
-	send(socketMarta,&Job_Marta_Inicio,sizeof(struct job_marta_inicio),0);
+
+  int cantidad = sizeof(lista_archivos)/sizeof(int) ; //TAMANIO LISTA DE ARCHIVOS
+  send(socketMarta,&cantidad,sizeof(int),0);
+  int a;
+
+for(a = 0 ; a <= cantidad; a++){
+
+	char *archivo;
+	archivo = lista_archivos[a];
+
+	send(socketMarta,&archivo,strlen(archivo)+1,0);
+
+}
+
+
+send(socketMarta,&combiner,strlen(combiner)+1,0);
 
 
 
@@ -89,6 +101,15 @@ int socketMarta = crearCliente (ip_marta, puerto_marta);
 
 while(((recv(socketMarta, &Marta_Job, ((sizeof(int)+sizeof(int)+sizeof(int)+sizeof(int)+(strlen(Marta_Job.ip_nodo)+1)+(strlen(Marta_Job.nombreNodo)+1+(strlen(Marta_Job.nombre_archivo_resultado)+1)+strlen(Marta_Job.puerto)+1))),0)) != 0 )){
 
+for(c; c<= Marta_Job.cantidadBloques; c++ ){
+
+recv(socketMarta,&numero, sizeof(int),0);
+
+//METER EN UN ARRAY
+
+
+
+}
 
 	int socketNodo = crearCliente (Marta_Job.ip_nodo, Marta_Job.puerto);
 
@@ -104,7 +125,7 @@ while(((recv(socketMarta, &Marta_Job, ((sizeof(int)+sizeof(int)+sizeof(int)+size
 
 	for(int i = 0; i< Marta_Job.cantidadDeBloques; i++){
 
-            int numeroDeBloque = &((Marta_Job.ListaDeBloques)[i]);
+            int numeroDeBloque = list_get(t_list *self, int index);
             pthread_t (hiloNodo_i);
 
             t_conectarseAlNodo CAN;
@@ -123,23 +144,24 @@ while(((recv(socketMarta, &Marta_Job, ((sizeof(int)+sizeof(int)+sizeof(int)+size
 
 
 
-/*
 	// PRUEBA DE CONEXION CON NODO
-int enter = 8;
-int caca = 9;
-
-int socketNodo = crearCliente("192.168.3.99","6000");
+int entero = 8;
 
 
-	 send(socketNodo,&enter,sizeof(int),0);
-	 send(socketNodo,&caca,sizeof(int),0);
+int socketNodo = crearCliente("192.168.3.78","6000");
+
+
+	 send(socketNodo,&entero,sizeof(int),0);
+
+	 recv(socketNodo, &entero,sizeof(int),0);
+
 	printf("%i\n\n",55);
+	printf("%i\n",entero);
 	 close(socketNodo);
 
-*/
 
 
-
+// escribir en el LOG log_info(logger,"lo que va en el archivo log");
 
 
 	//close(socketMarta);
