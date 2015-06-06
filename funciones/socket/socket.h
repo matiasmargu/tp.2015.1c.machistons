@@ -31,13 +31,6 @@
 }t_marta_job;
 
 
-//Job->Marta(inicio)
-typedef struct{
-
-	char* combiner;
-	char** lista_archivos;
-
-}t_job_marta_inicio;
 
 
 //Job->Marta
