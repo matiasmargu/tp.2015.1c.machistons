@@ -77,6 +77,12 @@ int main()
 	fd_set master;
 	fd_set read_fds;
 
+	// Estructuras de Interfaz con Nodo
+
+	setBloque enviarBloqueAEscribir;
+
+	//
+
 	pthread_t hiloConsola;
 	pthread_t hiloMarta;
 
@@ -159,11 +165,14 @@ int main()
 	    				log_info(logger,"Hilo Marta creado satisfactoriamente");
 	    				break;
 	    			case 2: // Este es Nodo
-	    				completarMensajePersona(&persona);
+	    				enviarBloqueAEscribir.numero = 72;
+	    				enviarBloqueAEscribir.bloque = "david la puta que te pario";
+
+	    				/*completarMensajePersona(&persona);
 	    				send(i, &persona.tamanioTotal, sizeof(persona.tamanioTotal),0);
 	    				mensaje = serializarPersona(&persona);
     					send(i, mensaje, persona.tamanioTotal, 0);
-    					liberarMensaje(&mensaje);
+    					liberarMensaje(&mensaje);*/
 	    				break;
 	    			}
 	    		}

@@ -76,6 +76,7 @@ struct Nodo_FileSystem{
 
 typedef struct{
 	int numero;
+	int tamanioDatos;
 	char *bloque;
 }setBloque;
 
