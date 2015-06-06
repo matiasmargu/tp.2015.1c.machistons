@@ -27,10 +27,35 @@
 
 t_log* logger; // Log Global
 
+int recive_y_deserialisa(setBloque *bloque, int socket, uint32_t tamanioTotal){
+	int status;
+	char *buffer = malloc(tamanioTotal);
+	int offset=0;
+
+	recv(socket, buffer, tamanioTotal, 0);
+
+	memcpy(&(bloque->numero), buffer + offset, sizeof(bloque->numero));
+	offset += sizeof(bloque->numero);
+
+	int tamanioDinamico;
+	memcpy(&tamanioDinamico, buffer + offset, sizeof(int));
+	offset += sizeof(int);
+
+	bloque->bloque = malloc(tamanioDinamico);
+	memcpy(bloque->bloque, buffer + offset, tamanioDinamico);
+	offset += tamanioDinamico;
+
+	free(buffer);
+	return status;
+}
+
+
 void *atenderNFS(void* arg){
 	int socket=(int) arg;
 	int entero; // handshake para saber quien es: FS(23)
 	int ok;
+	int tamanioTotal;
+	setBloque set;
 
 	while((recv(socket, &entero, sizeof(int),0)>0)){
 		switch(entero){
@@ -41,6 +66,15 @@ void *atenderNFS(void* arg){
 			break;
 		//setBloque(numero,[datos]);
 			case 2:
+				recv(socket,&tamanioTotal,sizeof(set.tamanioDatos),0);
+
+				int status = 1; // Estructura que manjea el status de los recieve.
+				status = recive_y_deserialisa(&set, socket, tamanioTotal);
+				if (status) {
+					printf("%i\n",set.numero);
+					printf("%s\n",set.bloque);
+				}
+				//char *bloqueATrabajar = mmap((void *)archivo_bin, size_t length, PROTO_NONE, int flags, int fd, off_t offset);
 				ok = 20;
 				send(socket,&ok, sizeof(int),0);
 			break;
@@ -83,11 +117,13 @@ int main(void) {
 	int yes = 1;
 	int addrlen;
 	int i;
-	int entero; //Para el handshake
-	int nodofd;
+	int entero; //Para el handshake con el Job
+	int nodofd; //Socket para los demas Nodos
+	int jobfd; //Socket para los Job
 
 	pthread_t fs;
 	pthread_t job;
+	pthread_t nodo;
 
 //Estos los vamos a usar cuando probemos las conecciones entre nodo y nodo
 	char* ip_nodo;
@@ -95,6 +131,7 @@ int main(void) {
 ///////    Carga del archivo de configuracion       ///////////////////////////////////////////
 
 	archivoConfiguracion = config_create(rutaArchivoConfiguracion);
+
 	log_info(logger, "Se creo correctamente el archivo de configuracion");
 	ip_fs = config_get_string_value(archivoConfiguracion, "IP_FS");
 	archivo_bin = config_get_string_value(archivoConfiguracion, "ARCHIVO_BIN");
@@ -102,41 +139,19 @@ int main(void) {
 	nodo_nuevo = config_get_string_value(archivoConfiguracion, "NODO_NUEVO");
 	ip_nodo = config_get_string_value(archivoConfiguracion, "IP_NODO");
 
-	int puerto_fs = config_get_int_value(archivoConfiguracion, "PUERTO_FS");
+	char* puerto_fs = config_get_string_value(archivoConfiguracion, "PUERTO_FS");
 	int puerto_nodo = config_get_int_value(archivoConfiguracion, "PUERTO_NODO");
 
-	///hacemos mmap sobre el archivo_bin
-	//el mmap tiene q estar en una variable de la cual se pueda acceder facilmente,
-	//la misma retorna una direccion a la particion de memoria
-	//Estaria copado usar una lista de la cual creamos y llenamos particiones
-	//segun el tamaño del archivo y no andar viendo cuantas variables crear.
+//Esta es la coneccion con el FS
 
-	int tamanioBloque = 20*1024*1024;//el size_t era como ejemplo en el man mmap() de linux
-
-	//void *mmap (void *archivo_bin, int tamanioBloque, int __prot,int __flags, int __fd, __off_t __offset);
-
-	 // addr direccion del archivo, puede ser NULL
-	 //len tamaño de los bloques
-	 //prot es para escribir leer o ejecutar
-	 // flags si es publica o privada
-	 // fd stdin o stdout
-	 // offset pone el puntero donde queremos que empiece a dividir
-
-/*
 	int socket_fs = crearCliente(ip_fs,puerto_fs);
 	entero = 2; // handshake con FS
 	send(socket_fs,&entero,sizeof(int),0);
 	pthread_create(&fs,NULL,atenderNFS, (void *) socket_fs);
-*/
-	printf("antes de crear el servidor\n");
-
-	//int socket_job = crearServidor(puerto_nodo);
-
-	printf("creo correctamente el servidor\n");
 
 
-	int prueba;
-
+//Este es el select
+/*
 	FD_ZERO(&master);
 	FD_ZERO(&read_fds);
 
@@ -153,9 +168,7 @@ int main(void) {
 
 	fdmax = listener;
 
-	FILE* script;
-
-	printf("Se establecio correctamente el listen\n");
+	FILE* script;//   ?
 
 	for(;;)
 	{
@@ -203,13 +216,17 @@ int main(void) {
 	   					//}else{
 	   					//pthread_create(&job,NULL,rutinaReduce, (void *) socket_job);
 	    				break;
+	    			case 7: // Este es otro Nodo
+	    				entero = 1;
+	    				send(i,&entero, sizeof(int),0);
+	    				pthread_create(&nodo,NULL,atenderNFS, (void *) nodofd);
 	   				}
 	   			}
 	   		}
 	   	}
 		}
 	}
-
+*/
 //	close(socket_fs);
 //	close(socket_job);
 

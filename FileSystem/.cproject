@@ -29,15 +29,20 @@
 								<option id="gnu.c.compiler.exe.debug.option.debugging.level.1030803418" name="Debug Level" superClass="gnu.c.compiler.exe.debug.option.debugging.level" value="gnu.c.debugging.level.max" valueType="enumerated"/>
 								<option id="gnu.c.compiler.option.include.paths.548765783" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/funciones}&quot;"/>
+									<listOptionValue builtIn="false" value="/usr/local/include/libbson-1.0"/>
+									<listOptionValue builtIn="false" value="/usr/local/include/libmongoc-1.0"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.25578172" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.linker.exe.debug.1553604277" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.exe.debug">
 								<option id="gnu.c.link.option.paths.74477846" name="Library search path (-L)" superClass="gnu.c.link.option.paths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/funciones/Debug}&quot;"/>
+									<listOptionValue builtIn="false" value="/user/local/lib"/>
 								</option>
 								<option id="gnu.c.link.option.libs.196247430" name="Libraries (-l)" superClass="gnu.c.link.option.libs" valueType="libs">
-									<listOptionValue builtIn="false" srcPrefixMapping="" srcRootPath="" value="funciones"/>
+									<listOptionValue builtIn="false" value="funciones"/>
+									<listOptionValue builtIn="false" value="bson-1.0"/>
+									<listOptionValue builtIn="false" value="mongoc-1.0"/>
 									<listOptionValue builtIn="false" value="pthread"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.c.linker.input.1603739338" superClass="cdt.managedbuild.tool.gnu.c.linker.input">

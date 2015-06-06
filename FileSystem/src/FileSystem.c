@@ -25,6 +25,29 @@ void *atenderMarta(void*arg){
 	return NULL;
 }
 
+char* serializarParaGetBloque(setBloque *bloque){
+
+	char *serializedPackage = malloc(bloque->tamanioDatos);
+
+	int offset = 0;
+	int size_to_send;
+
+	size_to_send =  sizeof(bloque->numero);
+	memcpy(serializedPackage + offset, &(bloque->numero), size_to_send);
+	offset += size_to_send;
+
+	int tamanioNombre = strlen(bloque->bloque) + 1;
+	size_to_send = sizeof(int);
+	memcpy(serializedPackage + offset, &tamanioNombre, size_to_send);
+	offset += size_to_send;
+
+	size_to_send =  strlen(bloque->bloque) + 1;
+	memcpy(serializedPackage + offset, bloque->bloque, size_to_send);
+	offset += size_to_send;
+
+	return serializedPackage;
+}
+
 char* serializarPersona(t_person *persona){
 	char *serializedPackage = malloc(persona->tamanioTotal);
 
@@ -71,11 +94,17 @@ int main()
 	t_person persona;
 	persona.dni = 37;
 	persona.name = "holisadass";
-	persona.lastname = "a ver si anda";
+	persona.lastname = "DAVID LA PUTA QUE TE PARIO";
 	char *mensaje;
 
 	fd_set master;
 	fd_set read_fds;
+
+	// Estructuras de Interfaz con Nodo
+
+	setBloque enviarBloqueAEscribir;
+
+	//
 
 	pthread_t hiloConsola;
 	pthread_t hiloMarta;
@@ -114,15 +143,10 @@ int main()
 
 	logger = log_create("LOG_FILESYSTEM", "log_filesystem" ,false, LOG_LEVEL_INFO);
 
-	t_list *listaArchivos;
-	//t_list *listaBloquesCopias;
-
-	listaArchivos = list_create();
-	//listaBloquesCopias = list_create();
-
-	int z = list_add(listaArchivos, archivo_create("archivo1.txt", 2, "No disponible"));
-	int a = list_add(listaArchivos, archivo_create("archivo2.txt", 2, "No disponible"));
-	int j = list_add(listaArchivos, archivo_create("archivo3.txt", 2, "No disponible"));
+	// Inicializo la base MongoDB
+	mongoc_init ();
+	client = mongoc_client_new ("mongodb://localhost:27017/");
+	collection = mongoc_client_get_collection (client, "test", "test");
 
 	for(;;)
 	{
@@ -164,11 +188,18 @@ int main()
 	    				log_info(logger,"Hilo Marta creado satisfactoriamente");
 	    				break;
 	    			case 2: // Este es Nodo
-	    				completarMensajePersona(&persona);
+	    				enviarBloqueAEscribir.numero = 72;
+	    				enviarBloqueAEscribir.bloque = "david la puta que te pario";
+	    				enviarBloqueAEscribir.tamanioDatos = strlen(enviarBloqueAEscribir.bloque);
+	    				send(i, &enviarBloqueAEscribir.tamanioDatos, sizeof(enviarBloqueAEscribir.tamanioDatos), 0);
+	    				mensaje = serializarParaGetBloque(&enviarBloqueAEscribir);
+	    				send(i, mensaje, enviarBloqueAEscribir.tamanioDatos, 0);
+	    				liberarMensaje(&mensaje);
+	    				/*completarMensajePersona(&persona);
 	    				send(i, &persona.tamanioTotal, sizeof(persona.tamanioTotal),0);
 	    				mensaje = serializarPersona(&persona);
     					send(i, mensaje, persona.tamanioTotal, 0);
-    					liberarMensaje(&mensaje);
+    					liberarMensaje(&mensaje);*/
 	    				break;
 	    			}
 	    		}
@@ -177,9 +208,10 @@ int main()
 	}
 	}
 
+	mongoc_collection_destroy (collection);
+	mongoc_client_destroy (client);
 	config_destroy(archivoConfiguracion);
 	log_destroy(logger);
-	list_destroy(listaArchivos);
 	return EXIT_SUCCESS;
 }
 
