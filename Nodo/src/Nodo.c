@@ -53,6 +53,7 @@ int recive_y_deserialisa(setBloque *bloque, int socket, uint32_t tamanioTotal){
 void *atenderNFS(void* arg){
 
 
+	FILE *archivo = fopen(archivo_bin,"r+");
 
 	int socket= (int)arg;
 	int entero; // handshake para saber quien es: FS(23)
@@ -118,7 +119,7 @@ int main(void) {
 
 	log_info(logger, "Se creo correctamente el archivo de configuracion");
 
-	FILE *archivo_bin = config_get_string_value(archivoConfiguracion, "ARCHIVO_BIN");
+	char *archivo_bin = config_get_string_value(archivoConfiguracion, "ARCHIVO_BIN");
 	char *dir_temp = config_get_string_value(archivoConfiguracion, "DIR_TEMP");
 	char *nodo_nuevo = config_get_string_value(archivoConfiguracion, "NODO_NUEVO");
 	char *ip_nodo = config_get_string_value(archivoConfiguracion, "IP_NODO");
