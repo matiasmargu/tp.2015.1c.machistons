@@ -21,8 +21,52 @@
 #include <socket/socket.h>
 #include <unistd.h>
 #include "functions.h"
+#include <./commons/collections/list.h>
+
 
 t_log* logger; // Log Global
+
+
+
+typedef struct{
+	char* nombre;
+	int cantidadDeBloques;
+	t_list copia1;
+	t_list copia2;
+	t_list copia3;
+
+}t_archivo;
+
+typedef struct {
+    int Numerobloque;
+    int idNodo;
+
+} t_copia;
+
+
+static t_copia *copia_create(int NumeroBloque,int idNodo) {
+    t_copia *new = malloc(sizeof(t_copia));
+    new->Numerobloque = NumeroBloque;
+    new->idNodo = idNodo;
+    return new;
+}
+
+static void copia_destroy(t_copia *self) {
+    free(self);
+    free(self);
+}
+
+
+describe("copia"){
+	t_list *copia;
+before{
+copia = list_create();
+}end
+after {
+           list_destroy_and_destroy_elements(copia, (void*) copia_destroy);
+       } end
+} end
+
 
 
 
@@ -33,10 +77,8 @@ int main(void) {
 	char* ip_fs ;
 	char* puerto ;
 	int entero;
+	t_archivo archivo;
 
-	struct job_marta_inicio Job_Marta_Inicio;
-	struct marta_job Marta_Job;
-	struct job_marta_resultado Job_Marta_Resultado;
 	struct fs_marta Fs_Marta;
 
 	t_config* archivoConfiguracion;
@@ -46,6 +88,52 @@ int main(void) {
 	archivoConfiguracion = config_create(rutaArchivoConfiguracion);
 	puerto_fs = config_get_string_value(archivoConfiguracion, "PUERTO_FS") ;
 	ip_fs = config_get_string_value(archivoConfiguracion, "IP_FS");
+	int cantidad;
+
+	int socketJob  = crearServidor("3000");
+
+	recv(socketJob, &cantidad, sizeof(int),0);
+
+	for(a = 0 ; a <= cantidad; a++){
+
+		recv(socketJob,&archivo_Inicio,strlen(archivo)+1,0);
+
+		//Agregar a un array
+
+	}
+
+
+	recv(socketMarta,&combiner,strlen(combiner)+1,0);
+
+
+	int socketFS = crearCliente(ip_fs,puerto_fs);
+
+	//send(socketFS, &listadearchivos );
+
+
+	//recv(socketFs, &cantidadNodos)
+	int n;
+	for(n = 0 ; n <= cantidadNodos; n++){
+
+	//	recv(socketFS , &STRUCTDELNODO);
+
+	}
+
+	//recv(socketFS, &archivo ,  )
+
+	//deserailizar
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -60,7 +148,7 @@ int main(void) {
 	getaddrinfo(NULL, puerto, &hints, &serverInfo);
 
 	/* Necesitamos un socket que escuche las conecciones entrantes */
-
+/*
 	int servidorEscucha ; //listenningSocket;
 
 	servidorEscucha = socket(serverInfo->ai_family, serverInfo->ai_socktype, serverInfo->ai_protocol);
@@ -77,7 +165,7 @@ int main(void) {
 	  */
 
 	// bind(servidorEscucha,serverInfo->ai_addr, serverInfo->ai_addrlen);
-
+/*
 	if(bind(servidorEscucha,serverInfo->ai_addr, serverInfo->ai_addrlen)==-1)
 		{
 			printf("error en bind() \n");

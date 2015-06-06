@@ -25,6 +25,29 @@ void *atenderMarta(void*arg){
 	return NULL;
 }
 
+char* serializarParaGetBloque(setBloque *bloque){
+
+	char *serializedPackage = malloc(bloque->tamanioDatos);
+
+	int offset = 0;
+	int size_to_send;
+
+	size_to_send =  sizeof(bloque->numero);
+	memcpy(serializedPackage + offset, &(bloque->numero), size_to_send);
+	offset += size_to_send;
+
+	int tamanioNombre = strlen(bloque->bloque) + 1;
+	size_to_send = sizeof(int);
+	memcpy(serializedPackage + offset, &tamanioNombre, size_to_send);
+	offset += size_to_send;
+
+	size_to_send =  strlen(bloque->bloque) + 1;
+	memcpy(serializedPackage + offset, bloque->bloque, size_to_send);
+	offset += size_to_send;
+
+	return serializedPackage;
+}
+
 char* serializarPersona(t_person *persona){
 	char *serializedPackage = malloc(persona->tamanioTotal);
 
@@ -167,7 +190,11 @@ int main()
 	    			case 2: // Este es Nodo
 	    				enviarBloqueAEscribir.numero = 72;
 	    				enviarBloqueAEscribir.bloque = "david la puta que te pario";
-
+	    				enviarBloqueAEscribir.tamanioDatos = sizeof(int) + sizeof(int) + strlen(enviarBloqueAEscribir.bloque) + 1;
+	    				send(i, &enviarBloqueAEscribir.tamanioDatos, sizeof(enviarBloqueAEscribir.tamanioDatos), 0);
+	    				mensaje = serializarParaGetBloque(&enviarBloqueAEscribir);
+	    				send(i, mensaje, enviarBloqueAEscribir.tamanioDatos, 0);
+	    				liberarMensaje(&mensaje);
 	    				/*completarMensajePersona(&persona);
 	    				send(i, &persona.tamanioTotal, sizeof(persona.tamanioTotal),0);
 	    				mensaje = serializarPersona(&persona);

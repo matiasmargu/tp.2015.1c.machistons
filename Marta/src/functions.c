@@ -10,7 +10,7 @@
 #include <unistd.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-
+/*
 int recieve_and_deserialize(struct job_marta_inicio *package, int socketCliente){
 
 			int status;
@@ -42,7 +42,6 @@ int recieve_and_deserialize(struct job_marta_inicio *package, int socketCliente)
 			status = recv(socketCliente, buffer2, sizeof(package->combiner), 0);
 			memcpy(&(combiner), buffer2, buffer_size2);
 			if (!status) return 0;
-*/
 
 
 
@@ -135,7 +134,7 @@ void agregar(nodo* _nodo){
 		ultimo = _nodo;
 	}
 }
-
+/*
 int main(){
 	nodo* primerNodo = malloc(sizeof(nodo));
 	primerNodo -> nombre = "Primer Elemento";
@@ -154,7 +153,7 @@ int main(){
 	return 0;
 }
 
-
+*/
 
 
 
