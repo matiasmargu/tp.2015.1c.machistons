@@ -67,6 +67,7 @@ void archivo_destroy(t_archivo *self);
 
 t_log* logger; // Log Global
 
+// Variables MongoDB
 mongoc_client_t *client;
 mongoc_collection_t *collection;
 mongoc_cursor_t *cursor;
