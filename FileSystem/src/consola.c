@@ -5,12 +5,7 @@
  *      Author: gcrivelli
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <assert.h>
-#include <string.h>
 #include "consola.h"
-#include <commons/string.h>
 
 void *atenderConsola(void*arg) {
 

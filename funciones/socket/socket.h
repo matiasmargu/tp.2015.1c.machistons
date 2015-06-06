@@ -53,8 +53,6 @@ struct fs_marta{
 
 };
 
-
-
 struct infoArchivos{
 	char* nombre;
 

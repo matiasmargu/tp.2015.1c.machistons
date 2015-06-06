@@ -24,7 +24,11 @@
 #include <commons/log.h>
 #include <commons/string.h>
 #include <commons/collections/list.h>
+
+//Libreria para Consola
 #include "consola.h"
+
+// Libreria para mongodb
 #include <bson.h>
 #include <mongoc.h>
 
@@ -59,9 +63,6 @@ typedef struct {
 	char* estado; // Estado
 	t_list bloques_copias; // Lista de bloques
 } t_archivo;
-
-t_archivo *archivo_create(char *nombre, int direccion, char* estado );
-void archivo_destroy(t_archivo *self);
 
 //Varibables globales
 
