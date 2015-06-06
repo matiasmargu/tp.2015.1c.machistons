@@ -51,7 +51,9 @@ int recive_y_deserialisa(setBloque *bloque, int socket, uint32_t tamanioTotal){
 
 
 void *atenderNFS(void* arg){
-	int socket=(int) arg;
+
+	printf("davidesinfumable\n");
+	int socket= (int)arg;
 	int entero; // handshake para saber quien es: FS(23)
 	int ok;
 	int tamanioTotal;
@@ -66,6 +68,7 @@ void *atenderNFS(void* arg){
 			break;
 		//setBloque(numero,[datos]);
 			case 2:
+
 				recv(socket,&tamanioTotal,sizeof(set.tamanioDatos),0);
 
 				int status = 1; // Estructura que manjea el status de los recieve.
