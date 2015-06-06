@@ -103,6 +103,14 @@ int main(void) {
 	pthread_t hiloJob;
 	pthread_t hiloNodo;
 
+	fd_set master;
+	fd_set read_fds;
+
+	struct sockaddr_in serveraddr;
+	struct sockaddr_in clientaddr;
+
+	int fdmax, listener, newfd, yes = 1, addrlen, i;
+
 ///////    Carga del archivo de configuracion       ///////////////////////////////////////////
 
 	archivoConfiguracion = config_create(rutaArchivoConfiguracion);
@@ -125,9 +133,69 @@ int main(void) {
 	pthread_create(&hiloFS, NULL, atenderNFS, (void *)socket_fs);
 
 //
-	while(1){
 
-	}
+	FD_ZERO(&master);
+	FD_ZERO(&read_fds);
+
+	listener = socket(AF_INET, SOCK_STREAM, 0);
+	setsockopt(listener, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int));
+
+	serveraddr.sin_family = AF_INET;
+	serveraddr.sin_addr.s_addr = INADDR_ANY;
+	serveraddr.sin_port = htons(puerto_nodo);
+	memset(&(serveraddr.sin_zero), '\0', 8);
+	bind(listener, (struct sockaddr *)&serveraddr, sizeof(serveraddr));
+	listen(listener, 10);
+	FD_SET(listener, &master);
+
+	fdmax = listener;
+
+	for(;;)
+		{
+		read_fds = master;
+		select(fdmax+1, &read_fds, NULL, NULL, NULL);
+		printf("select activo\n");
+		for(i = 0; i <= fdmax; i++)
+		{
+		    if(FD_ISSET(i, &read_fds))
+		    {
+		    	if(i == listener)
+		    	{
+					addrlen = sizeof(clientaddr);
+					if((newfd = accept(listener, (struct sockaddr *)&clientaddr, &addrlen)) == -1)
+					{
+					}
+					else
+					{
+						FD_SET(newfd, &master);
+						if(newfd > fdmax)
+						{
+							fdmax = newfd;
+						}
+					}
+		    	}
+		    	else
+		    	{
+		    		if((recv(i, &entero, sizeof(int),0 )) <= 0)
+		    		{
+		    			close(i); // Coneccion perdida
+		    			FD_CLR(i, &master);
+		    		}
+		    		else
+		    		{
+		    			switch(entero){
+		    			case 3: // Este es uno
+
+		    				break;
+		    			case 2: // Este es otro
+
+		    				break;
+		    			}
+		    		}
+		    	}
+		    }
+		}
+		}
 
 	config_destroy(archivoConfiguracion);
 	log_destroy(logger);
