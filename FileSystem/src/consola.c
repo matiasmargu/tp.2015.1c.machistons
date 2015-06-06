@@ -9,9 +9,11 @@
 
 void *atenderConsola(void*arg) {
 
-	enum {Formatear, Eliminar_Arch, Renombrar_Arch, Mover_Arch, Crear_Directorio, Eliminar_Directorio,
+	enum {Imprimir_Menu, Formatear, Eliminar_Arch, Renombrar_Arch, Mover_Arch, Crear_Directorio, Eliminar_Directorio,
 		Renombrar_Directorio, Mover_Directorio, Ver_Bloque_Arch, Borrar_Bloque_Arch, Copiar_Bloque_Arch, Agregar_Nodo, Eliminar_Nodo,
 		Copiar_Arch_Al_MDFS, Copiar_Arch_Al_FSLocal, Solicitar_MD5, Salir};
+
+	int i;
 
 	char bufferComando[MAXSIZE_COMANDO];
 	//char bufferPorTeclado[MAXBUFERTECLADO];
@@ -19,12 +21,15 @@ void *atenderConsola(void*arg) {
 	char *separator=" ";
 	//char *bufferLectura;
 	//int i;
+	imprimirMenu();
 
 	while(1){
-			imprimirMenu();
 			fgets(bufferComando,MAXSIZE_COMANDO, stdin);
 			comandoSeparado=string_split(bufferComando, separator);
 			switch(atoi(comandoSeparado[0])){
+				case Imprimir_Menu:
+					imprimirMenu();
+					break;
 				case Formatear:
 					// vaciar las tablas de la base de datos
 					//
@@ -55,7 +60,16 @@ void *atenderConsola(void*arg) {
 				case Eliminar_Nodo:
 					break;
 				case Copiar_Arch_Al_MDFS:
-
+						i = socketNodoGlobal;
+						entero = 2;
+						send(i, &entero, sizeof(int), 0);
+						enviarBloqueAEscribir.numero = 76;
+						enviarBloqueAEscribir.bloque = "david la puta que te pario";
+						enviarBloqueAEscribir.tamanioDatos = sizeof(int) + sizeof(int) + strlen(enviarBloqueAEscribir.bloque) + 1;
+						send(i, &enviarBloqueAEscribir.tamanioDatos, sizeof(enviarBloqueAEscribir.tamanioDatos), 0);
+						mensaje = serializarParaGetBloque(&enviarBloqueAEscribir);
+						send(i, mensaje, enviarBloqueAEscribir.tamanioDatos, 0);
+						liberarMensaje(&mensaje);
 					break;
 				case Copiar_Arch_Al_FSLocal:
 					break;

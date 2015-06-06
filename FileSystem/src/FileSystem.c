@@ -10,13 +10,6 @@
 
 #include "librerias_y_estructuras.h"
 
-typedef struct{
-	uint32_t dni;
-	char* name;
-	char* lastname;
-	uint32_t tamanioTotal;
-}t_person;
-
 void *atenderMarta(void*arg){
 
 	int socketMarta = (int)arg;
@@ -25,86 +18,10 @@ void *atenderMarta(void*arg){
 	return NULL;
 }
 
-char* serializarParaGetBloque(setBloque *bloque){
-
-	char *serializedPackage = malloc(bloque->tamanioDatos);
-
-	int offset = 0;
-	int size_to_send;
-
-	size_to_send =  sizeof(bloque->numero);
-	memcpy(serializedPackage + offset, &(bloque->numero), size_to_send);
-	offset += size_to_send;
-
-	int tamanioNombre = strlen(bloque->bloque) + 1;
-	size_to_send = sizeof(int);
-	memcpy(serializedPackage + offset, &tamanioNombre, size_to_send);
-	offset += size_to_send;
-
-	size_to_send =  strlen(bloque->bloque) + 1;
-	memcpy(serializedPackage + offset, bloque->bloque, size_to_send);
-	offset += size_to_send;
-
-	return serializedPackage;
-}
-
-char* serializarPersona(t_person *persona){
-	char *serializedPackage = malloc(persona->tamanioTotal);
-
-	int offset = 0;
-	int size_to_send;
-
-	size_to_send =  sizeof(persona->dni);
-	memcpy(serializedPackage + offset, &(persona->dni), size_to_send);
-	offset += size_to_send;
-
-	int tamanioNombre = strlen(persona->name) + 1;
-	size_to_send = sizeof(int);
-	memcpy(serializedPackage + offset, &tamanioNombre, size_to_send);
-	offset += size_to_send;
-
-	size_to_send =  strlen(persona->name) + 1;
-	memcpy(serializedPackage + offset, persona->name, size_to_send);
-	offset += size_to_send;
-
-	tamanioNombre = strlen(persona->lastname) + 1;
-	size_to_send = sizeof(int);
-	memcpy(serializedPackage + offset, &tamanioNombre, size_to_send);
-	offset += size_to_send;
-
-	size_to_send =  strlen(persona->lastname) + 1;
-	memcpy(serializedPackage + offset, persona->lastname, size_to_send);
-	offset += size_to_send;
-
-	return serializedPackage;
-}
-
-void liberarMensaje(char **package){
-	free(*package);
-}
-
-void completarMensajePersona(t_person *persona){
-	//(persona->name)[strlen(persona->name)] = '\0';
-	//(persona->lastname)[strlen(persona->lastname)] = '\0';
-	persona->tamanioTotal = sizeof(persona->dni) + sizeof(int) + sizeof(int) + strlen(persona->name) + 1 + strlen(persona->lastname) + 1;
-}
-
 int main()
 {
-	t_person persona;
-	persona.dni = 37;
-	persona.name = "holisadass";
-	persona.lastname = "DAVID LA PUTA QUE TE PARIO";
-	char *mensaje;
-
 	fd_set master;
 	fd_set read_fds;
-
-	// Estructuras de Interfaz con Nodo
-
-	setBloque enviarBloqueAEscribir;
-
-	//
 
 	pthread_t hiloConsola;
 	pthread_t hiloMarta;
@@ -113,7 +30,6 @@ int main()
 	struct sockaddr_in clientaddr;
 
 	int fdmax, listener, newfd, yes = 1, addrlen, i;
-	int entero; //Para el handshake
 	int martafd; //Socket de coneccion con Marta
 
 	pthread_create(&hiloConsola, NULL, atenderConsola, NULL);
@@ -188,18 +104,8 @@ int main()
 	    				log_info(logger,"Hilo Marta creado satisfactoriamente");
 	    				break;
 	    			case 2: // Este es Nodo
-	    				enviarBloqueAEscribir.numero = 72;
-	    				enviarBloqueAEscribir.bloque = "david la puta que te pario";
-	    				enviarBloqueAEscribir.tamanioDatos = sizeof(int) + sizeof(int) + strlen(enviarBloqueAEscribir.bloque) + 1;
-	    				send(i, &enviarBloqueAEscribir.tamanioDatos, sizeof(enviarBloqueAEscribir.tamanioDatos), 0);
-	    				mensaje = serializarParaGetBloque(&enviarBloqueAEscribir);
-	    				send(i, mensaje, enviarBloqueAEscribir.tamanioDatos, 0);
-	    				liberarMensaje(&mensaje);
-	    				/*completarMensajePersona(&persona);
-	    				send(i, &persona.tamanioTotal, sizeof(persona.tamanioTotal),0);
-	    				mensaje = serializarPersona(&persona);
-    					send(i, mensaje, persona.tamanioTotal, 0);
-    					liberarMensaje(&mensaje);*/
+	    				socketNodoGlobal = i;
+	    				printf("registro al nodo en Mongo DB\n");
 	    				break;
 	    			}
 	    		}

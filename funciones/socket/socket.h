@@ -67,8 +67,8 @@ struct Nodo_FileSystem{
 
 typedef struct{
 	int numero;
-	int tamanioDatos;
 	char *bloque;
+	int tamanioDatos;
 }setBloque;
 
 //Nodo->Nodo

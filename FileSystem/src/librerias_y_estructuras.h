@@ -67,6 +67,15 @@ typedef struct {
 //Varibables globales
 
 t_log* logger; // Log Global
+int entero; //Para el handshake
+char *mensaje; // Para mandar mensajes serializados
+
+// Estructuras de Interfaz con Nodo
+	setBloque enviarBloqueAEscribir;
+
+	int socketNodoGlobal;
+//
+
 
 // Variables MongoDB
 mongoc_client_t *client;
@@ -75,5 +84,10 @@ mongoc_cursor_t *cursor;
 const bson_t *doc;
 bson_t *query;
 char *str;
+
+// funcionesParaEnviarEstructuras
+
+char* serializarParaGetBloque(setBloque *bloque);
+void liberarMensaje(char **package);
 
 #endif /* LIBRERIAS_Y_ESTRUCTURAS_H_ */
