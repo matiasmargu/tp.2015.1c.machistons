@@ -148,7 +148,7 @@ int main(void) {
 	getaddrinfo(NULL, puerto, &hints, &serverInfo);
 
 	/* Necesitamos un socket que escuche las conecciones entrantes */
-
+/*
 	int servidorEscucha ; //listenningSocket;
 
 	servidorEscucha = socket(serverInfo->ai_family, serverInfo->ai_socktype, serverInfo->ai_protocol);
@@ -165,7 +165,7 @@ int main(void) {
 	  */
 
 	// bind(servidorEscucha,serverInfo->ai_addr, serverInfo->ai_addrlen);
-
+/*
 	if(bind(servidorEscucha,serverInfo->ai_addr, serverInfo->ai_addrlen)==-1)
 		{
 			printf("error en bind() \n");

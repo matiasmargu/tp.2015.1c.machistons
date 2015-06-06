@@ -41,8 +41,10 @@ int main(void) {
 	FILE* mapper;
 	FILE* reduce;
 	char* combiner;
-	t_list lista_archivos;
+	char* lista_archivos;
 	FILE* archivo_resultado;
+	int c;
+	int numero;
 
 	typedef struct{
 	t_marta_job Marta_Job;
@@ -52,7 +54,6 @@ int main(void) {
 
 
     t_marta_job Marta_Job;
-
 
 
 
@@ -78,15 +79,16 @@ int socketMarta = crearCliente (ip_marta, puerto_marta);
 
 
 
-  int cantidad = 10; //TAMANIO LISTA DE ARCHIVOS
+  int cantidad = sizeof(lista_archivos)/sizeof(int) ; //TAMANIO LISTA DE ARCHIVOS
   send(socketMarta,&cantidad,sizeof(int),0);
   int a;
 
 for(a = 0 ; a <= cantidad; a++){
 
-	char *archivo = lista_archivos[a];
+	char *archivo;
+	archivo = lista_archivos[a];
 
-	send(socketMarta,&archivo_Inicio,strlen(archivo)+1,0);
+	send(socketMarta,&archivo,strlen(archivo)+1,0);
 
 }
 
@@ -99,9 +101,11 @@ send(socketMarta,&combiner,strlen(combiner)+1,0);
 
 while(((recv(socketMarta, &Marta_Job, ((sizeof(int)+sizeof(int)+sizeof(int)+sizeof(int)+(strlen(Marta_Job.ip_nodo)+1)+(strlen(Marta_Job.nombreNodo)+1+(strlen(Marta_Job.nombre_archivo_resultado)+1)+strlen(Marta_Job.puerto)+1))),0)) != 0 )){
 
-for(int c; c<= //cantidad de bloques qe recibo de marta; c++ ){
+for(c; c<= Marta_Job.cantidadBloques; c++ ){
 
-recv(socketMarta,&numero, sizeof(int))
+recv(socketMarta,&numero, sizeof(int),0);
+
+//METER EN UN ARRAY
 
 
 
