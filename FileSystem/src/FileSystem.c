@@ -20,6 +20,19 @@ void *atenderMarta(void*arg){
 
 int main()
 {
+	// Inicializo la base MongoDB
+	mongoc_init ();
+	client = mongoc_client_new ("mongodb://localhost:27017/fileSystem");
+	directorios = mongoc_client_get_collection (client, "fileSystem", "directorios");
+	archivos = mongoc_client_get_collection (client, "fileSystem", "archivos");
+	nodos = mongoc_client_get_collection (client, "fileSystem", "nodos");
+	//
+	doc = bson_new ();
+	if (!mongoc_collection_delete (nodos, MONGOC_DELETE_NONE, doc, NULL, &error)) {
+	        printf ("Delete failed: %s\n", error.message);
+	}
+
+
 	fd_set master;
 	fd_set read_fds;
 
@@ -58,11 +71,6 @@ int main()
 	fdmax = listener;
 
 	logger = log_create("LOG_FILESYSTEM", "log_filesystem" ,false, LOG_LEVEL_INFO);
-
-	// Inicializo la base MongoDB
-	mongoc_init ();
-	client = mongoc_client_new ("mongodb://localhost:27017/");
-	collection = mongoc_client_get_collection (client, "test", "test");
 
 	for(;;)
 	{
@@ -105,6 +113,39 @@ int main()
 	    				break;
 	    			case 2: // Este es Nodo
 	    				socketNodoGlobal = i;
+
+	    				doc = bson_new ();
+	    			    bson_oid_init (&oid, NULL);
+	    			    BSON_APPEND_OID (doc, "_id", &oid);
+	    			    BSON_APPEND_INT32(doc, "Socket", i);
+	    			    BSON_APPEND_UTF8 (doc, "IP", "192.168.42.7");
+	    			    BSON_APPEND_UTF8(doc, "PUERTO" , "2004");
+	    			    BSON_APPEND_UTF8(doc, "Estado", "No disponible");
+	    			    if (!mongoc_collection_insert (nodos, MONGOC_INSERT_NONE, doc, NULL, &error)) {
+	    			           log_error(logger, error.message);
+	    			    }
+	    			    bson_destroy (doc);
+
+	    			    query = BCON_NEW ("PUERTO", "2004");
+	    			    update = BCON_NEW ("$set", "{",
+	    			                              "Nombre", "Carlos",
+	    			                              "updated", BCON_BOOL (true),
+	    			                       "}");
+
+	    			    if (!mongoc_collection_update (nodos, MONGOC_UPDATE_NONE, query, update, NULL, &error)) {
+	    			            printf ("%s\n", error.message);
+
+	    			     }
+
+	    			    query = bson_new ();
+	    			    cursor = mongoc_collection_find (nodos, MONGOC_QUERY_NONE, 0, 0, 0, query, NULL, NULL);
+
+	    			    while (mongoc_cursor_next (cursor, &doc)) {
+	    			    	str = bson_as_json (doc, NULL);
+	    			        printf ("%s\n", str);
+	    			        bson_free (str);
+	    			    }
+
 	    				printf("registro al nodo en Mongo DB\n");
 	    				break;
 	    			}
@@ -114,10 +155,17 @@ int main()
 	}
 	}
 
-	mongoc_collection_destroy (collection);
+	mongoc_collection_destroy (directorios);
+	mongoc_collection_destroy (nodos);
+	mongoc_collection_destroy (archivos);
 	mongoc_client_destroy (client);
+	bson_destroy (doc);
+	bson_destroy (query);
+    bson_destroy (update);
+
 	config_destroy(archivoConfiguracion);
 	log_destroy(logger);
+
 	return EXIT_SUCCESS;
 }
 

@@ -79,10 +79,19 @@ char *mensaje; // Para mandar mensajes serializados
 
 // Variables MongoDB
 mongoc_client_t *client;
-mongoc_collection_t *collection;
+
+mongoc_collection_t *directorios;
+mongoc_collection_t *archivos;
+mongoc_collection_t *nodos;
+
 mongoc_cursor_t *cursor;
-const bson_t *doc;
+
+bson_t *doc;
+bson_t *update;
 bson_t *query;
+bson_error_t error;
+bson_oid_t oid;
+
 char *str;
 
 // funcionesParaEnviarEstructuras

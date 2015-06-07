@@ -31,8 +31,7 @@ void *atenderConsola(void*arg) {
 					imprimirMenu();
 					break;
 				case Formatear:
-					// vaciar las tablas de la base de datos
-					//
+
 					break;
 				case Eliminar_Arch:
 
