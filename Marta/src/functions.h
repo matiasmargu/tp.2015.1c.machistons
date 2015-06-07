@@ -1,6 +1,7 @@
 
 #ifndef FUNCTIONS_H_
 #define FUNCTIONS_H_
+
 #include <sys/socket.h>
 #include <socket/socket.h>
 #include <stdio.h>
@@ -10,11 +11,7 @@
 #include <netdb.h>
 #include <unistd.h>
 #include <stdint.h>
-
-#define BACKLOG 5			// Define cuantas conexiones vamos a mantener pendientes al mismo tiempo
-#define MAX_PACKAGE_SIZE 1024	//El servidor no admitira paquetes de mas de 1024 bytes
-#define MAXUSERNAME 30
-#define MAX_MESSAGE_SIZE 300
+#include "server-client.h"
 
 /*
  * 	Definicion de estructuras
@@ -33,7 +30,7 @@ struct t_Package {
  * 	Definicion de funciones
  */
 
-int recieve_and_deserialize(struct job_marta_inicio *,int);
+//int recieve_and_deserialize(struct job_marta_inicio *,int);
 
 
 #endif /* FUNCTIONS_H_ */

@@ -1,4 +1,12 @@
+/*
+ * functions.c
+ *
+ *  Created on: 6/6/2015
+ *      Author: utnso
+ */
+
 #include "functions.h"
+#include "server-client.h"
 #include <pthread.h>
 #include <socket/socket.h>
 #include <stdio.h>
@@ -10,6 +18,9 @@
 #include <unistd.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+
+
+
 /*
 int recieve_and_deserialize(struct job_marta_inicio *package, int socketCliente){
 
@@ -45,6 +56,7 @@ int recieve_and_deserialize(struct job_marta_inicio *package, int socketCliente)
 
 
 
+
 			free(buffer);
 			free(buffer2);
 			free(buffer3);
@@ -53,7 +65,7 @@ int recieve_and_deserialize(struct job_marta_inicio *package, int socketCliente)
 		}
 
 //Programa que guarda una matriz de tamanio mxn, usando memoria dinamica
-
+/*
 
 void getDatos(int* rows, int* cols);
 int** getMatrix(int rows,int cols);
@@ -117,6 +129,9 @@ void freeMemory(int** matrix,int rows){
    free(matrix);
 }
 
+
+*/
+/*
 typedef struct{
 	struct nodo* siguiente;
 	char* nombre;
@@ -132,8 +147,9 @@ void agregar(nodo* _nodo){
 	}else{
 		ultimo -> siguiente = _nodo;
 		ultimo = _nodo;
-	}
-}
+	};
+};
+*/
 /*
 int main(){
 	nodo* primerNodo = malloc(sizeof(nodo));
@@ -149,11 +165,12 @@ int main(){
 	while(i != NULL){
 		printf("%s\n", i -> nombre);
 		i = i -> siguiente;
-	}
+	};
 	return 0;
-}
+};
+
+
 
 */
-
 
 

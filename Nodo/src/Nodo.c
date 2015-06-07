@@ -52,6 +52,9 @@ int recive_y_deserialisa(setBloque *bloque, int socket, uint32_t tamanioTotal){
 
 void *atenderNFS(void* arg){
 
+
+	FILE *archivo = fopen(archivo_bin,"r+");
+
 	int socket= (int)arg;
 	int entero; // handshake para saber quien es: FS(23)
 	int ok;
@@ -76,7 +79,6 @@ void *atenderNFS(void* arg){
 					printf("%i\n",set.numero);
 					printf("%s\n",set.bloque);
 				}
-				//char *bloqueATrabajar = mmap((void *)archivo_bin, size_t length, PROTO_NONE, int flags, int fd, off_t offset);
 				ok = 20;
 				send(socket,&ok, sizeof(int),0);
 			break;
@@ -97,7 +99,7 @@ int main(void) {
 	t_config* archivoConfiguracion;
 	logger = log_create("LOG_Nodo", "log_nodo" ,false, LOG_LEVEL_INFO);
 
-	int entero; //Para el handshake con el Job
+	int entero; //Para el handshake
 
 	pthread_t hiloFS;
 	pthread_t hiloJob;
@@ -117,7 +119,7 @@ int main(void) {
 
 	log_info(logger, "Se creo correctamente el archivo de configuracion");
 
-	FILE *archivo_bin = config_get_string_value(archivoConfiguracion, "ARCHIVO_BIN");
+	char *archivo_bin = config_get_string_value(archivoConfiguracion, "ARCHIVO_BIN");
 	char *dir_temp = config_get_string_value(archivoConfiguracion, "DIR_TEMP");
 	char *nodo_nuevo = config_get_string_value(archivoConfiguracion, "NODO_NUEVO");
 	char *ip_nodo = config_get_string_value(archivoConfiguracion, "IP_NODO");
@@ -130,9 +132,10 @@ int main(void) {
 	int socket_fs = crearCliente(ip_fs,puerto_fs);
 	entero = 2; // handshake con FS
 	send(socket_fs,&entero,sizeof(int),0);
+
 	pthread_create(&hiloFS, NULL, atenderNFS, (void *)socket_fs);
 
-//
+//Esta es el select
 
 	FD_ZERO(&master);
 	FD_ZERO(&read_fds);
@@ -184,10 +187,10 @@ int main(void) {
 		    		else
 		    		{
 		    			switch(entero){
-		    			case 3: // Este es uno
+		    			case 8: // Este es el Job
 
 		    				break;
-		    			case 2: // Este es otro
+		    			case 7: // Este es otro Nodo
 
 		    				break;
 		    			}
