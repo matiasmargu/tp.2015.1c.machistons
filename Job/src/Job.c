@@ -26,7 +26,7 @@
 
 t_log* logger; // Log Global
 
-
+//FALTA PONER EN LOG Cabeceras de mensajes enviados y recibidos de cada hilo/proceso
 
 int main(void) {
 
@@ -44,16 +44,20 @@ int main(void) {
 	char* lista_archivos;
 	FILE* archivo_resultado;
 	int c;
+	int tamanioTotal;
 	int numero;
+	int handshakeMarta;
 
 	typedef struct{
 	t_marta_job Marta_Job;
 	int	socketMarta;
 	int	numeroDeBloque;
+	t_job_nodo Job_Nodo;
 	}t_conectarseAlNodo;
 
 
     t_marta_job Marta_Job;
+    t_job_nodo Job_Nodo;
 
 
 
@@ -75,6 +79,9 @@ int main(void) {
 int socketMarta = crearCliente (ip_marta, puerto_marta);
 
 
+send(socketMarta,&handshakeMarta,sizeof(int),0);
+log_info(logger,"Conexion establecida con proceso Marta");
+printf("Conexion establecida con proceso Marta");
 
 
 
@@ -95,33 +102,40 @@ for(a = 0 ; a <= cantidad; a++){
 send(socketMarta,&combiner,strlen(combiner)+1,0);
 
 
+recv(socketMarta, &tamanioTotal, sizeof(int),0);
+
+int status = 1; // Estructura que manjea el status de los recieve.
+
+status = recive_y_deserialisa(&Marta_Job, socketMarta, tamanioTotal);
 
 
+while(status){
 
-while(((recv(socketMarta, &Marta_Job, ((sizeof(int)+sizeof(int)+sizeof(int)+sizeof(int)+(strlen(Marta_Job.ip_nodo)+1)+(strlen(Marta_Job.nombreNodo)+1+(strlen(Marta_Job.nombre_archivo_resultado)+1)+strlen(Marta_Job.puerto)+1))),0)) != 0 )){
 
 int listaDeBloques[Marta_Job.cantidadDeBloques];
 
-for(c; c<= Marta_Job.cantidadBloques; c++ ){
+	for(c; c<= Marta_Job.cantidadBloques; c++ ){
 
-recv(socketMarta,&numero, sizeof(int),0);
+	recv(socketMarta,&numero, sizeof(int),0);
 
-listaDeBloques[c] = numero;
+	listaDeBloques[c] = numero;
 
+											}
 
+int socketNodo = crearCliente (Marta_Job.ip_nodo, Marta_Job.puerto);
 
-}
+if(Marta_Job.rutina == 1){
 
-	int socketNodo = crearCliente (Marta_Job.ip_nodo, Marta_Job.puerto);
-
-	if(Marta_Job.rutina == 1){
-	char* mensajeMapper = serializarMapper(&mapper);
+char* mensajeMapper = serializarMapper(&mapper);
 
 	send(socketNodo,mensajeMapper,strlen(mensajeMapper)+1,0);
+	liberarMensaje(mensajeMapper);
+
 	}else{
 		char* mensajeReduce = serializarMapper(&reduce);
 
 			send(socketNodo,mensajeReduce,strlen(mensajeReduce)+1,0);
+			liberarMensaje(mensajeReduce);
 	}
 
 	for(int i = 0; i< Marta_Job.cantidadDeBloques; i++){
@@ -134,8 +148,22 @@ listaDeBloques[c] = numero;
             CAN.Marta_Job = Marta_Job;
             CAN.numeroDeBloque = numeroDeBloque;
             CAN.socketMarta = socketMarta;
+            CAN.Job_Nodo = Job_Nodo;
+            if(Marta_Job.rutina == 1){
+            	Job_Nodo.rutinaEjecutable = mapper;
+            	Job_Nodo.tipoRutina = 1;
+            }else{Job_Nodo.rutinaEjecutable = reduce;
+        	Job_Nodo.tipoRutina = 2;}
 
 			pthread_create(&hiloNodo_i, NULL, (void*) conectarseAlNodo, &CAN);
+			if(Marta_Job.rutina == 1){
+			log_info(logger,"Se creo un hilo mapper  "); //AGREGAR PARAMETROS RECIBIDOS
+			printf("Se creo un hilo mapper");
+			}
+			else{log_info(logger,"Se creo un hilo reducer "); //AGREGAR PARAMETROS RECIBIDOS
+			printf("Se creo un hilo reducer");
+			}
+
 
 
                                                  }
@@ -144,29 +172,11 @@ listaDeBloques[c] = numero;
 }
 
 
-/*
-
-	// PRUEBA DE CONEXION CON NODO
-int entero = 8;
 
 
-int socketNodo = crearCliente("192.168.3.78","6000");
 
 
-	 send(socketNodo,&entero,sizeof(int),0);
-
-	 recv(socketNodo, &entero,sizeof(int),0);
-
-	printf("%i\n\n",55);
-	printf("%i\n",entero);
-	 close(socketNodo);
-
-*/
-
-// escribir en el LOG log_info(logger,"lo que va en el archivo log");
-
-
-	//close(socketMarta);
+	close(socketMarta);
 
 	log_destroy(logger);
 	free(mapper);
@@ -180,18 +190,3 @@ int socketNodo = crearCliente("192.168.3.78","6000");
 }
 
 
-
-//printf("%i\n\n",puerto_marta);
-
-	// PROBANDO HILOS - COMIENZO
-/*
-	pthread_t hiloA;
-		pthread_create(&hiloA, NULL, (void*) decrementar, NULL);
-
-		pthread_t hiloB;
-		pthread_create(&hiloB, NULL, (void*) incrementar , NULL);
-
-		pthread_join(hiloA, NULL);
-		pthread_join(hiloB, NULL);
-
-// PROBANDO HILOS- FIN */
