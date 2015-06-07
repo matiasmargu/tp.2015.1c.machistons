@@ -11,7 +11,7 @@
 #define BACKLOG 5			// Define cuantas conexiones vamos a mantener pendientes al mismo tiempo
 #define PACKAGESIZE 1024	// Define cual va a ser el size maximo del paquete a enviar
 
-#include <sys/socket.h>
+
 
 
 
@@ -29,8 +29,6 @@
 	char* nombre_archivo_resultado; //donde va a devolverle el resultado
 
 }t_marta_job;
-
-
 
 
 //Job->Marta
@@ -96,8 +94,8 @@ typedef struct{
 
 // // FILE* rutinaEjecutable;
 
-
-
+typedef struct{
+}t_mar;
 
 typedef struct{
 	t_marta_job Marta_Job;

@@ -11,8 +11,8 @@
 #include <socket/socket.h>
 
 void conectarseAlNodo(t_conectarseAlNodo);
-void serializarMapper();
-void serializadorJob_Marta_Inicio();
+char* serializarMapper(FILE*);
+char* serializarJob_Nodo_Mapper(t_job_nodo_mapper );
 
 void liberarMensaje(char **);
 /*void decrementar();

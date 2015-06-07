@@ -45,6 +45,7 @@ typedef struct {
 } t_copia;
 
 
+
 static t_copia *copia_create(int NumeroBloque,int idNodo) {
     t_copia *new = malloc(sizeof(t_copia));
     new->Numerobloque = NumeroBloque;

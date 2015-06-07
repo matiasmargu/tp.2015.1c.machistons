@@ -12,7 +12,7 @@
 
 
 
-char* handshake = "Se conecto el Job";
+int handshake = 8;
 
 typedef struct{
 	t_marta_job Marta_Job;
@@ -37,7 +37,7 @@ void conectarseAlNodo(t_conectarseAlNodo CAN){
 
 	int socketNodo = crearCliente (CAN.Marta_Job.ip_nodo, CAN.Marta_Job.puerto);
 
-	send(socketNodo,&handshake,sizeof(char*),0);
+	send(socketNodo,&handshake,sizeof(int),0);
 
    switch(CAN.Marta_Job.rutina ){
    case 1:
@@ -48,7 +48,7 @@ void conectarseAlNodo(t_conectarseAlNodo CAN){
 	   Job_Nodo_Mapper.nombreRutina = CAN.Marta_Job.rutina;
 	   Job_Nodo_Mapper.resultado = CAN.Marta_Job.nombre_archivo_resultado;
 
-	  //SERIALIZAR
+	   serializarJob_Nodo_Mapper(Job_Nodo_Mapper);
 
 	   send(socketNodo,&Job_Nodo_Mapper,(sizeof(int)+sizeof(int)+strlen(CAN.Marta_Job.nombre_archivo_resultado)+1),0);
 			   break;
@@ -62,18 +62,25 @@ void conectarseAlNodo(t_conectarseAlNodo CAN){
 
 	  	//SERIALIZAR
 
-	   send(socketNodo,&Job_Nodo,sizeof(struct job_nodo),0);
+	   send(socketNodo,&Job_Nodo_Reduce,sizeof(struct job_nodo),0);
 			   break;
    }
-//SERIALIZAR
+
    recv(socketNodo, &Nodo_Job, sizeof(struct nodo_job),0);
-//SERIALIZAR
-   send(socketMarta, &Job_Marta_Resultado, sizeof(struct job_marta_resultado),0);
+//DESSERIALIZAR
+
+   send(socketMarta, &Nodo_Job.resultado, strlen(Nodo_Job.resultado)+1),0);
 
    close(socketNodo);
 }
 
-void serializadorMapper(){ ///AGREGAR INT PARA DECIRLE QE ES MAP AL NODO
+
+
+
+
+
+
+ ///AGREGAR INT PARA DECIRLE QE ES MAP AL NODO
 	char* serializarMapper(FILE *mapper){
 		char *serializedPackage = malloc(sizeof(FILE));
 
@@ -88,45 +95,44 @@ void serializadorMapper(){ ///AGREGAR INT PARA DECIRLE QE ES MAP AL NODO
 	}
 
 
-void serializadorJob_Marta_Inicio() {
 
 
-	char* serializarInicio(t_job_marta_inicio *inicio){
-		char *serializedPackage = malloc((strlen(inicio->combiner)+1)+ (strlen(inicio->lista_archivos)+1));
+
+	char* serializarJob_Nodo_Mapper(t_job_nodo_mapper *job_nodo){
+		char *serializedPackage = malloc((strlen(job_nodo->resultado)+1)+ (sizeof(int))+(sizeof(int)));
 
 		int offset = 0;
 		int size_to_send;
 
 
-		int tamanioCombiner = strlen(inicio->combiner) + 1;
+		int tamanioResultado = strlen(job_nodo->resultado) + 1;
 		size_to_send = sizeof(int);
-		memcpy(serializedPackage + offset, &tamanioCombiner, size_to_send);
+		memcpy(serializedPackage + offset, &tamanioResultado, size_to_send);
 		offset += size_to_send;
 
-		size_to_send =  strlen(inicio->combiner) + 1;
-		memcpy(serializedPackage + offset, inicio->combiner, size_to_send);
+		size_to_send =  strlen(job_nodo->resultado) + 1;
+		memcpy(serializedPackage + offset, job_nodo->resultado, size_to_send);
 		offset += size_to_send;
 
-		int tamanioLista = strlen(inicio->lista_archivos) + 1;
-		size_to_send = sizeof(int);
-		memcpy(serializedPackage + offset, &tamanioLista, size_to_send);
+		size_to_send =  sizeof(job_nodo->NumerobloqueDeDAtos);
+		memcpy(serializedPackage + offset, &(job_nodo->NumerobloqueDeDAtos), size_to_send);
 		offset += size_to_send;
 
-		size_to_send =  strlen(inicio->lista_archivos) + 1;
-		memcpy(serializedPackage + offset, inicio->lista_archivos, size_to_send);
+		size_to_send =  sizeof(job_nodo->nombreRutina);
+		memcpy(serializedPackage + offset, &(job_nodo->nombreRutina), size_to_send);
 		offset += size_to_send;
 
 		return serializedPackage;
 	}
 
 
-}
+
 
 
 void liberarMensaje(char **package){
 	free(*package);
 }
-}
+
 
 
 

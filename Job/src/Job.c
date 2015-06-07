@@ -19,10 +19,10 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netdb.h>
-#include <socket/socket.h>
 #include <unistd.h>
 #include "funciones.h"
 #include <pthread.h>
+#include <socket/socket.h>
 
 t_log* logger; // Log Global
 
@@ -54,7 +54,6 @@ int main(void) {
 
 
     t_marta_job Marta_Job;
-
 
 
 
@@ -101,11 +100,13 @@ send(socketMarta,&combiner,strlen(combiner)+1,0);
 
 while(((recv(socketMarta, &Marta_Job, ((sizeof(int)+sizeof(int)+sizeof(int)+sizeof(int)+(strlen(Marta_Job.ip_nodo)+1)+(strlen(Marta_Job.nombreNodo)+1+(strlen(Marta_Job.nombre_archivo_resultado)+1)+strlen(Marta_Job.puerto)+1))),0)) != 0 )){
 
+int listaDeBloques[Marta_Job.cantidadDeBloques];
+
 for(c; c<= Marta_Job.cantidadBloques; c++ ){
 
 recv(socketMarta,&numero, sizeof(int),0);
 
-//METER EN UN ARRAY
+listaDeBloques[c] = numero;
 
 
 
@@ -125,7 +126,8 @@ recv(socketMarta,&numero, sizeof(int),0);
 
 	for(int i = 0; i< Marta_Job.cantidadDeBloques; i++){
 
-            int numeroDeBloque = list_get(t_list *self, int index);
+            int numeroDeBloque = *listaDeBloques[i] ;
+
             pthread_t (hiloNodo_i);
 
             t_conectarseAlNodo CAN;
@@ -142,7 +144,7 @@ recv(socketMarta,&numero, sizeof(int),0);
 }
 
 
-
+/*
 
 	// PRUEBA DE CONEXION CON NODO
 int entero = 8;
@@ -159,7 +161,7 @@ int socketNodo = crearCliente("192.168.3.78","6000");
 	printf("%i\n",entero);
 	 close(socketNodo);
 
-
+*/
 
 // escribir en el LOG log_info(logger,"lo que va en el archivo log");
 
