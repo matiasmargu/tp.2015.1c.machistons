@@ -24,6 +24,11 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <pthread.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <fcntl.h>
+#include <sys/mman.h>
+
 
 t_log* logger; // Log Global
 
@@ -57,13 +62,34 @@ int recive_y_deserialisa(setBloque *bloque, int socket, uint32_t tamanioTotal){
 
 
 void *atenderNFS(estructura_de_nfs packeteNFS){
-	FILE *archivo = fopen(packeteNFS.archivoATrabajar,"r+");
 
 	int socket= packeteNFS.socket;
 	int entero; // handshake para saber quien es: FS(23)
 	int ok;
 	int tamanioTotal;
+	int fd;
 	setBloque set;
+	struct stat mystat;
+	void* pmap;
+
+	fd = open(packeteNFS.archivoATrabajar,O_RDWR);
+	if(fd == -1){
+		printf("Error al leer el ARCHIBO_BIN\n");
+		exit(1);
+	}
+
+	if(fstat(fd,&mystat) < 0){
+		printf("Error al establecer fstat\n");
+		close(fd);
+		exit(1);
+	}
+
+	pmap = mmap(0,mystat.st_size, PROT_READ | PROT_WRITE,MAP_SHARED,fd,0);
+	if(pmap == MAP_FAILED){
+		printf("Error al mapear a memoria\n");
+		close(fd);
+		exit(1);
+	}
 
 	while(1){
 		if(recv(socket, &entero, sizeof(int),0) > 0){
