@@ -13,6 +13,7 @@
 
 
 int handshake = 8;
+int resultado;
 
 typedef struct{
 	t_marta_job Marta_Job;
@@ -23,6 +24,7 @@ typedef struct{
 
 char* rutaArchivoConfiguracion = "/home/utnso/git/tp-2015-1c-machistons/Configuracion/job.conf";
 t_job_nodo_mapper Job_Nodo_Mapper;
+t_job_nodo Job_Nodo;
 
 t_log* logger; // Log Global
 
@@ -36,6 +38,13 @@ t_conectarseAlNodo CAN;
 void conectarseAlNodo(t_conectarseAlNodo CAN){
 
 	int socketNodo = crearCliente (CAN.Marta_Job.ip_nodo, CAN.Marta_Job.puerto);
+
+	send(socketNodo,&handshake,sizeof(int),0);
+
+	Job_Nodo.rutinaEjecutable = CAN.Job_Nodo.rutinaEjecutable;
+	Job_Nodo.tipoRutina = CAN.Job_Nodo.tipoRutina;
+
+	serializarMapper(Job_Nodo);
 
 	send(socketNodo,&handshake,sizeof(int),0);
 
@@ -66,12 +75,28 @@ void conectarseAlNodo(t_conectarseAlNodo CAN){
 			   break;
    }
 
-   recv(socketNodo, &Nodo_Job, sizeof(struct nodo_job),0);
-//DESSERIALIZAR
+   recv(socketNodo, &resultado, sizeof(int),0);
 
-   send(socketMarta, &Nodo_Job.resultado, strlen(Nodo_Job.resultado)+1),0);
+
+   send(CAN.socketMarta, &resultado, sizeof(int),0);
 
    close(socketNodo);
+
+   switch(CAN.Marta_Job.rutina ){
+      case 1:
+    	  if(resultado == 1){
+   log_info(logger,"Finalizo el hilo mapper de forma exitosa ");
+   			printf("Finalizo hilo mapper de forma exitosa");
+    	  }else{log_info(logger,"Finalizo el hilo mapper de forma no esperada ");
+ 			printf("Finalizo hilo mapper de forma no esperada");}break;
+
+      case 2:
+    	  if(resultado == 1){
+    	     log_info(logger,"Finalizo el hilo reducer de forma exitosa ");
+    	     			printf("Finalizo hilo reducer de forma exitosa");
+    	      	  }else{log_info(logger,"Finalizo el hilo reducer de forma no esperada ");
+    	   			printf("Finalizo hilo reducer de forma no esperada");}break;
+   }
 }
 
 
@@ -80,15 +105,18 @@ void conectarseAlNodo(t_conectarseAlNodo CAN){
 
 
 
- ///AGREGAR INT PARA DECIRLE QE ES MAP AL NODO
-	char* serializarMapper(FILE *mapper){
+	char* serializarMapper(t_job_nodo *jn){
 		char *serializedPackage = malloc(sizeof(FILE));
 
 		int offset = 0;
 		int size_to_send;
 
 		size_to_send =  sizeof(FILE);
-		memcpy(serializedPackage + offset, &(mapper), size_to_send);
+		memcpy(serializedPackage + offset, &(jn->rutinaEjecutable), size_to_send);
+		offset += size_to_send;
+
+		size_to_send =  sizeof(jn->tipoRutina);
+		memcpy(serializedPackage + offset, &(jn->tipoRutina), size_to_send);
 		offset += size_to_send;
 
 		return serializedPackage;
@@ -126,78 +154,41 @@ void conectarseAlNodo(t_conectarseAlNodo CAN){
 	}
 
 
+	int recive_y_deserialisa(t_marta_job *bloque, int socket, uint32_t tamanioTotal){ //FALTAN LOS CAMPOS QUE NO ME TOMA
+		int status;
+		char *buffer = malloc(tamanioTotal);
+		int offset=0;
+
+		recv(socket, buffer, tamanioTotal, 0);
+
+		memcpy(&(bloque->rutina), buffer + offset, sizeof(bloque->rutina));
+		offset += sizeof(bloque->rutina);
+
+		int tamanioDinamico;
+		memcpy(&tamanioDinamico, buffer + offset, sizeof(int));
+		offset += sizeof(int);
+
+		bloque->ip_nodo = malloc(tamanioDinamico);
+		memcpy(bloque->ip_nodo, buffer + offset, tamanioDinamico);
+		offset += tamanioDinamico;
+
+
+		memcpy(&tamanioDinamico, buffer + offset, sizeof(int));
+		offset += sizeof(int);
+
+		bloque->puerto = malloc(tamanioDinamico);
+		memcpy(bloque->puerto, buffer + offset, tamanioDinamico);
+		offset += tamanioDinamico;
+
+
+
+		free(buffer);
+		return status;
+	}
 
 
 
 void liberarMensaje(char **package){
 	free(*package);
 }
-
-
-
-
-
-
-/*
-
-	Job_Nodo.NumerobloqueDeDAtos = Marta_Job.NumeroBloqueDeDatos; //HACER ASI CON TODO LO QUE LE PASO AL JOB
-
-
-	send(socketNodo,&Job_Nodo,sizeof(struct job_nodo),0);
-	 recv(socketNodo, &Nodo_Job, sizeof(struct nodo_job),0);
-
-	 Job_Marta_Resultado.archivo_resultado = Nodo_Job.archivo_resultado; //AGREGAR LAS DEMAS COSAS QUE LE MANDO A MARTA
-
-   send(socketMarta, &Job_Marta_Resultado, sizeof(struct job_marta_resultado),0);
-
-
-}
-
-
-
-//void conectarseAlNodoReducer();FALTA HACER
-
-
-/* PROBANDO HILOS INICIO
-int valor = 9000;
-pthread_mutex_t mutex;
-
-void decrementar(){
-
-	int i;
-	pthread_mutex_lock(&mutex);
-	for(i = 0; i < 4000 ; i++ ){
-		valor-- ;
-
-	}
-	pthread_mutex_unlock(&mutex);
-
-	printf("%d\n",valor);
-	}
-
-
-void incrementar(){
-
-	int i;
-
-	pthread_mutex_lock(&mutex);
-	for(i = 0; i < 3000 ; i++ ){
-		valor++ ;
-	}
-	pthread_mutex_unlock(&mutex);
-
-		printf("%d\n",valor);
-
-	}
-
-void imprimir(){
-	while(1)
-	printf("hola como estas");
-
-}
-void imprimir2(){
-    while(1)
-	printf("me llamo pepe");
-}
-*/ //PROBANDO HILOS FIN
 

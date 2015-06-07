@@ -82,7 +82,7 @@ typedef struct {
 typedef struct{
 
 
-	char* resultado;
+	int resultado;
 	int nombreRutina; //1=mapper o 2=reducer
     int NumerobloqueDeDAtos;
 
@@ -92,7 +92,10 @@ typedef struct{
 
 }t_job_nodo_reduce;
 
-// // FILE* rutinaEjecutable;
+typedef struct{
+ FILE* rutinaEjecutable;
+ int tipoRutina;
+}t_job_nodo;
 
 typedef struct{
 }t_mar;
