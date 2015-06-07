@@ -27,6 +27,12 @@
 
 t_log* logger; // Log Global
 
+typedef struct{
+	int socket;
+	char* archivoATrabajar;
+}estructura_de_nfs;
+
+
 int recive_y_deserialisa(setBloque *bloque, int socket, uint32_t tamanioTotal){
 	int status;
 	char *buffer = malloc(tamanioTotal);
@@ -50,12 +56,10 @@ int recive_y_deserialisa(setBloque *bloque, int socket, uint32_t tamanioTotal){
 }
 
 
-void *atenderNFS(void* arg){
+void *atenderNFS(estructura_de_nfs packeteNFS){
+	FILE *archivo = fopen(packeteNFS.archivoATrabajar,"r+");
 
-
-	FILE *archivo = fopen(archivo_bin,"r+");
-
-	int socket= (int)arg;
+	int socket= packeteNFS.socket;
 	int entero; // handshake para saber quien es: FS(23)
 	int ok;
 	int tamanioTotal;
@@ -130,10 +134,15 @@ int main(void) {
 	char *ip_fs = config_get_string_value(archivoConfiguracion, "IP_FS");
 	char *puerto_fs = config_get_string_value(archivoConfiguracion, "PUERTO_FS");
 	int socket_fs = crearCliente(ip_fs,puerto_fs);
+
+	estructura_de_nfs packeteParaElNFS;
+	packeteParaElNFS.socket = socket_fs;
+	packeteParaElNFS.archivoATrabajar = archivo_bin;
+
 	entero = 2; // handshake con FS
 	send(socket_fs,&entero,sizeof(int),0);
 
-	pthread_create(&hiloFS, NULL, atenderNFS, (void *)socket_fs);
+	pthread_create(&hiloFS, NULL, &atenderNFS, (void *)&packeteParaElNFS);
 
 //Esta es el select
 
