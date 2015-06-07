@@ -20,8 +20,9 @@
 #include <netdb.h>
 #include <socket/socket.h>
 #include <unistd.h>
-#include "functions.h"
 #include <./commons/collections/list.h>
+#include "functions.h"
+#include "server-client.h"
 
 
 t_log* logger; // Log Global
@@ -79,44 +80,91 @@ int main(void) {
 	int entero;
 	t_archivo archivo;
 
+	int tipo_mens ;
 	struct fs_marta Fs_Marta;
 
 	t_config* archivoConfiguracion;
 
-	puerto = "3000" ;
+    // para recibir la cantidad de archivos
+	int cantidad;
+    int a;
+
+    //
 
 	archivoConfiguracion = config_create(rutaArchivoConfiguracion);
 	puerto_fs = config_get_string_value(archivoConfiguracion, "PUERTO_FS") ;
 	ip_fs = config_get_string_value(archivoConfiguracion, "IP_FS");
+
 	int cantidad;
 
-	int socketJob  = crearServidor("3000");
+	int socketEscJob  = crearsocketEscuha(PUERTO);
 
-	recv(socketJob, &cantidad, sizeof(int),0);
+	escuchar(socketEscJob);
 
-	for(a = 0 ; a <= cantidad; a++){
+   printf("SERVIDOR EN ESPERA...\n");
 
-		recv(socketJob,&archivo_Inicio,strlen(archivo)+1,0);
+   int socketJob = aceptarconexion(socketEscJob);
 
-		//Agregar a un array
+   recv(socketJob,&tipo_mens,sizeof(int),0 );
 
-	}
+   switch(tipo_mens)
+   {
+   	case 001:
+   	   int socketjob = aceptarconexion(socketEscJob);
+
+   	   recv(socketjob, &cantidad, sizeof(int),0);
+
+   	       for(a = 0 ; a <= cantidad; a++){
+
+   			 recv(socketJob,&archivo_Inicio,strlen(archivo)+1,0);
+
+   			//Agregar a un array
+
+   		}
+   		//acciones
+   		break;
+   	case valor_2:
+   		//acciones
+   		break;
+
+   	case valor_n:
+   		//acciones
+   		break;
+   	defalut:
+   		//acciones
+   		break;
+   }
+
+   if (tipo_mens == 0001){
 
 
-	recv(socketMarta,&combiner,strlen(combiner)+1,0);
+   }
+
+	recv(socketJob,&combiner,strlen(combiner)+1,0);
 
 
-	int socketFS = crearCliente(ip_fs,puerto_fs);
+	int socketFS = crearsocketCliente(ip_fs,puerto_fs);
+
+	int tamanioArch; //tamaño del archivo que recibimos
+
+	char*archivo;
+
+	socketFS = crearsocketServer (ip_fs, puerto_fs);
+
+	send(socketFS,archivo,tamanioArch,0);
+
+
+	printf("Conectado al servidor Filesystem.\n");
 
 	//send(socketFS, &listadearchivos );
 
 
 	//recv(socketFs, &cantidadNodos)
 	int n;
+
 	for(n = 0 ; n <= cantidadNodos; n++){
 
 	//	recv(socketFS , &STRUCTDELNODO);
-
 	}
 
 	//recv(socketFS, &archivo ,  )
@@ -125,65 +173,6 @@ int main(void) {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-	struct addrinfo hints;
-	struct addrinfo *serverInfo;
-
-	memset(&hints, 0, sizeof(hints));
-	hints.ai_family = AF_UNSPEC;		// No importa si uso IPv4 o IPv6
-	hints.ai_flags = AI_PASSIVE;		// Asigna el address del localhost: 127.0.0.1
-	hints.ai_socktype = SOCK_STREAM;	// Indica que usaremos el protocolo TCP
-
-	getaddrinfo(NULL, puerto, &hints, &serverInfo);
-
-	/* Necesitamos un socket que escuche las conecciones entrantes */
-/*
-	int servidorEscucha ; //listenningSocket;
-
-	servidorEscucha = socket(serverInfo->ai_family, serverInfo->ai_socktype, serverInfo->ai_protocol);
-
-	if (servidorEscucha <0)
-	 {
-		 perror("Error de apertura de socket");
-	     exit(-1);
-	 }
-	/*
-	 * ya tengo un archivo que puedo utilizar para analizar las conexiones entrantes.... ¿Por donde?
-	 * 	Necesito decirle al sistema que voy a utilizar el archivo que me proporciono para escuchar las conexiones por un puerto especifico.
-	 *  Todavia no estoy escuchando las conexiones entrantes!
-	  */
-
-	// bind(servidorEscucha,serverInfo->ai_addr, serverInfo->ai_addrlen);
-/*
-	if(bind(servidorEscucha,serverInfo->ai_addr, serverInfo->ai_addrlen)==-1)
-		{
-			printf("error en bind() \n");
-		    exit(-1);
-		};
-
-	freeaddrinfo(serverInfo);
-
-	// * 	Ya tengo un medio de comunicacion (el socket)
-
-	// listen(servidorEscucha, BACKLOG); //listen() es una syscall BLOQUEANTE.
-
-	 //Establecer el socket en modo escucha
-	 if(listen(servidorEscucha, BACKLOG) == -1)
-	   {
-	     printf("error en listen()\n");
-	     exit(-1);
-	   }
 	//* 	El sistema esperara hasta que reciba una conexion entrante...
 
 	printf("SERVIDOR EN ESPERA...\n");
