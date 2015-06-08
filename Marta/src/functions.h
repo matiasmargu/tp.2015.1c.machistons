@@ -11,7 +11,7 @@
 #include <netdb.h>
 #include <unistd.h>
 #include <stdint.h>
-#include "server-client.h"
+
 
 /*
  * 	Definicion de estructuras
