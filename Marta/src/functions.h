@@ -19,6 +19,8 @@
  * 	Es importante destacar que utilizamos el tipo uint_32, incluida en el header <stdint.h> para mantener un estandar en la cantidad
  * 	de bytes del paquete.
  */
+
+/*
 struct t_Package {
 	char username[MAXUSERNAME];
 	uint32_t username_long;

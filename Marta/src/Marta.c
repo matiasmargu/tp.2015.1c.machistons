@@ -46,28 +46,7 @@ typedef struct {
 
 
 
-static t_copia *copia_create(int NumeroBloque,int idNodo) {
-    t_copia *new = malloc(sizeof(t_copia));
-    new->Numerobloque = NumeroBloque;
-    new->idNodo = idNodo;
-    return new;
-}
 
-static void copia_destroy(t_copia *self) {
-    free(self);
-    free(self);
-}
-
-
-describe("copia"){
-	t_list *copia;
-before{
-copia = list_create();
-}end
-after {
-           list_destroy_and_destroy_elements(copia, (void*) copia_destroy);
-       } end
-} end
 
 
 
@@ -79,70 +58,72 @@ int main(void) {
 	char* ip_fs ;
 	char* puerto ;
 	int entero;
-	t_archivo archivo;
+	char* un_archivo;
+	int cantidad;
+	char* listaDeArchivos[cantidad];
+	int handShake;
+	char* combiner;
+	int b;
+
+
 
 	int tipo_mens ;
+	t_marta_job2 mj;
 	struct fs_marta Fs_Marta;
 
 	t_config* archivoConfiguracion;
 
     // para recibir la cantidad de archivos
-	int cantidad;
+
     int a;
 
-    //
+
 
 	archivoConfiguracion = config_create(rutaArchivoConfiguracion);
 	puerto_fs = config_get_string_value(archivoConfiguracion, "PUERTO_FS") ;
 	ip_fs = config_get_string_value(archivoConfiguracion, "IP_FS");
 
-	int cantidad;
 
-	int socketEscJob  = crearsocketEscuha(PUERTO);
 
-	escuchar(socketEscJob);
+	int socketjob  = crearServidor("3000");
+
 
    printf("SERVIDOR EN ESPERA...\n");
 
-   int socketJob = aceptarconexion(socketEscJob);
+   recv(socketjob, &handShake, sizeof(int),0);
 
-   recv(socketJob,&tipo_mens,sizeof(int),0 );
+   printf("Se conecto el job con el hadshake:%i",handShake);
 
-   switch(tipo_mens)
-   {
-   	case 001:
-   	   int socketjob = aceptarconexion(socketEscJob);
+   recv(socketjob, &cantidad, sizeof(int),0);
 
-   	   recv(socketjob, &cantidad, sizeof(int),0);
+   	   for(a = 0 ; a <= cantidad; a++){
 
-   	       for(a = 0 ; a <= cantidad; a++){
+   			 recv(socketjob,&un_archivo,strlen(un_archivo)+1,0);
 
-   			 recv(socketJob,&archivo_Inicio,strlen(archivo)+1,0);
-
-   			//Agregar a un array
+   			listaDeArchivos[a] = un_archivo;
 
    		}
-   		//acciones
-   		break;
-   	case valor_2:
-   		//acciones
-   		break;
-
-   	case valor_n:
-   		//acciones
-   		break;
-   	defalut:
-   		//acciones
-   		break;
-   }
-
-   if (tipo_mens == 0001){
 
 
-   }
 
-	recv(socketJob,&combiner,strlen(combiner)+1,0);
+	recv(socketjob,&combiner,strlen(combiner)+1,0);
 
+	// LLENAR LOS CAMPOS DE MJ CON LA PLANIFICACION DE LO QUE LE VA A MANDAR AL JOB
+int tamanioTotal = sizeof(int)+sizeof(int)+ strlen(mj.ip_nodo) + 1 + strlen(mj.nombreNodo)+1 + strlen(mj.nombre_archivo_resultado)+1+strlen(mj.puerto)+1;
+	send(socketjob, &tamanioTotal , sizeof(int), 0);
+
+	for(b = 0 ; b <= cantidad; b++){
+
+		int numero;
+	//	numero = lista_bloques[b];  ESTA LISTA SALE DE FS
+
+		send(socketjob,&numero,sizeof(numero),0);
+	}
+
+
+
+
+/*
 
 	int socketFS = crearsocketCliente(ip_fs,puerto_fs);
 
@@ -245,9 +226,9 @@ int main(void) {
 	if ((recv(socketFS, &entero, sizeof(int),0 )) != 0){
 		printf("fs me respondio esto: %i\n",entero);
 	}
- *//*
-	close(socketJob);
-	close(socketFS);
+ *//**/
+	close(socketjob);
+//	close(socketFS);
 	return EXIT_SUCCESS;
-}*/
+}
 

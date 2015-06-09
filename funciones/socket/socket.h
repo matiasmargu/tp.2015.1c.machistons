@@ -17,27 +17,14 @@
 
 //int cantidadDeBloques;
 
-//Marta->Job
- typedef struct{
-    int operacionID;  //identifica el numero de operacion
-	int rutina; //1=mapper o 2=reducer
-	char* ip_nodo;
-	char* nombreNodo;
-	char* puerto;
-	int cantidadDeBloques;
-//	int ListaDeBloques[cantidadDeBloques];
-	char* nombre_archivo_resultado; //donde va a devolverle el resultado
 
-}t_marta_job;
 //Marta->Job
  typedef struct{
-    int operacionID;  //identifica el numero de operacion
 	int rutina; //1=mapper o 2=reducer
 	char* ip_nodo;
 	char* nombreNodo;
 	char* puerto;
 	int cantidadDeBloques;
-//	int ListaDeBloques[cantidadDeBloques];
 	char* nombre_archivo_resultado; //donde va a devolverle el resultado
 
 }t_marta_job2;
@@ -104,7 +91,7 @@ typedef struct{
 }t_job_nodo_reduce;
 
 typedef struct{
- FILE* rutinaEjecutable;
+ char* rutinaEjecutable; //debe ser FILE REVISAR
  int tipoRutina;
 }t_job_nodo;
 
@@ -112,7 +99,7 @@ typedef struct{
 }t_mar;
 
 typedef struct{
-	t_marta_job Marta_Job;
+	t_marta_job2 Marta_Job;
 	int	socketMarta;
 	int	numeroDeBloque;
 	}t_conectarseAlNodo;

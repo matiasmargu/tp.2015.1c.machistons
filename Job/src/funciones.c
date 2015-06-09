@@ -16,9 +16,10 @@ int handshake = 8;
 int resultado;
 
 typedef struct{
-	t_marta_job Marta_Job;
+	t_marta_job2 Marta_Job;
 	int	socketMarta;
 	int	numeroDeBloque;
+	t_job_nodo Job_Nodo;
 	}t_conectarseAlNodo;
 
 
@@ -71,7 +72,7 @@ void conectarseAlNodo(t_conectarseAlNodo CAN){
 
 	  	//SERIALIZAR
 
-	   send(socketNodo,&Job_Nodo_Reduce,sizeof(struct job_nodo),0);
+	 //  send(socketNodo,&Job_Nodo_Reduce,sizeof(struct job_nodo),0);
 			   break;
    }
 
@@ -154,7 +155,7 @@ void conectarseAlNodo(t_conectarseAlNodo CAN){
 	}
 
 
-	int recive_y_deserialisa(t_marta_job *bloque, int socket, uint32_t tamanioTotal){ //FALTAN LOS CAMPOS QUE NO ME TOMA
+	int recive_y_deserialisa(t_marta_job2 *bloque, int socket, uint32_t tamanioTotal){
 		int status;
 		char *buffer = malloc(tamanioTotal);
 		int offset=0;
@@ -172,12 +173,28 @@ void conectarseAlNodo(t_conectarseAlNodo CAN){
 		memcpy(bloque->ip_nodo, buffer + offset, tamanioDinamico);
 		offset += tamanioDinamico;
 
+		memcpy(&tamanioDinamico, buffer + offset, sizeof(int));
+		offset += sizeof(int);
+
+		bloque->nombreNodo = malloc(tamanioDinamico);
+		memcpy(bloque->nombreNodo, buffer + offset, tamanioDinamico);
+		offset += tamanioDinamico;
 
 		memcpy(&tamanioDinamico, buffer + offset, sizeof(int));
 		offset += sizeof(int);
 
 		bloque->puerto = malloc(tamanioDinamico);
 		memcpy(bloque->puerto, buffer + offset, tamanioDinamico);
+		offset += tamanioDinamico;
+
+		memcpy(&(bloque->cantidadDeBloques), buffer + offset, sizeof(bloque->rutina));
+		offset += sizeof(bloque->cantidadDeBloques);
+
+		memcpy(&tamanioDinamico, buffer + offset, sizeof(int));
+		offset += sizeof(int);
+
+		bloque->nombre_archivo_resultado = malloc(tamanioDinamico);
+		memcpy(bloque->nombre_archivo_resultado, buffer + offset, tamanioDinamico);
 		offset += tamanioDinamico;
 
 
