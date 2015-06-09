@@ -15,6 +15,6 @@ char* serializarMapper(t_job_nodo jn);
 char* serializarJob_Nodo_Mapper(t_job_nodo_mapper );
 int recive_y_deserialisa(t_marta_job *bloque, int socket, uint32_t tamanioTotal);
 
-void liberarMensaje(char **);
+void liberarMensaje(char *);
 
 #endif /* FUNCIONES_H_ */

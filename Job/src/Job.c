@@ -43,20 +43,22 @@ int main(void) {
 	char* combiner;
 	char* lista_archivos;
 	FILE* archivo_resultado;
+	int i;
 	int c;
 	int tamanioTotal;
 	int numero;
 	int handshakeMarta;
 
 	typedef struct{
-	t_marta_job Marta_Job;
+	t_marta_job2 Marta_Job;
 	int	socketMarta;
 	int	numeroDeBloque;
 	t_job_nodo Job_Nodo;
 	}t_conectarseAlNodo;
 
 
-    t_marta_job Marta_Job;
+
+    t_marta_job2 Marta_Job;
     t_job_nodo Job_Nodo;
 
 
@@ -114,7 +116,7 @@ while(status){
 
 int listaDeBloques[Marta_Job.cantidadDeBloques];
 
-	for(c; c<= Marta_Job.cantidadBloques; c++ ){
+	for(c= 0; c<= Marta_Job.cantidadDeBloques; c++ ){
 
 	recv(socketMarta,&numero, sizeof(int),0);
 
@@ -125,22 +127,26 @@ int listaDeBloques[Marta_Job.cantidadDeBloques];
 int socketNodo = crearCliente (Marta_Job.ip_nodo, Marta_Job.puerto);
 
 if(Marta_Job.rutina == 1){
+Job_Nodo.tipoRutina = 1;
+Job_Nodo.rutinaEjecutable = mapper;
 
-char* mensajeMapper = serializarMapper(&mapper);
+char* mensajeMapper = serializarMapper(Job_Nodo);
 
 	send(socketNodo,mensajeMapper,strlen(mensajeMapper)+1,0);
 	liberarMensaje(mensajeMapper);
 
 	}else{
-		char* mensajeReduce = serializarMapper(&reduce);
+		/*char* mensajeReduce = serializarReducer(&reduce);
+		Job_Nodo.tipoRutina = 1;
+		Job_Nodo.rutinaEjecutable = mapper;
 
 			send(socketNodo,mensajeReduce,strlen(mensajeReduce)+1,0);
-			liberarMensaje(mensajeReduce);
+			liberarMensaje(mensajeReduce);*/
 	}
 
-	for(int i = 0; i< Marta_Job.cantidadDeBloques; i++){
+	for(i = 0; i<= Marta_Job.cantidadDeBloques; i++){
 
-            int numeroDeBloque = *listaDeBloques[i] ;
+            int numeroDeBloque = listaDeBloques[i] ;
 
             pthread_t (hiloNodo_i);
 

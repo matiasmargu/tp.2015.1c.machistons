@@ -188,7 +188,7 @@ void conectarseAlNodo(t_conectarseAlNodo CAN){
 
 
 
-void liberarMensaje(char **package){
+void liberarMensaje(char *package){
 	free(*package);
 }
 

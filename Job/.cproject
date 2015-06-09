@@ -54,6 +54,11 @@
 							</tool>
 						</toolChain>
 					</folderInfo>
+					<fileInfo id="cdt.managedbuild.config.gnu.exe.debug.1749348368.1398255085" name="Job.c" rcbsApplicability="disable" resourcePath="src/Job.c" toolsToInvoke="cdt.managedbuild.tool.gnu.c.compiler.exe.debug.1564094859.370783357">
+						<tool id="cdt.managedbuild.tool.gnu.c.compiler.exe.debug.1564094859.370783357" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.exe.debug.1564094859">
+							<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.103609769" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
+						</tool>
+					</fileInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>

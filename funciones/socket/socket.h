@@ -29,7 +29,18 @@
 	char* nombre_archivo_resultado; //donde va a devolverle el resultado
 
 }t_marta_job;
+//Marta->Job
+ typedef struct{
+    int operacionID;  //identifica el numero de operacion
+	int rutina; //1=mapper o 2=reducer
+	char* ip_nodo;
+	char* nombreNodo;
+	char* puerto;
+	int cantidadDeBloques;
+//	int ListaDeBloques[cantidadDeBloques];
+	char* nombre_archivo_resultado; //donde va a devolverle el resultado
 
+}t_marta_job2;
 
 //Job->Marta
 typedef struct{
