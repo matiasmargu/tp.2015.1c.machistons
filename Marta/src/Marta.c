@@ -22,7 +22,7 @@
 #include <unistd.h>
 #include <./commons/collections/list.h>
 #include "functions.h"
-#include "server-client.h"
+
 
 
 t_log* logger; // Log Global

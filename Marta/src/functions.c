@@ -6,7 +6,7 @@
  */
 
 #include "functions.h"
-#include "server-client.h"
+
 #include <pthread.h>
 #include <socket/socket.h>
 #include <stdio.h>
