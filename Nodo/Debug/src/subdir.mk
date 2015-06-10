@@ -4,13 +4,16 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-../src/Nodo.c 
+../src/Nodo.c \
+../src/funcionesParaEnviar.c 
 
 OBJS += \
-./src/Nodo.o 
+./src/Nodo.o \
+./src/funcionesParaEnviar.o 
 
 C_DEPS += \
-./src/Nodo.d 
+./src/Nodo.d \
+./src/funcionesParaEnviar.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
