@@ -80,6 +80,8 @@ int nodosNecesarios;
 // Estructuras de Interfaz con Nodo
 	estructuraSetBloque escribirBloque;
 	int socketNodoGlobal;
+	int tamanioTotalMensaje;
+	estructuraIPyNodo ipyPuertoNodo;
 //
 
 // Variables MongoDB
@@ -105,5 +107,6 @@ char *str;
 
 char* serializarParaGetBloque(estructuraSetBloque *bloque);
 void liberarMensaje(char **package);
+int recive_y_deserialisa_IPyPUERTO_Nodo(estructuraIPyNodo *bloque, int socket, uint32_t tamanioTotal);
 
 #endif /* LIBRERIAS_Y_ESTRUCTURAS_H_ */

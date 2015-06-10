@@ -34,7 +34,29 @@ void liberarMensaje(char **package){
 	free(*package);
 }
 
+int recive_y_deserialisa_IPyPUERTO_Nodo(estructuraIPyNodo *bloque, int socket, uint32_t tamanioTotal){
+	int status;
+	char *buffer = malloc(tamanioTotal);
+	int offset=0;
 
+	recv(socket, buffer, tamanioTotal, 0);
+
+	int tamanioDinamico;
+	memcpy(&tamanioDinamico, buffer + offset, sizeof(int));
+	offset += sizeof(int);
+	bloque->IP = malloc(tamanioDinamico);
+	memcpy(bloque->IP, buffer + offset, tamanioDinamico);
+	offset += tamanioDinamico;
+
+	memcpy(&tamanioDinamico, buffer + offset, sizeof(int));
+	offset += sizeof(int);
+	bloque->PUERTO = malloc(tamanioDinamico);
+	memcpy(bloque->PUERTO, buffer + offset, tamanioDinamico);
+	offset += tamanioDinamico;
+
+	free(buffer);
+	return status;
+}
 
 t_archivo* mapBsonToFile(bson_t* document){
 

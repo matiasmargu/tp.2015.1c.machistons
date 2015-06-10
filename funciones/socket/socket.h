@@ -104,6 +104,13 @@ typedef struct{
 	int tamanioData;
 }estructuraSetBloque;
 
+//Nodo a FileSystem
+
+typedef struct{
+	char* IP;
+	char* PUERTO;
+}estructuraIPyNodo;
+
 //
 
 int crearServidor(char* PUERTO);

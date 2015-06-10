@@ -108,18 +108,21 @@ int main()
 	    				break;
 	    			case 2: // Este es Nodo
 	    				socketNodoGlobal = i;
+	    				recv(i, &tamanioTotalMensaje, sizeof(int), 0);
+	    				if(recive_y_deserialisa_IPyPUERTO_Nodo(&ipyPuertoNodo, i, tamanioTotalMensaje)){
 
-	    				doc = bson_new ();
-	    			    bson_oid_init (&oid, NULL);
-	    			    BSON_APPEND_OID (doc, "_id", &oid);
-	    			    BSON_APPEND_INT32(doc, "Socket", i);
-	    			    BSON_APPEND_UTF8 (doc, "IP", "192.168.42.7");
-	    			    BSON_APPEND_UTF8(doc, "PUERTO" , "2004");
-	    			    BSON_APPEND_INT32(doc, "Estado", 0);
-	    			    if (!mongoc_collection_insert (nodos, MONGOC_INSERT_NONE, doc, NULL, &error)) {
-	    			           log_error(logger, error.message);
-	    			    }
-	    			    bson_destroy (doc);
+	    					doc = bson_new ();
+	    					bson_oid_init (&oid, NULL);
+	    					BSON_APPEND_OID (doc, "_id", &oid);
+	    					BSON_APPEND_INT32(doc, "Socket", i);
+	    					BSON_APPEND_UTF8 (doc, "IP", ipyPuertoNodo.IP);
+	    					BSON_APPEND_UTF8(doc, "PUERTO" , ipyPuertoNodo.PUERTO);
+	    					BSON_APPEND_INT32(doc, "Estado", 0);
+	    					if (!mongoc_collection_insert (nodos, MONGOC_INSERT_NONE, doc, NULL, &error)) {
+	    					          log_error(logger, error.message);
+	    					}
+	    					bson_destroy (doc);
+	    				}
 
 	    			    break;
 	    			}
