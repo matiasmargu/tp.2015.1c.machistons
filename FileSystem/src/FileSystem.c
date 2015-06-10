@@ -108,6 +108,7 @@ int main()
 	    				break;
 	    			case 2: // Este es Nodo
 	    				socketNodoGlobal = i;
+
 	    				doc = bson_new ();
 	    			    bson_oid_init (&oid, NULL);
 	    			    BSON_APPEND_OID (doc, "_id", &oid);
@@ -119,6 +120,7 @@ int main()
 	    			           log_error(logger, error.message);
 	    			    }
 	    			    bson_destroy (doc);
+
 	    			    break;
 	    			}
 	    		}

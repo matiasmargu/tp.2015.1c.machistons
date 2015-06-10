@@ -63,6 +63,7 @@ void *atenderConsola(void*arg) {
 						i = socketNodoGlobal;
 						entero = 2;
 						send(i, &entero, sizeof(int), 0);
+						printf("se mando %i\n", entero);
 						escribirBloque.bloque = 76;
 						escribirBloque.data = "david la puta que te pario";
 						escribirBloque.tamanioData = sizeof(int) + sizeof(int) + strlen(escribirBloque.data) + 1;

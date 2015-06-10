@@ -59,14 +59,6 @@ struct Nodo_FileSystem{
 
 }t_nodo_fs;
 
-//FS->Nodo
-
-typedef struct{
-	int numero;
-	char *bloque;
-	int tamanioDatos;
-}setBloque;
-
 //Nodo->Nodo
 struct Nodo_Nodo{}t_nodo_nodo;
 

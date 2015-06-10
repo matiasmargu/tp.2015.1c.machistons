@@ -34,6 +34,8 @@ void liberarMensaje(char **package){
 	free(*package);
 }
 
+
+
 t_archivo* mapBsonToFile(bson_t* document){
 
 	t_archivo* file = malloc(sizeof(t_archivo));
