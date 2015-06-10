@@ -25,7 +25,6 @@
 #include <commons/string.h>
 #include <commons/collections/list.h>
 
-
 //Libreria para Consola
 #include "consola.h"
 
