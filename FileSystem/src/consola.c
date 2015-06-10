@@ -63,12 +63,12 @@ void *atenderConsola(void*arg) {
 						i = socketNodoGlobal;
 						entero = 2;
 						send(i, &entero, sizeof(int), 0);
-						enviarBloqueAEscribir.bloque = 76;
-						enviarBloqueAEscribir.data = "david la puta que te pario";
-						enviarBloqueAEscribir.tamanioData = sizeof(int) + sizeof(int) + strlen(enviarBloqueAEscribir.data) + 1;
-						send(i, &enviarBloqueAEscribir.tamanioData, sizeof(enviarBloqueAEscribir.tamanioData), 0);
-						mensaje = serializarParaGetBloque(&enviarBloqueAEscribir);
-						send(i, mensaje, enviarBloqueAEscribir.tamanioData, 0);
+						escribirBloque.bloque = 76;
+						escribirBloque.data = "david la puta que te pario";
+						escribirBloque.tamanioData = sizeof(int) + sizeof(int) + strlen(escribirBloque.data) + 1;
+						send(i, &escribirBloque.tamanioData, sizeof(escribirBloque.tamanioData), 0);
+						mensaje = serializarParaGetBloque(&escribirBloque);
+						send(i, mensaje, escribirBloque.tamanioData, 0);
 						liberarMensaje(&mensaje);
 					break;
 				case Copiar_Arch_Al_FSLocal:

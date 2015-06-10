@@ -79,7 +79,7 @@ char *mensaje; // Para mandar mensajes serializados
 int nodosNecesarios;
 
 // Estructuras de Interfaz con Nodo
-	estructuraSetBloque enviarBloqueAEscribir;
+	estructuraSetBloque escribirBloque;
 	int socketNodoGlobal;
 //
 
