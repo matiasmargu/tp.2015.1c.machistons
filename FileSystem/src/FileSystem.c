@@ -27,11 +27,6 @@ int main()
 	archivos = mongoc_client_get_collection (client, "fileSystem", "archivos");
 	nodos = mongoc_client_get_collection (client, "fileSystem", "nodos");
 	//
-	doc = bson_new ();
-	if (!mongoc_collection_delete (nodos, MONGOC_DELETE_NONE, doc, NULL, &error)) {
-	        printf ("Delete failed: %s\n", error.message);
-	}
-
 
 	fd_set master;
 	fd_set read_fds;
@@ -52,7 +47,7 @@ int main()
 	t_config* archivoConfiguracion;
 	archivoConfiguracion = config_create(rutaArchivoConfiguracion);
 	int puerto_listen = config_get_int_value(archivoConfiguracion, "PUERTO_LISTEN");
-	int nodosNecesarios = config_get_int_value(archivoConfiguracion, "LISTA_NODOS");
+	nodosNecesarios = config_get_int_value(archivoConfiguracion, "LISTA_NODOS");
 
 	FD_ZERO(&master);
 	FD_ZERO(&read_fds);
@@ -113,41 +108,18 @@ int main()
 	    				break;
 	    			case 2: // Este es Nodo
 	    				socketNodoGlobal = i;
-
 	    				doc = bson_new ();
 	    			    bson_oid_init (&oid, NULL);
 	    			    BSON_APPEND_OID (doc, "_id", &oid);
 	    			    BSON_APPEND_INT32(doc, "Socket", i);
 	    			    BSON_APPEND_UTF8 (doc, "IP", "192.168.42.7");
 	    			    BSON_APPEND_UTF8(doc, "PUERTO" , "2004");
-	    			    BSON_APPEND_UTF8(doc, "Estado", "No disponible");
+	    			    BSON_APPEND_INT32(doc, "Estado", 0);
 	    			    if (!mongoc_collection_insert (nodos, MONGOC_INSERT_NONE, doc, NULL, &error)) {
 	    			           log_error(logger, error.message);
 	    			    }
 	    			    bson_destroy (doc);
-
-	    			    query = BCON_NEW ("PUERTO", "2004");
-	    			    update = BCON_NEW ("$set", "{",
-	    			                              "Nombre", "Carlos",
-	    			                              "updated", BCON_BOOL (true),
-	    			                       "}");
-
-	    			    if (!mongoc_collection_update (nodos, MONGOC_UPDATE_NONE, query, update, NULL, &error)) {
-	    			            printf ("%s\n", error.message);
-
-	    			     }
-
-	    			    query = bson_new ();
-	    			    cursor = mongoc_collection_find (nodos, MONGOC_QUERY_NONE, 0, 0, 0, query, NULL, NULL);
-
-	    			    while (mongoc_cursor_next (cursor, &doc)) {
-	    			    	str = bson_as_json (doc, NULL);
-	    			        printf ("%s\n", str);
-	    			        bson_free (str);
-	    			    }
-
-	    				printf("registro al nodo en Mongo DB\n");
-	    				break;
+	    			    break;
 	    			}
 	    		}
 	    	}

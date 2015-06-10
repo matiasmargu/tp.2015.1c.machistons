@@ -25,6 +25,7 @@
 #include <commons/string.h>
 #include <commons/collections/list.h>
 
+
 //Libreria para Consola
 #include "consola.h"
 
@@ -39,11 +40,25 @@ typedef struct {
 } t_directorio;
 
 typedef struct {
-	int bloque;
-	char* nodoCopia1;
-	char* copia2;
-	char* copia3;
-} t_bloque_copias;
+	char* name; //Nombre
+	int size; // Tamaño
+	int parent_directory; // Direccion Padre
+	char* path; // Direccion Fisica
+	int status; // Estado, 1 Disponible, 0 No Disponible
+	t_list *blocks; // Lista de bloques
+} t_archivo;
+
+typedef struct {
+	int id;
+	t_list *copies;
+} t_archivo_bloque;
+
+typedef struct {
+	int copy;
+	char* content;
+	int node;
+	int node_block;
+}t_archivo_copias;
 
 typedef struct {
 	char nombre;
@@ -56,26 +71,17 @@ typedef struct {
 	char estado;
 }t_nodo;
 
-typedef struct {
-	char* nombre; //Nombre
-	unsigned long tam; // Tamaño
-	int direccion; // Direccion Padre
-	char* estado; // Estado
-	t_list bloques_copias; // Lista de bloques
-} t_archivo;
-
 //Varibables globales
 
 t_log* logger; // Log Global
 int entero; //Para el handshake
 char *mensaje; // Para mandar mensajes serializados
+int nodosNecesarios;
 
 // Estructuras de Interfaz con Nodo
-	setBloque enviarBloqueAEscribir;
-
+	estructuraSetBloque enviarBloqueAEscribir;
 	int socketNodoGlobal;
 //
-
 
 // Variables MongoDB
 mongoc_client_t *client;
@@ -87,6 +93,8 @@ mongoc_collection_t *nodos;
 mongoc_cursor_t *cursor;
 
 bson_t *doc;
+bson_t *doc2;
+bson_t *doc3;
 bson_t *update;
 bson_t *query;
 bson_error_t error;
@@ -96,7 +104,7 @@ char *str;
 
 // funcionesParaEnviarEstructuras
 
-char* serializarParaGetBloque(setBloque *bloque);
+char* serializarParaGetBloque(estructuraSetBloque *bloque);
 void liberarMensaje(char **package);
 
 #endif /* LIBRERIAS_Y_ESTRUCTURAS_H_ */

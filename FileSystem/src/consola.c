@@ -6,6 +6,7 @@
  */
 
 #include "consola.h"
+#include "librerias_y_estructuras.h"
 
 void *atenderConsola(void*arg) {
 
@@ -31,7 +32,7 @@ void *atenderConsola(void*arg) {
 					imprimirMenu();
 					break;
 				case Formatear:
-
+					formatear();
 					break;
 				case Eliminar_Arch:
 
@@ -62,12 +63,12 @@ void *atenderConsola(void*arg) {
 						i = socketNodoGlobal;
 						entero = 2;
 						send(i, &entero, sizeof(int), 0);
-						enviarBloqueAEscribir.numero = 76;
-						enviarBloqueAEscribir.bloque = "david la puta que te pario";
-						enviarBloqueAEscribir.tamanioDatos = sizeof(int) + sizeof(int) + strlen(enviarBloqueAEscribir.bloque) + 1;
-						send(i, &enviarBloqueAEscribir.tamanioDatos, sizeof(enviarBloqueAEscribir.tamanioDatos), 0);
+						enviarBloqueAEscribir.bloque = 76;
+						enviarBloqueAEscribir.data = "david la puta que te pario";
+						enviarBloqueAEscribir.tamanioData = sizeof(int) + sizeof(int) + strlen(enviarBloqueAEscribir.data) + 1;
+						send(i, &enviarBloqueAEscribir.tamanioData, sizeof(enviarBloqueAEscribir.tamanioData), 0);
 						mensaje = serializarParaGetBloque(&enviarBloqueAEscribir);
-						send(i, mensaje, enviarBloqueAEscribir.tamanioDatos, 0);
+						send(i, mensaje, enviarBloqueAEscribir.tamanioData, 0);
 						liberarMensaje(&mensaje);
 					break;
 				case Copiar_Arch_Al_FSLocal:
@@ -112,4 +113,22 @@ void imprimirMenu(void){
 			"	Solicitar el MD5 de un archivo en MDFS: 16 \n"
 			"	SALIR 17 \n");
 	return ;
+}
+
+void formatear(){
+	doc = bson_new ();
+	if (!mongoc_collection_delete (nodos, MONGOC_DELETE_NONE, doc, NULL, &error)) {
+	        printf ("Delete failed: %s\n", error.message);
+	}
+	if (!mongoc_collection_delete (archivos, MONGOC_DELETE_NONE, doc, NULL, &error)) {
+		        printf ("Delete failed: %s\n", error.message);
+	}
+	if (!mongoc_collection_delete (directorios, MONGOC_DELETE_NONE, doc, NULL, &error)) {
+			        printf ("Delete failed: %s\n", error.message);
+	}
+	bson_destroy (doc);
+}
+
+void enviarBloqueAEscribir(int socket, int bloque, char* data){
+
 }

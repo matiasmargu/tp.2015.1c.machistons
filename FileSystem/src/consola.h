@@ -16,5 +16,6 @@
 
 void imprimirMenu(void);
 void *atenderConsola(void*arg);
+void formatear();
 
 #endif /* CONSOLA_H_ */

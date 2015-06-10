@@ -104,6 +104,16 @@ typedef struct{
 	int	numeroDeBloque;
 	}t_conectarseAlNodo;
 
+// FileSystem a Nodo
+
+typedef struct{
+	int bloque;
+	char* data;
+	int tamanioData;
+}estructuraSetBloque;
+
+//
+
 int crearServidor(char* PUERTO);
 int crearCliente (char *IP, char *PUERTO);
 
