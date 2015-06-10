@@ -38,7 +38,7 @@ typedef struct{
 }estructura_de_nfs;
 
 
-int recive_y_deserialisa(estructuraSetBloque *bloque, int socket, uint32_t tamanioTotal){
+int recive_y_deserialisa_SET_BLOQUE(estructuraSetBloque *bloque, int socket, uint32_t tamanioTotal){
 	int status;
 	char *buffer = malloc(tamanioTotal);
 	int offset=0;
@@ -61,9 +61,9 @@ int recive_y_deserialisa(estructuraSetBloque *bloque, int socket, uint32_t taman
 }
 
 
-void *atenderNFS(estructura_de_nfs packeteNFS){
+void *atenderNFS(void*arg){
 
-	int socket= packeteNFS.socket;
+	int socket= (int)arg;
 	int entero; // handshake para saber quien es: FS(23)
 	int ok;
 	int tamanioTotal;
@@ -73,6 +73,9 @@ void *atenderNFS(estructura_de_nfs packeteNFS){
 	char* pmap;
 	int nroDelBloque;
 
+	printf("%i\n",socket);
+//ESTO SE VA AL MAIN
+	/*
 	fd = open(packeteNFS.archivoATrabajar,O_RDWR);
 	if(fd == -1){
 		printf("Error al leer el ARCHIBO_BIN\n");
@@ -91,8 +94,9 @@ void *atenderNFS(estructura_de_nfs packeteNFS){
 		close(fd);
 		exit(1);
 	}
-
+*/
 	while(1){
+		//printf("Esto deberia imprimirse una sola vez\n");
 		if(recv(socket, &entero, sizeof(int),0) > 0){
 		switch(entero){
 		//getBloque(numero);
@@ -102,15 +106,16 @@ void *atenderNFS(estructura_de_nfs packeteNFS){
 			break;
 		//setBloque(numero,[datos]);
 			case 2:
+				printf("setBloque Activo\n");
 				recv(socket,&tamanioTotal,sizeof(int),0);
 				int status = 1; // Estructura que manjea el status de los recieve.
-				status = recive_y_deserialisa(&set, socket, tamanioTotal);
+				status = recive_y_deserialisa_SET_BLOQUE(&set, socket, tamanioTotal);
 				if (status) {
 					// ACA TRABAJAN CON set.numero y set.bloque. Escriben el archivo y toda la bola.
 					printf("%i\n",set.bloque);
 					printf("%s\n",set.data);
-					nroDelBloque = set.bloque;
-					pmap[nroDelBloque * 20 * 1024 * 1024] = set.data;
+	//				nroDelBloque = set.bloque;
+	//				pmap[nroDelBloque * 20 * 1024 * 1024] = set.data;
 				}
 				ok = 20;
 				send(socket,&ok, sizeof(int),0);
@@ -171,7 +176,8 @@ int main(void) {
 	entero = 2; // handshake con FS
 	send(socket_fs,&entero,sizeof(int),0);
 
-	pthread_create(&hiloFS, NULL, &atenderNFS, (void *)&packeteParaElNFS);
+	printf("%i\n",socket_fs);
+	pthread_create(&hiloFS, NULL, &atenderNFS, (void *)socket_fs);
 
 //Esta es el select
 
