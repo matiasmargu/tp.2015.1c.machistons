@@ -17,68 +17,19 @@ typedef struct{
 
 char* pmap;
 
-void *atenderNFS(void*arg){
 
-	int socket= (int)arg;
-	int entero; // handshake para saber quien es: FS(23)
-	int ok;
-	int tamanioTotal;
-	int fd;
-	estructuraSetBloque set;
-	struct stat mystat;
-	char* pmap;
-	int nroDelBloque;
-
-	printf("%i\n",socket);
-
-	while(1){
-		//printf("Esto deberia imprimirse una sola vez\n");
-		if(recv(socket, &entero, sizeof(int),0) > 0){
-		switch(entero){
-		//getBloque(numero);
-			case 1:
-				ok = 20;
-				send(socket,&ok, sizeof(int),0);
-			break;
-		//setBloque(numero,[datos]);
-			case 2:
-				printf("setBloque Activo\n");
-				recv(socket,&tamanioTotal,sizeof(int),0);
-				int status = 1; // Estructura que manjea el status de los recieve.
-				status = recive_y_deserialisa_SET_BLOQUE(&set, socket, tamanioTotal);
-				if (status) {
-					// ACA TRABAJAN CON set.numero y set.bloque. Escriben el archivo y toda la bola.
-					printf("%i\n",set.bloque);
-					printf("%s\n",set.data);
-					nroDelBloque = set.bloque;
-					pmap[nroDelBloque * 20 * 1024 * 1024] = set.data;
-				}
-				ok = 20;
-				send(socket,&ok, sizeof(int),0);
-			break;
-		//getFileContent(nombre);
-			case 3:
-				ok = 20;
-				send(socket,&ok, sizeof(int),0);
-			break;
-		}
-	}
-	}
-	return NULL;
-}
 
 int main(void) {
 
 	char* rutaArchivoConfiguracion = "/home/utnso/git/tp-2015-1c-machistons/Configuracion/nodo.conf";
-	t_config* archivoConfiguracion;
-	logger = log_create("LOG_Nodo", "log_nodo" ,false, LOG_LEVEL_INFO);
 
-	int entero; //Para el handshake
+	logger = log_create("LOG_Nodo", "log_nodo" ,false, LOG_LEVEL_INFO);
 
 	int fd;
 	struct stat mystat;
 
-	pthread_t hiloFS;
+	int entero;
+
 	pthread_t hiloJob;
 	pthread_t hiloNodo;
 
@@ -99,15 +50,10 @@ int main(void) {
 	char *archivo_bin = config_get_string_value(archivoConfiguracion, "ARCHIVO_BIN");
 	char *dir_temp = config_get_string_value(archivoConfiguracion, "DIR_TEMP");
 	char *nodo_nuevo = config_get_string_value(archivoConfiguracion, "NODO_NUEVO");
-	char *ip_nodo = config_get_string_value(archivoConfiguracion, "IP_NODO");
-	int puerto_nodo = config_get_int_value(archivoConfiguracion, "PUERTO_NODO");
+	ip_nodo = config_get_string_value(archivoConfiguracion, "IP_NODO");
+	puerto_nodo = config_get_int_value(archivoConfiguracion, "PUERTO_NODO");
 
-//Esta es la coneccion con el FS
-
-	char *ip_fs = config_get_string_value(archivoConfiguracion, "IP_FS");
-	char *puerto_fs = config_get_string_value(archivoConfiguracion, "PUERTO_FS");
-	int socket_fs = crearCliente(ip_fs,puerto_fs);
-
+/*
 	fd = open(archivo_bin,O_RDWR);
 		if(fd == -1){
 			printf("Error al leer el ARCHIBO_BIN\n");
@@ -126,12 +72,9 @@ int main(void) {
 			close(fd);
 			exit(1);
 		}
+		*/
 
-	entero = 2; // handshake con FS
-	send(socket_fs,&entero,sizeof(int),0);
-	mensaje = serializarIPyPUERTO(ip_fs, puerto_fs);
-	printf("%i\n",socket_fs);
-	pthread_create(&hiloFS, NULL, &atenderNFS, (void *)socket_fs);
+	handshakeConFS();
 
 //Esta es el select
 

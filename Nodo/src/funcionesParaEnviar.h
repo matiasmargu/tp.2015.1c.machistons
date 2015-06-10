@@ -28,12 +28,19 @@
 #include <sys/types.h>
 #include <fcntl.h>
 #include <sys/mman.h>
+#include "atenderNodoYFS.h"
 
 char *mensaje;
 
+char *ip_nodo;
+int puerto_nodo;
+
 
 t_log* logger; // Log Global
+t_config* archivoConfiguracion;
 
 int recive_y_deserialisa_SET_BLOQUE(estructuraSetBloque *bloque, int socket, uint32_t tamanioTotal);
+char* serializarIPyPUERTO(char* ip_fs,char* puerto_fs, int tamanioData);
+void handshakeConFS ();
 
 #endif /* FUNCIONESPARAENVIAR_H_ */
