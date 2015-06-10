@@ -70,7 +70,8 @@ void *atenderNFS(estructura_de_nfs packeteNFS){
 	int fd;
 	setBloque set;
 	struct stat mystat;
-	void* pmap;
+	char* pmap;
+	int nroDelBloque;
 
 	fd = open(packeteNFS.archivoATrabajar,O_RDWR);
 	if(fd == -1){
@@ -108,6 +109,8 @@ void *atenderNFS(estructura_de_nfs packeteNFS){
 					// ACA TRABAJAN CON set.numero y set.bloque. Escriben el archivo y toda la bola.
 					printf("%i\n",set.numero);
 					printf("%s\n",set.bloque);
+					nroDelBloque = set.numero;
+					pmap[nroDelBloque * 1024 * 1024] = set.bloque;
 				}
 				ok = 20;
 				send(socket,&ok, sizeof(int),0);
