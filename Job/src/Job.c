@@ -109,7 +109,7 @@ for(a = 0 ; a <= cantidad; a++){
 
 	char *archivo;
 	archivo = lista_archivos[a];
-
+//SERIALIZAR PARA MANDAR CHAR*
 	send(socketMarta,&archivo,strlen(archivo)+1,0);
 
 }

@@ -94,7 +94,6 @@ void conectarseAlNodo(t_conectarseAlNodo CAN){
 
 
 
-/*
 
 
 	char* serializarMapper(t_job_nodo *jn){
@@ -114,9 +113,9 @@ void conectarseAlNodo(t_conectarseAlNodo CAN){
 		return serializedPackage;
 	}
 
-*/
 
-/*
+
+
 
 	char* serializarJob_Nodo_Mapper(t_job_nodo_mapper *job_nodo){
 		char *serializedPackage = malloc((strlen(job_nodo->resultado)+1)+ (sizeof(int))+(sizeof(int)));
@@ -193,7 +192,6 @@ void conectarseAlNodo(t_conectarseAlNodo CAN){
 		free(buffer);
 		return status;
 	}
-*/
 
 
 void liberarMensaje(char *package){
