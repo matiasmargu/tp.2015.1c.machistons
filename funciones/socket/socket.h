@@ -11,7 +11,7 @@
 #define BACKLOG 5			// Define cuantas conexiones vamos a mantener pendientes al mismo tiempo
 #define PACKAGESIZE 1024	// Define cual va a ser el size maximo del paquete a enviar
 
-
+#include <./commons/log.h>
 
 
 
@@ -90,11 +90,6 @@ typedef struct{
 typedef struct{
 }t_mar;
 
-typedef struct{
-	t_marta_job2 Marta_Job;
-	int	socketMarta;
-	int	numeroDeBloque;
-	}t_conectarseAlNodo;
 
 // FileSystem a Nodo
 
@@ -111,7 +106,14 @@ typedef struct{
 	char* PUERTO;
 }estructuraIPyNodo;
 
-//
+//JOB
+typedef struct{
+	t_marta_job2 Marta_Job;
+	int	socketMarta;
+	int	numeroDeBloque;
+	t_job_nodo Job_Nodo;
+	t_log* logger;
+	}t_conectarseAlNodo;
 
 int crearServidor(char* PUERTO);
 int crearCliente (char *IP, char *PUERTO);

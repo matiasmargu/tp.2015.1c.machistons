@@ -57,13 +57,13 @@ int main(void) {
 	char* puerto_fs ;
 	char* ip_fs ;
 	char* puerto ;
-	int entero;
 	char* un_archivo;
 	int cantidad;
-	char* listaDeArchivos[cantidad];
+	//char* listaDeArchivos[cantidad];
 	int handShake;
 	char* combiner;
 	int b;
+	int saludo;
 
 
 
@@ -92,10 +92,15 @@ int main(void) {
 
    recv(socketjob, &handShake, sizeof(int),0);
 
-   printf("Se conecto el job con el hadshake:%i",handShake);
+   saludo = 3;
+
+   send(socketjob, &saludo, sizeof(int),0);
+
+   printf("Se conecto el job con el hadshake: %i \n",handShake);
+
 
    recv(socketjob, &cantidad, sizeof(int),0);
-
+/*
    	   for(a = 0 ; a <= cantidad; a++){
 
    			 recv(socketjob,&un_archivo,strlen(un_archivo)+1,0);
@@ -121,9 +126,9 @@ int tamanioTotal = sizeof(int)+sizeof(int)+ strlen(mj.ip_nodo) + 1 + strlen(mj.n
 	}
 
 
+///job
 
 
-/*
 
 	int socketFS = crearsocketCliente(ip_fs,puerto_fs);
 

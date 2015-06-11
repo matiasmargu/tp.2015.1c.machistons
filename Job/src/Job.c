@@ -34,6 +34,7 @@ int main(void) {
 
 	t_config* archivoConfiguracion;
 
+
 	logger = log_create("LOG_JOB", "log_job" ,false, LOG_LEVEL_INFO);
 
 	char* puerto_marta;
@@ -47,14 +48,9 @@ int main(void) {
 	int c;
 	int tamanioTotal;
 	int numero;
+	int saludo;
 	int handshakeMarta;
 
-	typedef struct{
-	t_marta_job2 Marta_Job;
-	int	socketMarta;
-	int	numeroDeBloque;
-	t_job_nodo Job_Nodo;
-	}t_conectarseAlNodo;
 
 
 
@@ -80,15 +76,23 @@ int main(void) {
 
 int socketMarta = crearCliente (ip_marta, puerto_marta);
 
+handshakeMarta = 9;
 
 send(socketMarta,&handshakeMarta,sizeof(int),0);
+
+recv(socketMarta, &saludo, sizeof(int),0);
+
+
 log_info(logger,"Conexion establecida con proceso Marta");
-printf("Conexion establecida con proceso Marta");
+printf("Conexion establecida con proceso Marta: %i\n",saludo);
 
 
 
   int cantidad = sizeof(lista_archivos)/sizeof(int) ; //TAMANIO LISTA DE ARCHIVOS
-  send(socketMarta,&cantidad,sizeof(int),0);
+  printf("Cantidad: %i\n",cantidad);
+
+ /* send(socketMarta,&cantidad,sizeof(int),0);
+
   int a;
 
 for(a = 0 ; a <= cantidad; a++){
@@ -141,7 +145,7 @@ char* mensajeMapper = serializarMapper(Job_Nodo);
 		Job_Nodo.rutinaEjecutable = mapper;
 
 			send(socketNodo,mensajeReduce,strlen(mensajeReduce)+1,0);
-			liberarMensaje(mensajeReduce);*/
+			liberarMensaje(mensajeReduce);
 	}
 
 	for(i = 0; i<= Marta_Job.cantidadDeBloques; i++){
@@ -155,6 +159,7 @@ char* mensajeMapper = serializarMapper(Job_Nodo);
             CAN.numeroDeBloque = numeroDeBloque;
             CAN.socketMarta = socketMarta;
             CAN.Job_Nodo = Job_Nodo;
+            CAN.logger = logger;
             if(Marta_Job.rutina == 1){
             	Job_Nodo.rutinaEjecutable = mapper;
             	Job_Nodo.tipoRutina = 1;
@@ -180,7 +185,7 @@ char* mensajeMapper = serializarMapper(Job_Nodo);
 
 
 
-
+*/
 
 	close(socketMarta);
 
