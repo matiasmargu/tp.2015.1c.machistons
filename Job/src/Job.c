@@ -39,11 +39,11 @@ int main(void) {
 
 	char* puerto_marta;
 	char* ip_marta;
-	FILE* mapper;
-	FILE* reduce;
+	char* mapper;
+	char* reduce;
 	char* combiner;
-	char* lista_archivos;
-	FILE* archivo_resultado;
+	char** lista_archivos;
+	char* archivo_resultado;
 	int i;
 	int c;
 	int tamanioTotal;
@@ -86,14 +86,24 @@ recv(socketMarta, &saludo, sizeof(int),0);
 log_info(logger,"Conexion establecida con proceso Marta");
 printf("Conexion establecida con proceso Marta: %i\n",saludo);
 
+char* l;
+int cantidad = 0;
+int s = 0;
+l = lista_archivos[s];
+
+while(l != NULL){
+	cantidad += 1;     //cantidad = TAMANIO LISTA DE ARCHIVOS
+	s = s+1;
+	l = lista_archivos[s];
+}
 
 
-  int cantidad = sizeof(lista_archivos)/sizeof(int) ; //TAMANIO LISTA DE ARCHIVOS
-  printf("Cantidad: %i\n",cantidad);
+ send(socketMarta,&cantidad,sizeof(int),0);
 
- /* send(socketMarta,&cantidad,sizeof(int),0);
+ //HASTA ACA ESTA PROBADO
 
-  int a;
+
+int a;
 
 for(a = 0 ; a <= cantidad; a++){
 
