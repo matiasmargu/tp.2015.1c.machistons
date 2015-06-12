@@ -101,7 +101,7 @@ while(l != NULL){
  send(socketMarta,&cantidad,sizeof(int),0);
 
  //HASTA ACA ESTA PROBADO
-
+/*
 
 int a;
 
@@ -109,8 +109,11 @@ for(a = 0 ; a <= cantidad; a++){
 
 	char *archivo;
 	archivo = lista_archivos[a];
-//SERIALIZAR PARA MANDAR CHAR*
-	send(socketMarta,&archivo,strlen(archivo)+1,0);
+
+	char* archivoAEnviar = serializar_charpuntero(archivo);
+
+
+	send(socketMarta,&archivoAEnviar,strlen(archivoAEnviar)+1,0);
 
 }
 

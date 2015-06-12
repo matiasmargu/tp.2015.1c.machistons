@@ -97,12 +97,12 @@ void conectarseAlNodo(t_conectarseAlNodo CAN){
 
 
 	char* serializarMapper(t_job_nodo *jn){
-		char *serializedPackage = malloc(sizeof(FILE));
+		char *serializedPackage = malloc(sizeof(int)+(strlen(jn->rutinaEjecutable)+1));
 
 		int offset = 0;
 		int size_to_send;
 
-		size_to_send =  sizeof(FILE);
+		size_to_send =  strlen(jn->rutinaEjecutable)+1;
 		memcpy(serializedPackage + offset, &(jn->rutinaEjecutable), size_to_send);
 		offset += size_to_send;
 
@@ -114,7 +114,24 @@ void conectarseAlNodo(t_conectarseAlNodo CAN){
 	}
 
 
+	char* serializar_charpuntero(char* nombre){
 
+		char *serializedPackage = malloc((strlen(nombre)+1));
+
+				int offset = 0;
+				int size_to_send;
+
+				int tamanio = strlen(nombre)+1;
+				size_to_send = sizeof(int);
+				memcpy(serializedPackage + offset, &tamanio, size_to_send);
+				offset += size_to_send;
+
+				size_to_send =  strlen(nombre) + 1;
+				memcpy(serializedPackage + offset, nombre , size_to_send);
+				offset += size_to_send;
+
+				return serializedPackage;
+	}
 
 
 	char* serializarJob_Nodo_Mapper(t_job_nodo_mapper *job_nodo){
@@ -143,6 +160,7 @@ void conectarseAlNodo(t_conectarseAlNodo CAN){
 
 		return serializedPackage;
 	}
+
 
 
 	int recive_y_deserialisa(t_marta_job2 *bloque, int socket, uint32_t tamanioTotal){

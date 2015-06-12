@@ -12,6 +12,8 @@
 #include <unistd.h>
 #include <stdint.h>
 
+int recive_y_deserialisa(char *, int);
+
 
 /*
  * 	Definicion de estructuras

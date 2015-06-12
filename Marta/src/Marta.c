@@ -101,18 +101,24 @@ int main(void) {
    recv(socketjob, &cantidad, sizeof(int),0);
 
 //HASTA ACA ESTA PROBADO CON JOB
-
+/*
    char** listaDeArchivos[cantidad];
 
 char* un_archivo;
 
    	   for(a = 0 ; a <= cantidad; a++){
+   		int estado = 1; // Estructura que manjea el status de los recieve.
 
-   			 recv(socketjob,&un_archivo,strlen(un_archivo)+1,0);
+   		estado = recive_y_deserialisa(un_archivo, socketjob);
+
+
+   		while(estado){
+
 
    			listaDeArchivos[a] = un_archivo;
 
    		}
+   	   }
 
    	   listaDeArchivos[cantidad+1] = NULL;
 
