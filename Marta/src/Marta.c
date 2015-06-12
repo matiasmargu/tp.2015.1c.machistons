@@ -22,6 +22,7 @@
 #include <unistd.h>
 #include <./commons/collections/list.h>
 #include "functions.h"
+#include <stdint.h>
 
 
 
@@ -50,20 +51,18 @@ typedef struct {
 
 
 
-
 int main(void) {
 
 	char* rutaArchivoConfiguracion = "/home/utnso/git/tp-2015-1c-machistons/Configuracion/marta.conf";
 	char* puerto_fs ;
 	char* ip_fs ;
 	char* puerto ;
-	int entero;
-	char* un_archivo;
+
 	int cantidad;
-	char* listaDeArchivos[cantidad];
 	int handShake;
 	char* combiner;
 	int b;
+	int saludo;
 
 
 
@@ -92,17 +91,45 @@ int main(void) {
 
    recv(socketjob, &handShake, sizeof(int),0);
 
-   printf("Se conecto el job con el hadshake:%i",handShake);
+   saludo = 3;
+
+   send(socketjob, &saludo, sizeof(int),0);
+
+   printf("Se conecto el job con el hadshake: %i \n",handShake);
+
 
    recv(socketjob, &cantidad, sizeof(int),0);
 
-   	   for(a = 0 ; a <= cantidad; a++){
 
-   			 recv(socketjob,&un_archivo,strlen(un_archivo)+1,0);
 
-   			listaDeArchivos[a] = un_archivo;
+   char** listaDeArchivos[cantidad];
+
+
+
+
+uint32_t tamanioTotal;
+   	   for(a = 0 ; a < cantidad; a++){
+   		int estado = 1; // Estructura que manjea el status de los recieve.
+
+   		recv(socketjob, &tamanioTotal, sizeof(uint32_t),0);
+
+   		char* archivo= malloc(tamanioTotal);
+
+   		//HASTA ACA ESTA PROBADO CON JOB
+
+   		estado = recive_y_deserialisa(archivo, socketjob, tamanioTotal);
+
+
+   		while(estado){
+
+   				printf("paso el recive");
+   			listaDeArchivos[a] = archivo;
 
    		}
+   		free(archivo);
+   	   }
+/*
+   	   listaDeArchivos[cantidad+1] = NULL;
 
 
 
@@ -121,9 +148,9 @@ int tamanioTotal = sizeof(int)+sizeof(int)+ strlen(mj.ip_nodo) + 1 + strlen(mj.n
 	}
 
 
+///job
 
 
-/*
 
 	int socketFS = crearsocketCliente(ip_fs,puerto_fs);
 

@@ -19,7 +19,27 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
+int recive_y_deserialisa(char *archivo, int socket, uint32_t tamanioTotal){
+		int status;
+		char *buffer = malloc(tamanioTotal);
+		int offset=0;
 
+		recv(socket, buffer, tamanioTotal, 0);
+
+
+		int tamanioDinamico;
+		memcpy(&tamanioDinamico, buffer + offset, sizeof(int));
+		offset += sizeof(int);
+
+		archivo = malloc(tamanioDinamico);
+		memcpy(archivo, buffer + offset, tamanioDinamico);
+		offset += tamanioDinamico;
+
+
+		free(buffer);
+		return status;
+
+}
 
 /*
 int recieve_and_deserialize(struct job_marta_inicio *package, int socketCliente){

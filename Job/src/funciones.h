@@ -9,10 +9,14 @@
 #define FUNCIONES_H_
 #include <sys/socket.h>
 #include <socket/socket.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdint.h>
 
 void conectarseAlNodo(t_conectarseAlNodo);
-char* serializarMapper(t_job_nodo jn);
-char* serializarJob_Nodo_Mapper(t_job_nodo_mapper );
+char* serializarMapper(t_job_nodo* jn);
+char* serializarJob_Nodo_Mapper(t_job_nodo_mapper* );
+char* serializar_charpuntero(char* );
 int recive_y_deserialisa(t_marta_job2 *bloque, int socket, uint32_t tamanioTotal);
 
 void liberarMensaje(char *);

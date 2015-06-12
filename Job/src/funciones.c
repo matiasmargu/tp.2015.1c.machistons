@@ -9,30 +9,22 @@
 #include <pthread.h>
 #include <socket/socket.h>
 #include <sys/socket.h>
-
+#include <netdb.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 
 int handshake = 8;
 int resultado;
 
-typedef struct{
-	t_marta_job2 Marta_Job;
-	int	socketMarta;
-	int	numeroDeBloque;
-	t_job_nodo Job_Nodo;
-	}t_conectarseAlNodo;
 
 
-char* rutaArchivoConfiguracion = "/home/utnso/git/tp-2015-1c-machistons/Configuracion/job.conf";
 t_job_nodo_mapper Job_Nodo_Mapper;
 t_job_nodo Job_Nodo;
 
-t_log* logger; // Log Global
 
-
-archivoConfiguracion = config_create(rutaArchivoConfiguracion);
-mapper = config_get_string_value(archivoConfiguracion, "MAPPER");
-reduce = config_get_string_value(archivoConfiguracion, "REDUCE");
 
 t_conectarseAlNodo CAN;
 
@@ -45,7 +37,7 @@ void conectarseAlNodo(t_conectarseAlNodo CAN){
 	Job_Nodo.rutinaEjecutable = CAN.Job_Nodo.rutinaEjecutable;
 	Job_Nodo.tipoRutina = CAN.Job_Nodo.tipoRutina;
 
-	serializarMapper(Job_Nodo);
+//	serializarMapper(Job_Nodo);
 
 	send(socketNodo,&handshake,sizeof(int),0);
 
@@ -58,7 +50,7 @@ void conectarseAlNodo(t_conectarseAlNodo CAN){
 	   Job_Nodo_Mapper.nombreRutina = CAN.Marta_Job.rutina;
 	   Job_Nodo_Mapper.resultado = CAN.Marta_Job.nombre_archivo_resultado;
 
-	   serializarJob_Nodo_Mapper(Job_Nodo_Mapper);
+	  // serializarJob_Nodo_Mapper(Job_Nodo_Mapper);
 
 	   send(socketNodo,&Job_Nodo_Mapper,(sizeof(int)+sizeof(int)+strlen(CAN.Marta_Job.nombre_archivo_resultado)+1),0);
 			   break;
@@ -86,16 +78,16 @@ void conectarseAlNodo(t_conectarseAlNodo CAN){
    switch(CAN.Marta_Job.rutina ){
       case 1:
     	  if(resultado == 1){
-   log_info(logger,"Finalizo el hilo mapper de forma exitosa ");
+   log_info(CAN.logger,"Finalizo el hilo mapper de forma exitosa ");
    			printf("Finalizo hilo mapper de forma exitosa");
-    	  }else{log_info(logger,"Finalizo el hilo mapper de forma no esperada ");
+    	  }else{log_info(CAN.logger,"Finalizo el hilo mapper de forma no esperada ");
  			printf("Finalizo hilo mapper de forma no esperada");}break;
 
       case 2:
     	  if(resultado == 1){
-    	     log_info(logger,"Finalizo el hilo reducer de forma exitosa ");
+    	     log_info(CAN.logger,"Finalizo el hilo reducer de forma exitosa ");
     	     			printf("Finalizo hilo reducer de forma exitosa");
-    	      	  }else{log_info(logger,"Finalizo el hilo reducer de forma no esperada ");
+    	      	  }else{log_info(CAN.logger,"Finalizo el hilo reducer de forma no esperada ");
     	   			printf("Finalizo hilo reducer de forma no esperada");}break;
    }
 }
@@ -105,14 +97,13 @@ void conectarseAlNodo(t_conectarseAlNodo CAN){
 
 
 
-
 	char* serializarMapper(t_job_nodo *jn){
-		char *serializedPackage = malloc(sizeof(FILE));
+		char *serializedPackage = malloc(sizeof(int)+(strlen(jn->rutinaEjecutable)+1));
 
 		int offset = 0;
 		int size_to_send;
 
-		size_to_send =  sizeof(FILE);
+		size_to_send =  strlen(jn->rutinaEjecutable)+1;
 		memcpy(serializedPackage + offset, &(jn->rutinaEjecutable), size_to_send);
 		offset += size_to_send;
 
@@ -124,11 +115,28 @@ void conectarseAlNodo(t_conectarseAlNodo CAN){
 	}
 
 
+	char* serializar_charpuntero(char* nombre){
 
+		char *serializedPackage = malloc(strlen(nombre)+1);
+
+				int offset = 0;
+				int size_to_send;
+
+				int tamanio = strlen(nombre)+1;
+				size_to_send = sizeof(int);
+				memcpy(serializedPackage + offset, &tamanio, size_to_send);
+				offset += size_to_send;
+
+				size_to_send =  strlen(nombre) + 1;
+				memcpy(serializedPackage + offset, nombre , size_to_send);
+				offset += size_to_send;
+
+				return serializedPackage;
+	}
 
 
 	char* serializarJob_Nodo_Mapper(t_job_nodo_mapper *job_nodo){
-		char *serializedPackage = malloc((strlen(job_nodo->resultado)+1)+ (sizeof(int))+(sizeof(int)));
+		char *serializedPackage = malloc(strlen(job_nodo->resultado)+1+ sizeof(int)+sizeof(int));
 
 		int offset = 0;
 		int size_to_send;
@@ -153,6 +161,7 @@ void conectarseAlNodo(t_conectarseAlNodo CAN){
 
 		return serializedPackage;
 	}
+
 
 
 	int recive_y_deserialisa(t_marta_job2 *bloque, int socket, uint32_t tamanioTotal){
@@ -202,7 +211,6 @@ void conectarseAlNodo(t_conectarseAlNodo CAN){
 		free(buffer);
 		return status;
 	}
-
 
 
 void liberarMensaje(char *package){

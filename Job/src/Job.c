@@ -23,6 +23,7 @@
 #include "funciones.h"
 #include <pthread.h>
 #include <socket/socket.h>
+#include <stdint.h>
 
 t_log* logger; // Log Global
 
@@ -34,27 +35,23 @@ int main(void) {
 
 	t_config* archivoConfiguracion;
 
+
 	logger = log_create("LOG_JOB", "log_job" ,false, LOG_LEVEL_INFO);
 
 	char* puerto_marta;
 	char* ip_marta;
-	FILE* mapper;
-	FILE* reduce;
+	char* mapper;
+	char* reduce;
 	char* combiner;
-	char* lista_archivos;
-	FILE* archivo_resultado;
+	char** lista_archivos;
+	char* archivo_resultado;
 	int i;
 	int c;
-	int tamanioTotal;
+	uint32_t tamanioTotal;
 	int numero;
+	int saludo;
 	int handshakeMarta;
 
-	typedef struct{
-	t_marta_job2 Marta_Job;
-	int	socketMarta;
-	int	numeroDeBloque;
-	t_job_nodo Job_Nodo;
-	}t_conectarseAlNodo;
 
 
 
@@ -80,26 +77,51 @@ int main(void) {
 
 int socketMarta = crearCliente (ip_marta, puerto_marta);
 
+handshakeMarta = 9;
 
 send(socketMarta,&handshakeMarta,sizeof(int),0);
+
+recv(socketMarta, &saludo, sizeof(int),0);
+
+
 log_info(logger,"Conexion establecida con proceso Marta");
-printf("Conexion establecida con proceso Marta");
+printf("Conexion establecida con proceso Marta: %i\n",saludo);
+
+char* l;
+int cantidad = 0;
+int s = 0;
+l = lista_archivos[s];
+
+while(l != NULL){
+	cantidad += 1;     //cantidad = TAMANIO LISTA DE ARCHIVOS
+	s = s+1;
+	l = lista_archivos[s];
+}
+
+
+ send(socketMarta,&cantidad,sizeof(int),0);
 
 
 
-  int cantidad = sizeof(lista_archivos)/sizeof(int) ; //TAMANIO LISTA DE ARCHIVOS
-  send(socketMarta,&cantidad,sizeof(int),0);
-  int a;
 
-for(a = 0 ; a <= cantidad; a++){
+int a;
+
+for(a = 0 ; a < cantidad; a++){
 
 	char *archivo;
 	archivo = lista_archivos[a];
+	tamanioTotal = strlen(archivo)+1;
 
-	send(socketMarta,&archivo,strlen(archivo)+1,0);
+	send(socketMarta, &tamanioTotal, sizeof(uint32_t),0);
+
+	//HASTA ACA ESTA PROBADO
+	char* archivoAEnviar = serializar_charpuntero(archivo);
+
+
+	send(socketMarta,&archivoAEnviar,strlen(archivoAEnviar)+1,0);
 
 }
-
+/*
 
 send(socketMarta,&combiner,strlen(combiner)+1,0);
 
@@ -141,7 +163,7 @@ char* mensajeMapper = serializarMapper(Job_Nodo);
 		Job_Nodo.rutinaEjecutable = mapper;
 
 			send(socketNodo,mensajeReduce,strlen(mensajeReduce)+1,0);
-			liberarMensaje(mensajeReduce);*/
+			liberarMensaje(mensajeReduce);
 	}
 
 	for(i = 0; i<= Marta_Job.cantidadDeBloques; i++){
@@ -155,6 +177,7 @@ char* mensajeMapper = serializarMapper(Job_Nodo);
             CAN.numeroDeBloque = numeroDeBloque;
             CAN.socketMarta = socketMarta;
             CAN.Job_Nodo = Job_Nodo;
+            CAN.logger = logger;
             if(Marta_Job.rutina == 1){
             	Job_Nodo.rutinaEjecutable = mapper;
             	Job_Nodo.tipoRutina = 1;
@@ -180,7 +203,7 @@ char* mensajeMapper = serializarMapper(Job_Nodo);
 
 
 
-
+*/
 
 	close(socketMarta);
 
