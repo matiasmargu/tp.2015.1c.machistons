@@ -76,6 +76,7 @@ t_log* logger; // Log Global
 int entero; //Para el handshake
 char *mensaje; // Para mandar mensajes serializados
 int nodosNecesarios;
+int apagarFS; // 0 Prendida, 1 Apagar
 
 // Estructuras de Interfaz con Nodo
 	estructuraSetBloque escribirBloque;
@@ -108,5 +109,11 @@ char *str;
 char* serializarParaGetBloque(estructuraSetBloque *bloque);
 void liberarMensaje(char **package);
 int recive_y_deserialisa_IPyPUERTO_Nodo(estructuraIPyNodo *bloque, int socket, uint32_t tamanioTotal);
+void *atenderMarta(void*arg);
+
+// funciones para Agregar Datos a Mongo
+
+void agregoNodoaMongo (int socket);
+void insertarArchivoAMongo (t_archivo archivo);
 
 #endif /* LIBRERIAS_Y_ESTRUCTURAS_H_ */

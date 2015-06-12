@@ -15,7 +15,7 @@ void *atenderConsola(void*arg) {
 		Copiar_Arch_Al_MDFS, Copiar_Arch_Al_FSLocal, Solicitar_MD5, Salir};
 
 	int i;
-
+	t_archivo archivoNuevo;
 	char bufferComando[MAXSIZE_COMANDO];
 	//char bufferPorTeclado[MAXBUFERTECLADO];
 	char **comandoSeparado;
@@ -73,10 +73,19 @@ void *atenderConsola(void*arg) {
 						liberarMensaje(&mensaje);
 					break;
 				case Copiar_Arch_Al_FSLocal:
+					archivoNuevo.name = "Carlos.txt";
+					archivoNuevo.size = 123;
+					archivoNuevo.parent_directory = 1;
+					archivoNuevo.status = 0;
+					archivoNuevo.path = "/home/utnso/Escritorio/Carlos.txt";
+					printf("holis\n");
+					insertarArchivoAMongo(archivoNuevo);
 					break;
 				case Solicitar_MD5:
 					break;
 				case Salir:
+					apagarFS = 1;
+					return NULL;
 					break;
 				default:
 							{

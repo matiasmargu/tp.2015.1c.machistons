@@ -10,14 +10,6 @@
 
 #include "librerias_y_estructuras.h"
 
-void *atenderMarta(void*arg){
-
-	int socketMarta = (int)arg;
-	printf("%i",socketMarta);
-
-	return NULL;
-}
-
 int main()
 {
 	// Inicializo la base MongoDB
@@ -27,6 +19,8 @@ int main()
 	archivos = mongoc_client_get_collection (client, "fileSystem", "archivos");
 	nodos = mongoc_client_get_collection (client, "fileSystem", "nodos");
 	//
+
+	apagarFS = 0; //Mantener prendido el FS.
 
 	fd_set master;
 	fd_set read_fds;
@@ -39,6 +33,7 @@ int main()
 
 	int fdmax, listener, newfd, yes = 1, addrlen, i;
 	int martafd; //Socket de coneccion con Marta
+	char buffer[1024]; // Buffer para saber si se callo el socket
 
 	pthread_create(&hiloConsola, NULL, atenderConsola, NULL);
 
@@ -67,11 +62,9 @@ int main()
 
 	logger = log_create("LOG_FILESYSTEM", "log_filesystem" ,false, LOG_LEVEL_INFO);
 
-	for(;;)
-	{
+	for (;;){
 	read_fds = master;
 	select(fdmax+1, &read_fds, NULL, NULL, NULL);
-	printf("select activo\n");
 	for(i = 0; i <= fdmax; i++)
 	{
 	    if(FD_ISSET(i, &read_fds))
@@ -89,49 +82,43 @@ int main()
 					{
 						fdmax = newfd;
 					}
+
+					if((recv(i, &entero, sizeof(int),0 )) <= 0)
+					{
+					}
+					else{
+						switch(entero){
+							case 3: // Este es Marta
+								martafd = i;
+								pthread_create(&hiloMarta, NULL, atenderMarta, (void *)martafd);
+								log_info(logger,"Hilo Marta creado satisfactoriamente");
+								break;
+							case 2: // Este es Nodo
+								socketNodoGlobal = i;
+								agregoNodoaMongo(i);
+								break;
+						}
+					}
 				}
 	    	}
 	    	else
 	    	{
-	    		if((recv(i, &entero, sizeof(int),0 )) <= 0)
+	    		if((recv(i, buffer, sizeof(buffer),0 )) <= 0)
 	    		{
+	    			if (i == martafd){
+	    				//se callo marta
+	    			}
+	    			else{
+	    				// se callo un nodo y tengo que ponerlo como no disponible
+	    			}
 	    			close(i); // Coneccion perdida
 	    			FD_CLR(i, &master);
-	    		}
-	    		else
-	    		{
-	    			switch(entero){
-	    			case 3: // Este es Marta
-	    				martafd = i;
-	    				pthread_create(&hiloMarta, NULL, atenderMarta, (void *)martafd);
-	    				log_info(logger,"Hilo Marta creado satisfactoriamente");
-	    				break;
-	    			case 2: // Este es Nodo
-	    				socketNodoGlobal = i;
-	    				recv(i, &tamanioTotalMensaje, sizeof(int), 0);
-	    				if(recive_y_deserialisa_IPyPUERTO_Nodo(&ipyPuertoNodo, i, tamanioTotalMensaje)){
-
-	    					doc = bson_new ();
-	    					bson_oid_init (&oid, NULL);
-	    					BSON_APPEND_OID (doc, "_id", &oid);
-	    					BSON_APPEND_INT32(doc, "Socket", i);
-	    					BSON_APPEND_UTF8 (doc, "IP", ipyPuertoNodo.IP);
-	    					BSON_APPEND_UTF8(doc, "PUERTO" , ipyPuertoNodo.PUERTO);
-	    					BSON_APPEND_INT32(doc, "Estado", 0);
-	    					if (!mongoc_collection_insert (nodos, MONGOC_INSERT_NONE, doc, NULL, &error)) {
-	    					          log_error(logger, error.message);
-	    					}
-	    					bson_destroy (doc);
-	    				}
-
-	    			    break;
-	    			}
 	    		}
 	    	}
 	    }
 	}
 	}
-
+	printf("llegueeeee\n");
 	mongoc_collection_destroy (directorios);
 	mongoc_collection_destroy (nodos);
 	mongoc_collection_destroy (archivos);
@@ -145,4 +132,3 @@ int main()
 
 	return EXIT_SUCCESS;
 }
-

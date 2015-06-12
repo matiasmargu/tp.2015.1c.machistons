@@ -58,6 +58,42 @@ int recive_y_deserialisa_IPyPUERTO_Nodo(estructuraIPyNodo *bloque, int socket, u
 	return status;
 }
 
+// Funciones de Nodos
+
+void agregoNodoaMongo (int socket){
+	recv(socket, &tamanioTotalMensaje, sizeof(int), 0);
+	if(recive_y_deserialisa_IPyPUERTO_Nodo(&ipyPuertoNodo, socket, tamanioTotalMensaje)){
+		doc = bson_new ();
+		bson_oid_init (&oid, NULL);
+		BSON_APPEND_OID (doc, "_id", &oid);
+		BSON_APPEND_INT32(doc, "Socket", socket);
+		BSON_APPEND_UTF8 (doc, "IP", ipyPuertoNodo.IP);
+		BSON_APPEND_UTF8(doc, "PUERTO" , ipyPuertoNodo.PUERTO);
+		BSON_APPEND_INT32(doc, "Estado", 0);
+		if (!mongoc_collection_insert (nodos, MONGOC_INSERT_NONE, doc, NULL, &error)) {
+    	        log_error(logger, error.message);
+		}
+		bson_destroy (doc);
+	}
+}
+
+// Funciones de Archivos
+
+void insertarArchivoAMongo (t_archivo archivo){
+	doc = bson_new ();
+	bson_oid_init (&oid, NULL);
+	BSON_APPEND_OID (doc, "_id", &oid);
+	BSON_APPEND_UTF8(doc, "Nombre", archivo.name);
+	BSON_APPEND_INT32 (doc, "Tamanio", archivo.size);
+	BSON_APPEND_INT32(doc, "Directorio Padre" , archivo.parent_directory);
+	BSON_APPEND_UTF8(doc, "Direccion Fisica", archivo.path);
+	BSON_APPEND_INT32(doc, "Estado", archivo.status);
+	if (!mongoc_collection_insert (archivos, MONGOC_INSERT_NONE, doc, NULL, &error)) {
+	        log_error(logger, error.message);
+	}
+	bson_destroy (doc);
+}
+
 t_archivo* mapBsonToFile(bson_t* document){
 
 	t_archivo* file = malloc(sizeof(t_archivo));
