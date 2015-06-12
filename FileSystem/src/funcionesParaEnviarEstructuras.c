@@ -79,19 +79,38 @@ void agregoNodoaMongo (int socket){
 
 // Funciones de Archivos
 
+void agregarCopia (bson_t *documento, char* numeroCopia, int idNodo, int bloque){
+	doc4 = bson_new();
+	BSON_APPEND_INT32(doc4, "ID Nodo", idNodo);
+	BSON_APPEND_INT32(doc4, "Bloque", bloque);
+	BSON_APPEND_DOCUMENT(documento, numeroCopia , doc4);
+	bson_destroy (doc4);
+}
+
 void insertarArchivoAMongo (t_archivo archivo){
 	doc = bson_new ();
-	bson_oid_init (&oid, NULL);
-	BSON_APPEND_OID (doc, "_id", &oid);
+	doc2 = bson_new ();
+	doc3 = bson_new ();
+
+	agregarCopia(doc3, "1", 65, 40);
+	agregarCopia(doc3, "2", 21, 210);
+	agregarCopia(doc3, "3", 76, 39);
+	BSON_APPEND_DOCUMENT(doc2, "0", doc3);
+
 	BSON_APPEND_UTF8(doc, "Nombre", archivo.name);
 	BSON_APPEND_INT32 (doc, "Tamanio", archivo.size);
 	BSON_APPEND_INT32(doc, "Directorio Padre" , archivo.parent_directory);
 	BSON_APPEND_UTF8(doc, "Direccion Fisica", archivo.path);
 	BSON_APPEND_INT32(doc, "Estado", archivo.status);
+	BSON_APPEND_ARRAY(doc, "Bloques", doc2);
+
 	if (!mongoc_collection_insert (archivos, MONGOC_INSERT_NONE, doc, NULL, &error)) {
 	        log_error(logger, error.message);
 	}
+
 	bson_destroy (doc);
+	bson_destroy (doc2);
+	bson_destroy (doc3);
 }
 
 t_archivo* mapBsonToFile(bson_t* document){

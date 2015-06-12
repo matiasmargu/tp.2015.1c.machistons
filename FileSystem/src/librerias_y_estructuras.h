@@ -97,6 +97,7 @@ mongoc_cursor_t *cursor;
 bson_t *doc;
 bson_t *doc2;
 bson_t *doc3;
+bson_t *doc4;
 bson_t *update;
 bson_t *query;
 bson_error_t error;
@@ -115,5 +116,6 @@ void *atenderMarta(void*arg);
 
 void agregoNodoaMongo (int socket);
 void insertarArchivoAMongo (t_archivo archivo);
+void agregarCopia (bson_t *documento, char* numeroCopia, int idNodo, int bloque);
 
 #endif /* LIBRERIAS_Y_ESTRUCTURAS_H_ */

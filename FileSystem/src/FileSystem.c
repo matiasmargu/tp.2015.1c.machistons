@@ -118,7 +118,7 @@ int main()
 	    }
 	}
 	}
-	printf("llegueeeee\n");
+
 	mongoc_collection_destroy (directorios);
 	mongoc_collection_destroy (nodos);
 	mongoc_collection_destroy (archivos);
