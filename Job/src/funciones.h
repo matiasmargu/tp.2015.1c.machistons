@@ -16,7 +16,7 @@
 void conectarseAlNodo(t_conectarseAlNodo);
 char* serializarMapper(t_job_nodo* jn);
 char* serializarJob_Nodo_Mapper(t_job_nodo_mapper* );
-char* serializar_charpuntero(char* );
+char* serializar_charpuntero(char*,int );
 int recive_y_deserialisa(t_marta_job2 *bloque, int socket, uint32_t tamanioTotal);
 
 void liberarMensaje(char *);

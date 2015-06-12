@@ -47,7 +47,7 @@ int main(void) {
 	char* archivo_resultado;
 	int i;
 	int c;
-	uint32_t tamanioTotal;
+	int tamanioTotal;
 	int numero;
 	int saludo;
 	int handshakeMarta;
@@ -105,20 +105,23 @@ while(l != NULL){
 
 
 int a;
+char *archivo;
+char* archivoAEnviar;
 
 for(a = 0 ; a < cantidad; a++){
 
-	char *archivo;
-	archivo = lista_archivos[a];
-	tamanioTotal = strlen(archivo)+1;
 
-	send(socketMarta, &tamanioTotal, sizeof(uint32_t),0);
+	archivo = lista_archivos[a];
+	tamanioTotal = sizeof(int) + strlen(archivo)+1;
+
+	send(socketMarta, &tamanioTotal, sizeof(int),0);
 
 	//HASTA ACA ESTA PROBADO
-	char* archivoAEnviar = serializar_charpuntero(archivo);
+	 archivoAEnviar = serializar_charpuntero(archivo, tamanioTotal);
 
 
-	send(socketMarta,&archivoAEnviar,strlen(archivoAEnviar)+1,0);
+	send(socketMarta,archivoAEnviar,tamanioTotal,0);
+
 
 }
 /*

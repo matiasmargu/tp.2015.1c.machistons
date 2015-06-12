@@ -115,12 +115,14 @@ void conectarseAlNodo(t_conectarseAlNodo CAN){
 	}
 
 
-	char* serializar_charpuntero(char* nombre){
+	char* serializar_charpuntero(char* nombre, int tamanioTotal){
 
-		char *serializedPackage = malloc(strlen(nombre)+1);
+
 
 				int offset = 0;
 				int size_to_send;
+
+				char *serializedPackage = malloc(tamanioTotal);
 
 				int tamanio = strlen(nombre)+1;
 				size_to_send = sizeof(int);

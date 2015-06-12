@@ -20,11 +20,12 @@
 #include <arpa/inet.h>
 
 int recive_y_deserialisa(char *archivo, int socket, uint32_t tamanioTotal){
-		int status;
+		int status ;
 		char *buffer = malloc(tamanioTotal);
 		int offset=0;
 
 		recv(socket, buffer, tamanioTotal, 0);
+
 
 
 		int tamanioDinamico;
@@ -38,7 +39,6 @@ int recive_y_deserialisa(char *archivo, int socket, uint32_t tamanioTotal){
 
 		free(buffer);
 		return status;
-
 }
 
 /*

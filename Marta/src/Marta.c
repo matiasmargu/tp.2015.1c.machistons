@@ -107,23 +107,27 @@ int main(void) {
 
 
 
-uint32_t tamanioTotal;
+int tamanioTotal;
+char* archivo;
+
    	   for(a = 0 ; a < cantidad; a++){
+
+   		recv(socketjob, &tamanioTotal, sizeof(int),0);
    		int estado = 1; // Estructura que manjea el status de los recieve.
 
-   		recv(socketjob, &tamanioTotal, sizeof(uint32_t),0);
 
-   		char* archivo= malloc(tamanioTotal);
+
+   		// archivo= malloc(tamanioTotal);
 
    		//HASTA ACA ESTA PROBADO CON JOB
 
-   		estado = recive_y_deserialisa(archivo, socketjob, tamanioTotal);
+   		estado = recive_y_deserialisa(&archivo, socketjob, tamanioTotal);
 
 
-   		while(estado){
+   		if(estado){
 
-   				printf("paso el recive");
-   			listaDeArchivos[a] = archivo;
+   				printf("paso el recive  \n");
+   			//listaDeArchivos[a] = archivo;
 
    		}
    		free(archivo);
