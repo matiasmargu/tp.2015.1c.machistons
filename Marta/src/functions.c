@@ -19,12 +19,12 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
-int recive_y_deserialisa(char *archivo, int socket){
+int recive_y_deserialisa(char *archivo, int socket, uint32_t tamanioTotal){
 		int status;
-		char *buffer = malloc(strlen(archivo)+1);
+		char *buffer = malloc(tamanioTotal);
 		int offset=0;
 
-		recv(socket, buffer, strlen(archivo)+1, 0);
+		recv(socket, buffer, tamanioTotal, 0);
 
 
 		int tamanioDinamico;

@@ -23,6 +23,7 @@
 #include "funciones.h"
 #include <pthread.h>
 #include <socket/socket.h>
+#include <stdint.h>
 
 t_log* logger; // Log Global
 
@@ -46,7 +47,7 @@ int main(void) {
 	char* archivo_resultado;
 	int i;
 	int c;
-	int tamanioTotal;
+	uint32_t tamanioTotal;
 	int numero;
 	int saludo;
 	int handshakeMarta;
@@ -100,23 +101,27 @@ while(l != NULL){
 
  send(socketMarta,&cantidad,sizeof(int),0);
 
- //HASTA ACA ESTA PROBADO
-/*
+
+
 
 int a;
 
-for(a = 0 ; a <= cantidad; a++){
+for(a = 0 ; a < cantidad; a++){
 
 	char *archivo;
 	archivo = lista_archivos[a];
+	tamanioTotal = strlen(archivo)+1;
 
+	send(socketMarta, &tamanioTotal, sizeof(uint32_t),0);
+
+	//HASTA ACA ESTA PROBADO
 	char* archivoAEnviar = serializar_charpuntero(archivo);
 
 
 	send(socketMarta,&archivoAEnviar,strlen(archivoAEnviar)+1,0);
 
 }
-
+/*
 
 send(socketMarta,&combiner,strlen(combiner)+1,0);
 

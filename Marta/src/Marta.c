@@ -22,6 +22,7 @@
 #include <unistd.h>
 #include <./commons/collections/list.h>
 #include "functions.h"
+#include <stdint.h>
 
 
 
@@ -43,7 +44,6 @@ typedef struct {
     int idNodo;
 
 } t_copia;
-
 
 
 
@@ -100,26 +100,35 @@ int main(void) {
 
    recv(socketjob, &cantidad, sizeof(int),0);
 
-//HASTA ACA ESTA PROBADO CON JOB
-/*
+
+
    char** listaDeArchivos[cantidad];
 
-char* un_archivo;
 
-   	   for(a = 0 ; a <= cantidad; a++){
+
+
+uint32_t tamanioTotal;
+   	   for(a = 0 ; a < cantidad; a++){
    		int estado = 1; // Estructura que manjea el status de los recieve.
 
-   		estado = recive_y_deserialisa(un_archivo, socketjob);
+   		recv(socketjob, &tamanioTotal, sizeof(uint32_t),0);
+
+   		char* archivo= malloc(tamanioTotal);
+
+   		//HASTA ACA ESTA PROBADO CON JOB
+
+   		estado = recive_y_deserialisa(archivo, socketjob, tamanioTotal);
 
 
    		while(estado){
 
-
-   			listaDeArchivos[a] = un_archivo;
+   				printf("paso el recive");
+   			listaDeArchivos[a] = archivo;
 
    		}
+   		free(archivo);
    	   }
-
+/*
    	   listaDeArchivos[cantidad+1] = NULL;
 
 

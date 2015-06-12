@@ -12,7 +12,7 @@
 #include <unistd.h>
 #include <stdint.h>
 
-int recive_y_deserialisa(char *, int);
+int recive_y_deserialisa(char *, int,uint32_t );
 
 
 /*

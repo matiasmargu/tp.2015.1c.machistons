@@ -13,6 +13,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 
 int handshake = 8;
@@ -116,7 +117,7 @@ void conectarseAlNodo(t_conectarseAlNodo CAN){
 
 	char* serializar_charpuntero(char* nombre){
 
-		char *serializedPackage = malloc((strlen(nombre)+1));
+		char *serializedPackage = malloc(strlen(nombre)+1);
 
 				int offset = 0;
 				int size_to_send;
@@ -135,7 +136,7 @@ void conectarseAlNodo(t_conectarseAlNodo CAN){
 
 
 	char* serializarJob_Nodo_Mapper(t_job_nodo_mapper *job_nodo){
-		char *serializedPackage = malloc((strlen(job_nodo->resultado)+1)+ (sizeof(int))+(sizeof(int)));
+		char *serializedPackage = malloc(strlen(job_nodo->resultado)+1+ sizeof(int)+sizeof(int));
 
 		int offset = 0;
 		int size_to_send;
