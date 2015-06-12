@@ -53,7 +53,7 @@ int main(void) {
 	ip_nodo = config_get_string_value(archivoConfiguracion, "IP_NODO");
 	puerto_nodo = config_get_int_value(archivoConfiguracion, "PUERTO_NODO");
 
-/*
+
 	fd = open(archivo_bin,O_RDWR);
 		if(fd == -1){
 			printf("Error al leer el ARCHIBO_BIN\n");
@@ -72,9 +72,10 @@ int main(void) {
 			close(fd);
 			exit(1);
 		}
-		*/
 
-	handshakeConFS();
+	printf("Archivo insertado en memoria correctamente\n");
+
+//	handshakeConFS();
 
 //Esta es el select
 

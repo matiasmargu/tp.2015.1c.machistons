@@ -26,7 +26,7 @@ endif
 all: Nodo
 
 dependents:
-	-cd /home/utnso/git/tp-2015-1c-machistons/funciones/Debug && $(MAKE) clean all
+	-cd /home/utnso/git/tp-2015-1c-machistons/funciones/Debug && $(MAKE) all
 
 # Tool invocations
 Nodo: $(OBJS) $(USER_OBJS) /home/utnso/git/tp-2015-1c-machistons/funciones/Debug/libfunciones.so
