@@ -43,8 +43,8 @@ void *atenderNFS(void*arg){
 				int tamanioData = sizeof(int) + strlen(bloque) + 1;
 				mensaje = serializarBloqueDeDatos(bloque,tamanioData);
 				send(socket,mensaje,tamanioData,0);
-				ok = 20;
-				send(socket,&ok, sizeof(int),0);
+				//ok = 20;
+				//send(socket,&ok, sizeof(int),0);
 			break;
 		//setBloque(numero,[datos]);
 			case 2:
