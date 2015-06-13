@@ -29,6 +29,7 @@ int main(void) {
 	int tamanioCombiner;
 	int socketFS;
 	int d;
+	int handshakeFS;
 
 
 	int tipo_mens ;
@@ -109,9 +110,9 @@ char* archivo;
    		printf("el combiner es %s\n",combiner);
 
    		crearCliente (ip_fs, puerto_fs);
-
+   		handshakeFS = 3;
+   		send(socketFS,&handshakeFS,sizeof(int),0);
    		send(socketFS,&cantidad,sizeof(int),0);
-
    		for(d = 0 ; d < cantidad; d++){
 
 
