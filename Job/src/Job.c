@@ -21,6 +21,7 @@ int main(void) {
 
 	logger = log_create("LOG_JOB", "log_job" ,false, LOG_LEVEL_INFO);
 
+	char* cadenaDeArchivos;
 	char* puerto_marta;
 	char* ip_marta;
 	char* mapper;
@@ -28,6 +29,7 @@ int main(void) {
 	char* combiner;
 	char** lista_archivos;
 	char* archivo_resultado;
+	int b;
 	int i;
 	int c;
 	int tamanioTotal;
@@ -79,6 +81,18 @@ while(l != NULL){
 	s = s+1;
 	l = lista_archivos[s];
 }
+
+char* cadena;
+
+for(b=0 ; b < cantidad ; b ++){
+
+	strcpy(cadena,lista_archivos[b]);
+	strcpy(cadena,"\n");
+
+}
+
+printf("%s",cadena);
+
 send(socketMarta,&cantidad,sizeof(int),0);
 
 int a;
@@ -87,7 +101,11 @@ char* archivoAEnviar;
 char* combinerAEnviar;
 int tamanioCombiner;
 
+send(socketMarta, &lista_archivos, sizeof(char)*cantidad,0);
 
+int peso = sizeof(char)*cantidad;
+printf("%i/n",peso);
+/*
 //ACA LE MANDAMOS A MARTA CADA ARCHIVO DE LA LISTA QUE ESTA EN LA CONFIGURACION
 for(a = 0 ; a < cantidad; a++){
 	nombre.archivo = lista_archivos[a];
@@ -109,6 +127,9 @@ send(socketMarta,combinerAEnviar,tamanioCombiner,0);
 
 
 /*
+
+
+
 
 recv(socketMarta, &tamanioTotal, sizeof(int),0);
 

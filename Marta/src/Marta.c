@@ -50,10 +50,21 @@ saludo = 3;
 send(socketjob, &saludo, sizeof(int),0);
 printf("Se conecto el job con el hadshake: %i \n",handShake);
 recv(socketjob, &cantidad, sizeof(int),0);
-char* listaDeArchivos[cantidad];
+printf("cantidad: %i \n",cantidad);
+char* listaDeArchivos[cantidad] ;
 int tamanioTotal;
 char* archivo;
 
+//recv(socketjob, &listaDeArchivos, sizeof(char)*cantidad,0);
+
+for(a = 0; a < cantidad ; a++){
+
+	printf("el archivo es %s\n ",listaDeArchivos[a]);
+
+
+}
+
+/*
    	   for(a = 0 ; a < cantidad; a++){
 
    		recv(socketjob, &tamanioTotal, sizeof(int),0);
@@ -78,43 +89,32 @@ char* archivo;
    		printf("el combiner es %s\n",combiner);
    		socketFS = crearCliente (ip_fs, puerto_fs);
    		handshakeFS = 25;
+
+   		printf("%i\n",cantidad);
+
    		send(socketFS,&handshakeFS,sizeof(int),0);
    		printf("mando a fs %i\n",handshakeFS);
+
+   		printf("%i\n",cantidad);
+
    		send(socketFS,&cantidad,sizeof(int),0);
+
+
+
    		for(d = 0 ; d < cantidad; d++){
    			archivoAFS.archivo = listaDeArchivos[d];
    			tamanioTotalAFS = sizeof(int) + strlen(archivoAFS.archivo)+1;
    			send(socketFS, &tamanioTotalAFS, sizeof(int),0);
    			archivoAFSAEnviar = serializar_charpuntero(&archivoAFS, tamanioTotalAFS);
    			send(socketFS,archivoAFSAEnviar,tamanioTotalAFS,0);
+
    		}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
    	}
-
-
+*/
 	close(socketjob);
-	free(combiner);
+	//free(combiner);
 	close(socketFS);
 	return EXIT_SUCCESS;
 }
