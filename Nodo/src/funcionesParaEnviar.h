@@ -30,8 +30,6 @@
 #include <sys/mman.h>
 #include "atenderNodoYFS.h"
 
-char *mensaje;
-
 char *ip_nodo;
 int puerto_nodo;
 

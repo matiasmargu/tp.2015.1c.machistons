@@ -8,6 +8,7 @@
 
 void *atenderNFS(void*arg){
 
+	char *mensaje;
 	int status;
 	int i;
 	int socket= (int)arg;
@@ -28,21 +29,22 @@ void *atenderNFS(void*arg){
 		//getBloque(numero);
 			case 1:
 				status = 1;
+				int tamanioBloque = 10;
 				recv(socket,&nroDelBloque,sizeof(int),0);
-				char* bloque;
+				char* bloque=malloc(tamanioBloque);
 
-				nroDelBloque++;
 
 				if(status>0){
-					int tamanioBloque = 20 * 1024 * 1024;
-					int tamanioBloqueExacto = tamanioBloque + nroDelBloque;
+					int tamanioBloqueExacto = (nroDelBloque)*tamanioBloque;
 					memcpy(bloque,pmap + tamanioBloqueExacto,tamanioBloque);
-					msync(bloque,strlen(bloque),0);
 					status = 0;
 				}
 				int tamanioData = sizeof(int) + strlen(bloque) + 1;
+				//printf("%i\n",tamanioData);
 				mensaje = serializarBloqueDeDatos(bloque,tamanioData);
+				send(socket,&tamanioData,sizeof(int),0);
 				send(socket,mensaje,tamanioData,0);
+				printf("se mando ok\n");
 				//ok = 20;
 				//send(socket,&ok, sizeof(int),0);
 			break;
@@ -55,9 +57,9 @@ void *atenderNFS(void*arg){
 
 				if (status>0) {
 					// ACA TRABAJAN CON set.numero y set.bloque. Escriben el archivo y toda la bola.
-					nroDelBloque = 1 + set.bloque;
+					nroDelBloque = set.bloque;//
 					//memcpy(pmap+(1024*1024*20*(nroDelBloque)),set.data,20*1024*1024);
-					memcpy(pmap+(nroDelBloque*20),set.data,strlen(set.data));
+					memcpy(pmap+(nroDelBloque* 10),set.data,strlen(set.data));
 					msync(pmap,strlen(pmap),0);
 					printf("\nse seteo correctamente\n");
 					status = 0; //para salir del if
