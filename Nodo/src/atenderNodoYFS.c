@@ -6,10 +6,6 @@
  */
 #include "atenderNodoYFS.h"
 
-
-
-
-
 void *atenderNFS(void*arg){
 
 	int status;
@@ -35,12 +31,13 @@ void *atenderNFS(void*arg){
 				recv(socket,&nroDelBloque,sizeof(int),0);
 				char* bloque;
 
+				nroDelBloque++;
+
 				if(status>0){
 					int tamanioBloque = 20 * 1024 * 1024;
 					int tamanioBloqueExacto = tamanioBloque + nroDelBloque;
-					for(i=0;i==tamanioBloque;i++){
-						bloque = pmap[tamanioBloqueExacto + i];
-					}
+					memcpy(bloque,pmap + tamanioBloqueExacto,tamanioBloque);
+					msync(bloque,strlen(bloque),0);
 					status = 0;
 				}
 				int tamanioData = sizeof(int) + strlen(bloque) + 1;
@@ -59,16 +56,14 @@ void *atenderNFS(void*arg){
 				if (status>0) {
 					// ACA TRABAJAN CON set.numero y set.bloque. Escriben el archivo y toda la bola.
 					nroDelBloque = 1 + set.bloque;
-					for(i=0;i<=strlen(set.data);i++){
-						pmap[i] = set.data[i];
-					}
-
+					//memcpy(pmap+(1024*1024*20*(nroDelBloque)),set.data,20*1024*1024);
+					memcpy(pmap+(nroDelBloque*20),set.data,strlen(set.data));
+					msync(pmap,strlen(pmap),0);
 					printf("\nse seteo correctamente\n");
 					status = 0; //para salir del if
-
 				}
-				ok = 20;
-				send(socket,&ok, sizeof(int),0);
+				//ok = 20;
+				//send(socket,&ok, sizeof(int),0);
 			break;
 		//getFileContent(nombre);
 			case 3:
@@ -78,5 +73,6 @@ void *atenderNFS(void*arg){
 		}
 	}
 	}
+	munmap(pmap,strlen(pmap));
 	return NULL;
 }
