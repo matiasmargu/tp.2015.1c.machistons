@@ -35,14 +35,12 @@ void *atenderConsola(void*arg) {
 					formatear();
 					break;
 				case Eliminar_Arch:
-
 					break;
 				case Renombrar_Arch:
 					break;
 				case Mover_Arch:
 					break;
 				case Crear_Directorio:
-
 					break;
 				case Eliminar_Directorio:
 					break;
@@ -59,28 +57,15 @@ void *atenderConsola(void*arg) {
 				case Agregar_Nodo:
 					break;
 				case Eliminar_Nodo:
-					   query = BCON_NEW ("Nombre", "Carlos.txt");
-					   update = BCON_NEW ("$set", "{",
-					                           "hello", BCON_UTF8 ("Everybody!"),
-					                           "updated", BCON_BOOL (true),
-											   "Bloques", BCON_ARRAY(doc),
-					                       "}");
-					    if (!mongoc_collection_update (archivos, MONGOC_UPDATE_NONE, query, update, NULL, &error)) {
-					        printf ("%s\n", error.message);
-					     }
-
+					i = socketNodoGlobal;
+					mensaje = pedirContenidoBloqueA(i, 10);
+					printf("%s\n",mensaje);
 					break;
 				case Copiar_Arch_Al_MDFS:
-						i = socketNodoGlobal;
-						entero = 2;
-						send(i, &entero, sizeof(int), 0);
-						escribirBloque.bloque = 4;
-						escribirBloque.data = "david la puta que te pario";
-						escribirBloque.tamanioData = sizeof(int) + sizeof(int) + strlen(escribirBloque.data) + 1;
-						send(i, &escribirBloque.tamanioData, sizeof(escribirBloque.tamanioData), 0);
-						mensaje = serializarParaGetBloque(&escribirBloque);
-						send(i, mensaje, escribirBloque.tamanioData, 0);
-						liberarMensaje(&mensaje);
+					i = socketNodoGlobal;
+					escribirBloque.bloque = 10;
+					escribirBloque.data = "wdqert763i";
+					escribirBloqueEnNodo(i,escribirBloque);
 					break;
 				case Copiar_Arch_Al_FSLocal:
 					archivoNuevo.name = "CarlosJSFNASFN.txt";
@@ -97,10 +82,10 @@ void *atenderConsola(void*arg) {
 					return NULL;
 					break;
 				default:
-							{
-								printf("Nro. de comando mal ingresado. Ingrese 0 para imprimir menu. \n");
-								log_error(logger,"Opcion mal ingresada por teclado en la consola");
-							}
+					{
+						printf("Nro. de comando mal ingresado. Ingrese 0 para imprimir menu. \n");
+						log_error(logger,"Opcion mal ingresada por teclado en la consola");
+					}
 			}
 	}
 	return NULL;
@@ -146,8 +131,4 @@ void formatear(){
 			        printf ("Delete failed: %s\n", error.message);
 	}
 	bson_destroy (doc);
-}
-
-void enviarBloqueAEscribir(int socket, int bloque, char* data){
-
 }

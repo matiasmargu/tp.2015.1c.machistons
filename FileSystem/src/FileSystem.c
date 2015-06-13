@@ -33,7 +33,6 @@ int main()
 
 	int fdmax, listener, newfd, yes = 1, addrlen, i;
 	int martafd; //Socket de coneccion con Marta
-	char buffer[1024]; // Buffer para saber si se callo el socket
 
 	pthread_create(&hiloConsola, NULL, atenderConsola, NULL);
 
@@ -102,7 +101,6 @@ int main()
 	    			switch(entero){
 	    				case 25: // Este es Marta
 	    					martafd = i;
-	    					printf("%i\n",i);
 	    					pthread_create(&hiloMarta, NULL, atenderMarta, (void *)martafd);
 	    					log_info(logger,"Hilo Marta creado satisfactoriamente");
 	    					break;
