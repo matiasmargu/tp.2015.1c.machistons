@@ -109,22 +109,19 @@ char* archivo;
 
    		printf("el combiner es %s\n",combiner);
 
-   		crearCliente (ip_fs, puerto_fs);
-   		handshakeFS = 3;
+   		socketFS = crearCliente (ip_fs, puerto_fs);
+   		handshakeFS = 25;
    		send(socketFS,&handshakeFS,sizeof(int),0);
+   		printf("mando a fs %i\n",handshakeFS);
    		send(socketFS,&cantidad,sizeof(int),0);
+
    		for(d = 0 ; d < cantidad; d++){
 
 
    			archivoAFS.archivo = listaDeArchivos[d];
    			tamanioTotalAFS = sizeof(int) + strlen(archivoAFS.archivo)+1;
-
    			send(socketFS, &tamanioTotalAFS, sizeof(int),0);
-
-
    			archivoAFSAEnviar = serializar_charpuntero(&archivoAFS, tamanioTotalAFS);
-
-
    			send(socketFS,archivoAFSAEnviar,tamanioTotalAFS,0);
    										}
 
