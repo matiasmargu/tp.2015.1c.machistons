@@ -17,9 +17,6 @@ int main(void) {
 
 	logger = log_create("LOG_Nodo", "log_nodo" ,false, LOG_LEVEL_INFO);
 
-	int fd;
-	struct stat mystat;
-
 	int entero;
 
 	pthread_t hiloJob;
@@ -44,27 +41,6 @@ int main(void) {
 	nodo_nuevo = config_get_string_value(archivoConfiguracion, "NODO_NUEVO");
 	ip_nodo = config_get_string_value(archivoConfiguracion, "IP_NODO");
 	puerto_nodo = config_get_int_value(archivoConfiguracion, "PUERTO_NODO");
-
-
-	fd = open(archivo_bin,O_RDWR);
-		if(fd == -1){
-			printf("Error al leer el ARCHIBO_BIN\n");
-			exit(1);
-		}
-
-		if(fstat(fd,&mystat) < 0){
-			printf("Error al establecer fstat\n");
-			close(fd);
-			exit(1);
-		}
-
-		pmap = mmap(0,mystat.st_size, PROT_READ|PROT_WRITE ,MAP_SHARED,fd,0);
-		if(pmap == MAP_FAILED){
-			printf("Error al mapear a memoria\n");
-			close(fd);
-			exit(1);
-		}
-
 
 	handshakeConFS();
 

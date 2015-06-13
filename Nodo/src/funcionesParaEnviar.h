@@ -40,6 +40,8 @@ char *dir_temp;
 char *nodo_nuevo;
 
 char* pmap;
+int fd;
+struct stat mystat;
 
 t_log* logger; // Log Global
 t_config* archivoConfiguracion;
