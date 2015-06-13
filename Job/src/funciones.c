@@ -6,46 +6,27 @@
  */
 
 #include "funciones.h"
-#include <pthread.h>
-#include <socket/socket.h>
-#include <sys/socket.h>
-#include <netdb.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
 
 int handshake = 8;
 int resultado;
 
-
-
 t_job_nodo_mapper Job_Nodo_Mapper;
 t_job_nodo Job_Nodo;
-
-
 
 t_conectarseAlNodo CAN;
 
 void conectarseAlNodo(t_conectarseAlNodo CAN){
 
 	int socketNodo = crearCliente (CAN.Marta_Job.ip_nodo, CAN.Marta_Job.puerto);
-
 	send(socketNodo,&handshake,sizeof(int),0);
-
 	Job_Nodo.rutinaEjecutable = CAN.Job_Nodo.rutinaEjecutable;
 	Job_Nodo.tipoRutina = CAN.Job_Nodo.tipoRutina;
 
 //	serializarMapper(Job_Nodo);
 
 	send(socketNodo,&handshake,sizeof(int),0);
-
    switch(CAN.Marta_Job.rutina ){
    case 1:
-
-
-
 	   Job_Nodo_Mapper.NumerobloqueDeDAtos = CAN.numeroDeBloque;
 	   Job_Nodo_Mapper.nombreRutina = CAN.Marta_Job.rutina;
 	   Job_Nodo_Mapper.resultado = CAN.Marta_Job.nombre_archivo_resultado;
@@ -53,11 +34,8 @@ void conectarseAlNodo(t_conectarseAlNodo CAN){
 	  // serializarJob_Nodo_Mapper(Job_Nodo_Mapper);
 
 	   send(socketNodo,&Job_Nodo_Mapper,(sizeof(int)+sizeof(int)+strlen(CAN.Marta_Job.nombre_archivo_resultado)+1),0);
-			   break;
-
+	   break;
    case 2:
-
-
 	    Job_Nodo_Mapper.NumerobloqueDeDAtos = CAN.numeroDeBloque;
 	  	Job_Nodo_Mapper.nombreRutina = CAN.Marta_Job.rutina;
 	  	Job_Nodo_Mapper.resultado = CAN.Marta_Job.nombre_archivo_resultado;;
@@ -69,25 +47,20 @@ void conectarseAlNodo(t_conectarseAlNodo CAN){
    }
 
    recv(socketNodo, &resultado, sizeof(int),0);
-
-
    send(CAN.socketMarta, &resultado, sizeof(int),0);
-
    close(socketNodo);
-
    switch(CAN.Marta_Job.rutina ){
       case 1:
     	  if(resultado == 1){
-   log_info(CAN.logger,"Finalizo el hilo mapper de forma exitosa ");
+   log_info(logger,"Finalizo el hilo mapper de forma exitosa ");
    			printf("Finalizo hilo mapper de forma exitosa");
-    	  }else{log_info(CAN.logger,"Finalizo el hilo mapper de forma no esperada ");
+    	  }else{log_info(logger,"Finalizo el hilo mapper de forma no esperada ");
  			printf("Finalizo hilo mapper de forma no esperada");}break;
-
       case 2:
     	  if(resultado == 1){
-    	     log_info(CAN.logger,"Finalizo el hilo reducer de forma exitosa ");
+    	     log_info(logger,"Finalizo el hilo reducer de forma exitosa ");
     	     			printf("Finalizo hilo reducer de forma exitosa");
-    	      	  }else{log_info(CAN.logger,"Finalizo el hilo reducer de forma no esperada ");
+    	      	  }else{log_info(logger,"Finalizo el hilo reducer de forma no esperada ");
     	   			printf("Finalizo hilo reducer de forma no esperada");}break;
    }
 }
@@ -115,24 +88,24 @@ void conectarseAlNodo(t_conectarseAlNodo CAN){
 	}
 
 
-	char* serializar_charpuntero(char* nombre){
+char* serializar_charpuntero(t_charpuntero *nombre, int tamanioTotal){
+			char *serializedPackage = malloc(tamanioTotal);
 
-		char *serializedPackage = malloc(strlen(nombre)+1);
+			int offset = 0;
+			int size_to_send;
 
-				int offset = 0;
-				int size_to_send;
+			int tamanioNombre = strlen(nombre->archivo) + 1;
+			size_to_send = sizeof(int);
+			memcpy(serializedPackage + offset, &tamanioNombre, size_to_send);
+			offset += size_to_send;
 
-				int tamanio = strlen(nombre)+1;
-				size_to_send = sizeof(int);
-				memcpy(serializedPackage + offset, &tamanio, size_to_send);
-				offset += size_to_send;
+			size_to_send =  strlen(nombre->archivo) + 1;
+			memcpy(serializedPackage + offset, nombre->archivo, size_to_send);
+			offset += size_to_send;
 
-				size_to_send =  strlen(nombre) + 1;
-				memcpy(serializedPackage + offset, nombre , size_to_send);
-				offset += size_to_send;
+			return serializedPackage;
+		}
 
-				return serializedPackage;
-	}
 
 
 	char* serializarJob_Nodo_Mapper(t_job_nodo_mapper *job_nodo){

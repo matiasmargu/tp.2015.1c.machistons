@@ -42,6 +42,7 @@ void *atenderConsola(void*arg) {
 				case Mover_Arch:
 					break;
 				case Crear_Directorio:
+
 					break;
 				case Eliminar_Directorio:
 					break;
@@ -58,12 +59,22 @@ void *atenderConsola(void*arg) {
 				case Agregar_Nodo:
 					break;
 				case Eliminar_Nodo:
+					   query = BCON_NEW ("Nombre", "Carlos.txt");
+					   update = BCON_NEW ("$set", "{",
+					                           "hello", BCON_UTF8 ("Everybody!"),
+					                           "updated", BCON_BOOL (true),
+											   "Bloques", BCON_ARRAY(doc),
+					                       "}");
+					    if (!mongoc_collection_update (archivos, MONGOC_UPDATE_NONE, query, update, NULL, &error)) {
+					        printf ("%s\n", error.message);
+					     }
+
 					break;
 				case Copiar_Arch_Al_MDFS:
 						i = socketNodoGlobal;
 						entero = 2;
 						send(i, &entero, sizeof(int), 0);
-						escribirBloque.bloque = 76;
+						escribirBloque.bloque = 4;
 						escribirBloque.data = "david la puta que te pario";
 						escribirBloque.tamanioData = sizeof(int) + sizeof(int) + strlen(escribirBloque.data) + 1;
 						send(i, &escribirBloque.tamanioData, sizeof(escribirBloque.tamanioData), 0);
@@ -72,7 +83,7 @@ void *atenderConsola(void*arg) {
 						liberarMensaje(&mensaje);
 					break;
 				case Copiar_Arch_Al_FSLocal:
-					archivoNuevo.name = "Carlos.txt";
+					archivoNuevo.name = "CarlosJSFNASFN.txt";
 					archivoNuevo.size = 123;
 					archivoNuevo.parent_directory = 1;
 					archivoNuevo.status = 0;
