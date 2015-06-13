@@ -39,9 +39,9 @@ int main(void) {
 
 	log_info(logger, "Se creo correctamente el archivo de configuracion");
 
-	char *archivo_bin = config_get_string_value(archivoConfiguracion, "ARCHIVO_BIN");
-	char *dir_temp = config_get_string_value(archivoConfiguracion, "DIR_TEMP");
-	char *nodo_nuevo = config_get_string_value(archivoConfiguracion, "NODO_NUEVO");
+	archivo_bin = config_get_string_value(archivoConfiguracion, "ARCHIVO_BIN");
+	dir_temp = config_get_string_value(archivoConfiguracion, "DIR_TEMP");
+	nodo_nuevo = config_get_string_value(archivoConfiguracion, "NODO_NUEVO");
 	ip_nodo = config_get_string_value(archivoConfiguracion, "IP_NODO");
 	puerto_nodo = config_get_int_value(archivoConfiguracion, "PUERTO_NODO");
 

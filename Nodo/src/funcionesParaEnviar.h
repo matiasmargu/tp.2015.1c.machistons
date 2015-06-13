@@ -35,6 +35,10 @@ char *mensaje;
 char *ip_nodo;
 int puerto_nodo;
 
+char *archivo_bin;
+char *dir_temp;
+char *nodo_nuevo;
+
 char* pmap;
 
 t_log* logger; // Log Global
