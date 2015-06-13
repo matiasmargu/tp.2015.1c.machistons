@@ -6,25 +6,21 @@
  */
 #include "atenderNodoYFS.h"
 
-
-
-
-
 void *atenderNFS(void*arg){
 
+	char *mensaje;
 	int status;
 	int i;
 	int socket= (int)arg;
 	int entero; // handshake para saber quien es: FS(23)
 	int ok;
 	int tamanioTotal;
-	int fd;
 	estructuraSetBloque set;
-	struct stat mystat;
-	char* pmap;
 	int nroDelBloque;
 
 	printf("%i\n",socket);
+
+	pmap = mapearAMemoriaVirtual();
 
 	while(1){
 		//printf("Esto deberia imprimirse una sola vez\n");
@@ -33,22 +29,24 @@ void *atenderNFS(void*arg){
 		//getBloque(numero);
 			case 1:
 				status = 1;
+				int tamanioBloque = 10;
 				recv(socket,&nroDelBloque,sizeof(int),0);
-				char* bloque;
+				char* bloque=malloc(tamanioBloque);
+
 
 				if(status>0){
-					int tamanioBloque = 20 * 1024 * 1024;
-					int tamanioBloqueExacto = tamanioBloque + nroDelBloque;
-					for(i=0;i==tamanioBloque;i++){
-						bloque = pmap[tamanioBloqueExacto + i];
-					}
+					int tamanioBloqueExacto = (nroDelBloque)*tamanioBloque;
+					memcpy(bloque,pmap + tamanioBloqueExacto,tamanioBloque);
 					status = 0;
 				}
 				int tamanioData = sizeof(int) + strlen(bloque) + 1;
+				//printf("%i\n",tamanioData);
 				mensaje = serializarBloqueDeDatos(bloque,tamanioData);
+				send(socket,&tamanioData,sizeof(int),0);
 				send(socket,mensaje,tamanioData,0);
-				ok = 20;
-				send(socket,&ok, sizeof(int),0);
+				printf("se mando ok\n");
+				//ok = 20;
+				//send(socket,&ok, sizeof(int),0);
 			break;
 		//setBloque(numero,[datos]);
 			case 2:
@@ -59,13 +57,15 @@ void *atenderNFS(void*arg){
 
 				if (status>0) {
 					// ACA TRABAJAN CON set.numero y set.bloque. Escriben el archivo y toda la bola.
-					nroDelBloque = 1 + set.bloque;
-					memcpy(pmap + nroDelBloque,set.data,strlen(set.data) + 1);
-					printf("se seteo correctamente\n");
+					nroDelBloque = set.bloque;//
+					//memcpy(pmap+(1024*1024*20*(nroDelBloque)),set.data,20*1024*1024);
+					memcpy(pmap+(nroDelBloque* 10),set.data,strlen(set.data));
+					msync(pmap,strlen(pmap),0);
+					printf("\nse seteo correctamente\n");
 					status = 0; //para salir del if
 				}
-				ok = 20;
-				send(socket,&ok, sizeof(int),0);
+				//ok = 20;
+				//send(socket,&ok, sizeof(int),0);
 			break;
 		//getFileContent(nombre);
 			case 3:
@@ -75,5 +75,6 @@ void *atenderNFS(void*arg){
 		}
 	}
 	}
+	munmap(pmap,strlen(pmap));
 	return NULL;
 }

@@ -42,11 +42,19 @@ typedef struct{
 	char* archivo;
 }t_charpuntero;
 
+typedef struct{
+	t_marta_job2 Marta_Job;
+	int	socketMarta;
+	int	numeroDeBloque;
+	t_job_nodo Job_Nodo;
+	}t_conectarseAlNodo;
+
+
 t_log* logger; // Log Global
 
-void conectarseAlNodo(t_conectarseAlNodo);
+void conectarseAlNodo(t_conectarseAlNodo CAN);
 char* serializarMapper(t_job_nodo* jn);
-char* serializarJob_Nodo_Mapper(t_job_nodo_mapper* );
+char* serializarJob_Nodo_Mapper(t_job_nodo_mapper *job_nodo);
 char* serializar_charpuntero(t_charpuntero *nombre, int tamanioTotal);
 int recive_y_deserialisa(t_marta_job2 *bloque, int socket, uint32_t tamanioTotal);
 

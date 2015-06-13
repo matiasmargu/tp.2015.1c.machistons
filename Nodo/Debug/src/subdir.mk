@@ -6,17 +6,20 @@
 C_SRCS += \
 ../src/Nodo.c \
 ../src/atenderNodoYFS.c \
-../src/funcionesParaEnviar.c 
+../src/funcionesParaEnviar.c \
+../src/manejoDeMemoria.c 
 
 OBJS += \
 ./src/Nodo.o \
 ./src/atenderNodoYFS.o \
-./src/funcionesParaEnviar.o 
+./src/funcionesParaEnviar.o \
+./src/manejoDeMemoria.o 
 
 C_DEPS += \
 ./src/Nodo.d \
 ./src/atenderNodoYFS.d \
-./src/funcionesParaEnviar.d 
+./src/funcionesParaEnviar.d \
+./src/manejoDeMemoria.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

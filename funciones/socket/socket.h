@@ -72,7 +72,7 @@ typedef struct {
 typedef struct{
 
 
-	int resultado;
+	char* resultado;
 	int nombreRutina; //1=mapper o 2=reducer
     int NumerobloqueDeDAtos;
 
@@ -111,14 +111,6 @@ typedef struct{
 	int tamanioData;
 }estructuraGetBloque;
 
-//JOB
-typedef struct{
-	t_marta_job2 Marta_Job;
-	int	socketMarta;
-	int	numeroDeBloque;
-	t_job_nodo Job_Nodo;
-	t_log* logger;
-	}t_conectarseAlNodo;
 
 int crearServidor(char* PUERTO);
 int crearCliente (char *IP, char *PUERTO);

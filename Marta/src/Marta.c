@@ -17,24 +17,18 @@ int main(void) {
 	char* rutaArchivoConfiguracion = "/home/utnso/git/tp-2015-1c-machistons/Configuracion/marta.conf";
 	char* puerto_fs ;
 	char* ip_fs ;
-	char* puerto ;
 	t_charpuntero archivoAFS;
 	char* archivoAFSAEnviar;
 	int cantidad;
 	int handShake;
 	char* combiner;
 	int tamanioTotalAFS;
-	int b;
 	int saludo;
 	int tamanioCombiner;
 	int socketFS;
 	int d;
 	int handshakeFS;
 
-
-	int tipo_mens ;
-	t_marta_job2 mj;
-	struct fs_marta Fs_Marta;
 
 	t_config* archivoConfiguracion;
 
@@ -50,107 +44,85 @@ int main(void) {
 
 
 
-	int socketjob  = crearServidor("3000");
-
-   recv(socketjob, &handShake, sizeof(int),0);
-
-   saludo = 3;
-
-   send(socketjob, &saludo, sizeof(int),0);
-
-   printf("Se conecto el job con el hadshake: %i \n",handShake);
-
-
-   recv(socketjob, &cantidad, sizeof(int),0);
-
-   char* listaDeArchivos[cantidad];
-
+int socketjob  = crearServidor("3000");
+recv(socketjob, &handShake, sizeof(int),0);
+saludo = 3;
+send(socketjob, &saludo, sizeof(int),0);
+printf("Se conecto el job con el hadshake: %i \n",handShake);
+recv(socketjob, &cantidad, sizeof(int),0);
+printf("cantidad: %i \n",cantidad);
+char* listaDeArchivos[cantidad] ;
 int tamanioTotal;
 char* archivo;
+int peso = sizeof(char) * cantidad;
+
+recv(socketjob, &listaDeArchivos, sizeof(char*),0);
+
+printf("el archivo es %s\n",listaDeArchivos[cantidad-1]);
+
+//listaDeArchivos =  malloc(peso);
+/*
+recv(socketjob, &listaDeArchivos, sizeof(char)*cantidad,0);
+
+for(a = 0; a < cantidad ; a++){
+
+	printf("el archivo es %s\n ",listaDeArchivos[a]);
+
+
+}
+send(socketjob, &listaDeArchivos, sizeof(listaDeArchivos[cantidad]),0);
+
 
    	   for(a = 0 ; a < cantidad; a++){
 
    		recv(socketjob, &tamanioTotal, sizeof(int),0);
    		int estado = 1; // Estructura que manjea el status de los recieve.
-
-
-
    		archivo= malloc(tamanioTotal);
-
-
-
    		estado = recive_y_deserialisa(&archivo, socketjob, tamanioTotal);
-
-
-   		if(estado){
+   		 if(estado){
 
    			printf("el archivo es %s\n ",archivo);
    			listaDeArchivos[a] = archivo;
-
-   		}
+   		 }
    		free(archivo);
    	   }
 
    	   listaDeArchivos[cantidad+1] = NULL;
-
-
    	recv(socketjob, &tamanioCombiner, sizeof(int),0);
    	int estadoCombiner = 1; // Estructura que manjea el status de los recieve.
-
-
-
-   	   		combiner = malloc(tamanioCombiner);
-
-
+  	combiner = malloc(tamanioCombiner);
 
    	estadoCombiner = recive_y_deserialisa(&combiner, socketjob, tamanioCombiner);
-
    	if(estadoCombiner){
-
    		printf("el combiner es %s\n",combiner);
-
    		socketFS = crearCliente (ip_fs, puerto_fs);
    		handshakeFS = 25;
+
+   		printf("%i\n",cantidad);
+
    		send(socketFS,&handshakeFS,sizeof(int),0);
    		printf("mando a fs %i\n",handshakeFS);
+
+   		printf("%i\n",cantidad);
+
    		send(socketFS,&cantidad,sizeof(int),0);
 
+
+
    		for(d = 0 ; d < cantidad; d++){
-
-
    			archivoAFS.archivo = listaDeArchivos[d];
    			tamanioTotalAFS = sizeof(int) + strlen(archivoAFS.archivo)+1;
    			send(socketFS, &tamanioTotalAFS, sizeof(int),0);
    			archivoAFSAEnviar = serializar_charpuntero(&archivoAFS, tamanioTotalAFS);
    			send(socketFS,archivoAFSAEnviar,tamanioTotalAFS,0);
-   										}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+   		}
 
 
    	}
-
-
+*/
 	close(socketjob);
-	free(combiner);
+	//free(combiner);
 	close(socketFS);
 	return EXIT_SUCCESS;
 }

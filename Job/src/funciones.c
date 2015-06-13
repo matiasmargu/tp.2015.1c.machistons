@@ -18,21 +18,15 @@ t_conectarseAlNodo CAN;
 void conectarseAlNodo(t_conectarseAlNodo CAN){
 
 	int socketNodo = crearCliente (CAN.Marta_Job.ip_nodo, CAN.Marta_Job.puerto);
-
 	send(socketNodo,&handshake,sizeof(int),0);
-
 	Job_Nodo.rutinaEjecutable = CAN.Job_Nodo.rutinaEjecutable;
 	Job_Nodo.tipoRutina = CAN.Job_Nodo.tipoRutina;
 
 //	serializarMapper(Job_Nodo);
 
 	send(socketNodo,&handshake,sizeof(int),0);
-
    switch(CAN.Marta_Job.rutina ){
    case 1:
-
-
-
 	   Job_Nodo_Mapper.NumerobloqueDeDAtos = CAN.numeroDeBloque;
 	   Job_Nodo_Mapper.nombreRutina = CAN.Marta_Job.rutina;
 	   Job_Nodo_Mapper.resultado = CAN.Marta_Job.nombre_archivo_resultado;
@@ -40,11 +34,8 @@ void conectarseAlNodo(t_conectarseAlNodo CAN){
 	  // serializarJob_Nodo_Mapper(Job_Nodo_Mapper);
 
 	   send(socketNodo,&Job_Nodo_Mapper,(sizeof(int)+sizeof(int)+strlen(CAN.Marta_Job.nombre_archivo_resultado)+1),0);
-			   break;
-
+	   break;
    case 2:
-
-
 	    Job_Nodo_Mapper.NumerobloqueDeDAtos = CAN.numeroDeBloque;
 	  	Job_Nodo_Mapper.nombreRutina = CAN.Marta_Job.rutina;
 	  	Job_Nodo_Mapper.resultado = CAN.Marta_Job.nombre_archivo_resultado;;
@@ -56,25 +47,20 @@ void conectarseAlNodo(t_conectarseAlNodo CAN){
    }
 
    recv(socketNodo, &resultado, sizeof(int),0);
-
-
    send(CAN.socketMarta, &resultado, sizeof(int),0);
-
    close(socketNodo);
-
    switch(CAN.Marta_Job.rutina ){
       case 1:
     	  if(resultado == 1){
-   log_info(CAN.logger,"Finalizo el hilo mapper de forma exitosa ");
+   log_info(logger,"Finalizo el hilo mapper de forma exitosa ");
    			printf("Finalizo hilo mapper de forma exitosa");
-    	  }else{log_info(CAN.logger,"Finalizo el hilo mapper de forma no esperada ");
+    	  }else{log_info(logger,"Finalizo el hilo mapper de forma no esperada ");
  			printf("Finalizo hilo mapper de forma no esperada");}break;
-
       case 2:
     	  if(resultado == 1){
-    	     log_info(CAN.logger,"Finalizo el hilo reducer de forma exitosa ");
+    	     log_info(logger,"Finalizo el hilo reducer de forma exitosa ");
     	     			printf("Finalizo hilo reducer de forma exitosa");
-    	      	  }else{log_info(CAN.logger,"Finalizo el hilo reducer de forma no esperada ");
+    	      	  }else{log_info(logger,"Finalizo el hilo reducer de forma no esperada ");
     	   			printf("Finalizo hilo reducer de forma no esperada");}break;
    }
 }
