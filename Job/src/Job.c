@@ -73,11 +73,11 @@ int cantidad = 0;
 int s = 0;
 l = lista_archivos[s];
 
+//ACA CALCULAMOS EL TAMANIO DE LA LISTA DE ARCHIVOS QUE ESTA EN LA CONFIGURACION
 while(l != NULL){
 	cantidad = cantidad + 1;     //cantidad = TAMANIO LISTA DE ARCHIVOS
 	s = s+1;
 	l = lista_archivos[s];
-
 }
 send(socketMarta,&cantidad,sizeof(int),0);
 
@@ -87,6 +87,8 @@ char* archivoAEnviar;
 char* combinerAEnviar;
 int tamanioCombiner;
 
+
+//ACA LE MANDAMOS A MARTA CADA ARCHIVO DE LA LISTA QUE ESTA EN LA CONFIGURACION
 for(a = 0 ; a < cantidad; a++){
 	nombre.archivo = lista_archivos[a];
 	printf("el archivo es %s\n",nombre.archivo);
@@ -94,10 +96,12 @@ for(a = 0 ; a < cantidad; a++){
 	send(socketMarta, &tamanioTotal, sizeof(int),0);
 	archivoAEnviar = serializar_charpuntero(&nombre, tamanioTotal);
 	send(socketMarta,archivoAEnviar,tamanioTotal,0);
+
 }
 
-tamanioCombiner = sizeof(int) + strlen(combiner)+1;
 
+//MANDAMOS A MARTA SI TIENE O NO COMBINER
+tamanioCombiner = sizeof(int) + strlen(combiner)+1;
 send(socketMarta, &tamanioCombiner, sizeof(int),0);
 structCombiner.archivo = combiner;
 combinerAEnviar =  serializar_charpuntero(&structCombiner, tamanioCombiner);
@@ -138,7 +142,7 @@ char* mensajeMapper = serializarMapper(Job_Nodo);
 	liberarMensaje(mensajeMapper);
 
 	}else{
-		/*char* mensajeReduce = serializarReducer(&reduce);
+		char* mensajeReduce = serializarReducer(&reduce);
 		Job_Nodo.tipoRutina = 1;
 		Job_Nodo.rutinaEjecutable = mapper;
 
@@ -157,7 +161,7 @@ char* mensajeMapper = serializarMapper(Job_Nodo);
             CAN.numeroDeBloque = numeroDeBloque;
             CAN.socketMarta = socketMarta;
             CAN.Job_Nodo = Job_Nodo;
-            CAN.logger = logger;
+
             if(Marta_Job.rutina == 1){
             	Job_Nodo.rutinaEjecutable = mapper;
             	Job_Nodo.tipoRutina = 1;
