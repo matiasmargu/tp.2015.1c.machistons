@@ -18,13 +18,12 @@ void *atenderNFS(void*arg){
 	int entero; // handshake para saber quien es: FS(23)
 	int ok;
 	int tamanioTotal;
-	int fd;
 	estructuraSetBloque set;
-	struct stat mystat;
-	char* pmap;
 	int nroDelBloque;
 
 	printf("%i\n",socket);
+
+	pmap = mapearAMemoriaVirtual();
 
 	while(1){
 		//printf("Esto deberia imprimirse una sola vez\n");
