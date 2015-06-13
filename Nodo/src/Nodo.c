@@ -35,6 +35,7 @@ int main(void) {
 	archivoConfiguracion = config_create(rutaArchivoConfiguracion);
 
 	log_info(logger, "Se creo correctamente el archivo de configuracion");
+	//printf("Se escribio en el log\n");
 
 	archivo_bin = config_get_string_value(archivoConfiguracion, "ARCHIVO_BIN");
 	dir_temp = config_get_string_value(archivoConfiguracion, "DIR_TEMP");
