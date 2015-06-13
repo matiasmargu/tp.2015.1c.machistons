@@ -65,6 +65,7 @@ int main()
 	for (;;){
 	read_fds = master;
 	select(fdmax+1, &read_fds, NULL, NULL, NULL);
+	printf("select activo\n");
 	for(i = 0; i <= fdmax; i++)
 	{
 	    if(FD_ISSET(i, &read_fds))
@@ -82,28 +83,11 @@ int main()
 					{
 						fdmax = newfd;
 					}
-
-					if((recv(i, &entero, sizeof(int),0 )) <= 0)
-					{
-					}
-					else{
-						switch(entero){
-							case 3: // Este es Marta
-								martafd = i;
-								pthread_create(&hiloMarta, NULL, atenderMarta, (void *)martafd);
-								log_info(logger,"Hilo Marta creado satisfactoriamente");
-								break;
-							case 2: // Este es Nodo
-								socketNodoGlobal = i;
-								agregoNodoaMongo(i);
-								break;
-						}
-					}
 				}
 	    	}
 	    	else
 	    	{
-	    		if((recv(i, buffer, sizeof(buffer),0 )) <= 0)
+	    		if((recv(i, &entero, sizeof(int),0 )) <= 0)
 	    		{
 	    			if (i == martafd){
 	    				//se callo marta
@@ -114,6 +98,20 @@ int main()
 	    			close(i); // Coneccion perdida
 	    			FD_CLR(i, &master);
 	    		}
+	    		else{
+	    			switch(entero){
+	    				case 25: // Este es Marta
+	    					martafd = i;
+	    					printf("%i\n",i);
+	    					pthread_create(&hiloMarta, NULL, atenderMarta, (void *)martafd);
+	    					log_info(logger,"Hilo Marta creado satisfactoriamente");
+	    					break;
+	    			case 2: // Este es Nodo
+	    					socketNodoGlobal = i;
+	    					agregoNodoaMongo(i);
+	    					break;
+	    				}
+	    			}
 	    	}
 	    }
 	}
