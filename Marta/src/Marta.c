@@ -54,8 +54,15 @@ printf("cantidad: %i \n",cantidad);
 char* listaDeArchivos[cantidad] ;
 int tamanioTotal;
 char* archivo;
+int peso = sizeof(char) * cantidad;
 
-//recv(socketjob, &listaDeArchivos, sizeof(char)*cantidad,0);
+recv(socketjob, &listaDeArchivos, sizeof(char*),0);
+
+printf("el archivo es %s\n",listaDeArchivos[cantidad-1]);
+
+//listaDeArchivos =  malloc(peso);
+/*
+recv(socketjob, &listaDeArchivos, sizeof(char)*cantidad,0);
 
 for(a = 0; a < cantidad ; a++){
 
@@ -63,8 +70,9 @@ for(a = 0; a < cantidad ; a++){
 
 
 }
+send(socketjob, &listaDeArchivos, sizeof(listaDeArchivos[cantidad]),0);
 
-/*
+
    	   for(a = 0 ; a < cantidad; a++){
 
    		recv(socketjob, &tamanioTotal, sizeof(int),0);
