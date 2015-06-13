@@ -65,6 +65,7 @@ int main(void) {
 			exit(1);
 		}
 
+
 	handshakeConFS();
 
 //Esta es el select

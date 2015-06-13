@@ -60,9 +60,13 @@ void *atenderNFS(void*arg){
 				if (status>0) {
 					// ACA TRABAJAN CON set.numero y set.bloque. Escriben el archivo y toda la bola.
 					nroDelBloque = 1 + set.bloque;
-					memcpy(pmap + nroDelBloque,set.data,strlen(set.data) + 1);
-					printf("se seteo correctamente\n");
+					for(i=0;i<=strlen(set.data);i++){
+						pmap[i] = set.data[i];
+					}
+
+					printf("\nse seteo correctamente\n");
 					status = 0; //para salir del if
+
 				}
 				ok = 20;
 				send(socket,&ok, sizeof(int),0);
