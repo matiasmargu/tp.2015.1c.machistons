@@ -86,6 +86,15 @@ char *archivo;
 char* archivoAEnviar;
 char* combinerAEnviar;
 int tamanioCombiner;
+for(a = 0 ; a < cantidad; a++){
+nombre.archivo = lista_archivos[a];
+archivoAEnviar = serializar_charpuntero(&nombre, tamanioTotal);
+
+}
+send(socketMarta, &lista_archivos, sizeof(archivoAEnviar),0);
+/*archivoAEnviar = serializar_charpuntero(&nombre, tamanioTotal);
+
+send(socketMarta, &lista_archivos, sizeof(char*),0);
 
 
 //ACA LE MANDAMOS A MARTA CADA ARCHIVO DE LA LISTA QUE ESTA EN LA CONFIGURACION
@@ -109,6 +118,9 @@ send(socketMarta,combinerAEnviar,tamanioCombiner,0);
 
 
 /*
+
+
+
 
 recv(socketMarta, &tamanioTotal, sizeof(int),0);
 
