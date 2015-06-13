@@ -56,8 +56,27 @@ char* serializarIPyPUERTO(char* ip_fs,char* puerto_fs, int tamanioData){
 
 	return serializedPackage;
 }
+char* serializarBloqueDeDatos(char* bloque, int tamanioData){
+	int offset = 0;
+	int size_to_send;
+
+	char *serializedPackage = malloc(tamanioData);
+
+	int tamanioNombre = strlen(bloque) + 1;
+	size_to_send = sizeof(int);
+	memcpy(serializedPackage + offset, &tamanioNombre, size_to_send);
+	offset += size_to_send;
+
+	size_to_send =  strlen(bloque) + 1;
+	memcpy(serializedPackage + offset, bloque, size_to_send);
+	offset += size_to_send;
+
+	return serializedPackage;
+}
+
 
 void handshakeConFS (){
+	printf("corre el handshake\n");
 	//Esta es la coneccion con el FS
 	pthread_t hiloFS;
 	char *ip_fs = config_get_string_value(archivoConfiguracion, "IP_FS");
