@@ -10,14 +10,6 @@
 
 #include "funcionesParaEnviar.h"
 
-typedef struct{
-	int socket;
-	char* archivoATrabajar;
-}estructura_de_nfs;
-
-char* pmap;
-
-
 
 int main(void) {
 
@@ -66,16 +58,14 @@ int main(void) {
 			exit(1);
 		}
 
-		pmap = mmap(0,mystat.st_size, PROT_READ ,MAP_SHARED,fd,0);
+		pmap = mmap(0,mystat.st_size, PROT_READ|PROT_WRITE ,MAP_SHARED,fd,0);
 		if(pmap == MAP_FAILED){
 			printf("Error al mapear a memoria\n");
 			close(fd);
 			exit(1);
 		}
 
-	printf("Archivo insertado en memoria correctamente\n");
-
-//	handshakeConFS();
+	handshakeConFS();
 
 //Esta es el select
 

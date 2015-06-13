@@ -11,7 +11,7 @@
 #define BACKLOG 5			// Define cuantas conexiones vamos a mantener pendientes al mismo tiempo
 #define PACKAGESIZE 1024	// Define cual va a ser el size maximo del paquete a enviar
 
-#include <./commons/log.h>
+#include "../commons/log.h"
 
 
 
@@ -105,6 +105,11 @@ typedef struct{
 	char* IP;
 	char* PUERTO;
 }estructuraIPyNodo;
+
+typedef struct{
+	char* data;
+	int tamanioData;
+}estructuraGetBloque;
 
 //JOB
 typedef struct{
