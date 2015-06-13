@@ -8,47 +8,8 @@
  ============================================================================
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <assert.h>
-#include <string.h>
-#include <./commons/config.h>
-#include <./commons/log.h>
-#include <./commons/string.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netdb.h>
-#include <socket/socket.h>
-#include <unistd.h>
-#include <./commons/collections/list.h>
+
 #include "functions.h"
-#include <stdint.h>
-
-
-
-t_log* logger; // Log Global
-
-
-
-typedef struct{
-	char* nombre;
-	int cantidadDeBloques;
-	t_list copia1;
-	t_list copia2;
-	t_list copia3;
-
-}t_archivo;
-
-typedef struct {
-    int Numerobloque;
-    int idNodo;
-
-} t_copia;
-
-
-
-
-
 
 
 int main(void) {
@@ -57,13 +18,17 @@ int main(void) {
 	char* puerto_fs ;
 	char* ip_fs ;
 	char* puerto ;
-
+	t_charpuntero archivoAFS;
+	char* archivoAFSAEnviar;
 	int cantidad;
 	int handShake;
 	char* combiner;
+	int tamanioTotalAFS;
 	int b;
 	int saludo;
-
+	int tamanioCombiner;
+	int socketFS;
+	int d;
 
 
 	int tipo_mens ;
@@ -86,9 +51,6 @@ int main(void) {
 
 	int socketjob  = crearServidor("3000");
 
-
-   printf("SERVIDOR EN ESPERA...\n");
-
    recv(socketjob, &handShake, sizeof(int),0);
 
    saludo = 3;
@@ -100,12 +62,7 @@ int main(void) {
 
    recv(socketjob, &cantidad, sizeof(int),0);
 
-
-
-   char** listaDeArchivos[cantidad];
-
-
-
+   char* listaDeArchivos[cantidad];
 
 int tamanioTotal;
 char* archivo;
@@ -117,149 +74,86 @@ char* archivo;
 
 
 
-   		// archivo= malloc(tamanioTotal);
+   		archivo= malloc(tamanioTotal);
 
-   		//HASTA ACA ESTA PROBADO CON JOB
+
 
    		estado = recive_y_deserialisa(&archivo, socketjob, tamanioTotal);
 
 
    		if(estado){
 
-   				printf("paso el recive  \n");
-   			//listaDeArchivos[a] = archivo;
+   			printf("el archivo es %s\n ",archivo);
+   			listaDeArchivos[a] = archivo;
 
    		}
    		free(archivo);
    	   }
-/*
+
    	   listaDeArchivos[cantidad+1] = NULL;
 
 
-
-	recv(socketjob,&combiner,strlen(combiner)+1,0);
-
-	// LLENAR LOS CAMPOS DE MJ CON LA PLANIFICACION DE LO QUE LE VA A MANDAR AL JOB
-int tamanioTotal = sizeof(int)+sizeof(int)+ strlen(mj.ip_nodo) + 1 + strlen(mj.nombreNodo)+1 + strlen(mj.nombre_archivo_resultado)+1+strlen(mj.puerto)+1;
-	send(socketjob, &tamanioTotal , sizeof(int), 0);
-
-	for(b = 0 ; b <= cantidad; b++){
-
-		int numero;
-	//	numero = lista_bloques[b];  ESTA LISTA SALE DE FS
-
-		send(socketjob,&numero,sizeof(numero),0);
-	}
-
-
-///job
+   	recv(socketjob, &tamanioCombiner, sizeof(int),0);
+   	int estadoCombiner = 1; // Estructura que manjea el status de los recieve.
 
 
 
-	int socketFS = crearsocketCliente(ip_fs,puerto_fs);
-
-	int tamanioArch; //tamaño del archivo que recibimos
-
-	char*archivo;
-
-	socketFS = crearsocketServer (ip_fs, puerto_fs);
-
-	send(socketFS,archivo,tamanioArch,0);
-
-
-	printf("Conectado al servidor Filesystem.\n");
-
-	//send(socketFS, &listadearchivos );
-
-
-	//recv(socketFs, &cantidadNodos)
-	int n;
-
-	for(n = 0 ; n <= cantidadNodos; n++){
-
-	//	recv(socketFS , &STRUCTDELNODO);
-	}
-
-	//recv(socketFS, &archivo ,  )
-
-	//deserailizar
+   	   		combiner = malloc(tamanioCombiner);
 
 
 
-	//* 	El sistema esperara hasta que reciba una conexion entrante...
+   	estadoCombiner = recive_y_deserialisa(&combiner, socketjob, tamanioCombiner);
 
-	printf("SERVIDOR EN ESPERA...\n");
+   	if(estadoCombiner){
 
-	struct sockaddr_in addr;			// Esta estructura contendra los datos de la conexion del cliente. IP, puerto, etc.
-	socklen_t addrlen = sizeof(addr);
+   		printf("el combiner es %s\n",combiner);
 
-	int socketJob = accept(servidorEscucha, (struct sockaddr *) &addr, &addrlen);
+   		crearCliente (ip_fs, puerto_fs);
 
-	struct job_marta_inicio package;
+   		send(socketFS,&cantidad,sizeof(int),0);
 
-	int status = 1;		// Estructura que maneja el status de los recieve.
-
-	printf("Cliente conectado. Esperando Envío de mensajes.\n");
-
-			while (status){
-				status = recieve_and_deserialize(&package, socketJob);
-				if (status) printf("%i es: %s \n", package.operacionID, package.lista_archivos);
-			}
+   		for(d = 0 ; d < cantidad; d++){
 
 
-			printf("Cliente Desconectado.\n");
+   			archivoAFS.archivo = listaDeArchivos[d];
+   			tamanioTotalAFS = sizeof(int) + strlen(archivoAFS.archivo)+1;
 
-			close(socketJob);
-			close(servidorEscucha);
-
-
-
-			return 0;
-		}
+   			send(socketFS, &tamanioTotalAFS, sizeof(int),0);
 
 
-	/*
-	 int socketJob = crearServidor(puerto);
-	int socketFS = crearCliente(ip_fs, puerto_fs);
+   			archivoAFSAEnviar = serializar_charpuntero(&archivoAFS, tamanioTotalAFS);
+
+
+   			send(socketFS,archivoAFSAEnviar,tamanioTotalAFS,0);
+   										}
 
 
 
-	if ((recv(socketJob, &Job_Marta_Inicio, sizeof(struct job_marta_inicio),0 )) != 0){
-
-		printf ("Conexion establecida con el proceso Job\n");
-		//printf("se conecto el Job con la operacion numero %i\n",Job_Marta_Inicio.operacionID);
-
-		send(socketFS,&Job_Marta_Inicio.lista_archivos, sizeof(char**),0);
-
-		if ((recv(socketFS, &Fs_Marta, sizeof(struct fs_marta),0 )) != 0){
 
 
 
-		}
 
-	}
-*/
-/*	Marta_Job.NumeroBloqueDeDatos = 12;
-	Marta_Job.rutina = "mapper";
-    Marta_Job.operacionID = 3;
 
-	send(socketJob, &Marta_Job, sizeof(struct marta_job),0);
 
-	Marta_Job.rutina = "reduc";
-	Marta_Job.operacionID = 4;
-	Marta_Job.NumeroBloqueDeDatos = 16;
 
-	send(socketJob, &Marta_Job, sizeof(struct marta_job),0);
 
-	entero = 3;    // handshake con FS
-	send(socketFS,&entero, sizeof(int),0);
 
-	if ((recv(socketFS, &entero, sizeof(int),0 )) != 0){
-		printf("fs me respondio esto: %i\n",entero);
-	}
- *//**/
+
+
+
+
+
+
+
+
+
+
+   	}
+
+
 	close(socketjob);
-//	close(socketFS);
+	free(combiner);
+	close(socketFS);
 	return EXIT_SUCCESS;
 }
 

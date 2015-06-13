@@ -6,25 +6,12 @@
  */
 
 #include "funciones.h"
-#include <pthread.h>
-#include <socket/socket.h>
-#include <sys/socket.h>
-#include <netdb.h>
-#include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
 
 int handshake = 8;
 int resultado;
 
-
-
 t_job_nodo_mapper Job_Nodo_Mapper;
 t_job_nodo Job_Nodo;
-
-
 
 t_conectarseAlNodo CAN;
 
@@ -115,26 +102,24 @@ void conectarseAlNodo(t_conectarseAlNodo CAN){
 	}
 
 
-	char* serializar_charpuntero(char* nombre, int tamanioTotal){
+char* serializar_charpuntero(t_charpuntero *nombre, int tamanioTotal){
+			char *serializedPackage = malloc(tamanioTotal);
 
+			int offset = 0;
+			int size_to_send;
 
+			int tamanioNombre = strlen(nombre->archivo) + 1;
+			size_to_send = sizeof(int);
+			memcpy(serializedPackage + offset, &tamanioNombre, size_to_send);
+			offset += size_to_send;
 
-				int offset = 0;
-				int size_to_send;
+			size_to_send =  strlen(nombre->archivo) + 1;
+			memcpy(serializedPackage + offset, nombre->archivo, size_to_send);
+			offset += size_to_send;
 
-				char *serializedPackage = malloc(tamanioTotal);
+			return serializedPackage;
+		}
 
-				int tamanio = strlen(nombre)+1;
-				size_to_send = sizeof(int);
-				memcpy(serializedPackage + offset, &tamanio, size_to_send);
-				offset += size_to_send;
-
-				size_to_send =  strlen(nombre) + 1;
-				memcpy(serializedPackage + offset, nombre , size_to_send);
-				offset += size_to_send;
-
-				return serializedPackage;
-	}
 
 
 	char* serializarJob_Nodo_Mapper(t_job_nodo_mapper *job_nodo){

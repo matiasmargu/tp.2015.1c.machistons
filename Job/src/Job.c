@@ -8,24 +8,7 @@
  ============================================================================
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <assert.h>
-#include <string.h>
-#include <./commons/config.h>
-#include <./commons/log.h>
-#include <./commons/string.h>
-#include <./commons/collections/list.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netdb.h>
-#include <unistd.h>
 #include "funciones.h"
-#include <pthread.h>
-#include <socket/socket.h>
-#include <stdint.h>
-
-t_log* logger; // Log Global
 
 //FALTA PONER EN LOG Cabeceras de mensajes enviados y recibidos de cada hilo/proceso
 
@@ -51,7 +34,9 @@ int main(void) {
 	int numero;
 	int saludo;
 	int handshakeMarta;
+	t_charpuntero structCombiner;
 
+	t_charpuntero nombre;
 
 
 
@@ -71,10 +56,6 @@ int main(void) {
 	lista_archivos = config_get_array_value(archivoConfiguracion, "ARCHIVOS");
 	archivo_resultado = config_get_string_value(archivoConfiguracion, "RESULTADO");
 
-
-
-
-
 int socketMarta = crearCliente (ip_marta, puerto_marta);
 
 handshakeMarta = 9;
@@ -93,41 +74,37 @@ int s = 0;
 l = lista_archivos[s];
 
 while(l != NULL){
-	cantidad += 1;     //cantidad = TAMANIO LISTA DE ARCHIVOS
+	cantidad = cantidad + 1;     //cantidad = TAMANIO LISTA DE ARCHIVOS
 	s = s+1;
 	l = lista_archivos[s];
+
 }
-
-
- send(socketMarta,&cantidad,sizeof(int),0);
-
-
-
+send(socketMarta,&cantidad,sizeof(int),0);
 
 int a;
 char *archivo;
 char* archivoAEnviar;
+char* combinerAEnviar;
+int tamanioCombiner;
 
 for(a = 0 ; a < cantidad; a++){
-
-
-	archivo = lista_archivos[a];
-	tamanioTotal = sizeof(int) + strlen(archivo)+1;
-
+	nombre.archivo = lista_archivos[a];
+	printf("el archivo es %s\n",nombre.archivo);
+	tamanioTotal = sizeof(int)+ strlen(nombre.archivo)+1;
 	send(socketMarta, &tamanioTotal, sizeof(int),0);
-
-	//HASTA ACA ESTA PROBADO
-	 archivoAEnviar = serializar_charpuntero(archivo, tamanioTotal);
-
-
+	archivoAEnviar = serializar_charpuntero(&nombre, tamanioTotal);
 	send(socketMarta,archivoAEnviar,tamanioTotal,0);
-
-
 }
+
+tamanioCombiner = sizeof(int) + strlen(combiner)+1;
+
+send(socketMarta, &tamanioCombiner, sizeof(int),0);
+structCombiner.archivo = combiner;
+combinerAEnviar =  serializar_charpuntero(&structCombiner, tamanioCombiner);
+send(socketMarta,combinerAEnviar,tamanioCombiner,0);
+
+
 /*
-
-send(socketMarta,&combiner,strlen(combiner)+1,0);
-
 
 recv(socketMarta, &tamanioTotal, sizeof(int),0);
 
