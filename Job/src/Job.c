@@ -111,6 +111,38 @@ combinerAEnviar =  serializar_charpuntero(&structCombiner, tamanioCombiner);
 send(socketMarta,combinerAEnviar,tamanioCombiner,0);
 
 
+// Aca hago como si le mandase a job una matriz
+
+int columnas = 3;
+int filas = 3;
+
+send(socketMarta,&filas,sizeof(int),0);
+send(socketMarta,&columnas,sizeof(int),0);
+
+char matriz[filas][columnas];
+
+int cont, cont1, cont2, cont3;
+
+for(cont=0; cont<filas ;cont++ ){
+	for(cont1=0; cont1 < columnas; cont1++){
+		matriz[cont][cont1] = 'juan';
+	}
+}
+for(cont2= 0 ; cont2< filas; cont2++){
+	for(cont3=0;cont3< columnas; cont3++){
+	nombre.archivo = matriz[cont2][cont3];
+	printf("el archivo es %s\n",nombre.archivo);
+	tamanioTotal = sizeof(int)+ strlen(nombre.archivo)+1;
+	send(socketMarta, &tamanioTotal, sizeof(int),0);
+	archivoAEnviar = serializar_charpuntero(&nombre, tamanioTotal);
+	send(socketMarta,archivoAEnviar,tamanioTotal,0);
+	}
+}
+
+
+
+
+
 /*
 
 
