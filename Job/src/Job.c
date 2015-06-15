@@ -119,13 +119,13 @@ int filas = 3;
 send(socketMarta,&filas,sizeof(int),0);
 send(socketMarta,&columnas,sizeof(int),0);
 
-char matriz[filas][columnas];
+char* matriz[filas][columnas];
 
 int cont, cont1, cont2, cont3;
 
 for(cont=0; cont<filas ;cont++ ){
 	for(cont1=0; cont1 < columnas; cont1++){
-		matriz[cont][cont1] = 'juan';
+		matriz[cont][cont1] = "juan";
 	}
 }
 for(cont2= 0 ; cont2< filas; cont2++){

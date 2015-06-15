@@ -74,14 +74,18 @@ int peso = sizeof(char) * cantidad;
    	   listaDeArchivos[cantidad+1] = NULL;
 
 
-   	   /*
+//ACA RECIBIMOS DE JOB SI TIENE O NO COMBINER
+
    	recv(socketjob, &tamanioCombiner, sizeof(int),0);
    	int estadoCombiner = 1; // Estructura que manjea el status de los recieve.
   	combiner = malloc(tamanioCombiner);
-
    	estadoCombiner = recive_y_deserialisa(&combiner, socketjob, tamanioCombiner);
    	if(estadoCombiner){
+
+   		//ACA NOS CONECTAMOS CON EL FILE SYSTEM
+
    		printf("el combiner es %s\n",combiner);
+   		/*
    		socketFS = crearCliente (ip_fs, puerto_fs);
    		handshakeFS = 25;
 
@@ -105,9 +109,34 @@ int peso = sizeof(char) * cantidad;
 
    		}
 
+*/
+
+   	int columnas;
+   	int filas;
+   	int f;
+   	int e;
+   	//PRUEBA MATRIZ CON JOB
+   		recv(socketjob,&columnas,sizeof(int),0);
+   		printf("columnas %i\n ",columnas);
+   		recv(socketjob,&filas,sizeof(int),0);
+   		printf("filas %i\n ",columnas);
+   		char* matriz[filas][columnas];
+   		for(f = 0 ; f < filas; f++){
+   			for(e = 0 ; e < columnas; e++){
+   			 recv(socketjob, &tamanioTotal, sizeof(int),0);
+   			   		 int estado = 1; // Estructura que manjea el status de los recieve.
+   			   		 archivo= malloc(tamanioTotal);
+   			   		 estado = recive_y_deserialisa(&archivo, socketjob, tamanioTotal);
+   			   		 if(estado){
+   			   			printf("el archivo es %s\n ",archivo);
+   			   			matriz[f][e] = archivo;
+   			   		 }
+   			   		free(archivo);
+   			}
+   		}
 
    	}
-*/
+
 	close(socketjob);
 	//free(combiner);
 	close(socketFS);
