@@ -51,43 +51,30 @@ send(socketjob, &saludo, sizeof(int),0);
 printf("Se conecto el job con el hadshake: %i \n",handShake);
 recv(socketjob, &cantidad, sizeof(int),0);
 printf("cantidad: %i \n",cantidad);
-char* listaDeArchivos[cantidad] ;
+char* listaDeArchivos[cantidad+1] ;
 int tamanioTotal;
 char* archivo;
 int peso = sizeof(char) * cantidad;
 
-recv(socketjob, &listaDeArchivos, sizeof(char*),0);
 
-printf("el archivo es %s\n",listaDeArchivos[cantidad-1]);
+//ACA RECIBE LA LISTA DE ARCHIVOS DE JOB
 
-//listaDeArchivos =  malloc(peso);
-/*
-recv(socketjob, &listaDeArchivos, sizeof(char)*cantidad,0);
-
-for(a = 0; a < cantidad ; a++){
-
-	printf("el archivo es %s\n ",listaDeArchivos[a]);
-
-
-}
-send(socketjob, &listaDeArchivos, sizeof(listaDeArchivos[cantidad]),0);
-
-
-   	   for(a = 0 ; a < cantidad; a++){
-
-   		recv(socketjob, &tamanioTotal, sizeof(int),0);
-   		int estado = 1; // Estructura que manjea el status de los recieve.
-   		archivo= malloc(tamanioTotal);
-   		estado = recive_y_deserialisa(&archivo, socketjob, tamanioTotal);
+   	 for(a = 0 ; a < cantidad; a++){
+   		 recv(socketjob, &tamanioTotal, sizeof(int),0);
+   		 int estado = 1; // Estructura que manjea el status de los recieve.
+   		 archivo= malloc(tamanioTotal);
+   		 estado = recive_y_deserialisa(&archivo, socketjob, tamanioTotal);
    		 if(estado){
-
    			printf("el archivo es %s\n ",archivo);
    			listaDeArchivos[a] = archivo;
    		 }
    		free(archivo);
-   	   }
+   	 }
 
    	   listaDeArchivos[cantidad+1] = NULL;
+
+
+   	   /*
    	recv(socketjob, &tamanioCombiner, sizeof(int),0);
    	int estadoCombiner = 1; // Estructura que manjea el status de los recieve.
   	combiner = malloc(tamanioCombiner);
