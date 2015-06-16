@@ -135,6 +135,17 @@ int peso = sizeof(char) * cantidad;
    			}
    		}
 
+ //PRUEBA PARA RECIBIR LOS NODOS
+int x;
+char* y;
+char* resultado;
+   	for(x = 0; x< 20; x++){
+   		y = "nodo";
+   		asprintf(&resultado,"%s%i",y,x);
+   		printf("%s\n",resultado);
+
+   	}
+
    	}
 
 	close(socketjob);
