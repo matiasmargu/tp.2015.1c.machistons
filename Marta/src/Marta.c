@@ -135,14 +135,23 @@ int peso = sizeof(char) * cantidad;
    			}
    		}
 
- //PRUEBA PARA RECIBIR LOS NODOS
+ //PRUEBA PARA STEAR EL CONTADOR DE LOS NODOS EN 0
+
+typedef struct{
+   	char* nodo;
+   	int contador_mapper;
+} nodo_y_contador;
 int x;
 char* y;
 char* resultado;
+nodo_y_contador nodo;
+
    	for(x = 0; x< 20; x++){
    		y = "nodo";
    		asprintf(&resultado,"%s%i",y,x);
-   		printf("%s\n",resultado);
+   		nodo.nodo = resultado;
+   		nodo.contador_mapper = 0;
+   		printf("nombre: %s, contador:%i\n",nodo.nodo,nodo.contador_mapper);
 
    	}
 
