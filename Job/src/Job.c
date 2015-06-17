@@ -81,6 +81,9 @@ while(l != NULL){
 }
 send(socketMarta,&cantidad,sizeof(int),0);
 
+char* stringArchivos;
+
+
 
 
 int a;
