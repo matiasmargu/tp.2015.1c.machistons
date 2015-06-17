@@ -5,21 +5,27 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
 ../src/Nodo.c \
+../src/atenderJob.c \
 ../src/atenderNodoYFS.c \
 ../src/funcionesParaEnviar.c \
-../src/manejoDeMemoria.c 
+../src/manejoDeMemoria.c \
+../src/rutinasMapperYReducer.c 
 
 OBJS += \
 ./src/Nodo.o \
+./src/atenderJob.o \
 ./src/atenderNodoYFS.o \
 ./src/funcionesParaEnviar.o \
-./src/manejoDeMemoria.o 
+./src/manejoDeMemoria.o \
+./src/rutinasMapperYReducer.o 
 
 C_DEPS += \
 ./src/Nodo.d \
+./src/atenderJob.d \
 ./src/atenderNodoYFS.d \
 ./src/funcionesParaEnviar.d \
-./src/manejoDeMemoria.d 
+./src/manejoDeMemoria.d \
+./src/rutinasMapperYReducer.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

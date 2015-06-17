@@ -83,6 +83,8 @@ void handshakeConFS (){
 	char *puerto_fs = config_get_string_value(archivoConfiguracion, "PUERTO_FS");
 	int socket_fs = crearCliente(ip_fs,puerto_fs);
 	int entero2 = 2; // handshake con FS
+	char* mensaje;
+
 	send(socket_fs,&entero2,sizeof(int),0);
 	int tamanioData = sizeof(int) + strlen(ip_nodo) + 1 + sizeof(int) + strlen(string_itoa(puerto_nodo)) + 1;
 	send(socket_fs, &tamanioData, sizeof(int), 0);
@@ -90,4 +92,11 @@ void handshakeConFS (){
 	send(socket_fs,mensaje,tamanioData,0);
 	printf("%i\n",socket_fs);
 	pthread_create(&hiloFS, NULL, &atenderNFS, (void *)socket_fs);
+
+	free(mensaje);
+}
+
+void handshakeConJob(int socket_job){
+	pthread_t hiloJob;
+//	pthread_create(&hiloJob, NULL, &atenderJob, (void *)socket_job);
 }
