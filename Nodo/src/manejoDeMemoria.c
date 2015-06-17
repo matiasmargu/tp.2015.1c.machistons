@@ -6,6 +6,18 @@
  */
 #include "funcionesParaEnviar.h"
 
+int* crearArraySegunTamanioArchiboBin(char* archivo){
+
+	int tamanioDelArchibo;
+	int cantidadDeBloques;
+
+
+	tamanioDelArchibo = strlen(archivo);
+	cantidadDeBloques = tamanioDelArchibo % (20);
+
+	int array[cantidadDeBloques];
+	return array;
+	}
 
 char* mapearAMemoriaVirtual(){
 	fd = open(archivo_bin,O_RDWR);

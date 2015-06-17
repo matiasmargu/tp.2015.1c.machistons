@@ -9,8 +9,7 @@ C_SRCS += \
 ../src/atenderNodoYFS.c \
 ../src/funcionesParaEnviar.c \
 ../src/manejoDeMemoria.c \
-../src/rutinasMapperYReducer.c \
-../src/variablesGlobales.c 
+../src/rutinasMapperYReducer.c 
 
 OBJS += \
 ./src/Nodo.o \
@@ -18,8 +17,7 @@ OBJS += \
 ./src/atenderNodoYFS.o \
 ./src/funcionesParaEnviar.o \
 ./src/manejoDeMemoria.o \
-./src/rutinasMapperYReducer.o \
-./src/variablesGlobales.o 
+./src/rutinasMapperYReducer.o 
 
 C_DEPS += \
 ./src/Nodo.d \
@@ -27,8 +25,7 @@ C_DEPS += \
 ./src/atenderNodoYFS.d \
 ./src/funcionesParaEnviar.d \
 ./src/manejoDeMemoria.d \
-./src/rutinasMapperYReducer.d \
-./src/variablesGlobales.d 
+./src/rutinasMapperYReducer.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

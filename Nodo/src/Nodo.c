@@ -39,7 +39,6 @@ int main(void) {
 	ip_nodo = config_get_string_value(archivoConfiguracion, "IP_NODO");
 	puerto_nodo = config_get_int_value(archivoConfiguracion, "PUERTO_NODO");
 
-
 	handshakeConFS();
 
 //Esta es el select
