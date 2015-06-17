@@ -8,7 +8,7 @@
  ============================================================================
  */
 
-#include "funcionesParaEnviar.h"
+#include "variablesGlobales.h"
 
 
 int main(void) {
@@ -98,7 +98,7 @@ int main(void) {
 		    		{
 		    			switch(entero){
 		    			case 8: // Este es el Job
-
+		    				handshakeConJob(i);
 		    				break;
 		    			case 7: // Este es otro Nodo
 

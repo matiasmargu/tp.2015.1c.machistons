@@ -95,3 +95,8 @@ void handshakeConFS (){
 
 	free(mensaje);
 }
+
+void handshakeConJob(int socket_job){
+	pthread_t hiloJob;
+//	pthread_create(&hiloJob, NULL, &atenderJob, (void *)socket_job);
+}
