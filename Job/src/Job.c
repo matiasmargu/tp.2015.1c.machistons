@@ -139,6 +139,45 @@ for(cont2= 0 ; cont2< filas; cont2++){
 	}
 }
 
+// a partir de aca haria como si formase un vector de estructuras que tengan el nodo y el contador
+// que la funcion de ese contador va a ser mostrar cuantos hilos mapper se mandaron a ese nodo para
+// asi ver a cual nodo mandarle el hilo mapper a realizar
+
+typedef struct{
+	char* nodo;
+	int contador_mapper;
+} nodo_y_contador;
+
+int cantidad_de_nodos = 3*3; // aca pongo la cantidad de nodos, que me la tendria que mandar alguien o la tendria que sacar de algun lado
+                           // pero ahora le pongo 3*3 que es la mtriz que armamos.
+
+nodo_y_contador v[cantidad_de_nodos]; // vector de estructuras
+
+int aux = 0; // variable auxiliar que me va a decir si ya se cargo o no
+int posicion_del_vector_de_nodos = 0;
+
+
+for(cont1=0;cont1 < filas; cont1 ++){
+	for(cont2=0; cont2 < columnas; cont2 ++){ // con estos for recorro la matriz
+
+		for(cont3=0; cont3 < cantidad_de_nodos && aux == 0; cont3 ++){ // con este for recorro el vector de nodos y me fijo si el nodo ya se cargo
+
+			if(matriz[filas][columnas] == v[cont3].nodo ){
+					aux = 1; // si algun nodo coincide es xq ya fue cargado
+			}
+		}
+		if(aux == 0){ // significa que el nodo no fue cargado al vector de estructuras
+
+		v[posicion_del_vector_de_nodos].nodo = matriz[filas][columnas];
+		v[posicion_del_vector_de_nodos].contador_mapper = 0;
+
+		posicion_del_vector_de_nodos ++; // aumentamos la posicion del vector de nodos
+
+		}
+	}
+}
+
+
 
 
 
