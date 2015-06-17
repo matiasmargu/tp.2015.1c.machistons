@@ -77,6 +77,49 @@ void agregoNodoaMongo (int socket){
 	}
 }
 
+void escribirBloqueEnNodo (int socket, estructuraSetBloque estructura){
+
+	entero = 2;
+	send(socket, &entero, sizeof(int), 0);
+	estructura.tamanioData = sizeof(int) + sizeof(int) + strlen(estructura.data) + 1;
+	send(socket, &estructura.tamanioData, sizeof(estructura.tamanioData), 0);
+	mensaje = serializarParaGetBloque(&estructura);
+	send(socket, mensaje, estructura.tamanioData, 0);
+	liberarMensaje(&mensaje);
+
+}
+
+char *pedirContenidoBloqueA (int socket, int nroBloque){
+	entero = 1;
+	send(socket, &entero, sizeof(int), 0);
+	entero = nroBloque;
+	send(socket, &entero,sizeof(int), 0);
+	recv(socket, &tamanioTotalMensaje, sizeof(int), 0);
+	if(recive_y_deserializa_Contenido_Bloque(&infoBloque, socket, tamanioTotalMensaje)){
+		return infoBloque.datos;
+	}
+	infoBloque.datos = "error";
+	return infoBloque.datos;
+}
+
+int recive_y_deserializa_Contenido_Bloque(t_getBloque *bloque, int socket, uint32_t tamanioTotal){
+	int status;
+	char *buffer = malloc(tamanioTotal);
+	int offset=0;
+
+	recv(socket, buffer, tamanioTotal, 0);
+
+	int tamanioDinamico;
+	memcpy(&tamanioDinamico, buffer + offset, sizeof(int));
+	offset += sizeof(int);
+	bloque->datos = malloc(tamanioDinamico);
+	memcpy(bloque->datos, buffer + offset, tamanioDinamico);
+	offset += tamanioDinamico;
+
+	free(buffer);
+	return status;
+}
+
 // Funciones de Archivos
 
 void agregarCopia (bson_t *documento, char* numeroCopia, int idNodo, int bloque){

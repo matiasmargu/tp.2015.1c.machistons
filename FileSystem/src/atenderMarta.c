@@ -33,15 +33,15 @@ void *atenderMarta(void*arg){
 	int socketMarta = (int)arg;
 	printf("%i\n",socketMarta);
 
-	int cantidad;
 	int a;
-	recv(socketMarta, &cantidad, sizeof(int),0);
-
-	char* listaDeArchivos[cantidad];
+	recv(socketMarta, &entero, sizeof(int),0);
+	printf("%i\n",entero);
+	printf("nico gil\n");
+	char* listaDeArchivos[entero];
 	int tamanioTotal;
 	char* archivo;
 
-	for(a = 0 ; a < cantidad; a++){
+	for(a = 0 ; a < entero; a++){
 		recv(socketMarta, &tamanioTotal, sizeof(int),0);
 		int estado = 1; // Estructura que manjea el status de los recieve.
 		archivo= malloc(tamanioTotal);
@@ -53,7 +53,7 @@ void *atenderMarta(void*arg){
 		free(archivo);
 	}
 
-	listaDeArchivos[cantidad+1] = NULL;
+	listaDeArchivos[entero+1] = NULL;
 
 	return NULL;
 }

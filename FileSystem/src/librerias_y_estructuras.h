@@ -70,6 +70,10 @@ typedef struct {
 	char estado;
 }t_nodo;
 
+typedef struct{
+	char* datos;
+}t_getBloque;
+
 //Varibables globales
 
 t_log* logger; // Log Global
@@ -80,6 +84,7 @@ int apagarFS; // 0 Prendida, 1 Apagar
 
 // Estructuras de Interfaz con Nodo
 	estructuraSetBloque escribirBloque;
+	t_getBloque infoBloque;
 	int socketNodoGlobal;
 	int tamanioTotalMensaje;
 	estructuraIPyNodo ipyPuertoNodo;
@@ -105,12 +110,18 @@ bson_oid_t oid;
 
 char *str;
 
-// funcionesParaEnviarEstructuras
+// Funciones para enviar y recibir Estructuras
 
 char* serializarParaGetBloque(estructuraSetBloque *bloque);
 void liberarMensaje(char **package);
 int recive_y_deserialisa_IPyPUERTO_Nodo(estructuraIPyNodo *bloque, int socket, uint32_t tamanioTotal);
 void *atenderMarta(void*arg);
+
+// Funciones de Interfaz Nodo
+
+void escribirBloqueEnNodo (int socket, estructuraSetBloque escribirBloque);
+int recive_y_deserializa_Contenido_Bloque(t_getBloque *bloque, int socket, uint32_t tamanioTotal);
+char *pedirContenidoBloqueA (int socket, int nroBloque);
 
 // funciones para Agregar Datos a Mongo
 
