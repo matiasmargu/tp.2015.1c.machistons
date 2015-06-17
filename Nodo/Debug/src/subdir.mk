@@ -9,6 +9,7 @@ C_SRCS += \
 ../src/atenderNodoYFS.c \
 ../src/funcionesParaEnviar.c \
 ../src/manejoDeMemoria.c \
+../src/rutinasMapperYReducer.c \
 ../src/variablesGlobales.c 
 
 OBJS += \
@@ -17,6 +18,7 @@ OBJS += \
 ./src/atenderNodoYFS.o \
 ./src/funcionesParaEnviar.o \
 ./src/manejoDeMemoria.o \
+./src/rutinasMapperYReducer.o \
 ./src/variablesGlobales.o 
 
 C_DEPS += \
@@ -25,6 +27,7 @@ C_DEPS += \
 ./src/atenderNodoYFS.d \
 ./src/funcionesParaEnviar.d \
 ./src/manejoDeMemoria.d \
+./src/rutinasMapperYReducer.d \
 ./src/variablesGlobales.d 
 
 

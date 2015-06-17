@@ -10,6 +10,7 @@
 #define ATENDERJOB_H_
 
 #include "funcionesParaEnviar.h"
+#include "rutinasMapperYReducer.h"
 
 
 void* atenderJob(void* arg);

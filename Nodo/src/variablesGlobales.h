@@ -30,8 +30,10 @@
 #include <sys/mman.h>
 #include "atenderNodoYFS.h"
 
+
 char *ip_nodo;
 int puerto_nodo;
+
 
 char *archivo_bin;
 char *dir_temp;
