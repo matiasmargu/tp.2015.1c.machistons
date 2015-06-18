@@ -45,16 +45,20 @@ char* serializar_charpuntero(t_charpuntero *nombre, int tamanioTotal){
 			return serializedPackage;
 		}
 
-
+//FUNCION QUE EJECUTA EL HILO QUE ATIENDE A CADA JOB
 void  *conectarseAlJob(void*arg){
 
 	int socket = (int)arg;
-
 	int saludo = 9 ;
 	int cantidad,tamanioTotal;
 	char* archivoARecibir;
+	char* combiner;
+	int tamanioCombiner;
 
+	//MANDAMOS HANDSHAKE A JOB
 	send(socket,&saludo,sizeof(int),0);
+
+	//ACA RECIBIMOS LA LISTA DE ARCHIVOS DE JOB COMO UN CHAR*
    	recv(socket, &tamanioTotal, sizeof(int),0);
    	int estado2 = 1; // Estructura que manjea el status de los recieve.
   	archivoARecibir = malloc(tamanioTotal);
@@ -62,6 +66,17 @@ void  *conectarseAlJob(void*arg){
    	if(estado2){
                 printf("el string es %s\n",archivoARecibir);
    	}
+
+   	//ACA RECIBIMOS LA INFORMACION SOBRE EL COMBINER(SI TIENE O NO)
+   	recv(socket, &tamanioCombiner, sizeof(int),0);
+  	int estadoCombiner = 1; // Estructura que manjea el status de los recieve.
+   	combiner = malloc(tamanioCombiner);
+   	estadoCombiner = recive_y_deserialisa(&combiner, socket, tamanioCombiner);
+   	if(estadoCombiner){
+   		printf("el combiner es %s\n",combiner);
+   	}
+
+
    	return NULL;
 
 }

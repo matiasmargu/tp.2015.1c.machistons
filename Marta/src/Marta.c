@@ -76,18 +76,8 @@ int main(void) {
 
 /*
 
-//ACA RECIBIMOS DE JOB SI TIENE O NO COMBINER
-
-   	recv(socketjob, &tamanioCombiner, sizeof(int),0);
-   	int estadoCombiner = 1; // Estructura que manjea el status de los recieve.
-  	combiner = malloc(tamanioCombiner);
-   	estadoCombiner = recive_y_deserialisa(&combiner, socketjob, tamanioCombiner);
-   	if(estadoCombiner){
-
    		//ACA NOS CONECTAMOS CON EL FILE SYSTEM
 
-   		printf("el combiner es %s\n",combiner);
-   		/*
    		socketFS = crearCliente (ip_fs, puerto_fs);
    		handshakeFS = 25;
 
@@ -202,7 +192,7 @@ nodo_y_contador nodo;
    		    					pthread_create(&hilo_job, NULL, conectarseAlJob,(void *)socketjob);
 
    		    					break;
-   		    			case 2: // Este es Nodo
+   		    			case 2: //
 
    		    					break;
    		    				}

@@ -35,36 +35,30 @@ int main(void) {
 	int saludo;
 	int handshakeMarta;
 	t_charpuntero structCombiner;
-
 	t_charpuntero nombre;
-
-
-
     t_marta_job2 Marta_Job;
     t_job_nodo Job_Nodo;
 
 
+//LEEMOS TODOS LOS ARCHIVOS DE LA CONFIGURACION
+archivoConfiguracion = config_create(rutaArchivoConfiguracion);
+puerto_marta = config_get_string_value(archivoConfiguracion, "PUERTO_MARTA");
+ip_marta = config_get_string_value(archivoConfiguracion, "IP_MARTA");
+mapper = config_get_string_value(archivoConfiguracion, "MAPPER");
+reduce = config_get_string_value(archivoConfiguracion, "REDUCE");
+combiner = config_get_string_value(archivoConfiguracion, "COMBINER");
+lista_archivos = config_get_string_value(archivoConfiguracion, "ARCHIVOS");
+archivo_resultado = config_get_string_value(archivoConfiguracion, "RESULTADO");
 
-
-	archivoConfiguracion = config_create(rutaArchivoConfiguracion);
-	puerto_marta = config_get_string_value(archivoConfiguracion, "PUERTO_MARTA");
-	ip_marta = config_get_string_value(archivoConfiguracion, "IP_MARTA");
-	mapper = config_get_string_value(archivoConfiguracion, "MAPPER");
-	reduce = config_get_string_value(archivoConfiguracion, "REDUCE");
-	combiner = config_get_string_value(archivoConfiguracion, "COMBINER");
-	lista_archivos = config_get_string_value(archivoConfiguracion, "ARCHIVOS");
-	archivo_resultado = config_get_string_value(archivoConfiguracion, "RESULTADO");
-
+//NOS CONECTAMOS CON MARTA
 int socketMarta = crearCliente (ip_marta, puerto_marta);
-
 handshakeMarta = 9;
-
 send(socketMarta,&handshakeMarta,sizeof(int),0);
-
 recv(socketMarta, &saludo, sizeof(int),0);
-
 log_info(logger,"Conexion establecida con proceso Marta");
 printf("Conexion establecida con proceso Marta:%i \n",saludo);
+
+//ACA LE MANDAMOS A MARTA LA LISTA DE ARCHIVOS COMO UN CHAR*
 char* archivoAEnviar;
 nombre.archivo = lista_archivos;
 tamanioTotal = sizeof(int)+ strlen(nombre.archivo)+1;
@@ -72,34 +66,16 @@ send(socketMarta, &tamanioTotal, sizeof(int),0);
 archivoAEnviar =  serializar_charpuntero( &nombre, tamanioTotal);
 send(socketMarta,archivoAEnviar,tamanioTotal,0);
 
-int a;
-char *archivo;
+//MANDAMOS A MARTA SI TIENE O NO COMBINER
 char* combinerAEnviar;
 int tamanioCombiner;
-
-/*
-
-//ACA LE MANDAMOS A MARTA CADA ARCHIVO DE LA LISTA QUE ESTA EN LA CONFIGURACION
-for(a = 0 ; a < cantidad; a++){
-	nombre.archivo = lista_archivos[a];
-	printf("el archivo es %s\n",nombre.archivo);
-	tamanioTotal = sizeof(int)+ strlen(nombre.archivo)+1;
-	send(socketMarta, &tamanioTotal, sizeof(int),0);
-	archivoAEnviar = serializar_charpuntero(&nombre, tamanioTotal);
-	send(socketMarta,archivoAEnviar,tamanioTotal,0);
-
-}
-printf("a\n");
-
-
-//MANDAMOS A MARTA SI TIENE O NO COMBINER
 tamanioCombiner = sizeof(int) + strlen(combiner)+1;
 send(socketMarta, &tamanioCombiner, sizeof(int),0);
 structCombiner.archivo = combiner;
 combinerAEnviar =  serializar_charpuntero(&structCombiner, tamanioCombiner);
 send(socketMarta,combinerAEnviar,tamanioCombiner,0);
 
-
+/*
 // Aca hago como si le mandase a job una matriz
 
 int columnas = 3;
@@ -178,6 +154,7 @@ for(cont1=0;cont1 < filas; cont1 ++){
 
 
 
+//DE ACA PARA ABAJO NO BORRAR HAY QUE HACER MODIFICACIONES
 
 recv(socketMarta, &tamanioTotal, sizeof(int),0);
 
@@ -236,7 +213,7 @@ char* mensajeMapper = serializarMapper(Job_Nodo);
             	Job_Nodo.tipoRutina = 1;
             }else{Job_Nodo.rutinaEjecutable = reduce;
         	Job_Nodo.tipoRutina = 2;}
-*//*
+
 			pthread_create(&hiloNodo_i, NULL, (void*) conectarseAlNodo, &CAN);
 			if(Marta_Job.rutina == 1){
 			log_info(logger,"Se creo un hilo mapper  "); //AGREGAR PARAMETROS RECIBIDOS
