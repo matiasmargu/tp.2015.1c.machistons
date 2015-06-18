@@ -44,8 +44,6 @@ int main(void) {
     t_job_nodo Job_Nodo;
 
 
-	printf("a\n");
-
 
 
 	archivoConfiguracion = config_create(rutaArchivoConfiguracion);
@@ -61,36 +59,17 @@ int socketMarta = crearCliente (ip_marta, puerto_marta);
 
 handshakeMarta = 9;
 
-
-
-
 send(socketMarta,&handshakeMarta,sizeof(int),0);
 
 recv(socketMarta, &saludo, sizeof(int),0);
 
-
 log_info(logger,"Conexion establecida con proceso Marta");
-printf("Conexion establecida con proceso Marta: %i\n",saludo);
-
-char* l;
-int cantidad = 0;
-int s = 0;
-l = lista_archivos[s];
-
-//ACA CALCULAMOS EL TAMANIO DE LA LISTA DE ARCHIVOS QUE ESTA EN LA CONFIGURACION
-while(l != NULL){
-	cantidad = cantidad + 1;     //cantidad = TAMANIO LISTA DE ARCHIVOS
-	s = s+1;
-	l = lista_archivos[s];
-}
-send(socketMarta,&cantidad,sizeof(int),0);
-
-char* stringArchivos;
-int n;
+printf("Conexion establecida con proceso Marta:%i \n",saludo);
 char* archivoAEnviar;
 nombre.archivo = lista_archivos;
 tamanioTotal = sizeof(int)+ strlen(nombre.archivo)+1;
-archivoAEnviar =  serializar_charpuntero( lista_archivos, strlen(lista_archivos) + 1);
+send(socketMarta, &tamanioTotal, sizeof(int),0);
+archivoAEnviar =  serializar_charpuntero( &nombre, tamanioTotal);
 send(socketMarta,archivoAEnviar,tamanioTotal,0);
 
 int a;
@@ -98,7 +77,7 @@ char *archivo;
 char* combinerAEnviar;
 int tamanioCombiner;
 
-
+/*
 
 //ACA LE MANDAMOS A MARTA CADA ARCHIVO DE LA LISTA QUE ESTA EN LA CONFIGURACION
 for(a = 0 ; a < cantidad; a++){
@@ -277,11 +256,10 @@ char* mensajeMapper = serializarMapper(Job_Nodo);
 
 */
 
-printf("a\n");
+
 
 
 	close(socketMarta);
-
 	log_destroy(logger);
 	free(mapper);
 	free(lista_archivos);

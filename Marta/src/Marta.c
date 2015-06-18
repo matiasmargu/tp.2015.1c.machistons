@@ -20,22 +20,23 @@ int main(void) {
 	char* ip_fs ;
 	t_charpuntero archivoAFS;
 	char* archivoAFSAEnviar;
-	int cantidad;
-	int handShake;
 	char* combiner;
 	int tamanioTotalAFS;
-	int saludo;
 	int tamanioCombiner;
 	int socketFS;
 	int d;
 	int handshakeFS;
 	int puerto_job;
 	int entero;
+	int socketjob ;
+
 
 	t_config* archivoConfiguracion;
 	archivoConfiguracion = config_create(rutaArchivoConfiguracion);
 
 	puerto_job = config_get_int_value(archivoConfiguracion, "PUERTO_MARTA") ;
+	puerto_fs = config_get_string_value(archivoConfiguracion, "PUERTO_FS") ;
+	ip_fs = config_get_string_value(archivoConfiguracion, "IP_FS");
 
 
 	pthread_t hilo_job;
@@ -71,50 +72,9 @@ int main(void) {
 
 	// Termina Configuracion
 
-		printf("a");
 
-
-    // para recibir la cantidad de archivos
-
-    int a;
-
-
-
-
-	puerto_fs = config_get_string_value(archivoConfiguracion, "PUERTO_FS") ;
-	ip_fs = config_get_string_value(archivoConfiguracion, "IP_FS");
-
-
-
-int socketjob  = crearServidor("3000");
-recv(socketjob, &handShake, sizeof(int),0);
-saludo = 3;
-send(socketjob, &saludo, sizeof(int),0);
-printf("Se conecto el job con el hadshake: %i \n",handShake);
-recv(socketjob, &cantidad, sizeof(int),0);
-printf("cantidad: %i \n",cantidad);
-char* listaDeArchivos[cantidad+1] ;
-int tamanioTotal;
-char* archivo;
-int peso = sizeof(char) * cantidad;
 
 /*
-//ACA RECIBE LA LISTA DE ARCHIVOS DE JOB
-
-   	 for(a = 0 ; a < cantidad; a++){
-   		 recv(socketjob, &tamanioTotal, sizeof(int),0);
-   		 int estado = 1; // Estructura que manjea el status de los recieve.
-   		 archivo= malloc(tamanioTotal);
-   		 estado = recive_y_deserialisa(&archivo, socketjob, tamanioTotal);
-   		 if(estado){
-   			printf("el archivo es %s\n ",archivo);
-   			listaDeArchivos[a] = archivo;
-   		 }
-   		free(archivo);
-   	 }
-
-   	   listaDeArchivos[cantidad+1] = NULL;
-
 
 //ACA RECIBIMOS DE JOB SI TIENE O NO COMBINER
 
@@ -201,7 +161,7 @@ nodo_y_contador nodo;
 */
 
    	// Empieza el select
-    printf("a");
+
 
 
    	for (;;){
@@ -238,7 +198,7 @@ nodo_y_contador nodo;
    		    		else{
    		    			switch(entero){ // HANDSHAKE
    		    				case 9: // Este es JOB
-
+   		    					socketjob = i;
    		    					pthread_create(&hilo_job, NULL, conectarseAlJob,(void *)socketjob);
 
    		    					break;
@@ -253,7 +213,7 @@ nodo_y_contador nodo;
    		}
 
 
-	close(socketjob);
+
 	//free(combiner);
 	close(socketFS);
 	return EXIT_SUCCESS;
