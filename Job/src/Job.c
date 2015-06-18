@@ -26,7 +26,7 @@ int main(void) {
 	char* mapper;
 	char* reduce;
 	char* combiner;
-	char** lista_archivos;
+	char* lista_archivos;
 	char* archivo_resultado;
 	int i;
 	int c;
@@ -44,6 +44,7 @@ int main(void) {
     t_job_nodo Job_Nodo;
 
 
+	printf("a\n");
 
 
 
@@ -53,12 +54,15 @@ int main(void) {
 	mapper = config_get_string_value(archivoConfiguracion, "MAPPER");
 	reduce = config_get_string_value(archivoConfiguracion, "REDUCE");
 	combiner = config_get_string_value(archivoConfiguracion, "COMBINER");
-	lista_archivos = config_get_array_value(archivoConfiguracion, "ARCHIVOS");
+	lista_archivos = config_get_string_value(archivoConfiguracion, "ARCHIVOS");
 	archivo_resultado = config_get_string_value(archivoConfiguracion, "RESULTADO");
 
 int socketMarta = crearCliente (ip_marta, puerto_marta);
 
 handshakeMarta = 9;
+
+
+
 
 send(socketMarta,&handshakeMarta,sizeof(int),0);
 
@@ -82,13 +86,15 @@ while(l != NULL){
 send(socketMarta,&cantidad,sizeof(int),0);
 
 char* stringArchivos;
-
-
-
+int n;
+char* archivoAEnviar;
+nombre.archivo = lista_archivos;
+tamanioTotal = sizeof(int)+ strlen(nombre.archivo)+1;
+archivoAEnviar =  serializar_charpuntero( lista_archivos, strlen(lista_archivos) + 1);
+send(socketMarta,archivoAEnviar,tamanioTotal,0);
 
 int a;
 char *archivo;
-char* archivoAEnviar;
 char* combinerAEnviar;
 int tamanioCombiner;
 
@@ -104,6 +110,7 @@ for(a = 0 ; a < cantidad; a++){
 	send(socketMarta,archivoAEnviar,tamanioTotal,0);
 
 }
+printf("a\n");
 
 
 //MANDAMOS A MARTA SI TIENE O NO COMBINER
@@ -145,6 +152,9 @@ for(cont2= 0 ; cont2< filas; cont2++){
 // a partir de aca haria como si formase un vector de estructuras que tengan el nodo y el contador
 // que la funcion de ese contador va a ser mostrar cuantos hilos mapper se mandaron a ese nodo para
 // asi ver a cual nodo mandarle el hilo mapper a realizar
+
+printf("a\n");
+
 
 typedef struct{
 	char* nodo;
@@ -247,7 +257,7 @@ char* mensajeMapper = serializarMapper(Job_Nodo);
             	Job_Nodo.tipoRutina = 1;
             }else{Job_Nodo.rutinaEjecutable = reduce;
         	Job_Nodo.tipoRutina = 2;}
-
+*//*
 			pthread_create(&hiloNodo_i, NULL, (void*) conectarseAlNodo, &CAN);
 			if(Marta_Job.rutina == 1){
 			log_info(logger,"Se creo un hilo mapper  "); //AGREGAR PARAMETROS RECIBIDOS
@@ -265,9 +275,10 @@ char* mensajeMapper = serializarMapper(Job_Nodo);
 }
 
 
-
-
 */
+
+printf("a\n");
+
 
 	close(socketMarta);
 

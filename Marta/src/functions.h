@@ -46,7 +46,7 @@ typedef struct {
 
 int recive_y_deserialisa(t_charpuntero* nombre, int socket, uint32_t tamanioTotal);
 char* serializar_charpuntero(t_charpuntero* nombre, int tamanioTotal);
-
+void  *conectarseAlJob(void*arg);
 
 
 

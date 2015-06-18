@@ -48,6 +48,31 @@ char* serializar_charpuntero(t_charpuntero *nombre, int tamanioTotal){
 			return serializedPackage;
 		}
 
+
+void  *conectarseAlJob(void*arg){
+
+	int socket = (int)arg;
+
+	int saludo = 9 ;
+	int cantidad,tamanioTotal,estado;
+	char* archivoARecibir;
+
+	send(socket,&saludo,sizeof(int),0);
+
+
+	recv(socket,&cantidad,sizeof(int),0);
+
+
+   	recv(socket, &tamanioTotal, sizeof(int),0);
+   	int estado2 = 1; // Estructura que manjea el status de los recieve.
+  	archivoARecibir = malloc(tamanioTotal);
+   	estado2 = recive_y_deserialisa(&archivoARecibir, socket, tamanioTotal);
+
+   	if(estado2){
+                printf("el string es %s\n",archivoARecibir);
+   	}
+}
+
 /*
 int recieve_and_deserialize(struct job_marta_inicio *package, int socketCliente){
 

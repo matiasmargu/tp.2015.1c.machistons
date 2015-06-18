@@ -14,6 +14,7 @@
 
 int main(void) {
 
+
 	char* rutaArchivoConfiguracion = "/home/utnso/git/tp-2015-1c-machistons/Configuracion/marta.conf";
 	char* puerto_fs ;
 	char* ip_fs ;
@@ -28,9 +29,50 @@ int main(void) {
 	int socketFS;
 	int d;
 	int handshakeFS;
-
+	int puerto_job;
+	int entero;
 
 	t_config* archivoConfiguracion;
+	archivoConfiguracion = config_create(rutaArchivoConfiguracion);
+
+	puerto_job = config_get_int_value(archivoConfiguracion, "PUERTO_MARTA") ;
+
+
+	pthread_t hilo_job;
+
+	// Configuracion Select
+
+	fd_set master;
+		fd_set read_fds;
+
+		pthread_t hiloConsola;
+		pthread_t hiloMarta;
+
+		struct sockaddr_in serveraddr;
+		struct sockaddr_in clientaddr;
+
+		int fdmax, listener, newfd, yes = 1, addrlen, i;
+
+		FD_ZERO(&master);
+		FD_ZERO(&read_fds);
+
+		listener = socket(AF_INET, SOCK_STREAM, 0);
+		setsockopt(listener, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int));
+
+		serveraddr.sin_family = AF_INET;
+		serveraddr.sin_addr.s_addr = INADDR_ANY;
+		serveraddr.sin_port = htons(puerto_job);
+		memset(&(serveraddr.sin_zero), '\0', 8);
+		bind(listener, (struct sockaddr *)&serveraddr, sizeof(serveraddr));
+		listen(listener, 10);
+		FD_SET(listener, &master);
+
+		fdmax = listener;
+
+	// Termina Configuracion
+
+		printf("a");
+
 
     // para recibir la cantidad de archivos
 
@@ -38,7 +80,7 @@ int main(void) {
 
 
 
-	archivoConfiguracion = config_create(rutaArchivoConfiguracion);
+
 	puerto_fs = config_get_string_value(archivoConfiguracion, "PUERTO_FS") ;
 	ip_fs = config_get_string_value(archivoConfiguracion, "IP_FS");
 
@@ -56,7 +98,7 @@ int tamanioTotal;
 char* archivo;
 int peso = sizeof(char) * cantidad;
 
-
+/*
 //ACA RECIBE LA LISTA DE ARCHIVOS DE JOB
 
    	 for(a = 0 ; a < cantidad; a++){
@@ -109,7 +151,7 @@ int peso = sizeof(char) * cantidad;
 
    		}
 
-*/
+
 
    	int columnas;
    	int filas;
@@ -156,10 +198,76 @@ nodo_y_contador nodo;
    	}
 
    	}
+*/
+
+   	// Empieza el select
+    printf("a");
+
+
+   	for (;;){
+   		read_fds = master;
+   		select(fdmax+1, &read_fds, NULL, NULL, NULL);
+   		printf("select activo\n");
+   		for(i = 0; i <= fdmax; i++)
+   		{
+   		    if(FD_ISSET(i, &read_fds))
+   		    {
+   		    	if(i == listener)
+   		    	{
+   					addrlen = sizeof(clientaddr);
+   					if((newfd = accept(listener, (struct sockaddr *)&clientaddr, &addrlen)) == -1)
+   					{
+   					}
+   					else
+   					{
+   						FD_SET(newfd, &master);
+   						if(newfd > fdmax)
+   						{
+   							fdmax = newfd;
+   						}
+   					}
+   		    	}
+   		    	else
+   		    	{
+   		    		if((recv(i, &entero, sizeof(int),0 )) <= 0)
+   		    		{
+
+   		    			close(i); // Coneccion perdida
+   		    			FD_CLR(i, &master);
+   		    		}
+   		    		else{
+   		    			switch(entero){ // HANDSHAKE
+   		    				case 9: // Este es JOB
+
+   		    					pthread_create(&hilo_job, NULL, conectarseAlJob,(void *)socketjob);
+
+   		    					break;
+   		    			case 2: // Este es Nodo
+
+   		    					break;
+   		    				}
+   		    			}
+   		    	}
+   		    }
+   		}
+   		}
+
 
 	close(socketjob);
 	//free(combiner);
 	close(socketFS);
 	return EXIT_SUCCESS;
 }
+
+
+
+
+
+
+
+
+
+
+
+
 
