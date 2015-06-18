@@ -19,13 +19,20 @@ void *atenderNFS(void*arg){
 	int tamanioBloque;
 	estructuraSetBloque set;
 
-	printf("%i\n",socket);
 
 	pmap = mapearAMemoriaVirtual();
 
-	int* array = crearArraySegunTamanioArchiboBin(pmap);
+	div_t divisor = div(strlen(pmap),20);
+	int array[divisor.quot];
+
+	for(i=0;i<divisor.quot;i++){
+		array[i]=0;
+	}
+
+	printf("%i\n",socket);
 
 	while(1){
+
 		//printf("Esto deberia imprimirse una sola vez\n");
 		if(recv(socket, &entero, sizeof(int),0) > 0){
 		switch(entero){
@@ -43,7 +50,7 @@ void *atenderNFS(void*arg){
 					memcpy(bloque,pmap + tamanioBloqueExacto,tamanioBloque);
 					status = 0;
 				}
-
+				printf("Element[%d] = %d\n", nroDelBloque, array[nroDelBloque]);
 				int tamanioData = sizeof(int) + strlen(bloque) + 1;
 				//printf("%i\n",tamanioData);
 				mensaje = serializarBloqueDeDatos(bloque,tamanioData);
@@ -66,8 +73,9 @@ void *atenderNFS(void*arg){
 					//memcpy(pmap+(1024*1024*20*(nroDelBloque)),set.data,20*1024*1024);
 					memcpy(pmap+(nroDelBloque*10),set.data,strlen(set.data));
 					msync(pmap,strlen(pmap),0);
-					printf("\nse seteo correctamente\n");
+					printf("se seteo correctamente\n");
 				}
+				printf("Element[%d] = %d\n", nroDelBloque, array[nroDelBloque]);
 				//ok = 20;
 				//send(socket,&ok, sizeof(int),0);
 			break;
@@ -75,6 +83,14 @@ void *atenderNFS(void*arg){
 			case 3:
 				ok = 20;
 				send(socket,&ok, sizeof(int),0);
+			break;
+			case 4:
+		//FORMATEO
+				for(i=0;i<strlen(pmap);i++){
+					memcpy(pmap+i,"0",sizeof(char));
+				}
+				msync(pmap,strlen(pmap),0);
+				printf("se formatero el archivo binario\n");
 			break;
 		}
 	}

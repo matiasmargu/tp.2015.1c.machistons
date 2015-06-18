@@ -9,7 +9,5 @@
 #define MANEJODEMEMORIA_H_
 
 char* mapearAMemoriaVirtual();
-int crearArraySegunTamanioArchiboBin();
-
 
 #endif /* MANEJODEMEMORIA_H_ */
