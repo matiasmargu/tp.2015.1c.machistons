@@ -76,7 +76,30 @@ void  *conectarseAlJob(void*arg){
    		printf("el combiner es %s\n",combiner);
    	}
 
+   	//ACA SE CONECTA CON FS
+   	char* puerto_fs, ip_fs ;
+   	char* rutaArchivoConfiguracion = "/home/utnso/git/tp-2015-1c-machistons/Configuracion/marta.conf";
+   	t_config* archivoConfiguracion;
+   	archivoConfiguracion = config_create(rutaArchivoConfiguracion);
+   	puerto_fs = config_get_string_value(archivoConfiguracion, "PUERTO_FS") ;
+   	ip_fs = config_get_string_value(archivoConfiguracion, "IP_FS");
+   	int socketFS,handshakeFS;
+   	socketFS = crearCliente (ip_fs, puerto_fs);
+   	handshakeFS = 25;
+   	send(socketFS,&handshakeFS,sizeof(int),0);
 
+   	//MANDAMOS LOS ARCHIVOS A FS (MANDAMOS UN CHAR*)
+   	char* archivoAEnviar;
+   	t_charpuntero nombre;
+   	nombre.archivo = archivoARecibir;
+   	tamanioTotal = sizeof(int)+ strlen(nombre.archivo)+1;
+   	send(socketFS, &tamanioTotal, sizeof(int),0);
+   	archivoAEnviar =  serializar_charpuntero( &nombre, tamanioTotal);
+   	send(socketFS,archivoAEnviar,tamanioTotal,0);
+
+
+
+   	close(socketFS);
    	return NULL;
 
 }

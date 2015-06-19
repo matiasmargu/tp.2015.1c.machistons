@@ -16,27 +16,14 @@ int main(void) {
 
 
 	char* rutaArchivoConfiguracion = "/home/utnso/git/tp-2015-1c-machistons/Configuracion/marta.conf";
-	char* puerto_fs ;
-	char* ip_fs ;
 	t_charpuntero archivoAFS;
-	char* archivoAFSAEnviar;
-	char* combiner;
-	int tamanioTotalAFS;
-	int tamanioCombiner;
-	int socketFS;
-	int d;
-	int handshakeFS;
-	int puerto_job;
-	int entero;
-	int socketjob ;
-
-
+	char* archivoAFSAEnviar, combiner;
+	int tamanioCombiner,d, puerto_job, entero, socketjob,tamanioTotalAFS;
 	t_config* archivoConfiguracion;
 	archivoConfiguracion = config_create(rutaArchivoConfiguracion);
 
 	puerto_job = config_get_int_value(archivoConfiguracion, "PUERTO_MARTA") ;
-	puerto_fs = config_get_string_value(archivoConfiguracion, "PUERTO_FS") ;
-	ip_fs = config_get_string_value(archivoConfiguracion, "IP_FS");
+
 
 
 	pthread_t hilo_job;
@@ -75,33 +62,6 @@ int main(void) {
 
 
 /*
-
-   		//ACA NOS CONECTAMOS CON EL FILE SYSTEM
-
-   		socketFS = crearCliente (ip_fs, puerto_fs);
-   		handshakeFS = 25;
-
-   		printf("%i\n",cantidad);
-
-   		send(socketFS,&handshakeFS,sizeof(int),0);
-   		printf("mando a fs %i\n",handshakeFS);
-
-   		printf("%i\n",cantidad);
-
-   		send(socketFS,&cantidad,sizeof(int),0);
-
-
-
-   		for(d = 0 ; d < cantidad; d++){
-   			archivoAFS.archivo = listaDeArchivos[d];
-   			tamanioTotalAFS = sizeof(int) + strlen(archivoAFS.archivo)+1;
-   			send(socketFS, &tamanioTotalAFS, sizeof(int),0);
-   			archivoAFSAEnviar = serializar_charpuntero(&archivoAFS, tamanioTotalAFS);
-   			send(socketFS,archivoAFSAEnviar,tamanioTotalAFS,0);
-
-   		}
-
-
 
    	int columnas;
    	int filas;
@@ -202,10 +162,6 @@ nodo_y_contador nodo;
    		}
    		}
 
-
-
-	//free(combiner);
-	close(socketFS);
 	return EXIT_SUCCESS;
 }
 
