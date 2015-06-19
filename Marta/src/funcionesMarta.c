@@ -36,12 +36,12 @@ int recive_y_guarda_estructura(t_archivo arch, int socket, uint32_t tamanioTotal
 	//LO QUE RECIBO TIENE ESTA ESTRCTURA: [TAM_ESTRUC][TAM_NOM][NOMBRE][CANT_BLOQ]   [NUMERO_BLOQ][ID_NODO][NUMERO_BLOQ][ID_NODO][NUMERO_BLOQ][ID_NODO][NUMERO_BLOQ]
 
 	// COPIO EL NOMBRE DEL ARCHIVO
-	int tamanioParcial;
+	int tamanioNombre;
 	offset += sizeof(int);
-	memcpy(&tamanioParcial, buffer+offset, sizeof(int));
+	memcpy(&tamanioNombre, buffer+offset, sizeof(int));
 	offset += sizeof(int);
-	memcpy(&arch.nombre, buffer+offset, tamanioParcial);
-	offset += tamanioParcial;
+	memcpy(&arch.nombre, buffer+offset, tamanioNombre);
+	offset += tamanioNombre;
 
 	// COPIO LA CANT_BLOQUES DEL ARCHIVO
 	memcpy(&arch.cantidadDeBloques, buffer+offset, sizeof(int));
@@ -171,7 +171,7 @@ void  *conectarseAlJob(void*arg){
    			recv(socketFS, &tamanioTotal, sizeof(int),0);
    			int estado = recive_y_guarda_estructura(archivo, socketFS, tamanioTotal);
    			//ACA GUARDAMOS LA MATRIZ	archivo.matriz =
-   			list_add(listaDeArchivosGuardados,archivo );
+   			list_add(listaDeArchivosGuardados,archivo);
    		}
    	}
 
