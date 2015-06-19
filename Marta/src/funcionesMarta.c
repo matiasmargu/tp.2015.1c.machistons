@@ -27,6 +27,53 @@ int recive_y_deserialisa(t_charpuntero* nombre, int socket, uint32_t tamanioTota
 	return status;
 }
 
+// ACA NECESITO QUE EL FS MANDE EL NOMBRE, LA CANT DE BLOQUES, Y LA UBICACION DE LAS COPIAS
+int recive_y_guarda_estructura(t_archivo arch, int socket, uint32_t tamanioTotal){
+
+	char *buffer = malloc(tamanioTotal);
+	int offset = 0;
+	recv(socket, buffer, tamanioTotal, 0);
+	//LO QUE RECIBO TIENE ESTA ESTRCTURA: [TAM_ESTRUC][TAM_NOM][NOMBRE][CANT_BLOQ]   [NUMERO_BLOQ][ID_NODO][NUMERO_BLOQ][ID_NODO][NUMERO_BLOQ][ID_NODO][NUMERO_BLOQ]
+
+	// COPIO EL NOMBRE DEL ARCHIVO
+	int tamanioParcial;
+	offset += sizeof(int);
+	memcpy(&tamanioParcial, buffer+offset, sizeof(int));
+	offset += sizeof(int);
+	memcpy(&arch.nombre, buffer+offset, tamanioParcial);
+	offset += tamanioParcial;
+
+	// COPIO LA CANT_BLOQUES DEL ARCHIVO
+	memcpy(&arch.cantidadDeBloques, buffer+offset, sizeof(int));
+	offset += sizeof(int);
+
+	// COPIO LOS BLOQUES QUE CONTIENE EL ARCHIVO A UN ESTRUCTURA DE LISTA
+	arch.bloques = list_create();
+	int i;
+	for(i=0; i<= arch.cantidadDeBloques; i++){
+
+		t_bloque bloque;
+		memcpy(&bloque.NumeroBloque, buffer+offset, sizeof(int));
+		offset += sizeof(int);
+
+		int j;
+		t_copia copias[3];
+		for(j=0; j<=3; j++){
+
+			memcpy(&(copias[j].idNodo), buffer+offset, sizeof(int));
+			offset += sizeof(int);
+			memcpy(&(copias[j].Numerobloque), buffer+offset, sizeof(int));
+			offset += sizeof(int);
+		}
+
+		bloque.copias = copias;
+		list_add_in_index(arch.bloques, bloque.NumeroBloque, bloque);
+	}
+
+	return 0;
+
+}
+
 char* serializar_charpuntero(t_charpuntero *nombre, int tamanioTotal){
 			char *serializedPackage = malloc(tamanioTotal);
 
@@ -91,40 +138,40 @@ void  *conectarseAlJob(void*arg){
 
    	char* archivoAEnviar;
    	t_charpuntero nombre;
-   	archivo archivo;
-   	char **archivos_separados = string_get_string_as_array(listaArchivosJob); //CONVERTIMOS EL STRING A UN ARRAY
+   	t_archivo archivo;
+   	char **archivos_separados = string_get_string_as_array(listaArchivosJob); //CONVERTIMOS EL STRING A UN ARRAY (Esto te devuelve algo asi: ["a", "b", "c"])
    	int s = 0;
-   	int a;
-   	char* un_archivo;
-   	un_archivo = archivos_separados[s];
 
    	//CONTAMOS LA CANTIDAD DE ARCHIVOS Y SE LA MANDAMOS A FS
-   	while(un_archivo != NULL){
-   		cantidad = cantidad + 1;     //cantidad = TAMANIO LISTA DE ARCHIVOS JOB
-   		s = s+1;
-   		un_archivo = archivos_separados[s];
+   	while(archivos_separados[s] != NULL){
+   		cantidad += 1;     //cantidad = TAMANIO LISTA DE ARCHIVOS JOB
+   		s += 1;
    	}
-   	send(socketFS,&cantidad,sizeof(int),0);\
+   	send(socketFS,&cantidad,sizeof(int),0);
    	printf("cantidad%i",cantidad);
 
 
-   	t_list* listaDeArchivosGuardados; //UNA LISTA DE STRUCT ARCHIVO
+   	t_list* listaDeArchivosGuardados; //UNA LISTA DE STRUCT T_ARCHIVO
    	listaDeArchivosGuardados =	list_create();
-  bool condicion = 	nombre.archivo == archivo.nombre;
+   	bool condicion = 	nombre.archivo == archivo.nombre;
 
    	//MANDAMOS CADA ARCHIVO POR SEPARADO A FS(SOLO LOS QUE NO TENEMOS GUARDADOS) Y RECIBIMOS LA MATRIZ DE CADA ARCHIVO
+   	int a;
    	for(a = 0 ; a < cantidad; a++){
    		nombre.archivo = archivos_separados[a];
    		if(!(list_any_satisfy(listaDeArchivosGuardados, condicion))){
-   		tamanioTotal = sizeof(int)+ strlen(nombre.archivo)+1;
-   		send(socketFS, &tamanioTotal, sizeof(int),0);
-   		archivoAEnviar =  serializar_charpuntero( &nombre, tamanioTotal);
-   		send(socketFS,archivoAEnviar,tamanioTotal,0);
+   			// Le pide al FS que le envie los datos del archivo
+   			tamanioTotal = sizeof(int)+ strlen(nombre.archivo)+1;
+   			send(socketFS, &tamanioTotal, sizeof(int),0);
+   			archivoAEnviar =  serializar_charpuntero( &nombre, tamanioTotal);
+   			send(socketFS,archivoAEnviar,tamanioTotal,0);
 
-   		//ACA TENEMOS QUE RECIBIR LAS MATRICES DE CADA ARCHIVO Y GUARDARLAS
-   		archivo.nombre = nombre.archivo;
-   	//ACA GUARDAMOS LA MATRIZ	archivo.matriz =
-   		list_add(listaDeArchivosGuardados,archivo );
+   			//DATOS QUE ME ENVIA EL FS
+   			t_archivo archivo;
+   			recv(socketFS, &tamanioTotal, sizeof(int),0);
+   			int estado = recive_y_guarda_estructura(archivo, socketFS, tamanioTotal);
+   			//ACA GUARDAMOS LA MATRIZ	archivo.matriz =
+   			list_add(listaDeArchivosGuardados,archivo );
    		}
    	}
 

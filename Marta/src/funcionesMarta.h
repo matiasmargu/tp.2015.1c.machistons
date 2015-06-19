@@ -30,17 +30,19 @@ typedef struct{
 
 typedef struct{
 	char* nombre;
+	char* idJob;
 	int cantidadDeBloques;
-	t_list copia1;
-	t_list copia2;
-	t_list copia3;
-
+	t_list bloques;
 }t_archivo;
 
-typedef struct {
-    int Numerobloque;
-    int idNodo;
+typedef struct{
+	int NumeroBloque;
+	t_copia copias[3];
+}t_bloque;
 
+typedef struct {
+	int idNodo;
+    int Numerobloque;
 } t_copia;
 
 int filas,columnas;
