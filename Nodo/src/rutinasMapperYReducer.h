@@ -10,8 +10,5 @@
 
 #include "variablesGlobales.h"
 
-void *mapper();
-void *reducer();
-
 
 #endif /* RUTINASMAPPERYREDUCER_H_ */

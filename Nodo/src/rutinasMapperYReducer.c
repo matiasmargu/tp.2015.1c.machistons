@@ -7,10 +7,12 @@
 
 #include "rutinasMapperYReducer.h"
 
-void *mapper(){
+void *mapper(void* arg){
+	int socket = (int)arg;
 return NULL;
 }
 
-void *reducer(){
+void *reducer(void* arg){
+	int socket = (int)arg;
 return NULL;
 }

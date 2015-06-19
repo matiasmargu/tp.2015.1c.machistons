@@ -8,6 +8,5 @@
 #ifndef MANEJODEMEMORIA_H_
 #define MANEJODEMEMORIA_H_
 
-char* mapearAMemoriaVirtual();
 
 #endif /* MANEJODEMEMORIA_H_ */

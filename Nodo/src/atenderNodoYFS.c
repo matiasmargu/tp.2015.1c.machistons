@@ -25,8 +25,14 @@ void *atenderNFS(void*arg){
 	div_t divisor = div(strlen(pmap),20);
 	int array[divisor.quot];
 
-	for(i=0;i<divisor.quot;i++){
-		array[i]=0;
+	if(nuevoNodo == 1 ){
+	punteroAlArray = malloc(sizeof(int)*divisor.quot);
+	memcpy(punteroAlArray,array,sizeof(int)*divisor.quot);
+		for(i=0;i<divisor.quot;i++){
+			array[i]=0;
+		}
+	}else{
+		memcpy(array,punteroAlArray,sizeof(int)*divisor.quot);
 	}
 
 	printf("%i\n",socket);
@@ -76,6 +82,8 @@ void *atenderNFS(void*arg){
 					printf("se seteo correctamente\n");
 				}
 				printf("Element[%d] = %d\n", nroDelBloque, array[nroDelBloque]);
+				memcpy(punteroAlArray,array,sizeof(int)*divisor.quot);
+				msync(array,sizeof(int)*divisor.quot,0);
 				//ok = 20;
 				//send(socket,&ok, sizeof(int),0);
 			break;
@@ -89,6 +97,11 @@ void *atenderNFS(void*arg){
 				for(i=0;i<strlen(pmap);i++){
 					memcpy(pmap+i,"0",sizeof(char));
 				}
+				for(i=0;i<divisor.quot;i++){
+						array[i]=0;
+				}
+				memcpy(punteroAlArray,array,sizeof(int)*divisor.quot);
+				msync(array,sizeof(int)*divisor.quot,0);
 				msync(pmap,strlen(pmap),0);
 				printf("se formatero el archivo binario\n");
 			break;

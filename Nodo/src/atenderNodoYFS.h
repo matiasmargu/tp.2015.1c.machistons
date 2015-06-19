@@ -9,8 +9,7 @@
 #define ATENDERNODOYFS_H_
 
 #include "funcionesParaEnviar.h"
-
-void *atenderNFS(void*arg);
+#include "variablesGlobales.h"
 
 
 #endif /* ATENDERNODOYFS_H_ */

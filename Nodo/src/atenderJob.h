@@ -11,9 +11,7 @@
 
 #include "funcionesParaEnviar.h"
 #include "rutinasMapperYReducer.h"
-
-
-void* atenderJob(void* arg);
+#include "variablesGlobales.h"
 
 
 

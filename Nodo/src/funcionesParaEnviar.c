@@ -6,6 +6,7 @@
  */
 
 #include "funcionesParaEnviar.h"
+#include "atenderJob.h"
 
 int recive_y_deserialisa_SET_BLOQUE(estructuraSetBloque *bloque, int socket, uint32_t tamanioTotal){
 	int status;
@@ -23,6 +24,25 @@ int recive_y_deserialisa_SET_BLOQUE(estructuraSetBloque *bloque, int socket, uin
 
 	bloque->data = malloc(tamanioDinamico);
 	memcpy(bloque->data, buffer + offset, tamanioDinamico);
+	offset += tamanioDinamico;
+
+	free(buffer);
+	return status;
+}
+
+int recive_y_deserialisa_SCRIPT(char *script, int socket, uint32_t tamanioTotal){
+	int status;
+	char *buffer = malloc(tamanioTotal);
+	int offset=0;
+
+	recv(socket, buffer, tamanioTotal, 0);
+
+	int tamanioDinamico;
+	memcpy(&tamanioDinamico, buffer + offset, sizeof(int));
+	offset += sizeof(int);
+
+	script = malloc(tamanioDinamico);
+	memcpy(script, buffer + offset, tamanioDinamico);
 	offset += tamanioDinamico;
 
 	free(buffer);
@@ -98,5 +118,5 @@ void handshakeConFS (){
 
 void handshakeConJob(int socket_job){
 	pthread_t hiloJob;
-//	pthread_create(&hiloJob, NULL, &atenderJob, (void *)socket_job);
+	pthread_create(&hiloJob, NULL, &atenderJob, (void *)socket_job);
 }

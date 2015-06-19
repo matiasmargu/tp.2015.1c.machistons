@@ -38,11 +38,38 @@ char *archivo_bin;
 char *dir_temp;
 char *nodo_nuevo;
 
+char* script_mapper;
+char* script_reducer;
+
 char* pmap;
 int fd;
 struct stat mystat;
+char* punteroAlArray;//punteroAlArray
+int nuevoNodo;
 
 t_log* logger; // Log Global
 t_config* archivoConfiguracion;
+
+//Funciones de mapper y reducer
+void *mapper(void* arg);
+void *reducer(void* arg);
+
+//Funciones de memoria
+char* mapearAMemoriaVirtual();
+
+//Funciones de serializacion y deserializacion
+int recive_y_deserialisa_SCRIPT(char *script, int socket, uint32_t tamanioTotal);
+int recive_y_deserialisa_SET_BLOQUE(estructuraSetBloque *bloque, int socket, uint32_t tamanioTotal);
+char* serializarIPyPUERTO(char* ip_fs,char* puerto_fs, int tamanioData);
+char* serializarBloqueDeDatos(char* bloque, int tamanioData);
+
+//Funciones de handshake
+void handshakeConFS ();
+void handshakeConJob(int socket_job);
+
+//Funciones de atender
+void *atenderNFS(void*arg);
+void *atenderJob(void* arg);
+
 
 #endif /* VARIABLESGLOBALES_H_ */
