@@ -24,6 +24,12 @@ void *atenderConsola(void*arg) {
 	//int i;
 	imprimirMenu();
 
+
+	bson_iter_t iter;
+	int estado,tamanio,directorioP;
+	const char *nombre;
+	const char *path;
+
 	while(1){
 			fgets(bufferComando,MAXSIZE_COMANDO, stdin);
 			comandoSeparado=string_split(bufferComando, separator);
@@ -32,6 +38,9 @@ void *atenderConsola(void*arg) {
 					imprimirMenu();
 					break;
 				case Formatear:
+					i = socketNodoGlobal;
+					entero = 4;
+					send(i,&entero,sizeof(int),0);
 					formatear();
 					break;
 				case Eliminar_Arch:
@@ -54,17 +63,34 @@ void *atenderConsola(void*arg) {
 					break;
 				case Copiar_Bloque_Arch:
 					break;
-				case Agregar_Nodo:
+				case Agregar_Nodo: // 12
+					query = BCON_NEW("Nombre","CarlosJSFNASFN.txt");
+					cursor = mongoc_collection_find (archivos, MONGOC_QUERY_NONE, 0, 0, 0, query, NULL, NULL);
+
+					while (mongoc_cursor_next (cursor, &doc)) {
+					        if (bson_iter_init (&iter, doc)) {
+									while (bson_iter_next(&iter)) {
+										if(bson_iter_find (&iter, "Nombre"))nombre = bson_iter_utf8(&iter,NULL);
+										if(bson_iter_find (&iter, "Tamanio"))tamanio = bson_iter_int32(&iter);
+										if(bson_iter_find (&iter, "Directorio Padre"))directorioP = bson_iter_int32(&iter);
+										if(bson_iter_find (&iter, "Direccion Fisica"))path = bson_iter_utf8(&iter,NULL);
+										if(bson_iter_find (&iter, "Estado"))estado = bson_iter_int32(&iter);
+
+										printf("%s\n%i\n%i\n%s\n%i\n",nombre,tamanio,directorioP,path,estado);
+									}
+							}
+					}
 					break;
-				case Eliminar_Nodo:
+				case Eliminar_Nodo: // 13
 					i = socketNodoGlobal;
 					mensaje = pedirContenidoBloqueA(i, 10);
 					printf("%s\n",mensaje);
 					break;
-				case Copiar_Arch_Al_MDFS:
+				case Copiar_Arch_Al_MDFS: // 14
 					i = socketNodoGlobal;
-					escribirBloque.bloque = 10;
-					escribirBloque.data = "wdqert763i";
+					mensaje = "MATIASSSASAS";
+					escribirBloque.bloque = 100;
+					escribirBloque.data = mensaje;
 					escribirBloqueEnNodo(i,escribirBloque);
 					break;
 				case Copiar_Arch_Al_FSLocal:
