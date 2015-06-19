@@ -5,7 +5,7 @@
  *      Author: utnso
  */
 
-#include "funciones.h"
+#include "funcionesJob.h"
 
 int handshake = 8;
 int resultado;

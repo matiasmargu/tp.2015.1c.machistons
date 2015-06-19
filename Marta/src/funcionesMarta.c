@@ -1,11 +1,11 @@
 /*
- * functions.c
+ * functionsMarta.c
  *
  *  Created on: 6/6/2015
  *      Author: utnso
  */
 
-#include "functions.h"
+#include "funcionesMarta.h"
 
 
 int recive_y_deserialisa(t_charpuntero* nombre, int socket, uint32_t tamanioTotal){

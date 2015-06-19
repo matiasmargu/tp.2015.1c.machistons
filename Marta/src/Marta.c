@@ -9,7 +9,7 @@
  */
 
 
-#include "functions.h"
+#include "funcionesMarta.h"
 
 
 int main(void) {

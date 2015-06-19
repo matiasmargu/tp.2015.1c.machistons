@@ -8,7 +8,7 @@
  ============================================================================
  */
 
-#include "funciones.h"
+#include "funcionesJob.h"
 
 //FALTA PONER EN LOG Cabeceras de mensajes enviados y recibidos de cada hilo/proceso
 

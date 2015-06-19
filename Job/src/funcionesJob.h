@@ -33,7 +33,6 @@
 #include <sys/socket.h>
 #include <netdb.h>
 #include <unistd.h>
-#include "funciones.h"
 #include <pthread.h>
 #include <socket/socket.h>
 #include <stdint.h>
