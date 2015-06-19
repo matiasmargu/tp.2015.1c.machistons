@@ -17,15 +17,13 @@ void *atenderConsola(void*arg) {
 	int i;
 	t_archivo archivoNuevo;
 	char bufferComando[MAXSIZE_COMANDO];
-	//char bufferPorTeclado[MAXBUFERTECLADO];
 	char **comandoSeparado;
 	char *separator=" ";
-	//char *bufferLectura;
-	//int i;
+
 	imprimirMenu();
 
-
 	bson_iter_t iter;
+	bson_iter_t subiter;
 	int estado,tamanio,directorioP;
 	const char *nombre;
 	const char *path;
@@ -69,16 +67,21 @@ void *atenderConsola(void*arg) {
 
 					while (mongoc_cursor_next (cursor, &doc)) {
 					        if (bson_iter_init (&iter, doc)) {
-									while (bson_iter_next(&iter)) {
-										if(bson_iter_find (&iter, "Nombre"))nombre = bson_iter_utf8(&iter,NULL);
-										if(bson_iter_find (&iter, "Tamanio"))tamanio = bson_iter_int32(&iter);
-										if(bson_iter_find (&iter, "Directorio Padre"))directorioP = bson_iter_int32(&iter);
-										if(bson_iter_find (&iter, "Direccion Fisica"))path = bson_iter_utf8(&iter,NULL);
-										if(bson_iter_find (&iter, "Estado"))estado = bson_iter_int32(&iter);
+					        	if(bson_iter_find (&iter, "Nombre"))nombre = bson_iter_utf8(&iter,NULL);
+					        	if(bson_iter_find (&iter, "Tamanio"))tamanio = bson_iter_int32(&iter);
+					        	if(bson_iter_find (&iter, "Directorio Padre"))directorioP = bson_iter_int32(&iter);
+					        	if(bson_iter_find (&iter, "Direccion Fisica"))path = bson_iter_utf8(&iter,NULL);
+					        	if(bson_iter_find (&iter, "Estado"))estado = bson_iter_int32(&iter);
+					        	printf("%s\n%i\n%i\n%s\n%i\n",nombre,tamanio,directorioP,path,estado);
 
-										printf("%s\n%i\n%i\n%s\n%i\n",nombre,tamanio,directorioP,path,estado);
-									}
-							}
+					        	if (bson_iter_init (&iter, doc) && bson_iter_find_descendant (&iter, "Bloques.0.1.ID Nodo", &subiter) && BSON_ITER_HOLDS_INT32 (&subiter)) {
+					        	   printf ("ID Nodo = %d\n", bson_iter_int32 (&subiter));
+					        	}
+
+					        	if (bson_iter_init (&iter, doc) && bson_iter_find_descendant (&iter, "Bloques.0.1.Bloque", &subiter) && BSON_ITER_HOLDS_INT32 (&subiter)) {
+					        		printf ("Bloque = %d\n", bson_iter_int32 (&subiter));
+					        	}
+					        }
 					}
 					break;
 				case Eliminar_Nodo: // 13

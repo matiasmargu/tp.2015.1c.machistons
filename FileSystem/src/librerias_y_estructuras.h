@@ -108,8 +108,6 @@ bson_t *query;
 bson_error_t error;
 bson_oid_t oid;
 
-char *str;
-
 // Funciones para enviar y recibir Estructuras
 
 char* serializarParaGetBloque(estructuraSetBloque *bloque);
