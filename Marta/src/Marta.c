@@ -152,7 +152,7 @@ nodo_y_contador nodo;
    		    					pthread_create(&hilo_job, NULL, conectarseAlJob,(void *)socketjob);
 
    		    					break;
-   		    			case 2: //
+   		    				case 2: //
 
    		    					break;
    		    				}
@@ -162,7 +162,7 @@ nodo_y_contador nodo;
    		}
    		}
 
-	return EXIT_SUCCESS;
+	return EXIT_SUCCESS;fd_set
 }
 
 
