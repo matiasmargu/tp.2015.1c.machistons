@@ -43,6 +43,11 @@ typedef struct {
 
 } t_copia;
 
+int filas,columnas;
+typedef struct{
+	char* nombre;
+	char* matriz[filas][columnas];  //ARREGLAR ESTO
+}archivo; //STRUCT DE CADA ARCHIVO QUE TIENE MARTA
 
 int recive_y_deserialisa(t_charpuntero* nombre, int socket, uint32_t tamanioTotal);
 char* serializar_charpuntero(t_charpuntero* nombre, int tamanioTotal);

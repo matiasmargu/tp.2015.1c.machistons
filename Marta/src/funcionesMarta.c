@@ -88,24 +88,44 @@ void  *conectarseAlJob(void*arg){
    	handshakeFS = 25;
    	send(socketFS,&handshakeFS,sizeof(int),0);
 
-   	//MANDAMOS LOS ARCHIVOS A FS (MANDAMOS CADA ARCHIVO POR SEPARADO)
+
    	char* archivoAEnviar;
    	t_charpuntero nombre;
-   	char **archivos_separados = string_split(listaArchivosJob, ',');
-   	int i = 0;
-   	while(archivos_separados[i] != NULL){
-   		nombre.archivo = archivos_separados[i];
+   	archivo archivo;
+   	char **archivos_separados = string_get_string_as_array(listaArchivosJob); //CONVERTIMOS EL STRING A UN ARRAY
+   	int s = 0;
+   	int a;
+   	char* un_archivo;
+   	archivo = archivos_separados[s];
+
+   	//CONTAMOS LA CANTIDAD DE ARCHIVOS Y SE LA MANDAMOS A FS
+   	while(archivo != NULL){
+   		cantidad = cantidad + 1;     //cantidad = TAMANIO LISTA DE ARCHIVOS JOB
+   		s = s+1;
+   		un_archivo = archivos_separados[s];
+   	}
+   	send(socketFS,&cantidad,sizeof(int),0);
+
+   	t_list* listaDeArchivosGuardados; //UNA LISTA DE STRUCT ARCHIVO
+   	listaDeArchivosGuardados =	list_create();
+  bool condicion = 	nombre.archivo == archivo.nombre;
+
+   	//MANDAMOS CADA ARCHIVO POR SEPARADO A FS(SOLO LOS QUE NO TENEMOS GUARDADOS) Y RECIBIMOS LA MATRIZ DE CADA ARCHIVO
+   	for(a = 0 ; a < cantidad; a++){
+   		nombre.archivo = archivos_separados[a];
+   		if(!(list_any_satisfy(listaDeArchivosGuardados, condicion))){
    		tamanioTotal = sizeof(int)+ strlen(nombre.archivo)+1;
    		send(socketFS, &tamanioTotal, sizeof(int),0);
    		archivoAEnviar =  serializar_charpuntero( &nombre, tamanioTotal);
    		send(socketFS,archivoAEnviar,tamanioTotal,0);
+
+   		//ACA TENEMOS QUE RECIBIR LAS MATRICES DE CADA ARCHIVO Y GUARDARLAS
+   		archivo.nombre = nombre.archivo;
+   	//ACA GUARDAMOS LA MATRIZ	archivo.matriz =
+   		list_add(listaDeArchivosGuardados,archivo );
+   		}
    	}
 
-   	nombre.archivo = listaArchivosJob;
-   	tamanioTotal = sizeof(int)+ strlen(nombre.archivo)+1;
-   	send(socketFS, &tamanioTotal, sizeof(int),0);
-   	archivoAEnviar =  serializar_charpuntero( &nombre, tamanioTotal);
-   	send(socketFS,archivoAEnviar,tamanioTotal,0);
 
 
 
