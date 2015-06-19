@@ -96,15 +96,17 @@ void  *conectarseAlJob(void*arg){
    	int s = 0;
    	int a;
    	char* un_archivo;
-   	archivo = archivos_separados[s];
+   	un_archivo = archivos_separados[s];
 
    	//CONTAMOS LA CANTIDAD DE ARCHIVOS Y SE LA MANDAMOS A FS
-   	while(archivo != NULL){
+   	while(un_archivo != NULL){
    		cantidad = cantidad + 1;     //cantidad = TAMANIO LISTA DE ARCHIVOS JOB
    		s = s+1;
    		un_archivo = archivos_separados[s];
    	}
-   	send(socketFS,&cantidad,sizeof(int),0);
+   	send(socketFS,&cantidad,sizeof(int),0);\
+   	printf("cantidad%i",cantidad);
+
 
    	t_list* listaDeArchivosGuardados; //UNA LISTA DE STRUCT ARCHIVO
    	listaDeArchivosGuardados =	list_create();
