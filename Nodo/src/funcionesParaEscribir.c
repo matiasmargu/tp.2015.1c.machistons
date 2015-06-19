@@ -15,7 +15,6 @@ int escribirScript(char* script_virtual,char* dir_temp, int comando){
 		fileMapper=fopen(dir_temp,"w");
 		fputs(script_mapper,fileMapper);
 		fclose(fileMapper);
-
 	}else{
 		strcat(dir_temp,"/reducer.txt");
 		fileReducer=fopen(dir_temp,"w");
