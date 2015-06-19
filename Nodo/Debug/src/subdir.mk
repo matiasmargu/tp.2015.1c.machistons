@@ -8,6 +8,7 @@ C_SRCS += \
 ../src/atenderJob.c \
 ../src/atenderNodoYFS.c \
 ../src/funcionesParaEnviar.c \
+../src/funcionesParaEscribir.c \
 ../src/manejoDeMemoria.c \
 ../src/rutinasMapperYReducer.c 
 
@@ -16,6 +17,7 @@ OBJS += \
 ./src/atenderJob.o \
 ./src/atenderNodoYFS.o \
 ./src/funcionesParaEnviar.o \
+./src/funcionesParaEscribir.o \
 ./src/manejoDeMemoria.o \
 ./src/rutinasMapperYReducer.o 
 
@@ -24,6 +26,7 @@ C_DEPS += \
 ./src/atenderJob.d \
 ./src/atenderNodoYFS.d \
 ./src/funcionesParaEnviar.d \
+./src/funcionesParaEscribir.d \
 ./src/manejoDeMemoria.d \
 ./src/rutinasMapperYReducer.d 
 

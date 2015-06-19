@@ -4,7 +4,7 @@
  *  Created on: 10/6/2015
  *      Author: utnso
  */
-#include "atenderNodoYFS.h"
+#include "variablesGlobales.h"
 
 
 void *atenderNFS(void*arg){
@@ -26,14 +26,14 @@ void *atenderNFS(void*arg){
 	int array[divisor.quot];
 
 	if(nuevoNodo == 1 ){
-	punteroAlArray = malloc(sizeof(int)*divisor.quot);
-	memcpy(punteroAlArray,array,sizeof(int)*divisor.quot);
-		for(i=0;i<divisor.quot;i++){
-			array[i]=0;
+		punteroAlArray = malloc(sizeof(int)*divisor.quot);
+		memcpy(punteroAlArray,array,sizeof(int)*divisor.quot);
+			for(i=0;i<divisor.quot;i++){
+				array[i]=0;
+			}
+		}else{
+			memcpy(array,punteroAlArray,sizeof(int)*divisor.quot);
 		}
-	}else{
-		memcpy(array,punteroAlArray,sizeof(int)*divisor.quot);
-	}
 
 	printf("%i\n",socket);
 

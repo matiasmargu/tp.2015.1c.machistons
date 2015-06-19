@@ -5,7 +5,7 @@
  *      Author: utnso
  */
 
-#include "rutinasMapperYReducer.h"
+#include "variablesGlobales.h"
 
 void *mapper(void* arg){
 	int socket = (int)arg;

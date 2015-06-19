@@ -5,8 +5,7 @@
  *      Author: utnso
  */
 
-#include "funcionesParaEnviar.h"
-#include "atenderJob.h"
+#include "variablesGlobales.h"
 
 int recive_y_deserialisa_SET_BLOQUE(estructuraSetBloque *bloque, int socket, uint32_t tamanioTotal){
 	int status;

@@ -28,8 +28,10 @@
 #include <sys/types.h>
 #include <fcntl.h>
 #include <sys/mman.h>
-#include "atenderNodoYFS.h"
 
+
+FILE* fileMapper;
+FILE* fileReducer;
 
 char *ip_nodo;
 int puerto_nodo;
@@ -70,6 +72,9 @@ void handshakeConJob(int socket_job);
 //Funciones de atender
 void *atenderNFS(void*arg);
 void *atenderJob(void* arg);
+
+//Funciones para escribir archivos
+int escribirScript(char* script_virtual,char* dir_temp, int comando);
 
 
 #endif /* VARIABLESGLOBALES_H_ */

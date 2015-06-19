@@ -4,8 +4,7 @@
  *  Created on: 13/6/2015
  *      Author: utnso
  */
-#include "funcionesParaEnviar.h"
-
+#include "variablesGlobales.h"
 
 char* mapearAMemoriaVirtual(){
 	fd = open(archivo_bin,O_RDWR);
