@@ -162,7 +162,7 @@ nodo_y_contador nodo;
    		}
    		}
 
-	return EXIT_SUCCESS;fd_set
+	return EXIT_SUCCESS;
 }
 
 

@@ -51,7 +51,7 @@ void  *conectarseAlJob(void*arg){
 	int socket = (int)arg;
 	int saludo = 9 ;
 	int cantidad,tamanioTotal;
-	char* archivoARecibir;
+	char* listaArchivosJob;
 	char* combiner;
 	int tamanioCombiner;
 
@@ -61,10 +61,10 @@ void  *conectarseAlJob(void*arg){
 	//ACA RECIBIMOS LA LISTA DE ARCHIVOS DE JOB COMO UN CHAR*
    	recv(socket, &tamanioTotal, sizeof(int),0);
    	int estado2 = 1; // Estructura que manjea el status de los recieve.
-  	archivoARecibir = malloc(tamanioTotal);
-   	estado2 = recive_y_deserialisa(&archivoARecibir, socket, tamanioTotal);
+   	listaArchivosJob = malloc(tamanioTotal);
+   	estado2 = recive_y_deserialisa(&listaArchivosJob, socket, tamanioTotal);
    	if(estado2){
-                printf("el string es %s\n",archivoARecibir);
+                printf("el string es %s\n",listaArchivosJob);
    	}
 
    	//ACA RECIBIMOS LA INFORMACION SOBRE EL COMBINER(SI TIENE O NO)
@@ -88,10 +88,20 @@ void  *conectarseAlJob(void*arg){
    	handshakeFS = 25;
    	send(socketFS,&handshakeFS,sizeof(int),0);
 
-   	//MANDAMOS LOS ARCHIVOS A FS (MANDAMOS UN CHAR*)
+   	//MANDAMOS LOS ARCHIVOS A FS (MANDAMOS CADA ARCHIVO POR SEPARADO)
    	char* archivoAEnviar;
    	t_charpuntero nombre;
-   	nombre.archivo = archivoARecibir;
+   	char **archivos_separados = string_split(listaArchivosJob, ',');
+   	int i = 0;
+   	while(archivos_separados[i] != NULL){
+   		nombre.archivo = archivos_separados[i];
+   		tamanioTotal = sizeof(int)+ strlen(nombre.archivo)+1;
+   		send(socketFS, &tamanioTotal, sizeof(int),0);
+   		archivoAEnviar =  serializar_charpuntero( &nombre, tamanioTotal);
+   		send(socketFS,archivoAEnviar,tamanioTotal,0);
+   	}
+
+   	nombre.archivo = listaArchivosJob;
    	tamanioTotal = sizeof(int)+ strlen(nombre.archivo)+1;
    	send(socketFS, &tamanioTotal, sizeof(int),0);
    	archivoAEnviar =  serializar_charpuntero( &nombre, tamanioTotal);
