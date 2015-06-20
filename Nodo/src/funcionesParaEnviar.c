@@ -5,8 +5,7 @@
  *      Author: utnso
  */
 
-#include "funcionesParaEnviar.h"
-#include "atenderJob.h"
+#include "variablesGlobales.h"
 
 int recive_y_deserialisa_SET_BLOQUE(estructuraSetBloque *bloque, int socket, uint32_t tamanioTotal){
 	int status;
@@ -21,6 +20,8 @@ int recive_y_deserialisa_SET_BLOQUE(estructuraSetBloque *bloque, int socket, uin
 	int tamanioDinamico;
 	memcpy(&tamanioDinamico, buffer + offset, sizeof(int));
 	offset += sizeof(int);
+
+
 
 	bloque->data = malloc(tamanioDinamico);
 	memcpy(bloque->data, buffer + offset, tamanioDinamico);

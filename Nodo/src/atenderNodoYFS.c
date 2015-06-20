@@ -4,12 +4,13 @@
  *  Created on: 10/6/2015
  *      Author: utnso
  */
-#include "atenderNodoYFS.h"
+#include "variablesGlobales.h"
 
 
 void *atenderNFS(void*arg){
 
 	char *mensaje;
+	char *direccion;
 	int status;
 	int i;
 	int socket= (int)arg;
@@ -19,95 +20,78 @@ void *atenderNFS(void*arg){
 	int tamanioBloque;
 	estructuraSetBloque set;
 
+	direccion = dir_temp;
+	strcat(direccion,"/registro.txt");
+	registroDeLosBloques = fopen(direccion,"r+");
 
 	pmap = mapearAMemoriaVirtual();
-
-	div_t divisor = div(strlen(pmap),20);
-	int array[divisor.quot];
-
-	if(nuevoNodo == 1 ){
-	punteroAlArray = malloc(sizeof(int)*divisor.quot);
-	memcpy(punteroAlArray,array,sizeof(int)*divisor.quot);
-		for(i=0;i<divisor.quot;i++){
-			array[i]=0;
-		}
-	}else{
-		memcpy(array,punteroAlArray,sizeof(int)*divisor.quot);
-	}
 
 	printf("%i\n",socket);
 
 	while(1){
 
-		//printf("Esto deberia imprimirse una sola vez\n");
-		if(recv(socket, &entero, sizeof(int),0) > 0){
-		switch(entero){
-		//getBloque(numero);
-			case 1:
-				status = 1;
-				recv(socket,&nroDelBloque,sizeof(int),0);
+	//printf("Esto deberia imprimirse una sola vez\n");
+	if(recv(socket, &entero, sizeof(int),0) > 0){
+	switch(entero){
+	//getBloque(numero);
+		case 1:
+			status = 1;
+			recv(socket,&nroDelBloque,sizeof(int),0);
+			tamanioBloque = conseguirIntegerDelRegistro(registroDeLosBloques,nroDelBloque);
+			printf("%i\n",tamanioBloque);
+			char* bloque=malloc(tamanioBloque);
 
-				tamanioBloque = array[nroDelBloque];
+			if(status>0){
+				int tamanioBloqueExacto = (nroDelBloque)*tamanioBloque;
+				memcpy(bloque,pmap + tamanioBloqueExacto,tamanioBloque);
+				status = 0;
+			}
+			int tamanioData = sizeof(int) + strlen(bloque) + 1;
+			//printf("%i\n",tamanioData);
+			mensaje = serializarBloqueDeDatos(bloque,tamanioData);
+			send(socket,&tamanioData,sizeof(int),0);
+			send(socket,mensaje,tamanioData,0);
+			fseek(registroDeLosBloques,0,SEEK_SET);
+		//ok = 20;
+		//send(socket,&ok, sizeof(int),0);
+		break;
+	//setBloque(numero,[datos]);
+		case 2:
+			recv(socket,&tamanioBloque,sizeof(int),0);
+			status = 1; // Estructura que manjea el status de los recieve.
+			status = recive_y_deserialisa_SET_BLOQUE(&set, socket, tamanioBloque);
+			printf("%i\n",strlen(set.data));
 
-				char* bloque=malloc(tamanioBloque);
+			int tamanio = strlen(set.data);
 
-				if(status>0){
-					int tamanioBloqueExacto = (nroDelBloque)*tamanioBloque;
-					memcpy(bloque,pmap + tamanioBloqueExacto,tamanioBloque);
-					status = 0;
-				}
-				printf("Element[%d] = %d\n", nroDelBloque, array[nroDelBloque]);
-				int tamanioData = sizeof(int) + strlen(bloque) + 1;
-				//printf("%i\n",tamanioData);
-				mensaje = serializarBloqueDeDatos(bloque,tamanioData);
-				send(socket,&tamanioData,sizeof(int),0);
-				send(socket,mensaje,tamanioData,0);
+			if (status>0) {
+				nroDelBloque = set.bloque;//
+			//memcpy(pmap+(1024*1024*20*(nroDelBloque)),set.data,20*1024*1024);
+				memcpy(pmap+(nroDelBloque*10),set.data,strlen(set.data));
+				msync(pmap,strlen(pmap),0);
+				escribeEnArchivoSegunNroDeBloque(registroDeLosBloques,nroDelBloque,tamanio);
+				printf("se seteo correctamente\n");
+			}
 				//ok = 20;
 				//send(socket,&ok, sizeof(int),0);
-			break;
-		//setBloque(numero,[datos]);
-			case 2:
-				recv(socket,&tamanioBloque,sizeof(int),0);
-				status = 1; // Estructura que manjea el status de los recieve.
-				status = recive_y_deserialisa_SET_BLOQUE(&set, socket, tamanioBloque);
-
-				printf("%i\n",strlen(set.data));
-				array[set.bloque]=strlen(set.data);
-
-				if (status>0) {
-					nroDelBloque = set.bloque;//
-					//memcpy(pmap+(1024*1024*20*(nroDelBloque)),set.data,20*1024*1024);
-					memcpy(pmap+(nroDelBloque*10),set.data,strlen(set.data));
-					msync(pmap,strlen(pmap),0);
-					printf("se seteo correctamente\n");
-				}
-				printf("Element[%d] = %d\n", nroDelBloque, array[nroDelBloque]);
-				memcpy(punteroAlArray,array,sizeof(int)*divisor.quot);
-				msync(array,sizeof(int)*divisor.quot,0);
-				//ok = 20;
-				//send(socket,&ok, sizeof(int),0);
-			break;
+		break;
 		//getFileContent(nombre);
-			case 3:
+		case 3:
 				ok = 20;
 				send(socket,&ok, sizeof(int),0);
-			break;
-			case 4:
+		break;
+		case 4:
 		//FORMATEO
-				for(i=0;i<strlen(pmap);i++){
-					memcpy(pmap+i,"0",sizeof(char));
-				}
-				for(i=0;i<divisor.quot;i++){
-						array[i]=0;
-				}
-				memcpy(punteroAlArray,array,sizeof(int)*divisor.quot);
-				msync(array,sizeof(int)*divisor.quot,0);
-				msync(pmap,strlen(pmap),0);
-				printf("se formatero el archivo binario\n");
-			break;
-		}
+			for(i=0;i<strlen(pmap);i++){
+				memcpy(pmap+i,"0",sizeof(char));
+			}
+			formateoElRegistro(registroDeLosBloques);
+			msync(pmap,strlen(pmap),0);
+			printf("se formatero el archivo binario\n");
+		break;
 	}
-	}
+}
+}
 	munmap(pmap,strlen(pmap));
 	return NULL;
 }
