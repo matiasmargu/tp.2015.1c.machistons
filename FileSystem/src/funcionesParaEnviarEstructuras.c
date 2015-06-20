@@ -121,6 +121,7 @@ int recive_y_deserializa_Contenido_Bloque(t_getBloque *bloque, int socket, uint3
 // Funciones de Archivos
 
 void agregarCopia (bson_t *documento, char* numeroCopia, int idNodo, int bloque){
+	bson_t *doc4;
 	doc4 = bson_new();
 	BSON_APPEND_INT32(doc4, "ID Nodo", idNodo);
 	BSON_APPEND_INT32(doc4, "Bloque", bloque);
@@ -177,14 +178,14 @@ t_copia infoBloqueyCopia(int nroBloque, int nroCopia, bson_t *doc4){
 	asprintf(&resultado2,"%s%s",resultado,".");
 	asprintf(&resultado3,"%s%i",resultado2,nroCopia);
 	asprintf(&resultado4,"%s%s",resultado3,".ID Nodo");
-	if (bson_iter_init (&iter4, doc) && bson_iter_find_descendant (&iter4, resultado4 , &subiter4) && BSON_ITER_HOLDS_INT32 (&subiter4)) {
+	if (bson_iter_init (&iter4, doc4) && bson_iter_find_descendant (&iter4, resultado4 , &subiter4) && BSON_ITER_HOLDS_INT32 (&subiter4)) {
 		info.id_nodo = bson_iter_int32 (&subiter4);
 	}
 	asprintf(&resultado,"%s%i","Bloques.",nroBloque);
 	asprintf(&resultado2,"%s%s",resultado,".");
 	asprintf(&resultado3,"%s%i",resultado2,nroCopia);
 	asprintf(&resultado4,"%s%s",resultado3,".Bloque");
-	if (bson_iter_init (&iter4, doc) && bson_iter_find_descendant (&iter4, resultado4, &subiter4) && BSON_ITER_HOLDS_INT32 (&subiter4)) {
+	if (bson_iter_init (&iter4, doc4) && bson_iter_find_descendant (&iter4, resultado4, &subiter4) && BSON_ITER_HOLDS_INT32 (&subiter4)) {
 		info.bloque = bson_iter_int32 (&subiter4);
 	}
 

@@ -30,7 +30,7 @@ int recive_y_deserialisa(t_charpuntero* nombre, int socket, uint32_t tamanioTota
 void *atenderMarta(void*arg){
 
 	int socketMarta = (int)arg;
-	printf("%i\n",socketMarta);
+
 	int tamanioArchivo;
 	t_charpuntero nombreArchivo;
 
@@ -69,15 +69,15 @@ void *atenderMarta(void*arg){
 					memcpy(paqueteAEnviar + offset, &(archivo.cantidadBloque), size_to_send);
 					offset += size_to_send;
 
-					for(nroBloque=0;nroBloque<=archivo.cantidadBloque;nroBloque++){
-
-						for(nroCopia=1;nroCopia<=3;nroCopia++){
-
-						info = infoBloqueyCopia(nroBloque, nroCopia, doc);
+					for(nroBloque=0;nroBloque<archivo.cantidadBloque;nroBloque++){
 
 						size_to_send =  sizeof(nroBloque);
 						memcpy(paqueteAEnviar + offset, &(nroBloque), size_to_send);
 						offset += size_to_send;
+
+						for(nroCopia=1;nroCopia<=3;nroCopia++){
+
+						info = infoBloqueyCopia(nroBloque, nroCopia, doc);
 
 						size_to_send =  sizeof(info.id_nodo);
 						memcpy(paqueteAEnviar + offset, &(info.id_nodo), size_to_send);
@@ -90,7 +90,9 @@ void *atenderMarta(void*arg){
 						}
 
 					}
-					free(paqueteAEnviar);
+
+					send(socketMarta, paqueteAEnviar, tamanioTotal, 0);
+					liberarMensaje(&paqueteAEnviar);
 				}
 			}
 		}

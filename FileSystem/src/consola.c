@@ -5,7 +5,6 @@
  *      Author: gcrivelli
  */
 
-#include "consola.h"
 #include "librerias_y_estructuras.h"
 
 void *atenderConsola(void*arg) {
@@ -19,6 +18,10 @@ void *atenderConsola(void*arg) {
 	char bufferComando[MAXSIZE_COMANDO];
 	char **comandoSeparado;
 	char *separator=" ";
+
+	t_archivo archivo;
+	t_copia info;
+	bson_iter_t iter;
 
 	int tamanioTotal;
 
@@ -82,7 +85,6 @@ void *atenderConsola(void*arg) {
 				case Solicitar_MD5:
 					break;
 				case Salir:
-					apagarFS = 1;
 					return NULL;
 					break;
 				default:
