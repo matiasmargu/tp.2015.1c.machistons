@@ -24,6 +24,12 @@
 
 t_log* logger; // Log Global
 
+// VARIABLE GLOBAL
+t_list *lista_archivos;
+t_list *lista_nodos_estado;
+pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t mutex_nodos = PTHREAD_MUTEX_INITIALIZER;
+
 typedef struct{
 	char* archivo;
 }t_charpuntero;
@@ -46,12 +52,24 @@ typedef struct{
 	t_copia **copias;
 }t_bloque;
 
+typedef struct{
+	int id_nodo;
+	t_list *archivos;
+}t_nodo;
 
-int filas,columnas;
 typedef struct{
 	char* nombre;
-	//char* matriz[filas][columnas];  //ARREGLAR ESTO
-}archivo; //STRUCT DE CADA ARCHIVO QUE TIENE MARTA
+	t_list *datos;
+}t_nombre_archivo;
+
+typedef struct{
+	int id_job;
+	int bloque;
+	char estado; // M = MAP; R = REDUCE
+}t_datos;
+
+
+
 
 int recive_y_deserialisa(t_charpuntero* nombre, int socket, uint32_t tamanioTotal);
 int recive_y_guarda_estructura(t_archivo arch, int socket, uint32_t tamanioTotal);

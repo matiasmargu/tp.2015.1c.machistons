@@ -148,14 +148,16 @@ void  *conectarseAlJob(void*arg){
    		s += 1;
    	}
 
-
-   	t_list* listaDeArchivosGuardados; //UNA LISTA DE STRUCT T_ARCHIVO
-   	listaDeArchivosGuardados =	list_create();
+   	if(lista_archivos == NULL){
+   		pthread_mutex_lock(&mutex);
+   		lista_archivos =	list_create();
+   		pthread_mutex_unlock(&mutex);
+   	}
    	//MANDAMOS CADA ARCHIVO POR SEPARADO A FS(SOLO LOS QUE NO TENEMOS GUARDADOS) Y RECIBIMOS LA MATRIZ DE CADA ARCHIVO
    	int a;
    	for(a = 0 ; a < cantidad; a++){
    		nombre.archivo = archivos_separados[a];
-   		if(!(list_any_satisfy(listaDeArchivosGuardados, (nombre.archivo == archivo.nombre)))){
+   		if(!(list_any_satisfy(lista_archivos, (nombre.archivo == archivo.nombre)))){
    			// Le pide al FS que le envie los datos del archivo
    			tamanioTotal = sizeof(int)+ strlen(nombre.archivo)+1;
    			send(socketFS, &tamanioTotal, sizeof(int),0);
@@ -165,17 +167,50 @@ void  *conectarseAlJob(void*arg){
    			//DATOS QUE ME ENVIA EL FS
    			t_archivo archivo;
    			recv(socketFS, &tamanioTotal, sizeof(int),0);
-   			int estado = recive_y_guarda_estructura(archivo, socketFS, tamanioTotal);
-   			//ACA GUARDAMOS LA MATRIZ	archivo.matriz =
-   			list_add(listaDeArchivosGuardados,&archivo);
+   			recive_y_guarda_estructura(archivo, socketFS, tamanioTotal);
+
+   			pthread_mutex_lock(&mutex);
+   			list_add(lista_archivos,&archivo);
+   			pthread_mutex_unlock(&mutex);
+
    		}
    	}
 
-
+   	planificarMap();
 
 
    	close(socketFS);
    	return NULL;
+
+}
+
+void planificarMap(void){
+	if(lista_nodos_estado == NULL){
+		pthread_mutex_lock(&mutex_nodos);
+		lista_nodos_estado = list_create();
+		pthread_mutex_unlock(&mutex_nodos);
+
+		// PARA PLANIFICAR NECESITO SABER LOS NODOS ACTIVOS. PARA ESO SE LO PIDO AL FS
+		int cantidad_nodos_activos = 2;	// ESTO ME LO MANDA EL FS, JUNTO CON LOS NODOS_ACTIVOS
+		int id_nodos_activos[cantidad_nodos_activos];
+
+		//ACA TENGO QUE BUSCAR LOS NODOS QUE ME SIRVEN PARA USAR DE LOS QUE ESTAN ACTIVOS. OSEA LOS QUE TIENEN EL BLOQUE QUE TENGO QUE MAPPEAR
+		int cant_nodos_disponibles;
+		int *nodos_disponibles[] = buscar_nodos_disponibles(id_nodos_activos, cant_nodos_disponibles);
+
+
+		//AVERIGUO LA CANTIDAD DE BLOQUES QUE TENGO QUE MAPEAR
+		int cant_bloques_mapear;
+		int i = 0;
+		t_archivo archivo_lista = list_get(lista_archivos, i);
+		while (archivo_lista != NULL){
+			cant_bloques_mapear = (archivo_lista.bloques->elements_count);
+			i += 1;
+		}
+
+		int r = cant_bloques_mapear/cant_nodos_disponibles;
+		r = cant_bloques_mapear - r;
+	}
 
 }
 
