@@ -32,23 +32,25 @@ typedef struct{
 	char* nombre;
 	char* idJob;
 	int cantidadDeBloques;
-	t_list bloques;
+	t_list *bloques;
 }t_archivo;
-
-typedef struct{
-	int NumeroBloque;
-	t_copia copias[3];
-}t_bloque;
 
 typedef struct {
 	int idNodo;
     int Numerobloque;
 } t_copia;
 
+
+typedef struct{
+	int NumeroBloque;
+	t_copia **copias;
+}t_bloque;
+
+
 int filas,columnas;
 typedef struct{
 	char* nombre;
-	char* matriz[filas][columnas];  //ARREGLAR ESTO
+	//char* matriz[filas][columnas];  //ARREGLAR ESTO
 }archivo; //STRUCT DE CADA ARCHIVO QUE TIENE MARTA
 
 int recive_y_deserialisa(t_charpuntero* nombre, int socket, uint32_t tamanioTotal);
