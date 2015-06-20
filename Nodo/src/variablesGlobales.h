@@ -32,6 +32,7 @@
 
 FILE* fileMapper;
 FILE* fileReducer;
+FILE* registroDeLosBloques;
 
 char *ip_nodo;
 int puerto_nodo;
@@ -58,6 +59,10 @@ void *reducer(void* arg);
 
 //Funciones de memoria
 char* mapearAMemoriaVirtual();
+char* mapeoDeArchivo(int fdr);
+int conseguirIntegerDelRegistro(FILE* fd,int nroDelBloque);
+void escribeEnArchivoSegunNroDeBloque(FILE* fd,int nroDelBloque,int tamanio);
+void formateoElRegistro(FILE* fdf);
 
 //Funciones de serializacion y deserializacion
 int recive_y_deserialisa_SCRIPT(char *script, int socket, uint32_t tamanioTotal);

@@ -21,6 +21,8 @@ int recive_y_deserialisa_SET_BLOQUE(estructuraSetBloque *bloque, int socket, uin
 	memcpy(&tamanioDinamico, buffer + offset, sizeof(int));
 	offset += sizeof(int);
 
+
+
 	bloque->data = malloc(tamanioDinamico);
 	memcpy(bloque->data, buffer + offset, tamanioDinamico);
 	offset += tamanioDinamico;
