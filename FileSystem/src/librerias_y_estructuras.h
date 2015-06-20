@@ -39,18 +39,13 @@ typedef struct {
 } t_directorio;
 
 typedef struct {
-	char* name; //Nombre
-	int size; // Tamaño
-	int parent_directory; // Direccion Padre
-	char* path; // Direccion Fisica
-	int status; // Estado, 1 Disponible, 0 No Disponible
-	t_list *blocks; // Lista de bloques
+	const char* nombre; //Nombre
+	int tamanio; // Tamaño
+	int directorioPadre; // Direccion Padre
+	const char* path; // Direccion Fisica
+	int estado; // Estado, 1 Disponible, 0 No Disponible
+	int cantidadBloque; // Cantidad de Bloques del archivo
 } t_archivo;
-
-typedef struct {
-	int id;
-	t_list *copies;
-} t_archivo_bloque;
 
 typedef struct {
 	int copy;
@@ -69,6 +64,11 @@ typedef struct {
 	char* puerto;
 	char estado;
 }t_nodo;
+
+typedef struct{
+	int id_nodo;
+	int bloque;
+}t_copia;
 
 typedef struct{
 	char* datos;
@@ -106,7 +106,6 @@ bson_t *doc4;
 bson_t *update;
 bson_t *query;
 bson_error_t error;
-bson_oid_t oid;
 
 // Funciones para enviar y recibir Estructuras
 
@@ -126,5 +125,6 @@ char *pedirContenidoBloqueA (int socket, int nroBloque);
 void agregoNodoaMongo (int socket);
 void insertarArchivoAMongo (t_archivo archivo);
 void agregarCopia (bson_t *documento, char* numeroCopia, int idNodo, int bloque);
+t_copia infoBloqueyCopia(int nroBloque, int nroCopia, bson_t *doc4);
 
 #endif /* LIBRERIAS_Y_ESTRUCTURAS_H_ */

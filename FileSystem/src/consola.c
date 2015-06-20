@@ -20,14 +20,9 @@ void *atenderConsola(void*arg) {
 	char **comandoSeparado;
 	char *separator=" ";
 
+	int tamanioTotal;
+
 	imprimirMenu();
-
-	bson_iter_t iter;
-	bson_iter_t subiter;
-	int estado,tamanio,directorioP;
-	const char *nombre;
-	const char *path;
-
 	while(1){
 			fgets(bufferComando,MAXSIZE_COMANDO, stdin);
 			comandoSeparado=string_split(bufferComando, separator);
@@ -62,27 +57,6 @@ void *atenderConsola(void*arg) {
 				case Copiar_Bloque_Arch:
 					break;
 				case Agregar_Nodo: // 12
-					query = BCON_NEW("Nombre","CarlosJSFNASFN.txt");
-					cursor = mongoc_collection_find (archivos, MONGOC_QUERY_NONE, 0, 0, 0, query, NULL, NULL);
-
-					while (mongoc_cursor_next (cursor, &doc)) {
-					        if (bson_iter_init (&iter, doc)) {
-					        	if(bson_iter_find (&iter, "Nombre"))nombre = bson_iter_utf8(&iter,NULL);
-					        	if(bson_iter_find (&iter, "Tamanio"))tamanio = bson_iter_int32(&iter);
-					        	if(bson_iter_find (&iter, "Directorio Padre"))directorioP = bson_iter_int32(&iter);
-					        	if(bson_iter_find (&iter, "Direccion Fisica"))path = bson_iter_utf8(&iter,NULL);
-					        	if(bson_iter_find (&iter, "Estado"))estado = bson_iter_int32(&iter);
-					        	printf("%s\n%i\n%i\n%s\n%i\n",nombre,tamanio,directorioP,path,estado);
-
-					        	if (bson_iter_init (&iter, doc) && bson_iter_find_descendant (&iter, "Bloques.0.1.ID Nodo", &subiter) && BSON_ITER_HOLDS_INT32 (&subiter)) {
-					        	   printf ("ID Nodo = %d\n", bson_iter_int32 (&subiter));
-					        	}
-
-					        	if (bson_iter_init (&iter, doc) && bson_iter_find_descendant (&iter, "Bloques.0.1.Bloque", &subiter) && BSON_ITER_HOLDS_INT32 (&subiter)) {
-					        		printf ("Bloque = %d\n", bson_iter_int32 (&subiter));
-					        	}
-					        }
-					}
 					break;
 				case Eliminar_Nodo: // 13
 					i = socketNodoGlobal;
@@ -97,10 +71,11 @@ void *atenderConsola(void*arg) {
 					escribirBloqueEnNodo(i,escribirBloque);
 					break;
 				case Copiar_Arch_Al_FSLocal:
-					archivoNuevo.name = "CarlosJSFNASFN.txt";
-					archivoNuevo.size = 123;
-					archivoNuevo.parent_directory = 1;
-					archivoNuevo.status = 0;
+					archivoNuevo.nombre = "CarlosJSFNASFN.txt";
+					archivoNuevo.tamanio = 123;
+					archivoNuevo.directorioPadre = 1;
+					archivoNuevo.estado = 0;
+					archivoNuevo.cantidadBloque = 2;
 					archivoNuevo.path = "/home/utnso/Escritorio/Carlos.txt";
 					insertarArchivoAMongo(archivoNuevo);
 					break;
