@@ -18,11 +18,8 @@ void *atenderNFS(void*arg){
 	int ok;
 	int nroDelBloque;
 	int tamanioBloque;
+	int tamanio;
 	estructuraSetBloque set;
-
-	direccion = dir_temp;
-	strcat(direccion,"/registro.txt");
-	registroDeLosBloques = fopen(direccion,"r+");
 
 	pmap = mapearAMemoriaVirtual();
 
@@ -37,7 +34,11 @@ void *atenderNFS(void*arg){
 		case 1:
 			status = 1;
 			recv(socket,&nroDelBloque,sizeof(int),0);
-			tamanioBloque = conseguirIntegerDelRegistro(registroDeLosBloques,nroDelBloque);
+
+			tamanioBloque=strlen(pmap+(nroDelBloque*20*1024*1024));
+			//El strlen me lo deberia cortar cuando encuentre un \0
+			//El cual ya es puesto de una cuando se escribe en el archivo como string.
+
 			printf("%i\n",tamanioBloque);
 			char* bloque=malloc(tamanioBloque);
 
@@ -51,7 +52,6 @@ void *atenderNFS(void*arg){
 			mensaje = serializarBloqueDeDatos(bloque,tamanioData);
 			send(socket,&tamanioData,sizeof(int),0);
 			send(socket,mensaje,tamanioData,0);
-			fseek(registroDeLosBloques,0,SEEK_SET);
 		//ok = 20;
 		//send(socket,&ok, sizeof(int),0);
 		break;
@@ -62,14 +62,13 @@ void *atenderNFS(void*arg){
 			status = recive_y_deserialisa_SET_BLOQUE(&set, socket, tamanioBloque);
 			printf("%i\n",strlen(set.data));
 
-			int tamanio = strlen(set.data);
+			tamanio= strlen(set.data);
 
 			if (status>0) {
 				nroDelBloque = set.bloque;//
-			//memcpy(pmap+(1024*1024*20*(nroDelBloque)),set.data,20*1024*1024);
-				memcpy(pmap+(nroDelBloque*10),set.data,strlen(set.data));
+				//memcpy(pmap+(1024*1024*20*(nroDelBloque)),set.data,20*1024*1024);
+				memcpy(pmap+(nroDelBloque*10),set.data,tamanio);
 				msync(pmap,strlen(pmap),0);
-				escribeEnArchivoSegunNroDeBloque(registroDeLosBloques,nroDelBloque,tamanio);
 				printf("se seteo correctamente\n");
 			}
 				//ok = 20;
@@ -85,7 +84,6 @@ void *atenderNFS(void*arg){
 			for(i=0;i<strlen(pmap);i++){
 				memcpy(pmap+i,"0",sizeof(char));
 			}
-			formateoElRegistro(registroDeLosBloques);
 			msync(pmap,strlen(pmap),0);
 			printf("se formatero el archivo binario\n");
 		break;
