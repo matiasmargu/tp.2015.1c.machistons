@@ -64,8 +64,6 @@ void agregoNodoaMongo (int socket){
 	recv(socket, &tamanioTotalMensaje, sizeof(int), 0);
 	if(recive_y_deserialisa_IPyPUERTO_Nodo(&ipyPuertoNodo, socket, tamanioTotalMensaje)){
 		doc = bson_new ();
-		bson_oid_init (&oid, NULL);
-		BSON_APPEND_OID (doc, "_id", &oid);
 		BSON_APPEND_INT32(doc, "Socket", socket);
 		BSON_APPEND_UTF8 (doc, "IP", ipyPuertoNodo.IP);
 		BSON_APPEND_UTF8(doc, "PUERTO" , ipyPuertoNodo.PUERTO);
@@ -123,6 +121,7 @@ int recive_y_deserializa_Contenido_Bloque(t_getBloque *bloque, int socket, uint3
 // Funciones de Archivos
 
 void agregarCopia (bson_t *documento, char* numeroCopia, int idNodo, int bloque){
+	bson_t *doc4;
 	doc4 = bson_new();
 	BSON_APPEND_INT32(doc4, "ID Nodo", idNodo);
 	BSON_APPEND_INT32(doc4, "Bloque", bloque);
@@ -133,18 +132,27 @@ void agregarCopia (bson_t *documento, char* numeroCopia, int idNodo, int bloque)
 void insertarArchivoAMongo (t_archivo archivo){
 	doc = bson_new ();
 	doc2 = bson_new ();
-	doc3 = bson_new ();
 
+	doc3 = bson_new ();
 	agregarCopia(doc3, "1", 65, 40);
 	agregarCopia(doc3, "2", 21, 210);
 	agregarCopia(doc3, "3", 76, 39);
 	BSON_APPEND_DOCUMENT(doc2, "0", doc3);
+	bson_destroy (doc3);
 
-	BSON_APPEND_UTF8(doc, "Nombre", archivo.name);
-	BSON_APPEND_INT32 (doc, "Tamanio", archivo.size);
-	BSON_APPEND_INT32(doc, "Directorio Padre" , archivo.parent_directory);
+	doc3 = bson_new ();
+	agregarCopia(doc3, "1", 2, 56);
+	agregarCopia(doc3, "2", 5, 190);
+	agregarCopia(doc3, "3", 8, 23);
+	BSON_APPEND_DOCUMENT(doc2, "1", doc3);
+	bson_destroy (doc3);
+
+	BSON_APPEND_UTF8(doc, "Nombre", archivo.nombre);
+	BSON_APPEND_INT32 (doc, "Tamanio", archivo.tamanio);
+	BSON_APPEND_INT32(doc, "Directorio Padre" , archivo.directorioPadre);
 	BSON_APPEND_UTF8(doc, "Direccion Fisica", archivo.path);
-	BSON_APPEND_INT32(doc, "Estado", archivo.status);
+	BSON_APPEND_INT32(doc, "Estado", archivo.estado);
+	BSON_APPEND_INT32(doc, "Cantidad Bloques", archivo.cantidadBloque);
 	BSON_APPEND_ARRAY(doc, "Bloques", doc2);
 
 	if (!mongoc_collection_insert (archivos, MONGOC_INSERT_NONE, doc, NULL, &error)) {
@@ -153,86 +161,38 @@ void insertarArchivoAMongo (t_archivo archivo){
 
 	bson_destroy (doc);
 	bson_destroy (doc2);
-	bson_destroy (doc3);
 }
 
-t_archivo* mapBsonToFile(bson_t* document){
+t_copia infoBloqueyCopia(int nroBloque, int nroCopia, bson_t *doc4){
 
-	t_archivo* file = malloc(sizeof(t_archivo));
-	file->blocks = list_create();
+	t_copia info;
+	bson_iter_t iter4;
+	bson_iter_t subiter4;
 
-	t_archivo_bloque* block = malloc(sizeof(t_archivo_bloque));
-	block->copies = list_create();
+	char *resultado;
+	char *resultado2;
+	char *resultado3;
+	char *resultado4;
 
-	t_archivo_copias* copies = malloc(sizeof(t_archivo_copias));
-
-	bson_iter_t iter;
-	bson_iter_t subiter;
-	bson_iter_t sub_block_iter;
-	bson_iter_t sub_cpy_iter;
-	bson_iter_t sub_obj_iter;
-
-	if (bson_iter_init (&iter, document)) {
-		while (bson_iter_next (&iter)) {
-			if(bson_iter_find (&iter, "name"))file->name = bson_iter_utf8(&iter,NULL);
-			if(bson_iter_find (&iter, "size"))file->size = bson_iter_int32(&iter);
-			if(bson_iter_find (&iter, "parentDirectory"))file->parent_directory = bson_iter_int32(&iter);
-			if(bson_iter_find (&iter, "path"))file->path = bson_iter_utf8(&iter,NULL);
-			if(bson_iter_find (&iter, "status"))file->status = bson_iter_int32(&iter);
-
-			if (bson_iter_init_find (&iter, document, "blocks") &&
-			    (BSON_ITER_HOLDS_DOCUMENT (&iter) ||
-			     BSON_ITER_HOLDS_ARRAY (&iter)) &&
-			    bson_iter_recurse (&iter, &subiter)) {
-
-				while (bson_iter_next (&subiter)) {
-
-			      if(bson_iter_recurse(&subiter,&sub_block_iter)) {
-
-			    	  //A nivel de cada bloque
-			    	  while(bson_iter_next(&sub_block_iter)) {
-
-			    		  if(string_equals_ignore_case(bson_iter_key (&sub_block_iter),"id")) {
-			    			  block->id = bson_iter_int32(&sub_block_iter);
-			    		  }
-
-			    		  if (string_equals_ignore_case(bson_iter_key (&sub_block_iter),"copies") &&
-			    						  bson_iter_recurse (&sub_block_iter, &sub_cpy_iter)) {
-
-			    			  //A nivel de cada copia
-			    			  while (bson_iter_next (&sub_cpy_iter)) {
-
-			    				  if(bson_iter_recurse(&sub_cpy_iter,&sub_obj_iter)) {
-
-			    					  while(bson_iter_next(&sub_obj_iter)) {
-
-			    						  if(string_equals_ignore_case(bson_iter_key (&sub_obj_iter),"copy")) {
-			    							  copies->copy = bson_iter_int32(&sub_obj_iter);
-			    						  }
-			    						  if(string_equals_ignore_case(bson_iter_key (&sub_obj_iter),"content")) {
-			    							  copies->content = bson_iter_utf8(&sub_obj_iter, NULL);
-			    						  }
-			    						  if(string_equals_ignore_case(bson_iter_key (&sub_obj_iter),"node")) {
-			    							  copies->node = bson_iter_int32(&sub_obj_iter);
-			    						  }
-			    						  if(string_equals_ignore_case(bson_iter_key (&sub_obj_iter),"block")) {
-			    							  copies->node_block = bson_iter_int32(&sub_obj_iter);
-			    						  }
-			    					  }
-			    					  list_add_in_index(block->copies,copies->copy,copies);
-			    					  			    				  }
-			    			  }//fin copia
-			    		  }
-
-			    	  } //fin bloque
-			    	  list_add_in_index(file->blocks,block->id,block);
-			      }
-			   }
-			}
-		}
+	asprintf(&resultado,"%s%i","Bloques.",nroBloque);
+	asprintf(&resultado2,"%s%s",resultado,".");
+	asprintf(&resultado3,"%s%i",resultado2,nroCopia);
+	asprintf(&resultado4,"%s%s",resultado3,".ID Nodo");
+	if (bson_iter_init (&iter4, doc4) && bson_iter_find_descendant (&iter4, resultado4 , &subiter4) && BSON_ITER_HOLDS_INT32 (&subiter4)) {
+		info.id_nodo = bson_iter_int32 (&subiter4);
 	}
-	bson_destroy (document);
-	free(copies);
-	free(block);
-	return file;
+	asprintf(&resultado,"%s%i","Bloques.",nroBloque);
+	asprintf(&resultado2,"%s%s",resultado,".");
+	asprintf(&resultado3,"%s%i",resultado2,nroCopia);
+	asprintf(&resultado4,"%s%s",resultado3,".Bloque");
+	if (bson_iter_init (&iter4, doc4) && bson_iter_find_descendant (&iter4, resultado4, &subiter4) && BSON_ITER_HOLDS_INT32 (&subiter4)) {
+		info.bloque = bson_iter_int32 (&subiter4);
+	}
+
+	free(resultado);
+	free(resultado2);
+	free(resultado3);
+	free(resultado4);
+
+	return info;
 }

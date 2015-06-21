@@ -41,8 +41,8 @@
 								</option>
 								<option id="gnu.c.link.option.libs.196247430" name="Libraries (-l)" superClass="gnu.c.link.option.libs" valueType="libs">
 									<listOptionValue builtIn="false" value="funciones"/>
-									<listOptionValue builtIn="false" value="bson-1.0"/>
-									<listOptionValue builtIn="false" value="mongoc-1.0"/>
+									<listOptionValue builtIn="false" value="bson"/>
+									<listOptionValue builtIn="false" value="mongoc"/>
 									<listOptionValue builtIn="false" value="pthread"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.c.linker.input.1603739338" superClass="cdt.managedbuild.tool.gnu.c.linker.input">

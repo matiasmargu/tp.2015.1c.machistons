@@ -20,8 +20,6 @@ int main()
 	nodos = mongoc_client_get_collection (client, "fileSystem", "nodos");
 	//
 
-	apagarFS = 0; //Mantener prendido el FS.
-
 	fd_set master;
 	fd_set read_fds;
 

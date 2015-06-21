@@ -97,7 +97,7 @@ void  *conectarseAlJob(void*arg){
 
 	int socket = (int)arg;
 	int saludo = 9 ;
-	int cantidad,tamanioTotal;
+	int tamanioTotal;
 	char* listaArchivosJob;
 	char* combiner;
 	int tamanioCombiner;
@@ -140,22 +140,26 @@ void  *conectarseAlJob(void*arg){
    	t_charpuntero nombre;
    	t_archivo archivo;
    	char **archivos_separados = string_get_string_as_array(listaArchivosJob); //CONVERTIMOS EL STRING A UN ARRAY (Esto te devuelve algo asi: ["a", "b", "c"])
+
    	int s = 0;
-
    	//CONTAMOS LA CANTIDAD DE ARCHIVOS Y SE LA MANDAMOS A FS
+   	int cantidad = 0;
    	while(archivos_separados[s] != NULL){
-   		cantidad += 1;     //cantidad = TAMANIO LISTA DE ARCHIVOS JOB
-   		s += 1;
+   		cantidad = cantidad + 1;	//cantidad = TAMANIO LISTA DE ARCHIVOS JOB
+   		s = s+1;
    	}
+   	printf("cantidad%i\n,",cantidad);
 
-
-   	t_list* listaDeArchivosGuardados; //UNA LISTA DE STRUCT T_ARCHIVO
-   	listaDeArchivosGuardados =	list_create();
+   	if(list_is_empty(lista_archivos)){
+   		pthread_mutex_lock(&mutex);
+   		lista_archivos =	list_create();
+   		pthread_mutex_unlock(&mutex);
+   	}
    	//MANDAMOS CADA ARCHIVO POR SEPARADO A FS(SOLO LOS QUE NO TENEMOS GUARDADOS) Y RECIBIMOS LA MATRIZ DE CADA ARCHIVO
    	int a;
    	for(a = 0 ; a < cantidad; a++){
    		nombre.archivo = archivos_separados[a];
-   		if(!(list_any_satisfy(listaDeArchivosGuardados, (nombre.archivo == archivo.nombre)))){
+   		if(!(list_any_satisfy(lista_archivos, (nombre.archivo == archivo.nombre)))){
    			// Le pide al FS que le envie los datos del archivo
    			tamanioTotal = sizeof(int)+ strlen(nombre.archivo)+1;
    			send(socketFS, &tamanioTotal, sizeof(int),0);
@@ -165,20 +169,110 @@ void  *conectarseAlJob(void*arg){
    			//DATOS QUE ME ENVIA EL FS
    			t_archivo archivo;
    			recv(socketFS, &tamanioTotal, sizeof(int),0);
-   			int estado = recive_y_guarda_estructura(archivo, socketFS, tamanioTotal);
-   			//ACA GUARDAMOS LA MATRIZ	archivo.matriz =
-   			list_add(listaDeArchivosGuardados,&archivo);
+   			recive_y_guarda_estructura(archivo, socketFS, tamanioTotal);
+
+   			pthread_mutex_lock(&mutex);
+   			list_add(lista_archivos,&archivo);
+   			pthread_mutex_unlock(&mutex);
+
    		}
    	}
 
-
+   	//planificarMap();
 
 
    	close(socketFS);
    	return NULL;
 
 }
+int calcularCantidadDeBloques(t_list* lista_archivos){
+	int cantidad,j,h,k,p;
+	t_archivo* archivo;
+	t_list* listaDeBloques;
+	listaDeBloques = list_create();
+	for(j=0 ; j< list_size(lista_archivos);j++){
+		archivo = list_get(lista_archivos,j);
+		for(h=0;h<archivo->cantidadDeBloques;h++){
+				t_bloque* bloque = list_get(archivo->bloques,h);
+
+				for(k=0;k < 3; k++){
+					for(p=0;p < list_size(listaDeBloques); p++){
+						//ESTO ESTA MAL , HAY QUE VER COMO SE PUEDE ARREGLAR
+						int elemento = list_get_element(listaDeBloques, p);
+					if(list_any_satisfy(listaDeBloques,(elemento == bloque->NumeroBloque))){
+				}
+					else{list_add(listaDeBloques , bloque->NumeroBloque);} //ACA LO AGREGO P VECES (ESTO HAY QUE ARREGLARLO)
+		}
+					for(p=1;p < list_size(listaDeBloques); p++){
+						list_remove(listaDeBloques , bloque->NumeroBloque);} //ACA LO SACO P VECES -1
+					}
+	}
+	cantidad = list_size(listaDeBloques);
+	return cantidad;
+}
+}
+
+void armarVectorDeBitarray(t_list* lista_archivos, int socketFS, int cantidadDeNodos){
+
+	int f;
+	int cantidadDeBloquesTotales = calcularCantidadDeBloques(lista_archivos);
+	t_bitarray vectorDeBitArrays[cantidadDeBloquesTotales];
+	t_archivo *un_archivo;
+	char* un_nombre;
+
+	//crea todos los bitarrays
+	for(f=0; f< cantidadDeBloquesTotales; f++){
+		t_bitarray *bitarray = bitarray_create(&un_nombre, cantidadDeNodos);
+	}
+
+	//seteo los bitarrays
+	int j,h, k;
+	for(j=0 ; j< list_size(lista_archivos);j++){
+		un_archivo = list_get(lista_archivos,j);
+
+		for(h=0;h<un_archivo->cantidadDeBloques;h++){
+		t_bloque* bloque = list_get(un_archivo->bloques,h);
+			for(k=0;k < 3; k++){
+				int numero = bloque->copias[k]->Numerobloque;
+				int id_nodo = bloque->copias[k]->idNodo;
+				bitarray_set_bit(vectorDeBitArrays[numero].bitarray, id_nodo);
+			}
+		}
+	}
+
+}
 
 
+/*
+void planificarMap(){
+	if(list_is_empty(lista_nodos_estado)){
+		pthread_mutex_lock(&mutex_nodos);
+		lista_nodos_estado = list_create();
+		pthread_mutex_unlock(&mutex_nodos);
+
+		// PARA PLANIFICAR NECESITO SABER LOS NODOS ACTIVOS. PARA ESO SE LO PIDO AL FS
+		int cantidad_nodos_activos = 2;	// ESTO ME LO MANDA EL FS, JUNTO CON LOS NODOS_ACTIVOS
+		int id_nodos_activos[cantidad_nodos_activos];
+
+		//ACA TENGO QUE BUSCAR LOS NODOS QUE ME SIRVEN PARA USAR DE LOS QUE ESTAN ACTIVOS. OSEA LOS QUE TIENEN EL BLOQUE QUE TENGO QUE MAPPEAR
+		int cant_nodos_disponibles;
+		int *nodos_disponibles = buscar_nodos_disponibles(id_nodos_activos, cant_nodos_disponibles);
 
 
+		//AVERIGUO LA CANTIDAD DE BLOQUES QUE TENGO QUE MAPEAR
+		int cant_bloques_mapear;
+		int i = 0;
+		t_archivo *archivo_lista = list_get(lista_archivos, i);
+		while (archivo_lista != NULL){
+			cant_bloques_mapear = list_size(archivo_lista->bloques);
+			i += 1;
+		}
+
+		int r = cant_bloques_mapear/cant_nodos_disponibles;
+		r = cant_bloques_mapear - r;
+	}
+
+}
+
+
+*/
