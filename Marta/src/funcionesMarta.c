@@ -97,7 +97,7 @@ void  *conectarseAlJob(void*arg){
 
 	int socket = (int)arg;
 	int saludo = 9 ;
-	int cantidad,tamanioTotal;
+	int tamanioTotal;
 	char* listaArchivosJob;
 	char* combiner;
 	int tamanioCombiner;
@@ -140,13 +140,15 @@ void  *conectarseAlJob(void*arg){
    	t_charpuntero nombre;
    	t_archivo archivo;
    	char **archivos_separados = string_get_string_as_array(listaArchivosJob); //CONVERTIMOS EL STRING A UN ARRAY (Esto te devuelve algo asi: ["a", "b", "c"])
-   	int s = 0;
 
+   	int s = 0;
    	//CONTAMOS LA CANTIDAD DE ARCHIVOS Y SE LA MANDAMOS A FS
+   	int cantidad = 0;
    	while(archivos_separados[s] != NULL){
-   		cantidad += 1;     //cantidad = TAMANIO LISTA DE ARCHIVOS JOB
-   		s += 1;
+   		cantidad = cantidad + 1;	//cantidad = TAMANIO LISTA DE ARCHIVOS JOB
+   		s = s+1;
    	}
+   	printf("cantidad%i\n,",cantidad);
 
    	if(lista_archivos == NULL){
    		pthread_mutex_lock(&mutex);
@@ -183,6 +185,7 @@ void  *conectarseAlJob(void*arg){
    	return NULL;
 
 }
+
 
 void planificarMap(void){
 	if(lista_nodos_estado == NULL){
