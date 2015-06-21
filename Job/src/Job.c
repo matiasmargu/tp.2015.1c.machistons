@@ -75,80 +75,6 @@ structCombiner.archivo = combiner;
 combinerAEnviar =  serializar_charpuntero(&structCombiner, tamanioCombiner);
 send(socketMarta,combinerAEnviar,tamanioCombiner,0);
 
-/*
-// Aca hago como si le mandase a job una matriz
-
-int columnas = 3;
-int filas = 3;
-
-send(socketMarta,&filas,sizeof(int),0);
-send(socketMarta,&columnas,sizeof(int),0);
-
-char* matriz[filas][columnas];
-
-int cont, cont1, cont2, cont3;
-
-for(cont=0; cont<filas ;cont++ ){
-	for(cont1=0; cont1 < columnas; cont1++){
-		matriz[cont][cont1] = "juan";
-	}
-}
-for(cont2= 0 ; cont2< filas; cont2++){
-	for(cont3=0;cont3< columnas; cont3++){
-	nombre.archivo = matriz[cont2][cont3];
-	printf("el archivo es %s\n",nombre.archivo);
-	tamanioTotal = sizeof(int)+ strlen(nombre.archivo)+1;
-	send(socketMarta, &tamanioTotal, sizeof(int),0);
-	archivoAEnviar = serializar_charpuntero(&nombre, tamanioTotal);
-	send(socketMarta,archivoAEnviar,tamanioTotal,0);
-	}
-}
-
-// a partir de aca haria como si formase un vector de estructuras que tengan el nodo y el contador
-// que la funcion de ese contador va a ser mostrar cuantos hilos mapper se mandaron a ese nodo para
-// asi ver a cual nodo mandarle el hilo mapper a realizar
-
-printf("a\n");
-
-
-typedef struct{
-	char* nodo;
-	int contador_mapper;
-} nodo_y_contador;
-
-int cantidad_de_nodos = 3*3; // aca pongo la cantidad de nodos, que me la tendria que mandar alguien o la tendria que sacar de algun lado
-                           // pero ahora le pongo 3*3 que es la mtriz que armamos.
-
-nodo_y_contador v[cantidad_de_nodos]; // vector de estructuras
-
-int aux = 0; // variable auxiliar que me va a decir si ya se cargo o no
-int posicion_del_vector_de_nodos = 0;
-
-
-for(cont1=0;cont1 < filas; cont1 ++){
-	for(cont2=0; cont2 < columnas; cont2 ++){ // con estos for recorro la matriz
-
-		for(cont3=0; cont3 < cantidad_de_nodos && aux == 0; cont3 ++){ // con este for recorro el vector de nodos y me fijo si el nodo ya se cargo
-
-			if(matriz[filas][columnas] == v[cont3].nodo ){
-					aux = 1; // si algun nodo coincide es xq ya fue cargado
-			}
-		}
-		if(aux == 0){ // significa que el nodo no fue cargado al vector de estructuras
-
-		v[posicion_del_vector_de_nodos].nodo = matriz[filas][columnas];
-		v[posicion_del_vector_de_nodos].contador_mapper = 0;
-
-		posicion_del_vector_de_nodos ++; // aumentamos la posicion del vector de nodos
-
-		}
-	}
-}
-
-
-
-
-
 
 /*
 
@@ -178,23 +104,25 @@ int listaDeBloques[Marta_Job.cantidadDeBloques];
 
 int socketNodo = crearCliente (Marta_Job.ip_nodo, Marta_Job.puerto);
 
-if(Marta_Job.rutina == 1){
+//ACA LE MANDA LA RUTINA MAPPER AL NODO
 Job_Nodo.tipoRutina = 1;
 Job_Nodo.rutinaEjecutable = mapper;
+tamanioTotal = sizeof(int) + sizeof(int) + strlen(mapper)+1;
+send(socketNodo,&tamanioTotal,sizeof(int),0);
+char* mensajeMapper = serializarRutina(Job_Nodo, tamanioTotal);
+send(socketNodo,mensajeMapper,tamanioTotal,0);
+//liberarMensaje(mensajeMapper);
 
-char* mensajeMapper = serializarMapper(Job_Nodo);
+//ACA LE MANDA LA RUTINA REDUCE AL NODO
+Job_Nodo.tipoRutina = 2;
+Job_Nodo.rutinaEjecutable = reduce;
+tamanioTotal = sizeof(int) + sizeof(int) + strlen(reduce)+1;
+send(socketNodo,&tamanioTotal,sizeof(int),0);
+char* mensajeReduce = serializarRutina(Job_Nodo, tamanioTotal);
+send(socketNodo,mensajeReduce,tamanioTotal,0);
+//liberarMensaje(mensajeReduce);
 
-	send(socketNodo,mensajeMapper,strlen(mensajeMapper)+1,0);
-	liberarMensaje(mensajeMapper);
 
-	}else{
-		char* mensajeReduce = serializarReducer(&reduce);
-		Job_Nodo.tipoRutina = 1;
-		Job_Nodo.rutinaEjecutable = mapper;
-
-			send(socketNodo,mensajeReduce,strlen(mensajeReduce)+1,0);
-			liberarMensaje(mensajeReduce);
-	}
 
 	for(i = 0; i<= Marta_Job.cantidadDeBloques; i++){
 
@@ -214,7 +142,8 @@ char* mensajeMapper = serializarMapper(Job_Nodo);
             }else{Job_Nodo.rutinaEjecutable = reduce;
         	Job_Nodo.tipoRutina = 2;}
 
-			pthread_create(&hiloNodo_i, NULL, (void*) conectarseAlNodo, &CAN);
+			asprintf(&resultado , "%s%i", "hiloNodo",i);
+			pthread_create(&resultado, NULL, (void*) conectarseAlNodo, &CAN);
 			if(Marta_Job.rutina == 1){
 			log_info(logger,"Se creo un hilo mapper  "); //AGREGAR PARAMETROS RECIBIDOS
 			printf("Se creo un hilo mapper");

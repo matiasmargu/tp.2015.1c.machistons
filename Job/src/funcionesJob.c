@@ -70,15 +70,22 @@ void conectarseAlNodo(t_conectarseAlNodo CAN){
 
 
 
-	char* serializarMapper(t_job_nodo *jn){
-		char *serializedPackage = malloc(sizeof(int)+(strlen(jn->rutinaEjecutable)+1));
+	char* serializarRutina(t_job_nodo *jn,int tamanioTotal){
+
+		char *serializedPackage = malloc(tamanioTotal);
 
 		int offset = 0;
 		int size_to_send;
 
-		size_to_send =  strlen(jn->rutinaEjecutable)+1;
-		memcpy(serializedPackage + offset, &(jn->rutinaEjecutable), size_to_send);
+		int tamanioRutina = strlen(jn->rutinaEjecutable) + 1;
+		size_to_send = sizeof(int);
+		memcpy(serializedPackage + offset, &tamanioRutina, size_to_send);
 		offset += size_to_send;
+
+		size_to_send =  strlen(jn->rutinaEjecutable) + 1;
+		memcpy(serializedPackage + offset, jn->rutinaEjecutable, size_to_send);
+		offset += size_to_send;
+
 
 		size_to_send =  sizeof(jn->tipoRutina);
 		memcpy(serializedPackage + offset, &(jn->tipoRutina), size_to_send);
