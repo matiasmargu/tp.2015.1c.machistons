@@ -27,8 +27,8 @@ t_log* logger; // Log Global
 // VARIABLE GLOBAL
 t_list *lista_archivos;
 t_list *lista_nodos_estado;
-pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
-pthread_mutex_t mutex_nodos = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t mutex ;//= PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t mutex_nodos;// = PTHREAD_MUTEX_INITIALIZER;
 
 typedef struct{
 	char* archivo;
