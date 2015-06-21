@@ -150,7 +150,7 @@ void  *conectarseAlJob(void*arg){
    	}
    	printf("cantidad%i\n,",cantidad);
 
-   	if(lista_archivos == NULL){
+   	if(list_is_empty(lista_archivos)){
    		pthread_mutex_lock(&mutex);
    		lista_archivos =	list_create();
    		pthread_mutex_unlock(&mutex);
@@ -186,9 +186,21 @@ void  *conectarseAlJob(void*arg){
 
 }
 
+/*
+t_list* buscar_nodos_disponibles(id_nodos_activos, cant_nodos_disponibles){
 
-void planificarMap(void){
-	if(lista_nodos_estado == NULL){
+	int f;
+	t_list* nodos_con_el_bloque;
+	nodos_con_el_bloque =  list_filter(archivo.bloques, (copias.nodo));
+	for(f = 0; f < cant_nodos_disponibles; f++){
+		 list_remove_and_destroy_by_condition(nodos_con_el_bloque, (id_nodos_activos[f] ==), id_nodos_activos[f]) ;
+	}
+	return nodos_con_el_bloque;
+}
+*/
+
+void planificarMap(){
+	if(list_is_empty(lista_nodos_estado)){
 		pthread_mutex_lock(&mutex_nodos);
 		lista_nodos_estado = list_create();
 		pthread_mutex_unlock(&mutex_nodos);
@@ -199,15 +211,15 @@ void planificarMap(void){
 
 		//ACA TENGO QUE BUSCAR LOS NODOS QUE ME SIRVEN PARA USAR DE LOS QUE ESTAN ACTIVOS. OSEA LOS QUE TIENEN EL BLOQUE QUE TENGO QUE MAPPEAR
 		int cant_nodos_disponibles;
-		int *nodos_disponibles[] = buscar_nodos_disponibles(id_nodos_activos, cant_nodos_disponibles);
+		int *nodos_disponibles = buscar_nodos_disponibles(id_nodos_activos, cant_nodos_disponibles);
 
 
 		//AVERIGUO LA CANTIDAD DE BLOQUES QUE TENGO QUE MAPEAR
 		int cant_bloques_mapear;
 		int i = 0;
-		t_archivo archivo_lista = list_get(lista_archivos, i);
+		t_archivo *archivo_lista = list_get(lista_archivos, i);
 		while (archivo_lista != NULL){
-			cant_bloques_mapear = (archivo_lista.bloques->elements_count);
+			cant_bloques_mapear = list_size(archivo_lista->bloques);
 			i += 1;
 		}
 
@@ -216,7 +228,6 @@ void planificarMap(void){
 	}
 
 }
-
 
 
 
