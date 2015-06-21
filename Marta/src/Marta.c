@@ -61,55 +61,6 @@ int main(void) {
 
 
 
-/*
-
-   	int columnas;
-   	int filas;
-   	int f;
-   	int e;
-   	//PRUEBA MATRIZ CON JOB
-   		recv(socketjob,&columnas,sizeof(int),0);
-   		printf("columnas %i\n ",columnas);
-   		recv(socketjob,&filas,sizeof(int),0);
-   		printf("filas %i\n ",columnas);
-   		char* matriz[filas][columnas];
-   		for(f = 0 ; f < filas; f++){
-   			for(e = 0 ; e < columnas; e++){
-   			 recv(socketjob, &tamanioTotal, sizeof(int),0);
-   			   		 int estado = 1; // Estructura que manjea el status de los recieve.
-   			   		 archivo= malloc(tamanioTotal);
-   			   		 estado = recive_y_deserialisa(&archivo, socketjob, tamanioTotal);
-   			   		 if(estado){
-   			   			printf("el archivo es %s\n ",archivo);
-   			   			matriz[f][e] = archivo;
-   			   		 }
-   			   		free(archivo);
-   			}
-   		}
-
- //PRUEBA PARA STEAR EL CONTADOR DE LOS NODOS EN 0
-
-typedef struct{
-   	char* nodo;
-   	int contador_mapper;
-} nodo_y_contador;
-int x;
-char* y;
-char* resultado;
-nodo_y_contador nodo;
-
-   	for(x = 0; x< 20; x++){
-   		y = "nodo";
-   		asprintf(&resultado,"%s%i",y,x);
-   		nodo.nodo = resultado;
-   		nodo.contador_mapper = 0;
-   		printf("nombre: %s, contador:%i\n",nodo.nodo,nodo.contador_mapper);
-
-   	}
-
-   	}
-*/
-
    	// Empieza el select
 
 
