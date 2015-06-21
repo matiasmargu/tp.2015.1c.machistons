@@ -178,27 +178,72 @@ void  *conectarseAlJob(void*arg){
    		}
    	}
 
-   	planificarMap();
+   	//planificarMap();
 
 
    	close(socketFS);
    	return NULL;
 
 }
+int calcularCantidadDeBloques(t_list* lista_archivos){
+	int cantidad,j,h,k,p;
+	t_archivo* archivo;
+	t_list* listaDeBloques;
+	listaDeBloques = list_create();
+	for(j=0 ; j< list_size(lista_archivos);j++){
+		archivo = list_get(lista_archivos,j);
+		for(h=0;h<archivo->cantidadDeBloques;h++){
+				t_bloque* bloque = list_get(archivo->bloques,h);
 
-/*
-t_list* buscar_nodos_disponibles(id_nodos_activos, cant_nodos_disponibles){
+				for(k=0;k < 3; k++){
+					for(p=0;p < list_size(listaDeBloques); p++){
+						//ESTO ESTA MAL , HAY QUE VER COMO SE PUEDE ARREGLAR
+						int elemento = list_get_element(listaDeBloques, p);
+					if(list_any_satisfy(listaDeBloques,(elemento == bloque->NumeroBloque))){
+				}
+					else{list_add(listaDeBloques , bloque->NumeroBloque);} //ACA LO AGREGO P VECES (ESTO HAY QUE ARREGLARLO)
+		}
+					for(p=1;p < list_size(listaDeBloques); p++){
+						list_remove(listaDeBloques , bloque->NumeroBloque);} //ACA LO SACO P VECES -1
+					}
+	}
+	cantidad = list_size(listaDeBloques);
+	return cantidad;
+}
+}
+
+void armarVectorDeBitarray(t_list* lista_archivos, int socketFS, int cantidadDeNodos){
 
 	int f;
-	t_list* nodos_con_el_bloque;
-	nodos_con_el_bloque =  list_filter(archivo.bloques, (copias.nodo));
-	for(f = 0; f < cant_nodos_disponibles; f++){
-		 list_remove_and_destroy_by_condition(nodos_con_el_bloque, (id_nodos_activos[f] ==), id_nodos_activos[f]) ;
-	}
-	return nodos_con_el_bloque;
-}
-*/
+	int cantidadDeBloquesTotales = calcularCantidadDeBloques(lista_archivos);
+	t_bitarray vectorDeBitArrays[cantidadDeBloquesTotales];
+	t_archivo *un_archivo;
+	char* un_nombre;
 
+	//crea todos los bitarrays
+	for(f=0; f< cantidadDeBloquesTotales; f++){
+		t_bitarray *bitarray = bitarray_create(&un_nombre, cantidadDeNodos);
+	}
+
+	//seteo los bitarrays
+	int j,h, k;
+	for(j=0 ; j< list_size(lista_archivos);j++){
+		un_archivo = list_get(lista_archivos,j);
+
+		for(h=0;h<un_archivo->cantidadDeBloques;h++){
+		t_bloque* bloque = list_get(un_archivo->bloques,h);
+			for(k=0;k < 3; k++){
+				int numero = bloque->copias[k]->Numerobloque;
+				int id_nodo = bloque->copias[k]->idNodo;
+				bitarray_set_bit(vectorDeBitArrays[numero].bitarray, id_nodo);
+			}
+		}
+	}
+
+}
+
+
+/*
 void planificarMap(){
 	if(list_is_empty(lista_nodos_estado)){
 		pthread_mutex_lock(&mutex_nodos);
@@ -230,4 +275,4 @@ void planificarMap(){
 }
 
 
-
+*/

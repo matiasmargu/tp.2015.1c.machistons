@@ -17,6 +17,7 @@
 #include <sys/socket.h>
 #include <socket/socket.h>
 #include <./commons/collections/list.h>
+#include <./commons/bitarray.h>
 #include <pthread.h>
 #include <sys/types.h>
 #include <netinet/in.h>
