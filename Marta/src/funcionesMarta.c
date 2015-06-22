@@ -185,6 +185,8 @@ void  *conectarseAlJob(void*arg){
    	return NULL;
 
 }
+
+/*
 int calcularCantidadDeBloques(t_list* lista_archivos){
 	int cantidad,j,h,k,p;
 	t_archivo* archivo;
@@ -211,6 +213,18 @@ int calcularCantidadDeBloques(t_list* lista_archivos){
 	return cantidad;
 }
 }
+*/
+
+void inicializarBitarray(t_bitarray *bitmap, int tamanio){
+	int i;
+	for(i=0;i < tamanio;i++){
+		 bitarray_set_bit(bitmap, i);
+	}
+}
+
+int buscarPorNodo(int idNodo, int nodos_activos[], int pos){
+	return 1;
+}
 
 t_cargaBitarray_aux *armarVectorDeBitarray(t_list* lista_archivos, int socketFS, int cantidadDeNodos, int nodos_activos[]){
 
@@ -233,7 +247,7 @@ t_cargaBitarray_aux *armarVectorDeBitarray(t_list* lista_archivos, int socketFS,
 			vectorDeBitArrays[sub_indice].nombre_arch = un_archivo->nombre;
 			vectorDeBitArrays[sub_indice].bloque_arch = bloque->NumeroBloque;
 			vectorDeBitArrays[sub_indice].bitmap = bitarray_create(&un_nombre, cantidadDeNodos);
-			// INICIALIZAR ESTRUCTURA CON 0
+			inicializarBitarray(vectorDeBitArrays[sub_indice].bitmap, cantidadDeNodos);
 
 				for(k=0;k < 3; k++){
 					int pos;
