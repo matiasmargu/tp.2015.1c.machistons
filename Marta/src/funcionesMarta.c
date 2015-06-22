@@ -294,5 +294,29 @@ void planificarMap(){
 
 }
 
+int recive_y_deserialisa_paquete_nodos(t_charpuntero* ip, t_charpuntero* puerto, int ipnodo, uint32_t tamanioTotal){
+	int status;
+	char *buffer = malloc(tamanioTotal);
+	int offset=0;
+
+	recv(socket, buffer, tamanioTotal, 0);
+
+	int tamanioDinamico;
+	memcpy(&tamanioDinamico, buffer + offset, sizeof(int));
+	offset += sizeof(int);
+
+	ip->archivo = malloc(tamanioDinamico);
+	memcpy(ip->archivo, buffer + offset, tamanioDinamico);
+	offset += tamanioDinamico;
+
+	puerto->archivo = malloc(tamanioDinamico);
+	memcpy(puerto->archivo, buffer + offset, tamanioDinamico);
+	offset += tamanioDinamico;
+
+	free(buffer);
+	return status;
+}
+
+
 
 
