@@ -36,6 +36,12 @@ typedef struct{
 
    }t_job_marta_resultado;
 
+//JOB -> MARTA
+typedef struct{
+	int numeroBloque;
+	int rutina;
+	int resultado; // 0 = FALLO , 1 = EXITOSO
+}t_job_marta;
 
 
 //Marta->FS

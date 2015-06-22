@@ -56,7 +56,7 @@ char* serializarRutina(t_job_nodo* jn, int tamanioTotal);
 char* serializarJob_Nodo_Mapper(t_job_nodo_mapper *job_nodo);
 char* serializar_charpuntero(t_charpuntero *nombre, int tamanioTotal);
 int recive_y_deserialisa(t_marta_job2 *bloque, int socket, uint32_t tamanioTotal);
-
+char* serializar_job_marta(t_job_marta *job_marta, int tamanioTotal);
 void liberarMensaje(char *);
 
 #endif /* FUNCIONES_H_ */

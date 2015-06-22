@@ -85,7 +85,8 @@ int recive_y_deserialisa(t_charpuntero* nombre, int socket, uint32_t tamanioTota
 int recive_y_guarda_estructura(t_archivo arch, int socket, uint32_t tamanioTotal);
 char* serializar_charpuntero(t_charpuntero* nombre, int tamanioTotal);
 void  *conectarseAlJob(void*arg);
-
+int recive_y_deserialisa_job(t_job_marta* job_marta, int socket,uint32_t tamanioTotal );
+int recive_y_deserialisa_paquete_nodos(t_charpuntero* ip, t_charpuntero* puerto, int ipnodo, uint32_t tamanioTotal);
 
 
 #endif /* FUNCTIONS_H_ */

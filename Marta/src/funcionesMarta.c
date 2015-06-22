@@ -27,6 +27,30 @@ int recive_y_deserialisa(t_charpuntero* nombre, int socket, uint32_t tamanioTota
 	return status;
 }
 
+
+int recive_y_deserialisa_job(t_job_marta* job_marta, int socket,uint32_t tamanioTotal ){
+
+	int status;
+	char *buffer = malloc(tamanioTotal);
+	int offset=0;
+
+	recv(socket, buffer, tamanioTotal, 0);
+
+	memcpy(&job_marta->numeroBloque, buffer + offset, sizeof(int));
+	offset += sizeof(int);
+
+	memcpy(&job_marta->resultado, buffer + offset, sizeof(int));
+	offset += sizeof(int);
+
+	memcpy(&job_marta->rutina, buffer + offset, sizeof(int));
+	offset += sizeof(int);
+
+	free(buffer);
+	return status;
+
+
+}
+
 // ACA NECESITO QUE EL FS MANDE EL NOMBRE, LA CANT DE BLOQUES, Y LA UBICACION DE LAS COPIAS
 int recive_y_guarda_estructura(t_archivo arch, int socket, uint32_t tamanioTotal){
 
