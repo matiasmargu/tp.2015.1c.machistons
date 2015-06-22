@@ -85,7 +85,7 @@ void *atenderNFS(void*arg){
 		break;
 		case 4:
 		//FORMATEO
-			for(i=0;i<strlen(pmap);i++){
+			for(i=0;i<sizeof(pmap);i++){
 				memcpy(pmap+i,'\0',sizeof(char));
 			}
 			msync(pmap,strlen(pmap),0);
