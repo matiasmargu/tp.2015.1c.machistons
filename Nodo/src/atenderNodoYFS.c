@@ -20,6 +20,7 @@ void *atenderNFS(void*arg){
 	int tamanioBloque;
 	int tamanio;
 	estructuraSetBloque set;
+	int n;
 
 	pmap = mapearAMemoriaVirtual();
 
@@ -85,7 +86,8 @@ void *atenderNFS(void*arg){
 		break;
 		case 4:
 		//FORMATEO
-			for(i=0;i<sizeof(pmap);i++){
+			n = (sizeof(pmap)/sizeof(pmap[0]));
+			for(i=0;i<n;i++){
 				memcpy(pmap+i,'\0',sizeof(char));
 			}
 			msync(pmap,strlen(pmap),0);
