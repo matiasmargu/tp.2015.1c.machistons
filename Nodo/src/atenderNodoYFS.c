@@ -68,7 +68,7 @@ void *atenderNFS(void*arg){
 				nroDelBloque = set.bloque;//
 				//memcpy(pmap+(1024*1024*20*(nroDelBloque)),set.data,20*1024*1024);
 				memcpy(pmap+(nroDelBloque*10),set.data,tamanio);
-				memcpy(pmap+(nroDelBloque*10)+tamanio,'\0',sizeof(char));
+	//			memcpy(pmap+(nroDelBloque*10)+tamanio,'\0',sizeof(char));
 				msync(pmap,strlen(pmap),0);
 				printf("se seteo correctamente\n");
 			}
@@ -86,7 +86,7 @@ void *atenderNFS(void*arg){
 		case 4:
 		//FORMATEO
 			for(i=0;i<strlen(pmap);i++){
-				memcpy(pmap+i,'/',sizeof(char));
+				memcpy(pmap+i,'\0',sizeof(char));
 			}
 			msync(pmap,strlen(pmap),0);
 			printf("se formatero el archivo binario\n");
