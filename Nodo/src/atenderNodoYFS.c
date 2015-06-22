@@ -68,6 +68,7 @@ void *atenderNFS(void*arg){
 				nroDelBloque = set.bloque;//
 				//memcpy(pmap+(1024*1024*20*(nroDelBloque)),set.data,20*1024*1024);
 				memcpy(pmap+(nroDelBloque*10),set.data,tamanio);
+				memcpy(pmap+(nroDelBloque*10)+tamanio,'\0',sizeof(char));
 				msync(pmap,strlen(pmap),0);
 				printf("se seteo correctamente\n");
 			}
