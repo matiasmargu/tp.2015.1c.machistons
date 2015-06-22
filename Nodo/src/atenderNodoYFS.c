@@ -76,13 +76,16 @@ void *atenderNFS(void*arg){
 		break;
 		//getFileContent(nombre);
 		case 3:
-				ok = 20;
-				send(socket,&ok, sizeof(int),0);
+
+
+
+			ok = 20;
+			send(socket,&ok, sizeof(int),0);
 		break;
 		case 4:
 		//FORMATEO
 			for(i=0;i<strlen(pmap);i++){
-				memcpy(pmap+i,"0",sizeof(char));
+				memcpy(pmap+i,'/',sizeof(char));
 			}
 			msync(pmap,strlen(pmap),0);
 			printf("se formatero el archivo binario\n");
