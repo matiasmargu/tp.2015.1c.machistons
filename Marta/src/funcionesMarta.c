@@ -226,7 +226,7 @@ int buscarPorNodo(int idNodo, int nodos_activos[], int pos){
 	return 1;
 }
 
-t_cargaBitarray_aux *armarVectorDeBitarray(t_list* lista_archivos, int socketFS, int cantidadDeNodos, int nodos_activos[]){
+t_cargaBitarray_aux *armarVectorDeBitarray(int cantidadDeNodos, int nodos_activos[], int sub_indice){
 
 	int f;
 	//int cantidadDeBloquesTotales = calcularCantidadDeBloques(lista_archivos);
@@ -237,7 +237,7 @@ t_cargaBitarray_aux *armarVectorDeBitarray(t_list* lista_archivos, int socketFS,
 
 	//seteo los bitarrays
 	int j,h, k;
-	int sub_indice = 0;
+	sub_indice = 0;
 	for(j=0 ; j< list_size(lista_archivos);j++){
 		un_archivo = list_get(lista_archivos,j);
 		for(h=0;h < un_archivo->cantidadDeBloques;h++){
@@ -263,7 +263,7 @@ t_cargaBitarray_aux *armarVectorDeBitarray(t_list* lista_archivos, int socketFS,
 }
 
 
-/*
+
 void planificarMap(){
 	if(list_is_empty(lista_nodos_estado)){
 		pthread_mutex_lock(&mutex_nodos);
@@ -271,28 +271,28 @@ void planificarMap(){
 		pthread_mutex_unlock(&mutex_nodos);
 
 		// PARA PLANIFICAR NECESITO SABER LOS NODOS ACTIVOS. PARA ESO SE LO PIDO AL FS
-		int cantidad_nodos_activos = 2;	// ESTO ME LO MANDA EL FS, JUNTO CON LOS NODOS_ACTIVOS
-		int id_nodos_activos[cantidad_nodos_activos]; //LOS ID DE LOS NODOS ACTIVOS NECESITO QUE ME LOS MANDES ASI GASTON: [1,14,22,31] ORDENADOS DE MENOR A MAYOR
+		int cantidad_nodos_activos = 4;	// ESTO ME LO MANDA EL FS, JUNTO CON LOS NODOS_ACTIVOS
+		int nodos_activos[cantidad_nodos_activos]; //LOS ID DE LOS NODOS ACTIVOS NECESITO QUE ME LOS MANDES ASI GASTON: [1,14,22,31] ORDENADOS DE MENOR A MAYOR
 
-		//ACA TENGO QUE BUSCAR LOS NODOS QUE ME SIRVEN PARA USAR DE LOS QUE ESTAN ACTIVOS. OSEA LOS QUE TIENEN EL BLOQUE QUE TENGO QUE MAPPEAR
-		int cant_nodos_disponibles;
-		int *nodos_disponibles = buscar_nodos_disponibles(id_nodos_activos, cant_nodos_disponibles);
+		int tamanio;
+		t_cargaBitarray_aux *bitmap = armarVectorDeBitarray(cantidad_nodos_activos, nodos_activos, tamanio);
+		int division = tamanio/cantidad_nodos_activos;
+		int resto_division = tamanio%cantidad_nodos_activos;
+		if(resto_division == 0) division--;
 
-
-		//AVERIGUO LA CANTIDAD DE BLOQUES QUE TENGO QUE MAPEAR
-		int cant_bloques_mapear;
-		int i = 0;
-		t_archivo *archivo_lista = list_get(lista_archivos, i);
-		while (archivo_lista != NULL){
-			cant_bloques_mapear = list_size(archivo_lista->bloques);
-			i += 1;
+		int j;
+		for(j=0;j <= division;j++){
+			int k = 0;
+			int bloques_alineados = division;
+			if((resto_division != 0) && (j == division)) bloques_alineados = resto_division-1;
+			while(k <= bloques_alineados){
+				//ACA APLICO EL ALGORITMO DE PLANIFICACION PARA CADA BLOQUE
+				k++;
+			}
 		}
-
-		int r = cant_bloques_mapear/cant_nodos_disponibles;
-		r = cant_bloques_mapear - r;
 	}
 
 }
 
 
-*/
+
