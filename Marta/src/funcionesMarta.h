@@ -64,10 +64,19 @@ typedef struct{
 }t_nombre_archivo;
 
 typedef struct{
+	char* nombre_arch;
 	int id_job;
 	int bloque;
 	char estado; // M = MAP; R = REDUCE
 }t_datos;
+
+typedef struct{
+	char* nombre_arch;
+	int bloque_arch;
+	t_bitarray *bitmap;
+}t_cargaBitarray_aux;
+
+
 
 
 

@@ -192,7 +192,7 @@ int calcularCantidadDeBloques(t_list* lista_archivos){
 	listaDeBloques = list_create();
 	for(j=0 ; j< list_size(lista_archivos);j++){
 		archivo = list_get(lista_archivos,j);
-		for(h=0;h<archivo->cantidadDeBloques;h++){
+		for(h=0;h < archivo->cantidadDeBloques;h++){
 				t_bloque* bloque = list_get(archivo->bloques,h);
 
 				for(k=0;k < 3; k++){
@@ -212,33 +212,39 @@ int calcularCantidadDeBloques(t_list* lista_archivos){
 }
 }
 
-void armarVectorDeBitarray(t_list* lista_archivos, int socketFS, int cantidadDeNodos){
+t_cargaBitarray_aux *armarVectorDeBitarray(t_list* lista_archivos, int socketFS, int cantidadDeNodos, int nodos_activos[]){
 
 	int f;
-	int cantidadDeBloquesTotales = calcularCantidadDeBloques(lista_archivos);
-	t_bitarray vectorDeBitArrays[cantidadDeBloquesTotales];
+	//int cantidadDeBloquesTotales = calcularCantidadDeBloques(lista_archivos);
+	t_cargaBitarray_aux vectorDeBitArrays[] = malloc(sizeof(t_cargaBitarray_aux));
 	t_archivo *un_archivo;
-	char* un_nombre;
-
-	//crea todos los bitarrays
-	for(f=0; f< cantidadDeBloquesTotales; f++){
-		t_bitarray *bitarray = bitarray_create(&un_nombre, cantidadDeNodos);
-	}
+	// OJO CON ESTO, NO ESTOY SEGURO SI NO HAY QUE PASARLO CARGADO CON 0 PREVIAMENTE
+	char* un_nombre = malloc(cantidadDeNodos * sizeof(char));
 
 	//seteo los bitarrays
 	int j,h, k;
+	int sub_indice = 0;
 	for(j=0 ; j< list_size(lista_archivos);j++){
 		un_archivo = list_get(lista_archivos,j);
+		for(h=0;h < un_archivo->cantidadDeBloques;h++){
+			t_bloque* bloque = list_get(un_archivo->bloques,h);
 
-		for(h=0;h<un_archivo->cantidadDeBloques;h++){
-		t_bloque* bloque = list_get(un_archivo->bloques,h);
-			for(k=0;k < 3; k++){
-				int numero = bloque->copias[k]->Numerobloque;
-				int id_nodo = bloque->copias[k]->idNodo;
-				bitarray_set_bit(vectorDeBitArrays[numero].bitarray, id_nodo);
-			}
+			vectorDeBitArrays = realloc(vectorDeBitArrays,sizeof(t_cargaBitarray_aux)*(sub_indice+1));
+			vectorDeBitArrays[sub_indice].nombre_arch = un_archivo->nombre;
+			vectorDeBitArrays[sub_indice].bloque_arch = bloque->NumeroBloque;
+			vectorDeBitArrays[sub_indice].bitmap = bitarray_create(&un_nombre, cantidadDeNodos);
+			// INICIALIZAR ESTRUCTURA CON 0
+
+				for(k=0;k < 3; k++){
+					int pos;
+					if(buscarPorNodo(bloque->copias[k]->idNodo, nodos_activos, pos)) bitarray_set_bit(vectorDeBitArrays[sub_indice].bitmap, pos);
+				}
+			sub_indice ++;
 		}
 	}
+
+	free(un_nombre);
+	return vectorDeBitArrays; //LIBERAR ESTA MEMORIA DESP Y ELIMINAR CADA BITARRAY TMB
 
 }
 
@@ -252,7 +258,7 @@ void planificarMap(){
 
 		// PARA PLANIFICAR NECESITO SABER LOS NODOS ACTIVOS. PARA ESO SE LO PIDO AL FS
 		int cantidad_nodos_activos = 2;	// ESTO ME LO MANDA EL FS, JUNTO CON LOS NODOS_ACTIVOS
-		int id_nodos_activos[cantidad_nodos_activos];
+		int id_nodos_activos[cantidad_nodos_activos]; //LOS ID DE LOS NODOS ACTIVOS NECESITO QUE ME LOS MANDES ASI GASTON: [1,14,22,31] ORDENADOS DE MENOR A MAYOR
 
 		//ACA TENGO QUE BUSCAR LOS NODOS QUE ME SIRVEN PARA USAR DE LOS QUE ESTAN ACTIVOS. OSEA LOS QUE TIENEN EL BLOQUE QUE TENGO QUE MAPPEAR
 		int cant_nodos_disponibles;
