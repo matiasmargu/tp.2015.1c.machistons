@@ -20,6 +20,7 @@ void *atenderNFS(void*arg){
 	int tamanioBloque;
 	int tamanio;
 	estructuraSetBloque set;
+	int n;
 
 	pmap = mapearAMemoriaVirtual();
 
@@ -68,6 +69,7 @@ void *atenderNFS(void*arg){
 				nroDelBloque = set.bloque;//
 				//memcpy(pmap+(1024*1024*20*(nroDelBloque)),set.data,20*1024*1024);
 				memcpy(pmap+(nroDelBloque*10),set.data,tamanio);
+	//			memcpy(pmap+(nroDelBloque*10)+tamanio,'\0',sizeof(char));
 				msync(pmap,strlen(pmap),0);
 				printf("se seteo correctamente\n");
 			}
@@ -76,13 +78,17 @@ void *atenderNFS(void*arg){
 		break;
 		//getFileContent(nombre);
 		case 3:
-				ok = 20;
-				send(socket,&ok, sizeof(int),0);
+
+
+
+			ok = 20;
+			send(socket,&ok, sizeof(int),0);
 		break;
 		case 4:
 		//FORMATEO
-			for(i=0;i<strlen(pmap);i++){
-				memcpy(pmap+i,"0",sizeof(char));
+			n = (sizeof(pmap)/sizeof(pmap[0]));
+			for(i=0;i<n;i++){
+				memcpy(pmap+i,'\0',sizeof(char));
 			}
 			msync(pmap,strlen(pmap),0);
 			printf("se formatero el archivo binario\n");
