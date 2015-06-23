@@ -341,6 +341,81 @@ int recive_y_deserialisa_paquete_nodos(t_charpuntero* ip, t_charpuntero* puerto,
 	return status;
 }
 
+typedef struct{
+	char* ip;
+	char* puerto_nodos;
+	int map_o_reduce;
+	t_cargaBitarray_aux vector_bloque_nodos;
+}t_marta_a_job;
 
+
+char* serializar_estructura_t_marta_a_job(t_marta_a_job estructura_t_marta_a_job, int tamanioTotal){
+			char *serializedPackage = malloc(tamanioTotal);
+
+			int offset = 0;
+			int size_to_send;
+
+            // estructura_t_marta_a_job->ip
+			int tamanioNombre = strlen(estructura_t_marta_a_job->ip) + 1;
+			size_to_send = sizeof(int);
+			memcpy(serializedPackage + offset, &tamanioNombre, size_to_send);
+			offset += size_to_send;
+
+			size_to_send =  strlen(estructura_t_marta_a_job->ip) + 1;
+			memcpy(serializedPackage + offset, estructura_t_marta_a_job->ip, size_to_send);
+			offset += size_to_send;
+
+			// estructura_t_marta_a_job->puerto_nodo
+			int tamanioNombre = strlen(estructura_t_marta_a_job->puerto_nodo) + 1;
+			size_to_send = sizeof(int);
+			memcpy(serializedPackage + offset, &tamanioNombre, size_to_send);
+			offset += size_to_send;
+
+			size_to_send =  strlen(estructura_t_marta_a_job->puerto_nodo) + 1;
+			memcpy(serializedPackage + offset, estructura_t_marta_a_job->puerto_nodo, size_to_send);
+			offset += size_to_send;
+
+			// el map o reduce
+			size_to_send = sizeof(int);
+			memcpy(serializedPackage + offset, &job_marta->numeroBloque, size_to_send);
+			offset += size_to_send;
+
+
+		    // El vector_bloque_nodos
+		    // El estructura_t_marta_a_job->vector_bloque_nodos->nombre_arch
+			int tamanioNombre = strlen(estructura_t_marta_a_job->vector_bloque_nodos->nombre_arch) + 1;
+			size_to_send = sizeof(int);
+			memcpy(serializedPackage + offset, &tamanioNombre, size_to_send);
+			offset += size_to_send;
+
+			size_to_send =  strlen(nombre->archivo) + 1;
+			memcpy(serializedPackage + offset, nombre->archivo, size_to_send);
+			offset += size_to_send;
+
+			// El estructura_t_marta_a_job->vector_bloque_nodos->bloque_arch
+			size_to_send = sizeof(int);
+			memcpy(serializedPackage + offset, &job_marta->numeroBloque, size_to_send);
+			offset += size_to_send;
+
+
+		    //El bitmap
+
+			int tamanioNombre = strlen(estructura_t_marta_a_job->vector_bloque_nodos->bitmap->bitarray) + 1;
+			size_to_send = sizeof(int);
+			memcpy(serializedPackage + offset, &tamanioNombre, size_to_send);
+			offset += size_to_send;
+
+			size_to_send =  strlen(estructura_t_marta_a_job->vector_bloque_nodos->bitmap->bitarray) + 1;
+			memcpy(serializedPackage + offset, nombre->archivo, size_to_send);
+			offset += size_to_send;
+
+
+			//El size_t size del bitmap
+			size_to_send = sizeof(int);
+		    memcpy(serializedPackage + offset, &job_marta->numeroBloque, size_to_send);
+			offset += size_to_send;
+
+			return serializedPackage;
+}
 
 
