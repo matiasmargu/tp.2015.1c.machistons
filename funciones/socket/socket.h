@@ -117,6 +117,20 @@ typedef struct{
 	int tamanioData;
 }estructuraGetBloque;
 
+typedef struct{
+	char* nombre_arch;
+	int bloque_arch;
+	t_bitarray *bitmap;
+}t_cargaBitarray_aux;
+
+typedef struct{
+	char* ip;
+	char* puerto_nodos;
+	int map_o_reduce;
+	t_cargaBitarray_aux vector_bloque_nodos;
+}t_marta_a_job;
+
+
 
 int crearServidor(char* PUERTO);
 int crearCliente (char *IP, char *PUERTO);

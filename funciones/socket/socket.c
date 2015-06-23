@@ -14,6 +14,7 @@
 #include <netdb.h>
 #include <unistd.h>
 #include <netinet/in.h>
+#include "../commons/bitarray.h"
 #include <arpa/inet.h>
 
 // Crea un socket cliente y devuelve el socket servidor al cual se conecto con la IP y el PUERTO.

@@ -53,6 +53,14 @@
 						</toolChain>
 					</folderInfo>
 					<fileInfo id="cdt.managedbuild.config.gnu.so.debug.851819943.1252750125" name="socket.h" rcbsApplicability="disable" resourcePath="socket/socket.h" toolsToInvoke=""/>
+					<fileInfo id="cdt.managedbuild.config.gnu.so.debug.851819943.260761594" name="socket.c" rcbsApplicability="disable" resourcePath="socket/socket.c" toolsToInvoke="cdt.managedbuild.tool.gnu.c.compiler.so.debug.1743442356.179080301">
+						<tool id="cdt.managedbuild.tool.gnu.c.compiler.so.debug.1743442356.179080301" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.so.debug.1743442356">
+							<option id="gnu.c.compiler.option.include.paths.1120858972" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" valueType="includePath">
+								<listOptionValue builtIn="false" value="&quot;${workspace_loc:/funciones}&quot;"/>
+							</option>
+							<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.1875562453" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
+						</tool>
+					</fileInfo>
 				</configuration>
 			</storageModule>
 			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>

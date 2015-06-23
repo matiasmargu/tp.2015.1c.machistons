@@ -70,13 +70,6 @@ typedef struct{
 	char estado; // M = MAP; R = REDUCE
 }t_datos;
 
-typedef struct{
-	char* nombre_arch;
-	int bloque_arch;
-	t_bitarray *bitmap;
-}t_cargaBitarray_aux;
-
-
 
 
 
