@@ -12,28 +12,20 @@
 #define PACKAGESIZE 1024	// Define cual va a ser el size maximo del paquete a enviar
 
 #include "../commons/log.h"
-#include "../commons/bitarray.h"
 
-//int cantidadDeBloques;
+
 
 
 //Marta->Job
  typedef struct{
 	int rutina; //1=mapper o 2=reducer
 	char* ip_nodo;
-	char* nombreNodo;
 	char* puerto;
-	int cantidadDeBloques;
+	char* bloques;
 	char* nombre_archivo_resultado; //donde va a devolverle el resultado
 
-}t_marta_job2;
+}t_marta_job;
 
-//Job->Marta
-typedef struct{
-   char* operacionID;
-   char* archivo_resultado;
-
-   }t_job_marta_resultado;
 
 //JOB -> MARTA
 typedef struct{
@@ -116,11 +108,7 @@ typedef struct{
 	int tamanioData;
 }estructuraGetBloque;
 
-typedef struct{
-	char* nombre_arch;
-	int bloque_arch;
-	t_bitarray bitmap;
-}t_cargaBitarray_aux;
+
 
 typedef struct{
 	char* ip;

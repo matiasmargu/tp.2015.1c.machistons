@@ -42,7 +42,7 @@ typedef struct{
 }t_charpuntero;
 
 typedef struct{
-	t_marta_job2 Marta_Job;
+	t_marta_job Marta_Job;
 	int	socketMarta;
 	int	numeroDeBloque;
 	t_job_nodo Job_Nodo;
@@ -55,8 +55,9 @@ void conectarseAlNodo(t_conectarseAlNodo CAN);
 char* serializarRutina(t_job_nodo* jn, int tamanioTotal);
 char* serializarJob_Nodo_Mapper(t_job_nodo_mapper *job_nodo);
 char* serializar_charpuntero(t_charpuntero *nombre, int tamanioTotal);
-int recive_y_deserialisa(t_marta_job2 *bloque, int socket, uint32_t tamanioTotal);
+//int recive_y_deserialisa(t_marta_job2 *bloque, int socket, uint32_t tamanioTotal);
 char* serializar_job_marta(t_job_marta *job_marta, int tamanioTotal);
+int recive_y_deserialisa_marta_job(t_marta_job *bloque, int socket, uint32_t tamanioTotal);
 void liberarMensaje(char *);
 
 #endif /* FUNCIONES_H_ */

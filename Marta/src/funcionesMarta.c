@@ -8,6 +8,12 @@
 #include "funcionesMarta.h"
 
 
+typedef struct{
+	char* nombre_arch;
+	int bloque_arch;
+	t_bitarray bitmap;
+}t_cargaBitarray_aux;
+
 int recive_y_deserialisa(t_charpuntero* nombre, int socket, uint32_t tamanioTotal){
 	int status;
 	char *buffer = malloc(tamanioTotal);

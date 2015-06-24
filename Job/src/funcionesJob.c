@@ -186,7 +186,7 @@ char* serializar_job_marta(t_job_marta *job_marta, int tamanioTotal){
 
 
 
-	int recive_y_deserialisa(t_marta_job2 *bloque, int socket, uint32_t tamanioTotal){
+	int recive_y_deserialisa_marta_job(t_marta_job *bloque, int socket, uint32_t tamanioTotal){
 		int status;
 		char *buffer = malloc(tamanioTotal);
 		int offset=0;
@@ -207,19 +207,12 @@ char* serializar_job_marta(t_job_marta *job_marta, int tamanioTotal){
 		memcpy(&tamanioDinamico, buffer + offset, sizeof(int));
 		offset += sizeof(int);
 
-		bloque->nombreNodo = malloc(tamanioDinamico);
-		memcpy(bloque->nombreNodo, buffer + offset, tamanioDinamico);
-		offset += tamanioDinamico;
 
-		memcpy(&tamanioDinamico, buffer + offset, sizeof(int));
-		offset += sizeof(int);
 
 		bloque->puerto = malloc(tamanioDinamico);
 		memcpy(bloque->puerto, buffer + offset, tamanioDinamico);
 		offset += tamanioDinamico;
 
-		memcpy(&(bloque->cantidadDeBloques), buffer + offset, sizeof(bloque->rutina));
-		offset += sizeof(bloque->cantidadDeBloques);
 
 		memcpy(&tamanioDinamico, buffer + offset, sizeof(int));
 		offset += sizeof(int);
@@ -228,6 +221,8 @@ char* serializar_job_marta(t_job_marta *job_marta, int tamanioTotal){
 		memcpy(bloque->nombre_archivo_resultado, buffer + offset, tamanioDinamico);
 		offset += tamanioDinamico;
 
+
+		//Falta poner en donde copia el char* de los bloques o vector de bloques
 
 
 		free(buffer);
