@@ -7,7 +7,7 @@
 
 #include "funcionesJob.h"
 
-int handshake = 8;
+
 int resultado;
 
 t_job_nodo_mapper Job_Nodo_Mapper;
@@ -18,7 +18,7 @@ t_conectarseAlNodo CAN;
 void conectarseAlNodo(t_conectarseAlNodo CAN){
 
 	int socketNodo = crearCliente (CAN.Marta_Job.ip_nodo, CAN.Marta_Job.puerto);
-	send(socketNodo,&handshake,sizeof(int),0);
+
 	Job_Nodo.rutinaEjecutable = CAN.Job_Nodo.rutinaEjecutable;
 	Job_Nodo.tipoRutina = CAN.Job_Nodo.tipoRutina;
 

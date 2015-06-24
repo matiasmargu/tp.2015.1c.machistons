@@ -36,7 +36,7 @@ int main(void) {
 	int handshakeMarta;
 	t_charpuntero structCombiner;
 	t_charpuntero nombre;
-    t_marta_job2 Marta_Job;
+    t_marta_job Marta_Job;
     t_job_nodo Job_Nodo;
 
 
@@ -76,7 +76,7 @@ combinerAEnviar =  serializar_charpuntero(&structCombiner, tamanioCombiner);
 send(socketMarta,combinerAEnviar,tamanioCombiner,0);
 
 
-/*
+
 
 
 
@@ -86,42 +86,43 @@ recv(socketMarta, &tamanioTotal, sizeof(int),0);
 
 int status = 1; // Estructura que manjea el status de los recieve.
 
-status = recive_y_deserialisa(&Marta_Job, socketMarta, tamanioTotal);
+status = recive_y_deserialisa_marta_job(&Marta_Job, socketMarta, tamanioTotal);
 
 
 while(status){
 
 
-int listaDeBloques[Marta_Job.cantidadDeBloques];
-
-	for(c= 0; c<= Marta_Job.cantidadDeBloques; c++ ){
-
-	recv(socketMarta,&numero, sizeof(int),0);
-
-	listaDeBloques[c] = numero;
-
-											}
 
 int socketNodo = crearCliente (Marta_Job.ip_nodo, Marta_Job.puerto);
+int handshakeNodo = 8;
+send(socketNodo,&handshakeNodo,sizeof(int),0);
+int numero = 3;
+send(socketNodo,&numero,sizeof(int),0);
+
 
 //ACA LE MANDA LA RUTINA MAPPER AL NODO
-Job_Nodo.tipoRutina = 1;
-Job_Nodo.rutinaEjecutable = mapper;
-tamanioTotal = sizeof(int) + sizeof(int) + strlen(mapper)+1;
-send(socketNodo,&tamanioTotal,sizeof(int),0);
-char* mensajeMapper = serializarRutina(Job_Nodo, tamanioTotal);
-send(socketNodo,mensajeMapper,tamanioTotal,0);
-//liberarMensaje(mensajeMapper);
+int numeroRutina = 1; // LE AVISA QUE MANDA UNA RUTINA MAP
+send(socketNodo,&numeroRutina,sizeof(int),0);
+t_charpuntero rutinaMapper;
+char* rutinaAEnviarNodo;
+rutinaMapper.archivo = mapper;
+int tamanioTotalMapper = sizeof(int)+ strlen(rutinaMapper.archivo)+1;
+send(socketNodo, &tamanioTotal, sizeof(int),0);
+rutinaAEnviarNodo =  serializar_charpuntero(&rutinaMapper, tamanioTotalMapper);
+send(socketNodo,rutinaAEnviarNodo,tamanioTotal,0);
 
 //ACA LE MANDA LA RUTINA REDUCE AL NODO
-Job_Nodo.tipoRutina = 2;
-Job_Nodo.rutinaEjecutable = reduce;
-tamanioTotal = sizeof(int) + sizeof(int) + strlen(reduce)+1;
-send(socketNodo,&tamanioTotal,sizeof(int),0);
-char* mensajeReduce = serializarRutina(Job_Nodo, tamanioTotal);
-send(socketNodo,mensajeReduce,tamanioTotal,0);
-//liberarMensaje(mensajeReduce);
+numeroRutina = 2; //Le avisa que manda reduce
+send(socketNodo,&numeroRutina,sizeof(int),0);
+t_charpuntero rutinaReduce;
+char* rutinaReduceAEnviar;
+rutinaMapper.archivo = reduce;
+int tamanioTotalReduce = sizeof(int)+ strlen(rutinaReduce.archivo)+1;
+send(socketNodo, &tamanioTotalReduce, sizeof(int),0);
+rutinaReduceAEnviar =  serializar_charpuntero(&rutinaReduce, tamanioTotalReduce);
+send(socketNodo,rutinaReduceAEnviar,tamanioTotal,0);
 
+/*
 
 
 	for(i = 0; i<= Marta_Job.cantidadDeBloques; i++){
