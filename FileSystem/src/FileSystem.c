@@ -62,7 +62,6 @@ int main()
 	for (;;){
 	read_fds = master;
 	select(fdmax+1, &read_fds, NULL, NULL, NULL);
-	printf("select activo\n");
 	for(i = 0; i <= fdmax; i++)
 	{
 	    if(FD_ISSET(i, &read_fds))

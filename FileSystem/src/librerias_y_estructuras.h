@@ -24,6 +24,7 @@
 #include <commons/log.h>
 #include <commons/string.h>
 #include <commons/collections/list.h>
+#include <curses.h>  // Instalarlas con: sudo apt-get install libncurses5-dev libncursesw5-dev
 
 // Libreria para mongodb
 #include <bson.h>

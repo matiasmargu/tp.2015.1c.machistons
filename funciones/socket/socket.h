@@ -12,8 +12,7 @@
 #define PACKAGESIZE 1024	// Define cual va a ser el size maximo del paquete a enviar
 
 #include "../commons/log.h"
-
-
+#include "../commons/bitarray.h"
 
 //int cantidadDeBloques;
 
@@ -120,7 +119,7 @@ typedef struct{
 typedef struct{
 	char* nombre_arch;
 	int bloque_arch;
-	t_bitarray *bitmap;
+	t_bitarray bitmap;
 }t_cargaBitarray_aux;
 
 typedef struct{
@@ -129,8 +128,6 @@ typedef struct{
 	int map_o_reduce;
 	t_cargaBitarray_aux vector_bloque_nodos;
 }t_marta_a_job;
-
-
 
 int crearServidor(char* PUERTO);
 int crearCliente (char *IP, char *PUERTO);
