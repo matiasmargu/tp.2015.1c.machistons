@@ -26,7 +26,6 @@ int recive_y_deserialisa(t_charpuntero* nombre, int socket, uint32_t tamanioTota
 	return status;
 }
 
-
 void *atenderMarta(void*arg){
 
 	int socketMarta = (int)arg;
@@ -36,13 +35,14 @@ void *atenderMarta(void*arg){
 
 	int tamanioTotal;
 
-	char *paqueteAEnviar;
-
 	t_archivo archivo;
 	bson_iter_t iter;
 	t_copia info;
 	int nroBloque;
 	int nroCopia;
+
+	bson_t *doc;
+	bson_t *query;
 
 	int offset;
 	int size_to_send;

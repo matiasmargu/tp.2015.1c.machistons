@@ -35,7 +35,7 @@ void liberarMensaje(char **package){
 }
 
 int recive_y_deserialisa_IPyPUERTO_Nodo(estructuraIPyNodo *bloque, int socket, uint32_t tamanioTotal){
-	int status;
+	int status = 1;
 	char *buffer = malloc(tamanioTotal);
 	int offset=0;
 
@@ -60,7 +60,10 @@ int recive_y_deserialisa_IPyPUERTO_Nodo(estructuraIPyNodo *bloque, int socket, u
 
 // Funciones de Nodos
 
-void agregoNodoaMongo (int socket){
+void *agregoNodoaMongo (void*arg){
+	int socket = (int)arg;
+	bson_t *doc;
+	bson_error_t error;
 	recv(socket, &tamanioTotalMensaje, sizeof(int), 0);
 	if(recive_y_deserialisa_IPyPUERTO_Nodo(&ipyPuertoNodo, socket, tamanioTotalMensaje)){
 		doc = bson_new ();
@@ -73,6 +76,7 @@ void agregoNodoaMongo (int socket){
 		}
 		bson_destroy (doc);
 	}
+	return NULL;
 }
 
 void escribirBloqueEnNodo (int socket, estructuraSetBloque estructura){
@@ -101,7 +105,7 @@ char *pedirContenidoBloqueA (int socket, int nroBloque){
 }
 
 int recive_y_deserializa_Contenido_Bloque(t_getBloque *bloque, int socket, uint32_t tamanioTotal){
-	int status;
+	int status = 1;
 	char *buffer = malloc(tamanioTotal);
 	int offset=0;
 
@@ -130,6 +134,11 @@ void agregarCopia (bson_t *documento, char* numeroCopia, int idNodo, int bloque)
 }
 
 void insertarArchivoAMongo (t_archivo archivo){
+	bson_t *doc;
+	bson_t *doc2;
+	bson_t *doc3;
+	bson_error_t error;
+
 	doc = bson_new ();
 	doc2 = bson_new ();
 
