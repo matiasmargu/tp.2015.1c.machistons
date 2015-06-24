@@ -10,7 +10,6 @@
 void *atenderNFS(void*arg){
 
 	char *mensaje;
-	char *direccion;
 	int status;
 	int i;
 	int socket= (int)arg;
@@ -22,7 +21,7 @@ void *atenderNFS(void*arg){
 	estructuraSetBloque set;
 	int n;
 
-	pmap = mapearAMemoriaVirtual();
+	char* pmap = mapearAMemoriaVirtual(dir_temp);
 
 	printf("%i\n",socket);
 
@@ -36,15 +35,13 @@ void *atenderNFS(void*arg){
 			status = 1;
 			recv(socket,&nroDelBloque,sizeof(int),0);
 
-			tamanioBloque=strlen(pmap+(nroDelBloque*20*1024*1024));
-			//El strlen me lo deberia cortar cuando encuentre un \0
-			//El cual ya es puesto de una cuando se escribe en el archivo como string.
+			tamanioBloque=tamanioEspecifico(pmap,nroDelBloque);
 
 			printf("%i\n",tamanioBloque);
 			char* bloque=malloc(tamanioBloque);
 
 			if(status>0){
-				int tamanioBloqueExacto = (nroDelBloque)*tamanioBloque;
+				int tamanioBloqueExacto = tamanioBloque * (nroDelBloque /* * 1024 * 1024* 20*/);
 				memcpy(bloque,pmap + tamanioBloqueExacto,tamanioBloque);
 				status = 0;
 			}
@@ -69,7 +66,7 @@ void *atenderNFS(void*arg){
 				nroDelBloque = set.bloque;//
 				//memcpy(pmap+(1024*1024*20*(nroDelBloque)),set.data,20*1024*1024);
 				memcpy(pmap+(nroDelBloque*10),set.data,tamanio);
-	//			memcpy(pmap+(nroDelBloque*10)+tamanio,'\0',sizeof(char));
+				//memcpy(pmap+(nroDelBloque*10)+tamanio,'\0',sizeof(char));
 				msync(pmap,strlen(pmap),0);
 				printf("se seteo correctamente\n");
 			}
@@ -86,9 +83,9 @@ void *atenderNFS(void*arg){
 		break;
 		case 4:
 		//FORMATEO
-			n = (sizeof(pmap)/sizeof(pmap[0]));
+			n = strlen(pmap);
 			for(i=0;i<n;i++){
-				memcpy(pmap+i,'\0',sizeof(char));
+				memcpy(pmap+i,'/',sizeof(char));
 			}
 			msync(pmap,strlen(pmap),0);
 			printf("se formatero el archivo binario\n");

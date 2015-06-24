@@ -44,9 +44,6 @@ char *nodo_nuevo;
 char* script_mapper;
 char* script_reducer;
 
-char* pmap;
-int fd;
-struct stat mystat;
 char* punteroAlArray;//punteroAlArray
 int nuevoNodo;
 
@@ -58,9 +55,8 @@ void *mapper(void* arg);
 void *reducer(void* arg);
 
 //Funciones de memoria
-char* mapearAMemoriaVirtual();
-char* mapeoDeArchivo(int fdr);
-int conseguirIntegerDelRegistro(FILE* fd,int nroDelBloque);
+char* mapearAMemoriaVirtual(char* archivo_bin);
+int tamanioEspecifico(char* pmap,int nroDelBloque);
 void escribeEnArchivoSegunNroDeBloque(FILE* fd,int nroDelBloque,int tamanio);
 void formateoElRegistro(FILE* fdf);
 
