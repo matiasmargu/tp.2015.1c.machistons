@@ -31,7 +31,7 @@ int recive_y_deserialisa_SET_BLOQUE(estructuraSetBloque *bloque, int socket, uin
 	return status;
 }
 
-int recive_y_deserialisa_SCRIPT(char *script, int socket, uint32_t tamanioTotal){
+int recive_y_deserialisa_CHARp(char *script, int socket, uint32_t tamanioTotal){
 	int status;
 	char *buffer = malloc(tamanioTotal);
 	int offset=0;
@@ -49,6 +49,8 @@ int recive_y_deserialisa_SCRIPT(char *script, int socket, uint32_t tamanioTotal)
 	free(buffer);
 	return status;
 }
+
+
 
 char* serializarIPyPUERTO(char* ip_fs,char* puerto_fs, int tamanioData){
 	int offset = 0;
