@@ -23,6 +23,7 @@ void conectarseAlNodo(t_conectarseAlNodo CAN){
     Job_Nodo.nombreRutina = CAN.Marta_Job.rutina;
     Job_Nodo.resultado = CAN.Marta_Job.nombre_archivo_resultado;
 
+
    switch(CAN.Marta_Job.rutina ){
    case 1:
 	   //Manda la estructura job_nodo al NOdo
@@ -36,11 +37,12 @@ void conectarseAlNodo(t_conectarseAlNodo CAN){
 
 
 	      //MANDA A MARTA EL RESULTADO
-	   	  int tamanioTotal = sizeof(int)+sizeof(int)+sizeof(int)+sizeof(int);
+	   	  int tamanioTotal = sizeof(int)+sizeof(int)+sizeof(int)+sizeof(int)+sizeof(int);
 	      t_job_marta *job_marta;
 	      job_marta->numeroBloque = CAN.numeroDeBloque;
 	      job_marta->rutina = CAN.Marta_Job.rutina;
 	      job_marta->resultado = resultado;
+	      job_marta->idNodo = CAN.idNodo;
 	      send(CAN.socketMarta, &tamanioTotal, sizeof(int),0);
 	      char* archivoResultado =  serializar_job_marta(&job_marta, tamanioTotal);
 	      send(CAN.socketMarta, &archivoResultado, tamanioTotal,0);
@@ -53,7 +55,7 @@ void conectarseAlNodo(t_conectarseAlNodo CAN){
 
 	 //  send(socketNodo,&Job_Nodo_Reduce,sizeof(struct job_nodo),0);
 
-	  	int tamanioTotalReduce = sizeof(int)+sizeof(int)+sizeof(int)+sizeof(int);
+	  	int tamanioTotalReduce = sizeof(int)+sizeof(int)+sizeof(int)+sizeof(int)+sizeof(int);
 	  			t_job_marta *job_marta_reduce;
 	  		      job_marta_reduce->numeroBloque = CAN.numeroDeBloque;
 	  		      job_marta_reduce->rutina = CAN.Marta_Job.rutina;
@@ -128,6 +130,10 @@ char* serializar_job_marta(t_job_marta *job_marta, int tamanioTotal){
 	memcpy(serializedPackage + offset, &job_marta->rutina, size_to_send);
 	offset += size_to_send;
 
+	size_to_send = sizeof(int);
+	memcpy(serializedPackage + offset, &job_marta->idNodo, size_to_send);
+	offset += size_to_send;
+
 	offset += size_to_send;
 	return serializedPackage;
 
@@ -200,6 +206,8 @@ char* serializar_job_marta(t_job_marta *job_marta, int tamanioTotal){
 
 		//Falta poner en donde copia el char* de los bloques o vector de bloques
 
+		memcpy(&(bloque->idNodo), buffer + offset, sizeof(bloque->idNodo));
+		offset += sizeof(bloque->idNodo);
 
 		free(buffer);
 		return status;

@@ -150,6 +150,7 @@ void  *conectarseAlJob(void*arg){
    	combiner = malloc(tamanioCombiner);
    	estadoCombiner = recive_y_deserialisa(&combiner, socket, tamanioCombiner);
    	if(estadoCombiner){
+   		char* presenciaCombiner = combiner;
    		printf("el combiner es %s\n",combiner);
    	}
 
@@ -371,8 +372,8 @@ int recive_y_deserialisa_paquete_nodos(t_charpuntero* ip, t_charpuntero* puerto,
 }
 
 
-
-char* serializar_estructura_t_marta_a_job(t_marta_a_job estructura_t_marta_a_job, int tamanioTotal){
+/*
+char* serializar_estructura_t_marta_a_job(t_marta_job estructura_t_marta_a_job, int tamanioTotal){
 			char *serializedPackage = malloc(tamanioTotal);
 
 			int offset = 0;
@@ -441,4 +442,58 @@ char* serializar_estructura_t_marta_a_job(t_marta_a_job estructura_t_marta_a_job
 			return serializedPackage;
 }
 
+*/
+
+planificarReduce(int socketJob, int cantidadDeNodos, int cantidadDeBloques, char* presenciaCombiner){
+	typedef struct{
+		int presencia;
+		int resultadoMap;
+	}t_matriz;
+
+if(presenciaCombiner == "NO"){
+	t_job_marta Job_Marta;
+	t_matriz matrizMapper[cantidadDeBloques][cantidadDeNodos];
+	int tamanioTotal;
+	int i ,k,j, h,contador, cantidadBloquesPresentes, contadorFinal;
+	int reduceRealizado[cantidadDeNodos];
+	//HAY QUE VER SI EL RECV SE HACE ANTES DEL FOR
+	for(i=0; i< cantidadDeNodos    ;i++){
+		contador = 0;
+		cantidadBloquesPresentes = 0;
+		contadorFinal = 0;
+	recv(socketJob, &tamanioTotal, sizeof(int),0);
+	int estado = 1;
+
+	estado =  recive_y_deserialisa_job(&Job_Marta, socketJob, tamanioTotal);
+	if(estado){
+		if(Job_Marta.rutina == 1){
+		matrizMapper[Job_Marta.numeroBloque][Job_Marta.idNodo].resultadoMap = Job_Marta.resultado;
+		while((matrizMapper[j][Job_Marta]->presencia) == 1){
+		cantidadBloquesPresentes += 1;
+				for(k=0;k< cantidadDeBloques; k++){
+					if(matrizMapper[k][Job_Marta.idNodo].resultadoMap == 1){
+						contador += 1;
+					}
+				}
+
+		j++;
+		}
+		if(contador == cantidadBloquesPresentes){
+			//serializar y mandar el reduce al job
+				//	send(socketJob, );
+		}
+		for(h=0;h<cantidadDeNodos;h++){
+			if(reduceRealizado[h]== 1){
+				contadorFinal += 1;
+			}
+		}
+		if (contadorFinal == cantidadDeNodos){
+			// ESTAN TODOS LOS REDUCE DE CADA NODO HECHO , HAY QUE MANDAR EL REDUCE FINAL
+		}
+
+		}
+	}
+	}
+}
+}
 

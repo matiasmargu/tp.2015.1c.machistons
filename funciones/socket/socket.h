@@ -23,6 +23,7 @@
 	char* puerto;
 	char* bloques;
 	char* nombre_archivo_resultado; //donde va a devolverle el resultado
+	int idNodo;
 
 }t_marta_job;
 
@@ -32,6 +33,7 @@ typedef struct{
 	int numeroBloque;
 	int rutina;
 	int resultado; // 0 = FALLO , 1 = EXITOSO
+	int idNodo;
 }t_job_marta;
 
 
