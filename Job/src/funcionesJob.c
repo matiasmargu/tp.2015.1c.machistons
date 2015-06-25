@@ -10,7 +10,7 @@
 
 int resultado;
 
-t_job_nodo_mapper Job_Nodo_Mapper;
+
 t_job_nodo Job_Nodo;
 
 t_conectarseAlNodo CAN;
@@ -19,23 +19,24 @@ void conectarseAlNodo(t_conectarseAlNodo CAN){
 
 	int socketNodo = crearCliente (CAN.Marta_Job.ip_nodo, CAN.Marta_Job.puerto);
 
-	Job_Nodo.rutinaEjecutable = CAN.Job_Nodo.rutinaEjecutable;
-	Job_Nodo.tipoRutina = CAN.Job_Nodo.tipoRutina;
+	Job_Nodo.NumerobloqueDeDAtos = CAN.numeroDeBloque;
+    Job_Nodo.nombreRutina = CAN.Marta_Job.rutina;
+    Job_Nodo.resultado = CAN.Marta_Job.nombre_archivo_resultado;
 
-//	serializarMapper(Job_Nodo);
-
-	send(socketNodo,&handshake,sizeof(int),0);
    switch(CAN.Marta_Job.rutina ){
    case 1:
-	   Job_Nodo_Mapper.NumerobloqueDeDAtos = CAN.numeroDeBloque;
-	   Job_Nodo_Mapper.nombreRutina = CAN.Marta_Job.rutina;
-	   Job_Nodo_Mapper.resultado = CAN.Marta_Job.nombre_archivo_resultado;
+	   //Manda la estructura job_nodo al NOdo
+	   int tamanioNodo = sizeof(int)+ (strlen(Job_Nodo.resultado)+1) + sizeof(int) + sizeof(int);
+	   send(socketNodo,&tamanioNodo,sizeof(int),0);
+	   char* archivoANodo = serializarJob_Nodo(&Job_Nodo, tamanioNodo);
+	   send(socketNodo,archivoANodo,tamanioNodo,0);
 
-	  // serializarJob_Nodo_Mapper(Job_Nodo_Mapper);
-
-	   send(socketNodo,&Job_Nodo_Mapper,(sizeof(int)+sizeof(int)+strlen(CAN.Marta_Job.nombre_archivo_resultado)+1),0);
+	   //RECIBE UN ENTERO QUE ES EL RESULTADO EXITOSO O FALLIDO
 	   recv(socketNodo, &resultado, sizeof(int),0);
-	      int tamanioTotal = sizeof(int)+sizeof(int)+sizeof(int)+sizeof(int);
+
+
+	      //MANDA A MARTA EL RESULTADO
+	   	  int tamanioTotal = sizeof(int)+sizeof(int)+sizeof(int)+sizeof(int);
 	      t_job_marta *job_marta;
 	      job_marta->numeroBloque = CAN.numeroDeBloque;
 	      job_marta->rutina = CAN.Marta_Job.rutina;
@@ -46,9 +47,7 @@ void conectarseAlNodo(t_conectarseAlNodo CAN){
 
 	   break;
    case 2:
-	    Job_Nodo_Mapper.NumerobloqueDeDAtos = CAN.numeroDeBloque;
-	  	Job_Nodo_Mapper.nombreRutina = CAN.Marta_Job.rutina;
-	  	Job_Nodo_Mapper.resultado = CAN.Marta_Job.nombre_archivo_resultado;
+	   // HAY QUE VER EN QUE CAMBIA SI RECIBE REDUCE
 
 	  	//SERIALIZAR
 
@@ -92,29 +91,6 @@ void conectarseAlNodo(t_conectarseAlNodo CAN){
 
 
 
-	char* serializarRutina(t_job_nodo *jn,int tamanioTotal){
-
-		char *serializedPackage = malloc(tamanioTotal);
-
-		int offset = 0;
-		int size_to_send;
-
-		int tamanioRutina = strlen(jn->rutinaEjecutable) + 1;
-		size_to_send = sizeof(int);
-		memcpy(serializedPackage + offset, &tamanioRutina, size_to_send);
-		offset += size_to_send;
-
-		size_to_send =  strlen(jn->rutinaEjecutable) + 1;
-		memcpy(serializedPackage + offset, jn->rutinaEjecutable, size_to_send);
-		offset += size_to_send;
-
-
-		size_to_send =  sizeof(jn->tipoRutina);
-		memcpy(serializedPackage + offset, &(jn->tipoRutina), size_to_send);
-		offset += size_to_send;
-
-		return serializedPackage;
-	}
 
 
 char* serializar_charpuntero(t_charpuntero *nombre, int tamanioTotal){
@@ -157,8 +133,8 @@ char* serializar_job_marta(t_job_marta *job_marta, int tamanioTotal){
 
 }
 
-	char* serializarJob_Nodo_Mapper(t_job_nodo_mapper *job_nodo){
-		char *serializedPackage = malloc(strlen(job_nodo->resultado)+1+ sizeof(int)+sizeof(int));
+	char* serializarJob_Nodo(t_job_nodo *job_nodo, int tamanioTotal){
+		char *serializedPackage = malloc(tamanioTotal);
 
 		int offset = 0;
 		int size_to_send;

@@ -53,7 +53,7 @@ t_log* logger; // Log Global
 
 void conectarseAlNodo(t_conectarseAlNodo CAN);
 char* serializarRutina(t_job_nodo* jn, int tamanioTotal);
-char* serializarJob_Nodo_Mapper(t_job_nodo_mapper *job_nodo);
+char* serializarJob_Nodo(t_job_nodo *job_nodo, int tamanioTotal);
 char* serializar_charpuntero(t_charpuntero *nombre, int tamanioTotal);
 char* serializar_job_marta(t_job_marta *job_marta, int tamanioTotal);
 int recive_y_deserialisa_marta_job(t_marta_job *bloque, int socket, uint32_t tamanioTotal);

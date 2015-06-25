@@ -73,19 +73,10 @@ typedef struct{
 	int nombreRutina; //1=mapper o 2=reducer
     int NumerobloqueDeDAtos;
 
-}t_job_nodo_mapper;
-
-typedef struct{
-
-}t_job_nodo_reduce;
-
-typedef struct{
- char* rutinaEjecutable; //debe ser FILE REVISAR
- int tipoRutina;
 }t_job_nodo;
 
-typedef struct{
-}t_mar;
+
+
 
 
 // FileSystem a Nodo
@@ -109,14 +100,6 @@ typedef struct{
 }estructuraGetBloque;
 
 
-/*
-typedef struct{
-	char* ip;
-	char* puerto_nodos;
-	int map_o_reduce;
-	t_cargaBitarray_aux vector_bloque_nodos;
-}t_marta_a_job;
-*/
 int crearServidor(char* PUERTO);
 int crearCliente (char *IP, char *PUERTO);
 

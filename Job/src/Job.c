@@ -80,8 +80,6 @@ send(socketMarta,combinerAEnviar,tamanioCombiner,0);
 
 
 
-//DE ACA PARA ABAJO NO BORRAR HAY QUE HACER MODIFICACIONES
-
 recv(socketMarta, &tamanioTotal, sizeof(int),0);
 
 int status = 1; // Estructura que manjea el status de los recieve.
@@ -123,13 +121,13 @@ rutinaReduceAEnviar =  serializar_charpuntero(&rutinaReduce, tamanioTotalReduce)
 send(socketNodo,rutinaReduceAEnviar,tamanioTotal,0);
 
 /*
-
+//DE ACA PARA ABAJO NO BORRAR HAY QUE HACER MODIFICACIONES
 
 	for(i = 0; i<= Marta_Job.cantidadDeBloques; i++){
 
             int numeroDeBloque = listaDeBloques[i] ;
-
-            pthread_t (hiloNodo_i);
+			asprintf(&resultado , "%s%i", "hiloNodo",i);
+            pthread_t (resultado);
 
             t_conectarseAlNodo CAN;
             CAN.Marta_Job = Marta_Job;
@@ -143,7 +141,7 @@ send(socketNodo,rutinaReduceAEnviar,tamanioTotal,0);
             }else{Job_Nodo.rutinaEjecutable = reduce;
         	Job_Nodo.tipoRutina = 2;}
 
-			asprintf(&resultado , "%s%i", "hiloNodo",i);
+
 			pthread_create(&resultado, NULL, (void*) conectarseAlNodo, &CAN);
 			if(Marta_Job.rutina == 1){
 			log_info(logger,"Se creo un hilo mapper  "); //AGREGAR PARAMETROS RECIBIDOS
@@ -176,6 +174,7 @@ send(socketNodo,rutinaReduceAEnviar,tamanioTotal,0);
 	free(combiner);
 
 	return EXIT_SUCCESS;
+}
 }
 
 
