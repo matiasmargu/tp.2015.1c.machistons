@@ -292,6 +292,26 @@ t_cargaBitarray_aux *armarVectorDeBitarray(int cantidadDeNodos, int nodos_activo
 
 }
 
+void algoritmoMap(t_cargaBitarray_aux *bitmapAuxiliar,int bloque,int nodo,int *vector_contador, int cant){
+	int k;
+	int bloque_aux, cant_copias;
+	cant_copias = bitarray_get_max_bit(bitmapAuxiliar->bitmap);
+	bloque_aux = bitmapAuxiliar->bloque_arch;
+	for(k=0;k<=cant;k++){
+
+		int v[cant];
+
+
+
+
+
+		/*if()
+		cant_copias = bitarray_get_max_bit(bitmapAuxiliar->bitmap);
+		bloque_aux = bitmapAuxiliar->bloque_arch;
+	*/
+
+	}
+}
 
 
 void planificarMap(){
@@ -305,18 +325,21 @@ void planificarMap(){
 		int nodos_activos[cantidad_nodos_activos]; //LOS ID DE LOS NODOS ACTIVOS NECESITO QUE ME LOS MANDES ASI GASTON: [1,14,22,31] ORDENADOS DE MENOR A MAYOR
 
 		int tamanio;
-		t_cargaBitarray_aux *bitmap = armarVectorDeBitarray(cantidad_nodos_activos, nodos_activos, tamanio);
+		t_cargaBitarray_aux bitmap[] = armarVectorDeBitarray(cantidad_nodos_activos, nodos_activos, tamanio);
 		int division = tamanio/cantidad_nodos_activos;
 		int resto_division = tamanio%cantidad_nodos_activos;
 		if(resto_division == 0) division--;
-
+		int vector_contador[cantidad_nodos_activos];
 		int j;
 		for(j=0;j <= division;j++){
 			int k = 0;
 			int bloques_alineados = division;
 			if((resto_division != 0) && (j == division)) bloques_alineados = resto_division-1;
 			while(k <= bloques_alineados){
-				//ACA APLICO EL ALGORITMO DE PLANIFICACION PARA CADA BLOQUE
+				t_cargaBitarray_aux bitmapAuxiliar[cantidad_nodos_activos];
+				bitmapAuxiliar = cargarBitmapAuxiliar(bitmap,bloques_alineados);
+				int bloque, nodo;
+				algoritmoMap(bitmapAuxiliar, bloque, nodo, &vector_contador);
 				k++;
 			}
 		}
