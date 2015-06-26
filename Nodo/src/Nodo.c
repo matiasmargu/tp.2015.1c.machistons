@@ -13,7 +13,7 @@
 
 int main(void) {
 
-	char* rutaArchivoConfiguracion = "/home/utnso/git/tp-2015-1c-machistons/Configuracion/nodo.conf";
+	rutaArchivoConfiguracion = "/home/utnso/git/tp-2015-1c-machistons/Configuracion/nodo.conf";
 
 	logger = log_create("LOG_Nodo", "log_nodo" ,false, LOG_LEVEL_INFO);
 	int entero;

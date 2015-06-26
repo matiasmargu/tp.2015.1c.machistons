@@ -14,19 +14,18 @@ void *atenderNFS(void*arg){
 	int i;
 	int socket= (int)arg;
 	int entero; // handshake para saber quien es: FS(23)
-	int ok;
 	int nroDelBloque;
 	int tamanioBloque;
 	int tamanio;
 	estructuraSetBloque set;
 	int n;
+	int ok;
 
 	char* pmap = mapearAMemoriaVirtual(archivo_bin);
 
 	printf("%i\n",socket);
 
 	while(1){
-
 	//printf("Esto deberia imprimirse una sola vez\n");
 	if(recv(socket, &entero, sizeof(int),0) > 0){
 	switch(entero){
@@ -39,7 +38,7 @@ void *atenderNFS(void*arg){
 			printf("%i\n",tamanioBloque);
 			char* bloque=malloc(tamanioBloque);
 
-			int tamanioBloqueExacto = tamanioBloque * (nroDelBloque /* * 1024 * 1024* 20*/);
+			int tamanioBloqueExacto = nroDelBloque /* * 1024 * 1024* 20*/;
 			memcpy(bloque,pmap + tamanioBloqueExacto,tamanioBloque);
 
 			int tamanioData = sizeof(int) + strlen(bloque) + 1;
