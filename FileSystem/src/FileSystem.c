@@ -24,7 +24,10 @@ int main()
 	fd_set read_fds;
 
 	pthread_t hiloConsola;
-	pthread_t hiloMarta;
+	pthread_t* hiloMarta;
+	pthread_t* hiloNodo;
+	int contHM = 1; // Contador para hilos de marta, varios por si se cae y se vuelve a conectar
+	int contHN = 1; // Contador para hilos de Nodo, varios porque se van a conectar muchos.
 
 	struct sockaddr_in serveraddr;
 	struct sockaddr_in clientaddr;
@@ -62,7 +65,6 @@ int main()
 	for (;;){
 	read_fds = master;
 	select(fdmax+1, &read_fds, NULL, NULL, NULL);
-	printf("select activo\n");
 	for(i = 0; i <= fdmax; i++)
 	{
 	    if(FD_ISSET(i, &read_fds))
@@ -87,6 +89,7 @@ int main()
 	    		if((recv(i, &entero, sizeof(int),0 )) <= 0)
 	    		{
 	    			if (i == martafd){
+	    				log_info(logger,"Se ha perdido la coneccion con Marta");
 	    				//se callo marta
 	    			}
 	    			else{
@@ -99,12 +102,15 @@ int main()
 	    			switch(entero){
 	    				case 25: // Este es Marta
 	    					martafd = i;
-	    					pthread_create(&hiloMarta, NULL, atenderMarta, (void *)martafd);
+	    					pthread_create(hiloMarta+contHM, NULL, atenderMarta, (void *)martafd);
 	    					log_info(logger,"Hilo Marta creado satisfactoriamente");
+	    					contHM++;
 	    					break;
 	    			case 2: // Este es Nodo
 	    					socketNodoGlobal = i;
-	    					agregoNodoaMongo(i);
+	    					pthread_create(hiloNodo+contHN, NULL, agregoNodoaMongo, (void *)i);
+	    					log_info(logger,"Hilo Nodo creado satisfactoriamente");
+	    					contHN++;
 	    					break;
 	    				}
 	    			}
@@ -117,9 +123,6 @@ int main()
 	mongoc_collection_destroy (nodos);
 	mongoc_collection_destroy (archivos);
 	mongoc_client_destroy (client);
-	bson_destroy (doc);
-	bson_destroy (query);
-    bson_destroy (update);
 
 	config_destroy(archivoConfiguracion);
 	log_destroy(logger);

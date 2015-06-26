@@ -85,13 +85,6 @@ mongoc_collection_t *nodos;
 
 mongoc_cursor_t *cursor;
 
-bson_t *doc;
-bson_t *doc2;
-bson_t *doc3;
-bson_t *update;
-bson_t *query;
-bson_error_t error;
-
 // Funcion para liberar mensaje serializado
 
 void liberarMensaje(char **package);
@@ -106,7 +99,7 @@ int recive_y_deserialisa_IPyPUERTO_Nodo(estructuraIPyNodo *bloque, int socket, u
 
 // Funciones para Agregar Datos a Mongo
 
-void agregoNodoaMongo (int socket);
+void *agregoNodoaMongo (void*arg);
 void insertarArchivoAMongo (t_archivo archivo);
 void agregarCopia (bson_t *documento, char* numeroCopia, int idNodo, int bloque);
 

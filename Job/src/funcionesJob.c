@@ -7,10 +7,10 @@
 
 #include "funcionesJob.h"
 
-int handshake = 8;
+
 int resultado;
 
-t_job_nodo_mapper Job_Nodo_Mapper;
+
 t_job_nodo Job_Nodo;
 
 t_conectarseAlNodo CAN;
@@ -18,36 +18,59 @@ t_conectarseAlNodo CAN;
 void conectarseAlNodo(t_conectarseAlNodo CAN){
 
 	int socketNodo = crearCliente (CAN.Marta_Job.ip_nodo, CAN.Marta_Job.puerto);
-	send(socketNodo,&handshake,sizeof(int),0);
-	Job_Nodo.rutinaEjecutable = CAN.Job_Nodo.rutinaEjecutable;
-	Job_Nodo.tipoRutina = CAN.Job_Nodo.tipoRutina;
 
-//	serializarMapper(Job_Nodo);
+	Job_Nodo.NumerobloqueDeDAtos = CAN.numeroDeBloque;
+    Job_Nodo.nombreRutina = CAN.Marta_Job.rutina;
+    Job_Nodo.resultado = CAN.Marta_Job.nombre_archivo_resultado;
 
-	send(socketNodo,&handshake,sizeof(int),0);
+
    switch(CAN.Marta_Job.rutina ){
    case 1:
-	   Job_Nodo_Mapper.NumerobloqueDeDAtos = CAN.numeroDeBloque;
-	   Job_Nodo_Mapper.nombreRutina = CAN.Marta_Job.rutina;
-	   Job_Nodo_Mapper.resultado = CAN.Marta_Job.nombre_archivo_resultado;
+	   //Manda la estructura job_nodo al NOdo
+	   int tamanioNodo = sizeof(int)+ (strlen(Job_Nodo.resultado)+1) + sizeof(int) + sizeof(int);
+	   send(socketNodo,&tamanioNodo,sizeof(int),0);
+	   char* archivoANodo = serializarJob_Nodo(&Job_Nodo, tamanioNodo);
+	   send(socketNodo,archivoANodo,tamanioNodo,0);
 
-	  // serializarJob_Nodo_Mapper(Job_Nodo_Mapper);
+	   //RECIBE UN ENTERO QUE ES EL RESULTADO EXITOSO O FALLIDO
+	   recv(socketNodo, &resultado, sizeof(int),0);
 
-	   send(socketNodo,&Job_Nodo_Mapper,(sizeof(int)+sizeof(int)+strlen(CAN.Marta_Job.nombre_archivo_resultado)+1),0);
+
+	      //MANDA A MARTA EL RESULTADO
+	   	  int tamanioTotal = sizeof(int)+sizeof(int)+sizeof(int)+sizeof(int)+sizeof(int);
+	      t_job_marta *job_marta;
+	      job_marta->numeroBloque = CAN.numeroDeBloque;
+	      job_marta->rutina = CAN.Marta_Job.rutina;
+	      job_marta->resultado = resultado;
+	      job_marta->idNodo = CAN.idNodo;
+	      send(CAN.socketMarta, &tamanioTotal, sizeof(int),0);
+	      char* archivoResultado =  serializar_job_marta(&job_marta, tamanioTotal);
+	      send(CAN.socketMarta, &archivoResultado, tamanioTotal,0);
+
 	   break;
    case 2:
-	    Job_Nodo_Mapper.NumerobloqueDeDAtos = CAN.numeroDeBloque;
-	  	Job_Nodo_Mapper.nombreRutina = CAN.Marta_Job.rutina;
-	  	Job_Nodo_Mapper.resultado = CAN.Marta_Job.nombre_archivo_resultado;;
+	   // HAY QUE VER EN QUE CAMBIA SI RECIBE REDUCE
 
 	  	//SERIALIZAR
 
 	 //  send(socketNodo,&Job_Nodo_Reduce,sizeof(struct job_nodo),0);
+
+	  	int tamanioTotalReduce = sizeof(int)+sizeof(int)+sizeof(int)+sizeof(int)+sizeof(int);
+	  			t_job_marta *job_marta_reduce;
+	  		      job_marta_reduce->numeroBloque = CAN.numeroDeBloque;
+	  		      job_marta_reduce->rutina = CAN.Marta_Job.rutina;
+	  		      job_marta_reduce->resultado = resultado;
+	  		      send(CAN.socketMarta, &tamanioTotal, sizeof(int),0);
+	  		      char* archivoResultadoReduce =  serializar_job_marta(&job_marta_reduce, tamanioTotalReduce);
+	  		      send(CAN.socketMarta, &archivoResultadoReduce, tamanioTotal,0);
+
+
+
 			   break;
    }
 
-   recv(socketNodo, &resultado, sizeof(int),0);
-   send(CAN.socketMarta, &resultado, sizeof(int),0);
+
+
    close(socketNodo);
    switch(CAN.Marta_Job.rutina ){
       case 1:
@@ -70,29 +93,6 @@ void conectarseAlNodo(t_conectarseAlNodo CAN){
 
 
 
-	char* serializarRutina(t_job_nodo *jn,int tamanioTotal){
-
-		char *serializedPackage = malloc(tamanioTotal);
-
-		int offset = 0;
-		int size_to_send;
-
-		int tamanioRutina = strlen(jn->rutinaEjecutable) + 1;
-		size_to_send = sizeof(int);
-		memcpy(serializedPackage + offset, &tamanioRutina, size_to_send);
-		offset += size_to_send;
-
-		size_to_send =  strlen(jn->rutinaEjecutable) + 1;
-		memcpy(serializedPackage + offset, jn->rutinaEjecutable, size_to_send);
-		offset += size_to_send;
-
-
-		size_to_send =  sizeof(jn->tipoRutina);
-		memcpy(serializedPackage + offset, &(jn->tipoRutina), size_to_send);
-		offset += size_to_send;
-
-		return serializedPackage;
-	}
 
 
 char* serializar_charpuntero(t_charpuntero *nombre, int tamanioTotal){
@@ -113,10 +113,34 @@ char* serializar_charpuntero(t_charpuntero *nombre, int tamanioTotal){
 			return serializedPackage;
 		}
 
+char* serializar_job_marta(t_job_marta *job_marta, int tamanioTotal){
+	char *serializedPackage = malloc(tamanioTotal);
+	int offset = 0;
+	int size_to_send;
 
+	size_to_send = sizeof(int);
+	memcpy(serializedPackage + offset, &job_marta->numeroBloque, size_to_send);
+	offset += size_to_send;
 
-	char* serializarJob_Nodo_Mapper(t_job_nodo_mapper *job_nodo){
-		char *serializedPackage = malloc(strlen(job_nodo->resultado)+1+ sizeof(int)+sizeof(int));
+	size_to_send = sizeof(int);
+	memcpy(serializedPackage + offset, &job_marta->resultado, size_to_send);
+	offset += size_to_send;
+
+	size_to_send = sizeof(int);
+	memcpy(serializedPackage + offset, &job_marta->rutina, size_to_send);
+	offset += size_to_send;
+
+	size_to_send = sizeof(int);
+	memcpy(serializedPackage + offset, &job_marta->idNodo, size_to_send);
+	offset += size_to_send;
+
+	offset += size_to_send;
+	return serializedPackage;
+
+}
+
+	char* serializarJob_Nodo(t_job_nodo *job_nodo, int tamanioTotal){
+		char *serializedPackage = malloc(tamanioTotal);
 
 		int offset = 0;
 		int size_to_send;
@@ -144,7 +168,7 @@ char* serializar_charpuntero(t_charpuntero *nombre, int tamanioTotal){
 
 
 
-	int recive_y_deserialisa(t_marta_job2 *bloque, int socket, uint32_t tamanioTotal){
+	int recive_y_deserialisa_marta_job(t_marta_job *bloque, int socket, uint32_t tamanioTotal){
 		int status;
 		char *buffer = malloc(tamanioTotal);
 		int offset=0;
@@ -165,19 +189,12 @@ char* serializar_charpuntero(t_charpuntero *nombre, int tamanioTotal){
 		memcpy(&tamanioDinamico, buffer + offset, sizeof(int));
 		offset += sizeof(int);
 
-		bloque->nombreNodo = malloc(tamanioDinamico);
-		memcpy(bloque->nombreNodo, buffer + offset, tamanioDinamico);
-		offset += tamanioDinamico;
 
-		memcpy(&tamanioDinamico, buffer + offset, sizeof(int));
-		offset += sizeof(int);
 
 		bloque->puerto = malloc(tamanioDinamico);
 		memcpy(bloque->puerto, buffer + offset, tamanioDinamico);
 		offset += tamanioDinamico;
 
-		memcpy(&(bloque->cantidadDeBloques), buffer + offset, sizeof(bloque->rutina));
-		offset += sizeof(bloque->cantidadDeBloques);
 
 		memcpy(&tamanioDinamico, buffer + offset, sizeof(int));
 		offset += sizeof(int);
@@ -187,6 +204,10 @@ char* serializar_charpuntero(t_charpuntero *nombre, int tamanioTotal){
 		offset += tamanioDinamico;
 
 
+		//Falta poner en donde copia el char* de los bloques o vector de bloques
+
+		memcpy(&(bloque->idNodo), buffer + offset, sizeof(bloque->idNodo));
+		offset += sizeof(bloque->idNodo);
 
 		free(buffer);
 		return status;

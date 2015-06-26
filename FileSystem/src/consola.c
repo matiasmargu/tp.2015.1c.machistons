@@ -19,45 +19,54 @@ void *atenderConsola(void*arg) {
 	char **comandoSeparado;
 	char *separator=" ";
 
-	t_archivo archivo;
-	t_copia info;
-	bson_iter_t iter;
+	long long tamanioBloque = 20971520; // Tamanio 20 MB
 
-	int tamanioTotal;
+	FILE *archivoNuevoALeer;
+	char str[tamanioBloque];
 
 	imprimirMenu();
 	while(1){
 			fgets(bufferComando,MAXSIZE_COMANDO, stdin);
 			comandoSeparado=string_split(bufferComando, separator);
 			switch(atoi(comandoSeparado[0])){
-				case Imprimir_Menu:
+				case Imprimir_Menu: // 0
 					imprimirMenu();
 					break;
-				case Formatear:
+				case Formatear: // 1
 					i = socketNodoGlobal;
 					entero = 4;
 					send(i,&entero,sizeof(int),0);
 					formatear();
 					break;
-				case Eliminar_Arch:
+				case Eliminar_Arch: // 2
 					break;
-				case Renombrar_Arch:
+				case Renombrar_Arch: // 3
 					break;
-				case Mover_Arch:
+				case Mover_Arch: // 4
 					break;
-				case Crear_Directorio:
+				case Crear_Directorio: // 5
 					break;
-				case Eliminar_Directorio:
+				case Eliminar_Directorio: // 6
 					break;
-				case Renombrar_Directorio:
+				case Renombrar_Directorio: // 7
+					   archivoNuevoALeer = fopen("/home/utnso/Escritorio/201303hourly.txt" , "r");
+					   if(archivoNuevoALeer == NULL)
+					   {
+					      printf("Mal direccion del archivo\n");
+					   }
+					   if( fgets(str, tamanioBloque, archivoNuevoALeer)!=NULL )
+					   {
+					      printf("%s\n",str);
+					   }
+					   fclose(archivoNuevoALeer);
 					break;
-				case Mover_Directorio:
+				case Mover_Directorio: // 8
 					break;
-				case Ver_Bloque_Arch:
+				case Ver_Bloque_Arch: // 9
 					break;
-				case Borrar_Bloque_Arch:
+				case Borrar_Bloque_Arch: // 10
 					break;
-				case Copiar_Bloque_Arch:
+				case Copiar_Bloque_Arch: // 11
 					break;
 				case Agregar_Nodo: // 12
 					break;
@@ -73,7 +82,7 @@ void *atenderConsola(void*arg) {
 					escribirBloque.data = mensaje;
 					escribirBloqueEnNodo(i,escribirBloque);
 					break;
-				case Copiar_Arch_Al_FSLocal:
+				case Copiar_Arch_Al_FSLocal: // 15
 					archivoNuevo.nombre = "CarlosJSFNASFN.txt";
 					archivoNuevo.tamanio = 123;
 					archivoNuevo.directorioPadre = 1;
@@ -82,10 +91,9 @@ void *atenderConsola(void*arg) {
 					archivoNuevo.path = "/home/utnso/Escritorio/Carlos.txt";
 					insertarArchivoAMongo(archivoNuevo);
 					break;
-				case Solicitar_MD5:
+				case Solicitar_MD5: // 16
 					break;
-				case Salir:
-					return NULL;
+				case Salir: // 17
 					break;
 				default:
 					{
@@ -126,14 +134,16 @@ void imprimirMenu(void){
 }
 
 void formatear(){
+	bson_t *doc;
+	bson_error_t error;
 	doc = bson_new ();
-	if (!mongoc_collection_delete (nodos, MONGOC_DELETE_NONE, doc, NULL, &error)) {
+	if (!mongoc_collection_remove (nodos, MONGOC_DELETE_NONE, doc, NULL, &error)) {
 	        printf ("Delete failed: %s\n", error.message);
 	}
-	if (!mongoc_collection_delete (archivos, MONGOC_DELETE_NONE, doc, NULL, &error)) {
+	if (!mongoc_collection_remove (archivos, MONGOC_DELETE_NONE, doc, NULL, &error)) {
 		        printf ("Delete failed: %s\n", error.message);
 	}
-	if (!mongoc_collection_delete (directorios, MONGOC_DELETE_NONE, doc, NULL, &error)) {
+	if (!mongoc_collection_remove (directorios, MONGOC_DELETE_NONE, doc, NULL, &error)) {
 			        printf ("Delete failed: %s\n", error.message);
 	}
 	bson_destroy (doc);

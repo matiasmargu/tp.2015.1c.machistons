@@ -15,27 +15,26 @@
 
 
 
-//int cantidadDeBloques;
-
 
 //Marta->Job
  typedef struct{
 	int rutina; //1=mapper o 2=reducer
 	char* ip_nodo;
-	char* nombreNodo;
 	char* puerto;
-	int cantidadDeBloques;
+	char* bloques;
 	char* nombre_archivo_resultado; //donde va a devolverle el resultado
+	int idNodo;
 
-}t_marta_job2;
+}t_marta_job;
 
-//Job->Marta
+
+//JOB -> MARTA
 typedef struct{
-   char* operacionID;
-   char* archivo_resultado;
-
-   }t_job_marta_resultado;
-
+	int numeroBloque;
+	int rutina;
+	int resultado; // 0 = FALLO , 1 = EXITOSO
+	int idNodo;
+}t_job_marta;
 
 
 //Marta->FS
@@ -76,19 +75,10 @@ typedef struct{
 	int nombreRutina; //1=mapper o 2=reducer
     int NumerobloqueDeDAtos;
 
-}t_job_nodo_mapper;
-
-typedef struct{
-
-}t_job_nodo_reduce;
-
-typedef struct{
- char* rutinaEjecutable; //debe ser FILE REVISAR
- int tipoRutina;
 }t_job_nodo;
 
-typedef struct{
-}t_mar;
+
+
 
 
 // FileSystem a Nodo
