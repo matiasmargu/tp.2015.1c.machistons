@@ -486,43 +486,48 @@ if(presenciaCombiner == "NO"){ // el requisito aca es que todos los nodos tengan
 	//HAY QUE VER SI EL RECV SE HACE ANTES DEL FOR
 	// Es jodido el tema, no se xq pones hasta la cant de nodos... el recv que hagamos puede ser de cualquier nodo, no necesariamente va a haber
 	//una cierta cantidad de recv, ni necesariamente van a venir ordenados
-	for(i=0; i< cantidadDeNodos    ;i++){
-		contador = 0;
-		cantidadBloquesPresentes = 0;
-		contadorFinal = 0;
-	recv(socketJob, &tamanioTotal, sizeof(int),0);
-	int estado = 1;
 
-	estado =  recive_y_deserialisa_job(&Job_Marta, socketJob, tamanioTotal);
-	if(estado){
-		if(Job_Marta.rutina == 1){
-		matrizMapper[Job_Marta.numeroBloque][Job_Marta.idNodo].resultadoMap = Job_Marta.resultado;
+	cont = 0;
+	while(cont < cantidadDeNodos - 1){ // este ciclo es para cuando todavia queden recv para hacer, cuando no queden mas, el cont del ciclo for de
+		                               // abajo va a quedar igual a cantidadDeNoddos - 1
+		recv(socketJob, &tamanioTotal, sizeof(int),0);
 
-		while((matrizMapper[j][Job_Marta]->presencia) == 1){
-		cantidadBloquesPresentes += 1;
-				for(k=0;k< cantidadDeBloques; k++){
-					if(matrizMapper[k][Job_Marta.idNodo].resultadoMap == 1){
+	  for(i=0; i< cantidadDeNodos    ;i++){
+		  contador = 0;
+		  cantidadBloquesPresentes = 0;
+		  contadorFinal = 0;
+	  int estado = 1;
+
+	   estado =  recive_y_deserialisa_job(&Job_Marta, socketJob, tamanioTotal);
+	     if(estado){
+		   if(Job_Marta.rutina == 1){
+		      matrizMapper[Job_Marta.numeroBloque][Job_Marta.idNodo].resultadoMap = Job_Marta.resultado;
+
+		      while((matrizMapper[j][Job_Marta]->presencia) == 1){
+		             cantidadBloquesPresentes += 1;
+			     	for(k=0;k< cantidadDeBloques; k++){
+					    if(matrizMapper[k][Job_Marta.idNodo].resultadoMap == 1){
 						contador += 1;
-					}
-				}
+					     }
+				     }
 
-		j++;
-		}
-		if(contador == cantidadBloquesPresentes){
-			//serializar y mandar el reduce al job
-			// hay que ver que estructura va a tener
-				//	send(socketJob, );
-			aux = 0;
-			for(cont=0;cont < cantidadDeNodos && aux ==0;cont++){
-				if(reduceRealizado[cont]== 0){
-					reduceRealizado[cont] = 1;
-					aux = 1; // aca para que no siga buscando al pedo
-				}
-			}
-			if(cont == cantidadDeNodos){ // si el cont es = a la cantidadDeNodos entonces ya se lleno la ultima posicion
-				// aca hay que mandar el reduce general
-			}
-		}
+		      j++;
+		      }
+		      if(contador == cantidadBloquesPresentes){
+		         	//serializar y mandar el reduce al job
+	         		// hay que ver que estructura va a tener
+	 	     		//	send(socketJob, );
+		        	aux = 0;
+			     for(cont=0;cont < cantidadDeNodos && aux ==0;cont++){
+			     	if(reduceRealizado[cont]== 0){
+					   reduceRealizado[cont] = 1;
+					   aux = 1; // aca para que no siga buscando al pedo
+				    }
+		       	}
+			        if(cont == cantidadDeNodos - 1){ // si el cont es = a la cantidadDeNodos entonces ya se lleno la ultima posicion
+				       // aca hay que mandar el reduce general
+			        }
+               }
 
 		// Todo esto (que esta abajo) nos lo evitamos con ver si cont == cantidadDeNodos
 		/*for(h=0;h<cantidadDeNodos;h++){
@@ -535,8 +540,9 @@ if(presenciaCombiner == "NO"){ // el requisito aca es que todos los nodos tengan
 		}
         */
 		}
+	  }
 	}
-	}
-}
+   }
+  }
 }
 
