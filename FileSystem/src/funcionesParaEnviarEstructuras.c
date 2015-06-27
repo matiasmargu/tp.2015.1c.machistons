@@ -67,6 +67,10 @@ void *agregoNodoaMongo (void*arg){
 	recv(socket, &tamanioTotalMensaje, sizeof(int), 0);
 	if(recive_y_deserialisa_IPyPUERTO_Nodo(&ipyPuertoNodo, socket, tamanioTotalMensaje)){
 		doc = bson_new ();
+		pthread_mutex_lock(&mutex);
+		BSON_APPEND_INT32(doc, "ID Nodo", idNodoGlobal);
+		idNodoGlobal++;
+		pthread_mutex_unlock(&mutex);
 		BSON_APPEND_INT32(doc, "Socket", socket);
 		BSON_APPEND_UTF8 (doc, "IP", ipyPuertoNodo.IP);
 		BSON_APPEND_UTF8(doc, "PUERTO" , ipyPuertoNodo.PUERTO);
@@ -79,8 +83,12 @@ void *agregoNodoaMongo (void*arg){
 	return NULL;
 }
 
-void escribirBloqueEnNodo (int socket, estructuraSetBloque estructura){
+void aplicarNodoGlobal(){
+	idNodoGlobal = 0;
+}
 
+void escribirBloqueEnNodo (int socket, estructuraSetBloque estructura){
+	int entero; //Para el handshake
 	entero = 2;
 	send(socket, &entero, sizeof(int), 0);
 	estructura.tamanioData = sizeof(int) + sizeof(int) + strlen(estructura.data) + 1;
@@ -92,6 +100,7 @@ void escribirBloqueEnNodo (int socket, estructuraSetBloque estructura){
 }
 
 char *pedirContenidoBloqueA (int socket, int nroBloque){
+	int entero; //Para el handshake
 	entero = 1;
 	send(socket, &entero, sizeof(int), 0);
 	entero = nroBloque;
