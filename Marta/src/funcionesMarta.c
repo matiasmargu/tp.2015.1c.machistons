@@ -492,8 +492,8 @@ if(presenciaCombiner == "NO"){ // el requisito aca es que todos los nodos tengan
 
 	//falta inicializar la matriz.presencia
 
-	t_marta_job_archivos_reduce marta_Job;
-	int tamanioTotal;
+	t_marta_job_archivo_reduce Marta_Job;
+	int tamanioTotal,respuestaReduce/* si es uno se hizo bien y si es 0 mal*/;
 	int i ,k,j,aux, h,cont,contador, cantidadBloquesPresentes, contadorFinal;
 	int reduceRealizado[cantidadDeNodos];
 	//HAY QUE VER SI EL RECV SE HACE ANTES DEL FOR
@@ -529,10 +529,10 @@ if(presenciaCombiner == "NO"){ // el requisito aca es que todos los nodos tengan
 		         }
 	    	 }
 		      if(contador == cantidadBloquesPresentes){
-		    	  marta_Job.rutina = 2;
-		    	  marta_Job.idNodo = Job_Marta.idNodo;
-		    	  marta_Job.ip_nodo = 3 ;// ACA HAY Q BUSAR COMO PONER LA IP
-		    	  marta_Job.puerto = 3 ;// ACA HAY Q BUSCAR EL PUERTO
+		    	  Marta_Job.rutina=2;
+		    	  Marta_Job.idNodo = Job_Marta.idNodo;
+		    	  Marta_Job.ip_nodo = 3 ;// ACA HAY Q BUSAR COMO PONER LA IP
+		    	  Marta_Job.puerto = 3 ;// ACA HAY Q BUSCAR EL PUERTO
 
 		    	  //serializar y mandar el reduce al job
 
@@ -540,18 +540,7 @@ if(presenciaCombiner == "NO"){ // el requisito aca es que todos los nodos tengan
 	 	     		//	send(socketJob, ) para el reduce
 
 
-		    	  aux = 0;
-			     for(cont=0;cont < cantidadDeNodos && aux ==0;cont++){
-			     	if(reduceRealizado[cont]== 0){
-					   reduceRealizado[cont] = 1;
-					   aux = 1; // aca para que no siga buscando al pedo
-				    }
-		       	}
-			        if(cont == cantidadDeNodos - 1){ // si el cont es = a la cantidadDeNodos entonces ya se lleno la ultima posicion
-				       // aca hay que mandar el reduce general hay que tener una lista de los archivos donde se hizo el reduce y hay que elegir el nodo
-			        	//donde se va a hacer el reduce gral
-			        }
-               }
+
 
 		// Todo esto (que esta abajo) nos lo evitamos con ver si cont == cantidadDeNodos
 		/*for(h=0;h<cantidadDeNodos;h++){
@@ -572,7 +561,29 @@ if(presenciaCombiner == "NO"){ // el requisito aca es que todos los nodos tengan
 
    }
 }
+}
 
+// aca hay que verificar que nos llega un hilo reduce
 rePlanificar_y_planificar_reduce_general(int socketJob, int cantidadDeNodos, int cantidadDeBloques, char* presenciaCombiner){
 
+	int respuestaReduce/* si es uno se hizo bien y si es 0 mal*/;
+	int cont,reduceRealizado[cantidadDeNodos],aux;
+
+	recv(socketJob, &respuestaReduce, sizeof(int),0);
+	if(respuestaReduce == 1){
+	   aux = 0;
+	   for(cont=0;cont < cantidadDeNodos && aux ==0;cont++){
+		   if(reduceRealizado[cont]== 0){
+		      reduceRealizado[cont] = 1;
+			  aux = 1; // aca para que salga cuando lo encuentre, asi queda cont == cantidadDeNodos cuando sea el ultimo nada mas
+		   }
+	   }
+		   if(cont == cantidadDeNodos - 1){ // si el cont es = a la cantidadDeNodos entonces ya se lleno la ultima posicion
+			 // aca hay que mandar el reduce general hay que tener una lista de los archivos donde se hizo el reduce y hay que elegir el nodo
+			 //donde se va a hacer el reduce gral
+		   }
+    }else {
+    	// de vuelta llamar a la funcion de planificar reduce
+    }
 }
+

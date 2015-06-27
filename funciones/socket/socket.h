@@ -110,13 +110,13 @@ typedef struct{// a la hora de mandar el tamanio total tenemos que ver si es map
 } t_tamanio;
 
 typedef struct{
-	int rutina; //1=mapper o 2=reducer
+	int rutina; // 1 mapper 2 reducer
 	char* ip_nodo;
 	char* puerto;
-	char** lista_nombres_archivos_resultado; //donde va a devolverle el resultado
+	char** lista_nombres_archivos_resultado; // donde devuelve el resultado
 	int idNodo;
+}t_marta_job_archivo_reduce;
 
-} t_marta_job_archivos_reduce;
 int crearServidor(char* PUERTO);
 int crearCliente (char *IP, char *PUERTO);
 
