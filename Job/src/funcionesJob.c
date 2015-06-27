@@ -18,7 +18,7 @@ t_conectarseAlNodo CAN;
 void conectarseAlNodo(t_conectarseAlNodo CAN){
 
 	int socketNodo = crearCliente (CAN.Marta_Job.ip_nodo, CAN.Marta_Job.puerto);
-
+	int tamanioNodo;
 	Job_Nodo.NumerobloqueDeDAtos = CAN.numeroDeBloque;
     Job_Nodo.nombreRutina = CAN.Marta_Job.rutina;
     Job_Nodo.resultado = CAN.Marta_Job.nombre_archivo_resultado;
@@ -27,7 +27,8 @@ void conectarseAlNodo(t_conectarseAlNodo CAN){
    switch(CAN.Marta_Job.rutina ){
    case 1:
 	   //Manda la estructura job_nodo al NOdo
-	   int tamanioNodo = sizeof(int)+ (strlen(Job_Nodo.resultado)+1) + sizeof(int) + sizeof(int);
+
+	   tamanioNodo = sizeof(int)+ (strlen(Job_Nodo.resultado)+1) + sizeof(int) + sizeof(int);
 	   send(socketNodo,&tamanioNodo,sizeof(int),0);
 	   char* archivoANodo = serializarJob_Nodo(&Job_Nodo, tamanioNodo);
 	   send(socketNodo,archivoANodo,tamanioNodo,0);

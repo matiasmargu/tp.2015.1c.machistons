@@ -470,16 +470,29 @@ char* serializar_estructura_t_marta_a_job(t_marta_job estructura_t_marta_a_job, 
 
 */
 
+//marta tiene que verificar previo a esta funcion que llega un hilo mapper
 planificarReduce(int socketJob, int cantidadDeNodos, int cantidadDeBloques, char* presenciaCombiner){
 	typedef struct{
 		int presencia;
 		int resultadoMap;
 	}t_matriz;
 
+	t_tamanio tamanioTotal;
 if(presenciaCombiner == "NO"){ // el requisito aca es que todos los nodos tengan todos los reduce hechos, desp cuando esten todos hechos
 	                           // ahi recien vamos a poder decirle a un nodo (hay uqe ver el criterio para elegirlo) que haga todos los reduce
 	t_job_marta Job_Marta;
 	t_matriz matrizMapper[cantidadDeBloques][cantidadDeNodos];
+	int cont2,cont3;
+
+	for(cont2=0;cont2<cantidadDeBloques;cont2++){
+		for(cont3=0;cont3<cantidadDeNodos;cont3++){
+			matrizMapper[cont2][cont3].resultadoMap = 0 ;
+		}
+	}
+
+	//falta inicializar la matriz.presencia
+
+	t_marta_job_archivos_reduce marta_Job;
 	int tamanioTotal;
 	int i ,k,j,aux, h,cont,contador, cantidadBloquesPresentes, contadorFinal;
 	int reduceRealizado[cantidadDeNodos];
@@ -490,34 +503,44 @@ if(presenciaCombiner == "NO"){ // el requisito aca es que todos los nodos tengan
 	cont = 0;
 	while(cont < cantidadDeNodos - 1){ // este ciclo es para cuando todavia queden recv para hacer, cuando no queden mas, el cont del ciclo for de
 		                               // abajo va a quedar igual a cantidadDeNoddos - 1
+
 		recv(socketJob, &tamanioTotal, sizeof(int),0);
 
-	  for(i=0; i< cantidadDeNodos    ;i++){
-		  contador = 0;
-		  cantidadBloquesPresentes = 0;
-		  contadorFinal = 0;
-	  int estado = 1;
+	    int estado = 1;
 
 	   estado =  recive_y_deserialisa_job(&Job_Marta, socketJob, tamanioTotal);
 	     if(estado){
-		   if(Job_Marta.rutina == 1){
-		      matrizMapper[Job_Marta.numeroBloque][Job_Marta.idNodo].resultadoMap = Job_Marta.resultado;
 
-		      while((matrizMapper[j][Job_Marta]->presencia) == 1){
-		             cantidadBloquesPresentes += 1;
-			     	for(k=0;k< cantidadDeBloques; k++){
-					    if(matrizMapper[k][Job_Marta.idNodo].resultadoMap == 1){
-						contador += 1;
-					     }
-				     }
+	    	 contador = 0;
+	         cantidadBloquesPresentes = 0;
+     		 contadorFinal = 0;
 
-		      j++;
-		      }
+	    	if(Job_Marta.resultado ==1){
+	    	 matrizMapper[Job_Marta.numeroBloque][Job_Marta.idNodo].resultadoMap = Job_Marta.resultado;
+
+	    	 for(j=0;j<cantidadDeBloques ;j++){
+		         if((matrizMapper[j][Job_Marta.idNodo].presencia) == 1){
+		             cantidadBloquesPresentes ++;
+		             if(matrizMapper[j][Job_Marta.idNodo].resultadoMap == 1){
+		            	contador ++;
+		            	//falta crearla
+		            	marta_Job.lista_nombres_archivos_resultado add(Job_Marta.nombreArchivo);
+     			     }
+		         }
+	    	 }
 		      if(contador == cantidadBloquesPresentes){
-		         	//serializar y mandar el reduce al job
-	         		// hay que ver que estructura va a tener
-	 	     		//	send(socketJob, );
-		        	aux = 0;
+		    	  marta_Job.rutina = 2;
+		    	  marta_Job.idNodo = Job_Marta.idNodo;
+		    	  marta_Job.ip_nodo = 3 ;// ACA HAY Q BUSAR COMO PONER LA IP
+		    	  marta_Job.puerto = 3 ;// ACA HAY Q BUSCAR EL PUERTO
+
+		    	  //serializar y mandar el reduce al job
+
+		    	  // hay que ver que estructura va a tener
+	 	     		//	send(socketJob, ) para el reduce
+
+
+		    	  aux = 0;
 			     for(cont=0;cont < cantidadDeNodos && aux ==0;cont++){
 			     	if(reduceRealizado[cont]== 0){
 					   reduceRealizado[cont] = 1;
@@ -525,7 +548,8 @@ if(presenciaCombiner == "NO"){ // el requisito aca es que todos los nodos tengan
 				    }
 		       	}
 			        if(cont == cantidadDeNodos - 1){ // si el cont es = a la cantidadDeNodos entonces ya se lleno la ultima posicion
-				       // aca hay que mandar el reduce general
+				       // aca hay que mandar el reduce general hay que tener una lista de los archivos donde se hizo el reduce y hay que elegir el nodo
+			        	//donde se va a hacer el reduce gral
 			        }
                }
 
@@ -539,10 +563,16 @@ if(presenciaCombiner == "NO"){ // el requisito aca es que todos los nodos tengan
 			// ESTAN TODOS LOS REDUCE DE CADA NODO HECHO , HAY QUE MANDAR EL REDUCE FINAL
 		}
         */
+		}else{
+			//aca significa que no se pudo hacer el map bien y entonces hay que mandar de vuelta lo que nos vino a la funcion  planificar map
 		}
 	  }
+
 	}
+
    }
-  }
 }
 
+rePlanificar_y_planificar_reduce_general(int socketJob, int cantidadDeNodos, int cantidadDeBloques, char* presenciaCombiner){
+
+}
