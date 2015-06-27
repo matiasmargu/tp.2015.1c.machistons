@@ -118,6 +118,13 @@ typedef struct{
 	int idNodo;
 }t_marta_job_archivo_reduce;
 
+typedef struct{
+	char* nombreArchivo;
+	t_list listaDeBloques;
+	int idNodo;
+}t_datos_map;
+
+
 int crearServidor(char* PUERTO);
 int crearCliente (char *IP, char *PUERTO);
 
