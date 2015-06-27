@@ -25,6 +25,7 @@ void *atenderNFS(void*arg){
 
 	printf("%i\n",socket);
 
+
 	while(1){
 	//printf("Esto deberia imprimirse una sola vez\n");
 	if(recv(socket, &entero, sizeof(int),0) > 0){
@@ -64,6 +65,7 @@ void *atenderNFS(void*arg){
 			memcpy(pmap+(nroDelBloque*10),set.data,tamanio);
 			msync(pmap,strlen(pmap),0);
 			printf("se seteo correctamente\n");
+
 			//ok = 20;
 			//send(socket,&ok, sizeof(int),0);
 		break;

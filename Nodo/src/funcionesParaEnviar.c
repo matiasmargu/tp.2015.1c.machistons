@@ -102,8 +102,11 @@ void handshakeConFS (){
 	printf("corre el handshake\n");
 	//Esta es la coneccion con el FS
 	pthread_t hiloFS;
-	char *ip_fs = config_get_string_value(archivoConfiguracion, "IP_FS");
-	char *puerto_fs = config_get_string_value(archivoConfiguracion, "PUERTO_FS");
+
+	crearNuevaConfiguracion();
+	leerRutaDeConfiguracion();
+
+
 	int socket_fs = crearCliente(ip_fs,puerto_fs);
 	int entero2 = 2; // handshake con FS
 	char* mensaje;
@@ -116,7 +119,7 @@ void handshakeConFS (){
 	printf("%i\n",socket_fs);
 	pthread_create(&hiloFS, NULL, &atenderNFS, (void *)socket_fs);
 
-	free(mensaje);
+
 }
 
 void handshakeConJob(int socket_job){

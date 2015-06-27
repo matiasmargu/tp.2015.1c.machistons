@@ -28,19 +28,22 @@
 #include <sys/types.h>
 #include <fcntl.h>
 #include <sys/mman.h>
-
+#include <sys/ioctl.h>
+#include <netinet/in.h>
+#include <net/if.h>
+#include <arpa/inet.h>
 
 FILE* fileMapper;
 FILE* fileReducer;
-FILE* registroDeLosBloques;
-
-char* rutaArchivoConfiguracion;
+FILE* nuevoArchivo;
 
 char *ip_nodo;
 int puerto_nodo;
 char *archivo_bin;
 char *dir_temp;
 char *nodo_nuevo;
+char *ip_fs;
+char *puerto_fs;
 
 char* script_mapper;
 char* script_reducer;
@@ -55,7 +58,6 @@ void *reducer(void* arg);
 //Funciones de memoria
 char* mapearAMemoriaVirtual(char* archivo_bin);
 int tamanioEspecifico(char* pmap,int nroDelBloque);
-void escribeEnArchivoSegunNroDeBloque(FILE* fd,int nroDelBloque,int tamanio);
 void formateoElRegistro(FILE* fdf);
 
 //Funciones de serializacion y deserializacion
@@ -75,5 +77,9 @@ void *atenderJob(void* arg);
 //Funciones para escribir archivos
 int escribirScript(char* script_virtual,char* dir_temp, int comando);
 
+//Para laburar con archivos de configuracion
+void crearNuevaConfiguracion();
+void leerRutaDeConfiguracion();
+char* obtenerIP();
 
 #endif /* VARIABLESGLOBALES_H_ */
