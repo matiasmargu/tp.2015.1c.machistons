@@ -493,6 +493,7 @@ if(presenciaCombiner == "NO"){ // el requisito aca es que todos los nodos tengan
 	//falta inicializar la matriz.presencia
 
 	t_marta_job_archivo_reduce Marta_Job;
+	Marta_Job.lista_nombres_archivos_resultado = list_create();
 	int tamanioTotal,respuestaReduce/* si es uno se hizo bien y si es 0 mal*/;
 	int i ,k,j,aux, h,cont,contador, cantidadBloquesPresentes, contadorFinal;
 	int reduceRealizado[cantidadDeNodos];
@@ -523,13 +524,13 @@ if(presenciaCombiner == "NO"){ // el requisito aca es que todos los nodos tengan
 		             cantidadBloquesPresentes ++;
 		             if(matrizMapper[j][Job_Marta.idNodo].resultadoMap == 1){
 		            	contador ++;
-		            	//falta crearla
-		            	marta_Job.lista_nombres_archivos_resultado add(Job_Marta.nombreArchivo);
+
+		            	list_add(Marta_Job.lista_nombres_archivos_resultado ,Job_Marta.nombreArchivo);
      			     }
 		         }
 	    	 }
 		      if(contador == cantidadBloquesPresentes){
-		    	  Marta_Job.rutina=2;
+		    	  Marta_Job.rutina =2;
 		    	  Marta_Job.idNodo = Job_Marta.idNodo;
 		    	  Marta_Job.ip_nodo = 3 ;// ACA HAY Q BUSAR COMO PONER LA IP
 		    	  Marta_Job.puerto = 3 ;// ACA HAY Q BUSCAR EL PUERTO
@@ -542,16 +543,6 @@ if(presenciaCombiner == "NO"){ // el requisito aca es que todos los nodos tengan
 
 
 
-		// Todo esto (que esta abajo) nos lo evitamos con ver si cont == cantidadDeNodos
-		/*for(h=0;h<cantidadDeNodos;h++){
-			if(reduceRealizado[h]== 1){
-				contadorFinal += 1;
-			}
-		}
-		if (contadorFinal == cantidadDeNodos){
-			// ESTAN TODOS LOS REDUCE DE CADA NODO HECHO , HAY QUE MANDAR EL REDUCE FINAL
-		}
-        */
 		}else{
 			//aca significa que no se pudo hacer el map bien y entonces hay que mandar de vuelta lo que nos vino a la funcion  planificar map
 		}

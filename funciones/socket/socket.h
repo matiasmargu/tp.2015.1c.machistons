@@ -12,6 +12,7 @@
 #define PACKAGESIZE 1024	// Define cual va a ser el size maximo del paquete a enviar
 
 #include "../commons/log.h"
+#include "../commons/collections/list.h"
 
 
 
@@ -113,7 +114,7 @@ typedef struct{
 	int rutina; // 1 mapper 2 reducer
 	char* ip_nodo;
 	char* puerto;
-	char** lista_nombres_archivos_resultado; // donde devuelve el resultado
+	t_list* lista_nombres_archivos_resultado; // donde devuelve el resultado
 	int idNodo;
 }t_marta_job_archivo_reduce;
 
