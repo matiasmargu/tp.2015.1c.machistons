@@ -57,7 +57,7 @@ int recive_y_deserialisa_job(t_job_marta* job_marta, int socket,uint32_t tamanio
 
 }
 
-// ACA NECESITO QUE EL FS MANDE EL NOMBRE, LA CANT DE BLOQUES, Y LA UBICACION DE LAS COPIAS
+// ACA NECESITO QUE EL FS MANDE EL NOMBRE, LA CANT DE BLOQUES, Y LA UBICACIOsN DE LAS COPIAS
 int recive_y_guarda_estructura(t_archivo arch, int socket, uint32_t tamanioTotal){
 
 	char *buffer = malloc(tamanioTotal);
@@ -471,22 +471,22 @@ char* serializar_estructura_t_marta_a_job(t_marta_job estructura_t_marta_a_job, 
 */
 
 //marta tiene que verificar previo a esta funcion que llega un hilo mapper
-planificarReduce(int socketJob, int cantidadDeNodos, int cantidadDeBloques, char* presenciaCombiner){
+planificarReduce(int socketJob, int cantidadDeNodos, int cantidadDeArchivos, char* presenciaCombiner){
 	typedef struct{
-		int presencia;
+		char** bloques;
 		int resultadoMap;
 	}t_matriz;
 
 	t_tamanio tamanioTotal;
-if(presenciaCombiner == "NO"){ // el requisito aca es que todos los nodos tengan todos los reduce hechos, desp cuando esten todos hechos
+if(presenciaCombiner == "SI"){ // el requisito aca es que todos los nodos tengan todos los reduce hechos, desp cuando esten todos hechos
 	                           // ahi recien vamos a poder decirle a un nodo (hay uqe ver el criterio para elegirlo) que haga todos los reduce
 	t_job_marta Job_Marta;
-	t_matriz matrizMapper[cantidadDeBloques][cantidadDeNodos];
+	t_matriz matrizMapper[cantidadDeArchivos][cantidadDeNodos];
 	int cont2,cont3;
 
-	for(cont2=0;cont2<cantidadDeBloques;cont2++){
+	for(cont2=0;cont2<cantidadDeArchivos;cont2++){
 		for(cont3=0;cont3<cantidadDeNodos;cont3++){
-			matrizMapper[cont2][cont3].resultadoMap = 0 ;
+			matrizMapper[cont2][cont3].bloques = 0 ;
 		}
 	}
 
