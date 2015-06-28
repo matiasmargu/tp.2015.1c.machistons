@@ -21,8 +21,19 @@ void *atenderConsola(void*arg) {
 
 	long long tamanioBloque = 20971520; // Tamanio 20 MB
 
-	FILE *archivoNuevoALeer;
-	char str[tamanioBloque];
+	char* pmap;
+	int fd, contadorBloque;
+	struct stat mystat;
+	int cantidadBloques;
+	div_t restoDivision;
+
+	bson_t *doc;
+	bson_t *query;
+	mongoc_cursor_t *cursor;
+	bson_iter_t iter;
+	int socketNodo;
+	char* IPNodo;
+	char* PUERTONodo;
 
 	imprimirMenu();
 	while(1){
@@ -33,9 +44,6 @@ void *atenderConsola(void*arg) {
 					imprimirMenu();
 					break;
 				case Formatear: // 1
-					i = socketNodoGlobal;
-					entero = 4;
-					send(i,&entero,sizeof(int),0);
 					formatear();
 					break;
 				case Eliminar_Arch: // 2
@@ -49,26 +57,39 @@ void *atenderConsola(void*arg) {
 				case Eliminar_Directorio: // 6
 					break;
 				case Renombrar_Directorio: // 7
-					   archivoNuevoALeer = fopen("/home/utnso/Escritorio/201303hourly.txt" , "r");
-					   if(archivoNuevoALeer == NULL)
-					   {
-					      printf("Mal direccion del archivo\n");
-					   }
-					   if( fgets(str, tamanioBloque, archivoNuevoALeer)!=NULL )
-					   {
-					      printf("%s\n",str);
-					   }
-					   fclose(archivoNuevoALeer);
+					fd = open("/home/utnso/Escritorio/201303hourly.txt",O_RDWR);
+					fstat(fd,&mystat);
+					restoDivision = div(mystat.st_size,tamanioBloque);
+					if(restoDivision.rem > 0){
+						cantidadBloques = restoDivision.quot + 1;
+					}else{
+						cantidadBloques = restoDivision.quot;
+					}
+					for(contadorBloque=0;contadorBloque < cantidadBloques;contadorBloque++){
+
+					}
 					break;
 				case Mover_Directorio: // 8
 					break;
 				case Ver_Bloque_Arch: // 9
+
 					break;
 				case Borrar_Bloque_Arch: // 10
 					break;
 				case Copiar_Bloque_Arch: // 11
 					break;
 				case Agregar_Nodo: // 12
+					query = BCON_NEW("Estado", "No disponible");
+					cursor = mongoc_collection_find (nodos, MONGOC_QUERY_NONE, 0, 0, 0, query, NULL, NULL);
+
+					while (mongoc_cursor_next (cursor, &doc)) {
+						if (bson_iter_init (&iter, doc)) {
+							if(bson_iter_find (&iter, "Socket"))socketNodo = bson_iter_int32(&iter);
+							if(bson_iter_find (&iter, "IP"))IPNodo = bson_iter_utf8(&iter,NULL);
+							if(bson_iter_find (&iter, "PUERTO"))PUERTONodo = bson_iter_utf8(&iter,NULL);
+							printf("%i\n%s\n%s\n",socketNodo,IPNodo,PUERTONodo);
+						}
+					}
 					break;
 				case Eliminar_Nodo: // 13
 					i = socketNodoGlobal;
@@ -136,6 +157,11 @@ void imprimirMenu(void){
 void formatear(){
 	bson_t *doc;
 	bson_error_t error;
+	int entero; //Para el handshake
+
+	entero = 4;
+	send(socketNodoGlobal,&entero,sizeof(int),0);
+
 	doc = bson_new ();
 	if (!mongoc_collection_remove (nodos, MONGOC_DELETE_NONE, doc, NULL, &error)) {
 	        printf ("Delete failed: %s\n", error.message);

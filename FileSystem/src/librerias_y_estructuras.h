@@ -64,9 +64,11 @@ typedef struct{
 //Varibables globales
 
 t_log* logger; // Log Global
-int entero; //Para el handshake
+
 char *mensaje; // Para mandar mensajes serializados
 int nodosNecesarios;
+int idNodoGlobal;
+pthread_mutex_t mutex;
 
 // Estructuras de Interfaz con Nodo
 estructuraSetBloque escribirBloque;
@@ -82,8 +84,6 @@ mongoc_client_t *client;
 mongoc_collection_t *directorios;
 mongoc_collection_t *archivos;
 mongoc_collection_t *nodos;
-
-mongoc_cursor_t *cursor;
 
 // Funcion para liberar mensaje serializado
 
