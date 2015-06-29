@@ -471,11 +471,21 @@ char* serializar_estructura_t_marta_a_job(t_marta_job estructura_t_marta_a_job, 
 */
 
 //marta tiene que verificar previo a esta funcion que llega un hilo mapper
-planificarReduce(int socketJob, int cantidadDeNodos, int cantidadDeArchivos, char* presenciaCombiner){
+planificarReduce(int socketJob, int cantidadDeNodos,  int cantidadDeArchivos, char* presenciaCombiner){
+	typedef struct {
+		int bloque;
+		int mapeado;
+	}t_bloque_mapeado;
+
 	typedef struct{
-		char** bloques;
-		int resultadoMap;
+		char* nombre_archivo;
+		int idNodo;
+		char** t_bloque_mapeado;
+		int bloques_mapeados;
+		// falta el campo archivo temporales si es uno solo es un char*, si es mas es un vector de char *
 	}t_matriz;
+
+
 
 	t_tamanio tamanioTotal;
 if(presenciaCombiner == "SI"){ // el requisito aca es que todos los nodos tengan todos los reduce hechos, desp cuando esten todos hechos
@@ -486,14 +496,16 @@ if(presenciaCombiner == "SI"){ // el requisito aca es que todos los nodos tengan
 
 	for(cont2=0;cont2<cantidadDeArchivos;cont2++){
 		for(cont3=0;cont3<cantidadDeNodos;cont3++){
-			matrizMapper[cont2][cont3].bloques = 0 ;
+			matrizMapper[cont2][cont3].bloques_mapeados = 0 ;
+			// inicializar el nombre de archivo, que hay que ir buscando los archivos que tenemos e ir poniendolos
+
+			// inicializar t_bloque_mapeado que es una lista de bloques, hay que ir buscando por nodo si esta el bloque o no
+			// en el nodo y ahi sumarlo a ese vector
 		}
 	}
 
-	//falta inicializar la matriz.presencia
-
 	t_marta_job_archivo_reduce Marta_Job;
-	Marta_Job.lista_nombres_archivos_resultado = list_create();
+	Marta_Job.lista_nombres_archivos_resultado = list_create(); // esto si son varios o no depende de lo mismo que arriba
 	int tamanioTotal,respuestaReduce/* si es uno se hizo bien y si es 0 mal*/;
 	int i ,k,j,aux, h,cont,contador, cantidadBloquesPresentes, contadorFinal;
 	int reduceRealizado[cantidadDeNodos];

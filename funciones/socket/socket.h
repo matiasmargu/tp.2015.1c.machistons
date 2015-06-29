@@ -114,7 +114,7 @@ typedef struct{
 	int rutina; // 1 mapper 2 reducer
 	char* ip_nodo;
 	char* puerto;
-	t_list* lista_nombres_archivos_resultado; // donde devuelve el resultado
+	t_list* lista_nombres_archivos_temporales; // donde devuelve el resultado
 	int idNodo;
 }t_marta_job_archivo_reduce;
 
