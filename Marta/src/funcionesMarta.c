@@ -469,22 +469,30 @@ char* serializar_estructura_t_marta_a_job(t_marta_job estructura_t_marta_a_job, 
 }
 
 */
+typedef struct{
+	int idNodo;
+	char* ipNodo;
+	char* puertoNodo;
+	char** vector_t_nodo;
+	char* archivoResultadoReduce;
+}t_nodos;
 
 //marta tiene que verificar previo a esta funcion que llega un hilo mapper
-planificarReduce(int socketJob, int cantidadDeNodos,  int cantidadDeArchivos, char* presenciaCombiner){
-	typedef struct {
-		int bloque;
-		int mapeado;
-	}t_bloque_mapeado;
+planificarReduce( int accionATomar,  char* archivoTemporalAAlmacenar, t_nodos vectorNodos[], int cantidadNodos, int idNodo, char* ip, char* puerto){
 
-	typedef struct{
-		char* nombre_archivo;
-		int idNodo;
-		char** t_bloque_mapeado;
-		int bloques_mapeados;
-		// falta el campo archivo temporales si es uno solo es un char*, si es mas es un vector de char *
-	}t_matriz;
+int aux = 0,cont;
 
+
+switch(accionATomar){
+case 1: // aca nos llega que almacenemos un archivo temporal
+
+	for(cont=0; cont < cantidadNodos; aux ++){
+		if(vectorNodos[cont].idNodo == idNodo){
+			vectorNodos[cont].vector_t_nodo =
+		}
+	}
+
+}
 
 
 	t_tamanio tamanioTotal;
