@@ -67,6 +67,7 @@ void *agregoNodoaMongo (void*arg){
 	recv(socket, &tamanioTotalMensaje, sizeof(int), 0);
 	if(recive_y_deserialisa_IPyPUERTO_Nodo(&ipyPuertoNodo, socket, tamanioTotalMensaje)){
 		doc = bson_new ();
+		BSON_APPEND_UTF8(doc, "Es", "Nodo");
 		pthread_mutex_lock(&mutex);
 		BSON_APPEND_INT32(doc, "ID Nodo", idNodoGlobal);
 		idNodoGlobal++;
@@ -84,7 +85,12 @@ void *agregoNodoaMongo (void*arg){
 }
 
 void aplicarNodoGlobal(){
-	idNodoGlobal = 0;
+	bson_t *query;
+	int cantidad;
+	query = BCON_NEW("Es","Nodo");
+	cantidad = mongoc_collection_count(nodos, MONGOC_QUERY_NONE, query,0,0,NULL,NULL);
+	idNodoGlobal = cantidad + 1;
+	bson_destroy (query);
 }
 
 void escribirBloqueEnNodo (int socket, estructuraSetBloque estructura){

@@ -99,7 +99,7 @@ void *atenderMarta(void*arg){
 		}
 
 	}
-
+	bson_destroy (query);
 	return NULL;
 }
 

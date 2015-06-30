@@ -85,6 +85,8 @@ mongoc_collection_t *directorios;
 mongoc_collection_t *archivos;
 mongoc_collection_t *nodos;
 
+void aplicarNodoGlobal();
+
 // Funcion para liberar mensaje serializado
 
 void liberarMensaje(char **package);

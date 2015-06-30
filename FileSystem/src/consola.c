@@ -72,13 +72,16 @@ void *atenderConsola(void*arg) {
 				case Mover_Directorio: // 8
 					break;
 				case Ver_Bloque_Arch: // 9
-
+					printf("%i\n",atoi(comandoSeparado[1]));
+					IPNodo = string_duplicate(comandoSeparado[2]);
+					printf("%s\n",IPNodo);
 					break;
 				case Borrar_Bloque_Arch: // 10
 					break;
 				case Copiar_Bloque_Arch: // 11
 					break;
 				case Agregar_Nodo: // 12
+
 					query = BCON_NEW("Estado", "No disponible");
 					cursor = mongoc_collection_find (nodos, MONGOC_QUERY_NONE, 0, 0, 0, query, NULL, NULL);
 
