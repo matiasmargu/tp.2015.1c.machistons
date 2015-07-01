@@ -486,11 +486,23 @@ typedef struct {
 		tlinkelement *head;
 		int elements_count;
 	} t_lista;
+
+	int lista_add(t_lista *self, void *data) {
+		tlinkelement *new_element = list_create_element(data);
+
+		if (self->elements_count == 0) {
+			self->head = new_element;
+		} else {
+			list_link_element(list_get_element(self, self->elements_count - 1), new_element);
+		}
+		self->elements_count++;
+		return self->elements_count - 1;
+	}
 //marta tiene que verificar previo a esta funcion que llega un hilo mapper
 planificarReduce( int accionATomar,  char* archivoTemporalAAlmacenar, t_lista vectorNodos, int cantidadNodos, int idNodo, char* ip, char* puerto){
 
 int aux = 0,cont;
-
+int numero = 0;
 
 switch(accionATomar){
 case 1: // aca nos llega que almacenemos un archivo temporal
@@ -498,10 +510,14 @@ case 1: // aca nos llega que almacenemos un archivo temporal
 	for(cont=0; cont < cantidadNodos; aux ++){
 		while (aux != NULL){
 
-			if((vectorNodos.head->data->idNodo) == idNodo){
+			if(vectorNodos.head->data->idNodo == idNodo){
 				vectorNodos.head->data->idNodo = idNodo;
+				numero = 1;
 		}
 			aux = vectorNodos.elements_count;
+		}
+		if(numero ==0){
+			lista_add(vectorNodos,idNodo);
 		}
 
 	}
