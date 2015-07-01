@@ -469,11 +469,16 @@ char* serializar_estructura_t_marta_a_job(t_marta_job estructura_t_marta_a_job, 
 }
 
 */
+
+
+
+
 typedef struct{
 	int idNodo;
 	char* ipNodo;
 	char* puertoNodo;
-	char** vector_t_nodo;
+	int cantidadArchivosTemporales;
+	char** vector_archivos_temporales;
 	char* archivoResultadoReduce;
 }t_nodos;
 
@@ -498,35 +503,77 @@ typedef struct {
 		self->elements_count++;
 		return self->elements_count - 1;
 	}
+
+
+serializar_nodo_a_mapear(t_nodos nodo_a_mapear,int tamanioTotal){
+
+	    char *serializedPackage = malloc(tamanioTotal);
+
+		int offset = 0;
+		int size_to_send;
+
+		size_to_send =  sizeof(nodo_a_mapear.);
+		memcpy(serializedPackage + offset, &(bloque->bloque), size_to_send);
+		offset += size_to_send;
+
+		int tamanioNombre = strlen(bloque->data) + 1;
+		size_to_send = sizeof(int);
+		memcpy(serializedPackage + offset, &tamanioNombre, size_to_send);
+		offset += size_to_send;
+
+		size_to_send =  strlen(bloque->data) + 1;
+		memcpy(serializedPackage + offset, bloque->data, size_to_send);
+		offset += size_to_send;
+
+		return serializedPackage;
+}
+		}
+}
+
 //marta tiene que verificar previo a esta funcion que llega un hilo mapper
-planificarReduce( int accionATomar,  char* archivoTemporalAAlmacenar, t_lista vectorNodos, int cantidadNodos, int idNodo, char* ip, char* puerto){
+planificarReduce(int socketJob, int accionATomar,  char* archivoTemporalAAlmacenar, t_lista vectorNodos, int cantidadNodos, int idNodo, char* ip, char* puerto){
 
-int aux = 0,cont;
+int aux = 0,cont,accionQueElJobDeberaTomar;
+t_nodos nodo_a_mapear;
+char* archivo_serializado;
 int numero = 0;
+           if(presenciaCombiner == "SI"){
+              switch(accionATomar){
+                    case 1: // aca nos llega que almacenemos un archivo temporal
 
-switch(accionATomar){
-case 1: // aca nos llega que almacenemos un archivo temporal
+	                       for(cont=0; cont < cantidadNodos; aux ++){
+		                       while (aux != NULL){
 
-	for(cont=0; cont < cantidadNodos; aux ++){
-		while (aux != NULL){
+			                        if(vectorNodos.head->data->idNodo == idNodo){
+				                       vectorNodos.head->data->idNodo = idNodo;
+				                       numero = 1;
+		                            }
+			                        aux = vectorNodos.elements_count;
+		                       }
+	 	                       if(numero ==0){
+			                     lista_add(vectorNodos,idNodo);
+		                       }
 
-			if(vectorNodos.head->data->idNodo == idNodo){
-				vectorNodos.head->data->idNodo = idNodo;
-				numero = 1;
-		}
-			aux = vectorNodos.elements_count;
-		}
-		if(numero ==0){
-			lista_add(vectorNodos,idNodo);
-		}
+	                        }
+	                break;
+                    case 2: // aca nos llega que un nodo esta mapeado seria el idNodo con su ip y puerto
 
-	}
+                    	nodo_a_mapear = list_find(*vectorNodos,vectorNodos.head.data.idNodo == idNodo);
 
+                    	int tamanioTotal = sizeof(nodo_a_mapear.idNodo) + sizeof(nodo_a_mapear.ipNodo) + sizeof(nodo_a_mapear.puertoNodo) + sizeof(nodo_a_mapear.cantidadArchivosTemporales) + sizeof(nodo_a_mapear.vector_archivos_temporales) + sizeof(nodo_a_mapear.archivoResultadoReduce);
+
+                    	archivo_serializado = serializar_nodo_a_mapear(nodo_a_mapear,tamanioTotal);
+
+                    	send(socketJob, &accionQueElJobDeberaTomar, sizeof(int),0);
+                    	send(socketJob, &tamanioTotal, sizeof(int),0);
+                    	send(socketJob, &archivo_serializado, sizeof(int),0);
+
+              }
 }
 
 
 	t_tamanio tamanioTotal;
-if(presenciaCombiner == "SI"){ // el requisito aca es que todos los nodos tengan todos los reduce hechos, desp cuando esten todos hechos
+// el requisito aca es que todos los nodos tengan todos los reduce hechos, desp cuando esten todos hechos
 	                           // ahi recien vamos a poder decirle a un nodo (hay uqe ver el criterio para elegirlo) que haga todos los reduce
 	t_job_marta Job_Marta;
 	t_matriz matrizMapper[cantidadDeArchivos][cantidadDeNodos];
@@ -602,7 +649,8 @@ if(presenciaCombiner == "SI"){ // el requisito aca es que todos los nodos tengan
 
    }
 }
-}
+
+
 
 // aca hay que verificar que nos llega un hilo reduce
 rePlanificar_y_planificar_reduce_general(int socketJob, int cantidadDeNodos, int cantidadDeBloques, char* presenciaCombiner){
