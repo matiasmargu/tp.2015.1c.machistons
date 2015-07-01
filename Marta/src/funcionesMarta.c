@@ -557,6 +557,47 @@ serializar_nodo_a_mapear(t_nodos nodo_a_mapear,int tamanioTotal){
 		}
 }
 
+typedef struct{
+	int idNodo;
+	int cantidadArchivosTemporales;
+	char** vectorArchivosTemporales;
+}t_nodoPorArchivo;
+
+planificarReduce(char* nombreArchivo, int cantidadPosicionesVectorNodo, t_nodoPorArchivo nodoPorArchivo){
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 //marta tiene que verificar previo a esta funcion que llega un hilo mapper
 planificarReduce(int socketJob, int accionATomar,  char* archivoTemporalAAlmacenar, t_lista vectorNodos, int cantidadNodos, int idNodo, char* ip, char* puerto){
 
@@ -565,6 +606,7 @@ t_nodos nodo_a_mapear;
 char* archivo_serializado;
 int numero = 0;
 int aux2 = 0;
+t_nodos nodo;
            if(presenciaCombiner == "SI"){
               switch(accionATomar){
                     case 1: // aca nos llega que almacenemos un archivo temporal
@@ -573,13 +615,15 @@ int aux2 = 0;
 		                       while (aux2 != NULL){
 
 			                        if(vectorNodos.head->data->idNodo == idNodo){
-				                       vectorNodos.head->data->vector_archivos_temporales = archivoTemporalAAlmacenar;
+				                       vectorNodos.head->data->vector_archivos_temporales = archivoTemporalAAlmacenar; //Agregarlo al vector
 				                       numero = 1;
 		                            }
 			                        aux2 = vectorNodos.elements_count;
 		                       }
 	 	                       if(numero ==0){
-			                     lista_add(&vectorNodos,idNodo);
+	 	                    	   nodo.idNodo = idNodo;
+
+			                     lista_add(&vectorNodos,);
 		                       }
 
 	                        }
