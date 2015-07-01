@@ -471,7 +471,7 @@ char* serializar_estructura_t_marta_a_job(t_marta_job estructura_t_marta_a_job, 
 */
 
 
-
+//ESTO SE USA EN EL REDUCE , NO BORRAR
 
 typedef struct{
 	int idNodo;
@@ -492,7 +492,33 @@ typedef struct {
 		int elements_count;
 	} t_lista;
 
-	int lista_add(t_lista *self, void *data) {
+	static tlinkelement* list_create_element(t_nodos* data) {
+		tlinkelement* element = malloc(sizeof(tlinkelement));
+		element->data = data;
+		element->next = NULL;
+		return element;
+	}
+	static tlinkelement* list_get_element(t_lista* self, int index) {
+		int cont = 0;
+
+		if ((self->elements_count > index) && (index >= 0)) {
+			tlinkelement *element = self->head;
+			while (cont < index) {
+				element = element->next;
+				cont++;
+			}
+			return element;
+		}
+		return NULL;
+	}
+
+	static void list_link_element(tlinkelement* previous, tlinkelement* next) {
+		if (previous != NULL) {
+			previous->next = next;
+		}
+	}
+
+	int lista_add(t_lista *self, t_nodos *data) {
 		tlinkelement *new_element = list_create_element(data);
 
 		if (self->elements_count == 0) {
@@ -504,6 +530,7 @@ typedef struct {
 		return self->elements_count - 1;
 	}
 
+//HASTA ACA ES LO DEL REDUCE QUE NO HAY QE BORRAR
 
 serializar_nodo_a_mapear(t_nodos nodo_a_mapear,int tamanioTotal){
 
@@ -537,21 +564,22 @@ int aux = 0,cont,accionQueElJobDeberaTomar;
 t_nodos nodo_a_mapear;
 char* archivo_serializado;
 int numero = 0;
+int aux2 = 0;
            if(presenciaCombiner == "SI"){
               switch(accionATomar){
                     case 1: // aca nos llega que almacenemos un archivo temporal
 
 	                       for(cont=0; cont < cantidadNodos; aux ++){
-		                       while (aux != NULL){
+		                       while (aux2 != NULL){
 
 			                        if(vectorNodos.head->data->idNodo == idNodo){
-				                       vectorNodos.head->data->idNodo = idNodo;
+				                       vectorNodos.head->data->vector_archivos_temporales = archivoTemporalAAlmacenar;
 				                       numero = 1;
 		                            }
-			                        aux = vectorNodos.elements_count;
+			                        aux2 = vectorNodos.elements_count;
 		                       }
 	 	                       if(numero ==0){
-			                     lista_add(vectorNodos,idNodo);
+			                     lista_add(&vectorNodos,idNodo);
 		                       }
 
 	                        }
