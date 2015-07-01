@@ -477,8 +477,17 @@ typedef struct{
 	char* archivoResultadoReduce;
 }t_nodos;
 
+struct linkelement{
+		t_nodos* data;
+		struct linkelement *next;
+	};
+typedef struct linkelement tlinkelement;
+typedef struct {
+		tlinkelement *head;
+		int elements_count;
+	} t_lista;
 //marta tiene que verificar previo a esta funcion que llega un hilo mapper
-planificarReduce( int accionATomar,  char* archivoTemporalAAlmacenar, t_nodos vectorNodos[], int cantidadNodos, int idNodo, char* ip, char* puerto){
+planificarReduce( int accionATomar,  char* archivoTemporalAAlmacenar, t_lista vectorNodos, int cantidadNodos, int idNodo, char* ip, char* puerto){
 
 int aux = 0,cont;
 
@@ -487,9 +496,14 @@ switch(accionATomar){
 case 1: // aca nos llega que almacenemos un archivo temporal
 
 	for(cont=0; cont < cantidadNodos; aux ++){
-		if(vectorNodos[cont].idNodo == idNodo){
-			vectorNodos[cont].vector_t_nodo =
+		while (aux != NULL){
+
+			if((vectorNodos.head->data->idNodo) == idNodo){
+				vectorNodos.head->data->idNodo = idNodo;
 		}
+			aux = vectorNodos.elements_count;
+		}
+
 	}
 
 }
