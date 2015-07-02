@@ -562,17 +562,45 @@ typedef struct{
 	int cantidadArchivosTemporales;
 	char** vectorArchivosTemporales;
 }t_nodoPorArchivo;
+typedef struct{
+	int socketJob;
+	int idNodo;
+	int cantidadArchivosTemporales;
+	char** vectorArchivosTemporales;
+	char* archivoResultadoReduce;
+}t_aplicarReduce
+;
+planificarReduce(char* nombreArchivo, int cantidadPosicionesVectorNodo, t_nodoPorArchivo nodoPorArchivo, int socketjob){
+	int i;
+	char* resultado;
+	for(i=0; i< cantidadPosicionesVectorNodo; i++){
+	pthread_t hilo_reduce;
+	t_aplicarReduce structAEnviar;
+	structAEnviar.idNodo = nodoPorArchivo.idNodo;
+	structAEnviar.socketJob = socketjob;
+	structAEnviar.vectorArchivosTemporales = nodoPorArchivo.vectorArchivosTemporales;
+	structAEnviar.cantidadArchivosTemporales = nodoPorArchivo.cantidadArchivosTemporales;
+	asprintf(&resultado,"%s%i","ArchivoTemporalNumero",i);
+	structAEnviar.archivoResultadoReduce = resultado;
 
-planificarReduce(char* nombreArchivo, int cantidadPosicionesVectorNodo, t_nodoPorArchivo nodoPorArchivo){
+	pthread_create(&hilo_reduce, NULL, aplicarReduce,(void *) structAEnviar);
 
 
 
+	}
 
 
 }
 
 
+aplicarReduce(t_aplicarReduce structRecibido){
 
+		//serializar
+	//	send(structRecibido.socketJob, )
+
+
+
+}
 
 
 
