@@ -95,7 +95,7 @@ int main(void) {
 		}
 		}
 
-	config_destroy(archivoConfiguracion);
+	//config_destroy(archivoConfiguracion);
 	log_destroy(logger);
 	free(ip_nodo);
 	free(archivo_bin);
