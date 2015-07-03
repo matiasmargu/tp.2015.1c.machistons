@@ -22,8 +22,11 @@ void leerRutaDeConfiguracion(){
 	puerto_nodo = config_get_int_value(archivoConfiguracion, "PUERTO_NODO");
 	ip_fs = config_get_string_value(archivoConfiguracion, "IP_FS");
 	puerto_fs = config_get_string_value(archivoConfiguracion, "PUERTO_FS");
+
+	config_destroy(archivoConfiguracion);
 }
 
+//Despreciable
 void crearNuevaConfiguracion(){
 
 	nuevoArchivo = fopen("/home/utnso/git/tp-2015-1c-machistons/Configuracion/nodo.conf","w");
@@ -52,9 +55,8 @@ void crearNuevaConfiguracion(){
 
 	fputs("PUERTO_NODO=6000\n",nuevoArchivo);
 	fclose(nuevoArchivo);
-
-	archivoConfiguracion = config_create("/home/utnso/git/tp-2015-1c-machistons/Configuracion/nodo.conf");
 }
+
 
 char* obtenerIP(){
 	int fd;

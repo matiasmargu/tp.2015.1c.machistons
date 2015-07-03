@@ -63,7 +63,7 @@ void formateoElRegistro(FILE* fdf);
 //Funciones de serializacion y deserializacion
 int recive_y_deserialisa_CHARp(char *script, int socket, uint32_t tamanioTotal);
 int recive_y_deserialisa_SET_BLOQUE(estructuraSetBloque *bloque, int socket, uint32_t tamanioTotal);
-char* serializarIPyPUERTO(char* ip_fs,char* puerto_fs, int tamanioData);
+char* serializarIP_PUERTO_ESTADOnodo(char* ip_fs,char* puerto_fs,char* nodo_nuevo, int tamanioData);
 char* serializarBloqueDeDatos(char* bloque, int tamanioData);
 
 //Funciones de handshake
