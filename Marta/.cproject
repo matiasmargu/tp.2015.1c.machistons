@@ -55,9 +55,9 @@
 							</tool>
 						</toolChain>
 					</folderInfo>
-					<fileInfo id="cdt.managedbuild.config.gnu.exe.debug.870301236.819940856" name="funcionesMarta.c" rcbsApplicability="disable" resourcePath="src/funcionesMarta.c" toolsToInvoke="cdt.managedbuild.tool.gnu.c.compiler.exe.debug.915387708.910858621">
-						<tool id="cdt.managedbuild.tool.gnu.c.compiler.exe.debug.915387708.910858621" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.exe.debug.915387708">
-							<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.899141567" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
+					<fileInfo id="cdt.managedbuild.config.gnu.exe.debug.870301236.871923518" name="funcionesMarta.c" rcbsApplicability="disable" resourcePath="src/funcionesMarta.c" toolsToInvoke="cdt.managedbuild.tool.gnu.c.compiler.exe.debug.915387708.134883654">
+						<tool id="cdt.managedbuild.tool.gnu.c.compiler.exe.debug.915387708.134883654" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.exe.debug.915387708">
+							<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.1816941131" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 						</tool>
 					</fileInfo>
 					<sourceEntries>

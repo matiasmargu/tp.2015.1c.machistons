@@ -7,13 +7,6 @@
 
 #include "funcionesMarta.h"
 
-
-typedef struct{
-	char* nombre_arch;
-	int bloque_arch;
-	t_bitarray bitmap;
-}t_cargaBitarray_aux;
-
 int recive_y_deserialisa(t_charpuntero* nombre, int socket, uint32_t tamanioTotal){
 	int status;
 	char *buffer = malloc(tamanioTotal);
@@ -31,6 +24,46 @@ int recive_y_deserialisa(t_charpuntero* nombre, int socket, uint32_t tamanioTota
 
 	free(buffer);
 	return status;
+}
+
+
+char* serializar_aplicarReduce(t_mandarAlHilo *estructura, int tamanioTotal){
+
+	char *serializedPackage = malloc(tamanioTotal);
+		int offset = 0;
+		int size_to_send;
+
+		size_to_send = sizeof(int);
+		memcpy(serializedPackage + offset, &estructura->cantidadArchivosTemporales, size_to_send);
+		offset += size_to_send;
+
+		size_to_send = sizeof(int);
+		memcpy(serializedPackage + offset, &estructura->idNodo, size_to_send);
+		offset += size_to_send;
+
+		int tamanioArchivoReduce = strlen(estructura->archivoResultadoReduce) + 1;
+				size_to_send = sizeof(int);
+				memcpy(serializedPackage + offset, &tamanioArchivoReduce, size_to_send);
+				offset += size_to_send;
+
+				size_to_send =  strlen(estructura->archivoResultadoReduce) + 1;
+				memcpy(serializedPackage + offset, estructura->archivoResultadoReduce, size_to_send);
+				offset += size_to_send;
+
+				int tamanioLista = list_size(estructura->vectorArchivosTemporales);
+				int a, numero;
+
+		for(a=0;a< tamanioLista; a++){
+			numero = list_get(estructura->vectorArchivosTemporales, a);
+			size_to_send = sizeof(int);
+					memcpy(serializedPackage + offset, &numero, size_to_send);
+					offset += size_to_send;
+		}
+
+				return serializedPackage;
+
+
+
 }
 
 
@@ -342,14 +375,16 @@ bool buscarVictimaPorBloque(t_cargaBitarray_aux bitmap[], int tamanio, t_bitarra
 
 
 void planificarMap(){
+	// PARA PLANIFICAR NECESITO SABER LOS NODOS ACTIVOS. PARA ESO SE LO PIDO AL FS
+	int cantidad_nodos_activos = 4;	// ESTO ME LO MANDA EL FS, JUNTO CON LOS NODOS_ACTIVOS
+	int nodos_activos[cantidad_nodos_activos]; //LOS ID DE LOS NODOS ACTIVOS NECESITO QUE ME LOS MANDES ASI GASTON: [1,14,22,31] ORDENADOS DE MENOR A MAYOR
+	t_cargaBitarray_aux bitmapAuxiliar[cantidad_nodos_activos];
+
 	if(list_is_empty(lista_nodos_estado)){
 		pthread_mutex_lock(&mutex_nodos);
 		lista_nodos_estado = list_create();
 		pthread_mutex_unlock(&mutex_nodos);
 
-		// PARA PLANIFICAR NECESITO SABER LOS NODOS ACTIVOS. PARA ESO SE LO PIDO AL FS
-		int cantidad_nodos_activos = 4;	// ESTO ME LO MANDA EL FS, JUNTO CON LOS NODOS_ACTIVOS
-		int nodos_activos[cantidad_nodos_activos]; //LOS ID DE LOS NODOS ACTIVOS NECESITO QUE ME LOS MANDES ASI GASTON: [1,14,22,31] ORDENADOS DE MENOR A MAYOR
 
 		int tamanio;
 		t_cargaBitarray_aux bitmap[] = armarVectorDeBitarray(cantidad_nodos_activos, nodos_activos, tamanio);
@@ -363,7 +398,6 @@ void planificarMap(){
 			int bloques_alineados = division;
 			if((resto_division != 0) && (j == division)) bloques_alineados = resto_division-1;
 			while(k <= bloques_alineados){
-				t_cargaBitarray_aux bitmapAuxiliar[cantidad_nodos_activos];
 				bitmapAuxiliar = cargarBitmapAuxiliar(bitmap,bloques_alineados);
 				int bloque, nodo;
 				algoritmoMap(bitmapAuxiliar, bloque, nodo, &vector_contador);
@@ -473,15 +507,7 @@ char* serializar_estructura_t_marta_a_job(t_marta_job estructura_t_marta_a_job, 
 
 //ESTO SE USA EN EL REDUCE , NO BORRAR
 
-typedef struct{
-	int idNodo;
-	char* ipNodo;
-	char* puertoNodo;
-	int cantidadArchivosTemporales;
-	char** vector_archivos_temporales;
-	char* archivoResultadoReduce;
-}t_nodos;
-
+/*
 struct linkelement{
 		t_nodos* data;
 		struct linkelement *next;
@@ -529,6 +555,7 @@ typedef struct {
 		self->elements_count++;
 		return self->elements_count - 1;
 	}
+*/
 
 //HASTA ACA ES LO DEL REDUCE QUE NO HAY QE BORRAR
 
@@ -557,20 +584,9 @@ serializar_nodo_a_mapear(t_nodos nodo_a_mapear,int tamanioTotal){
 		}
 }
 
-typedef struct{
-	int idNodo;
-	int cantidadArchivosTemporales;
-	char** vectorArchivosTemporales;
-}t_nodoPorArchivo;
-typedef struct{
-	int socketJob;
-	int idNodo;
-	int cantidadArchivosTemporales;
-	char** vectorArchivosTemporales;
-	char* archivoResultadoReduce;
-}t_aplicarReduce
-;
-planificarReduce(char* nombreArchivo, int cantidadPosicionesVectorNodo, t_nodoPorArchivo nodoPorArchivo, int socketjob){
+
+
+void planificarReduce(char* nombreArchivo, int cantidadPosicionesVectorNodo, t_nodoPorArchivo nodoPorArchivo, int socketjob){
 	int i;
 	char* resultado;
 	for(i=0; i< cantidadPosicionesVectorNodo; i++){
@@ -583,24 +599,28 @@ planificarReduce(char* nombreArchivo, int cantidadPosicionesVectorNodo, t_nodoPo
 	asprintf(&resultado,"%s%i","ArchivoTemporalNumero",i);
 	structAEnviar.archivoResultadoReduce = resultado;
 
-	pthread_create(&hilo_reduce, NULL, aplicarReduce,(void *) structAEnviar);
-
-
+	pthread_create(&hilo_reduce, NULL, aplicarReduce, (void*)&structAEnviar);
+	return;
 
 	}
+}
 
+
+void aplicarReduce(t_aplicarReduce structRecibido){
+
+	t_mandarAlHilo mandarAlHilo;
+	mandarAlHilo.cantidadArchivosTemporales = structRecibido.cantidadArchivosTemporales;
+	mandarAlHilo.idNodo = structRecibido.idNodo;
+	mandarAlHilo.archivoResultadoReduce = structRecibido.archivoResultadoReduce;
+	mandarAlHilo.vectorArchivosTemporales = structRecibido.vectorArchivosTemporales;
+	int tamanioTotal = sizeof(int)+sizeof(int)+sizeof(int)+strlen(structRecibido.archivoResultadoReduce)+1+ (list_size(structRecibido.vectorArchivosTemporales)*sizeof(int));
+	send(structRecibido.socketJob, &tamanioTotal, sizeof(int),0);
+	char* archivoAenviar = serializar_aplicarReduce(&mandarAlHilo, tamanioTotal);
+	send(structRecibido.socketJob,archivoAenviar,tamanioTotal,0);
 
 }
 
 
-aplicarReduce(t_aplicarReduce structRecibido){
-
-		//serializar
-	//	send(structRecibido.socketJob, )
-
-
-
-}
 
 
 
@@ -619,13 +639,7 @@ aplicarReduce(t_aplicarReduce structRecibido){
 
 
 
-
-
-
-
-
-
-
+/*
 //marta tiene que verificar previo a esta funcion que llega un hilo mapper
 planificarReduce(int socketJob, int accionATomar,  char* archivoTemporalAAlmacenar, t_lista vectorNodos, int cantidadNodos, int idNodo, char* ip, char* puerto){
 
@@ -689,10 +703,11 @@ t_nodos nodo;
 		}
 	}
 
+
 	t_marta_job_archivo_reduce Marta_Job;
 	Marta_Job.lista_nombres_archivos_resultado = list_create(); // esto si son varios o no depende de lo mismo que arriba
 	int tamanioTotal,respuestaReduce/* si es uno se hizo bien y si es 0 mal*/;
-	int i ,k,j,aux, h,cont,contador, cantidadBloquesPresentes, contadorFinal;
+	/*int i ,k,j,aux, h,cont,contador, cantidadBloquesPresentes, contadorFinal;
 	int reduceRealizado[cantidadDeNodos];
 	//HAY QUE VER SI EL RECV SE HACE ANTES DEL FOR
 	// Es jodido el tema, no se xq pones hasta la cant de nodos... el recv que hagamos puede ser de cualquier nodo, no necesariamente va a haber
@@ -756,7 +771,7 @@ t_nodos nodo;
 rePlanificar_y_planificar_reduce_general(int socketJob, int cantidadDeNodos, int cantidadDeBloques, char* presenciaCombiner){
 
 	int respuestaReduce/* si es uno se hizo bien y si es 0 mal*/;
-	int cont,reduceRealizado[cantidadDeNodos],aux;
+/*	int cont,reduceRealizado[cantidadDeNodos],aux;
 
 	recv(socketJob, &respuestaReduce, sizeof(int),0);
 	if(respuestaReduce == 1){
@@ -775,4 +790,4 @@ rePlanificar_y_planificar_reduce_general(int socketJob, int cantidadDeNodos, int
     	// de vuelta llamar a la funcion de planificar reduce
     }
 }
-
+*/
