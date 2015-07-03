@@ -66,9 +66,14 @@ typedef struct{
 t_log* logger; // Log Global
 
 char *mensaje; // Para mandar mensajes serializados
-int nodosNecesarios;
+
 int idNodoGlobal;
 pthread_mutex_t mutex;
+
+// Variables para control de estado FS
+
+int nodosNecesarios;
+int nodosActivos;
 
 // Estructuras de Interfaz con Nodo
 estructuraSetBloque escribirBloque;
@@ -86,6 +91,7 @@ mongoc_collection_t *archivos;
 mongoc_collection_t *nodos;
 
 void aplicarNodoGlobal();
+void verificarEstadoFS();
 
 // Funcion para liberar mensaje serializado
 
@@ -113,6 +119,7 @@ void *atenderMarta(void*arg);
 // Funciones de Consola
 
 void imprimirMenu(void);
+void mensajeEstadoInactivoFS();
 void *atenderConsola(void*arg);
 void formatear();
 

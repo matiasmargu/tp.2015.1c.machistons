@@ -47,6 +47,11 @@ void *atenderConsola(void*arg) {
 					formatear();
 					break;
 				case Eliminar_Arch: // 2
+					if(nodosActivos >= nodosNecesarios){
+
+					}else{
+						mensajeEstadoInactivoFS();
+					}
 					break;
 				case Renombrar_Arch: // 3
 					break;
@@ -81,7 +86,6 @@ void *atenderConsola(void*arg) {
 				case Copiar_Bloque_Arch: // 11
 					break;
 				case Agregar_Nodo: // 12
-
 					query = BCON_NEW("Estado", "No disponible");
 					cursor = mongoc_collection_find (nodos, MONGOC_QUERY_NONE, 0, 0, 0, query, NULL, NULL);
 
@@ -93,11 +97,13 @@ void *atenderConsola(void*arg) {
 							printf("%i\n%s\n%s\n",socketNodo,IPNodo,PUERTONodo);
 						}
 					}
+					verificarEstadoFS();
 					break;
 				case Eliminar_Nodo: // 13
 					i = socketNodoGlobal;
 					mensaje = pedirContenidoBloqueA(i, 10);
 					printf("%s\n",mensaje);
+					verificarEstadoFS();
 					break;
 				case Copiar_Arch_Al_MDFS: // 14
 					i = socketNodoGlobal;
@@ -131,8 +137,8 @@ void *atenderConsola(void*arg) {
 
 void imprimirMenu(void){
 
-	printf("> Los comandos se ingresan con su numero \n"
-			"> 		COMANDOS \n"
+	printf("  Los comandos se ingresan con su numero \n"
+			" 		COMANDOS \n"
 			"	Formatear el MDFS: 1 \n"
 			"	Operaciones sobre Archivos  \n"
 			"	  Eliminar: 2 \n"
@@ -155,6 +161,10 @@ void imprimirMenu(void){
 			"	Solicitar el MD5 de un archivo en MDFS: 16 \n"
 			"	SALIR 17 \n");
 	return ;
+}
+
+void mensajeEstadoInactivoFS(){
+	printf("El FileSystem se encuentra inactivo debido a que no posee los suficientes nodos c");
 }
 
 void formatear(){
