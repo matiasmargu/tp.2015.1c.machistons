@@ -20,6 +20,7 @@ int main()
 	nodos = mongoc_client_get_collection (client, "fileSystem", "nodos");
 	//
 	aplicarNodoGlobal();
+	nodosActivos = 0;
 
 	fd_set master;
 	fd_set read_fds;

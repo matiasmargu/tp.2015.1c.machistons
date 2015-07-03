@@ -93,6 +93,13 @@ void aplicarNodoGlobal(){
 	bson_destroy (query);
 }
 
+void verificarEstadoFS(){
+	bson_t *query;
+	query = BCON_NEW("Estado","Disponible");
+	nodosActivos = mongoc_collection_count(nodos, MONGOC_QUERY_NONE, query,0,0,NULL,NULL);
+	bson_destroy (query);
+}
+
 void escribirBloqueEnNodo (int socket, estructuraSetBloque estructura){
 	int entero; //Para el handshake
 	entero = 2;
