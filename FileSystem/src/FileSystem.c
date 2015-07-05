@@ -19,7 +19,7 @@ int main()
 	archivos = mongoc_client_get_collection (client, "fileSystem", "archivos");
 	nodos = mongoc_client_get_collection (client, "fileSystem", "nodos");
 	//
-	aplicarNodoGlobal();
+	aplicarNodoGlobalYponerNodosNoDisponible();
 	nodosActivos = 0;
 
 	fd_set master;
