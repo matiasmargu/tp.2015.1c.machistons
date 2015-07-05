@@ -48,7 +48,7 @@ typedef struct {
 	int tamanio; // Tamaño
 	int directorioPadre; // Direccion Padre
 	const char* path; // Direccion Fisica
-	int estado; // Estado, 1 Disponible, 0 No Disponible
+	char* estado;
 	int cantidadBloque; // Cantidad de Bloques del archivo
 } t_archivo;
 
@@ -108,7 +108,7 @@ int recive_y_deserialisa_IPyPUERTO_Nodo(estructuraIPyNodo *bloque, int socket, u
 // Funciones para Agregar Datos a Mongo
 
 void *agregoNodoaMongo (void*arg);
-void insertarArchivoAMongo (t_archivo archivo);
+void insertarArchivoAMongoYAlMDFS (char* path);
 void agregarCopia (bson_t *documento, char* numeroCopia, int idNodo, int bloque);
 
 // Funcion Interfaz Marta

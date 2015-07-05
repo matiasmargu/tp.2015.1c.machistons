@@ -155,11 +155,62 @@ void agregarCopia (bson_t *documento, char* numeroCopia, int idNodo, int bloque)
 	bson_destroy (doc4);
 }
 
-void insertarArchivoAMongo (t_archivo archivo){
+void insertarArchivoAMongoYAlMDFS (char* path){
 	bson_t *doc;
 	bson_t *doc2;
 	bson_t *doc3;
 	bson_error_t error;
+	int fd, contadorBloque;
+	struct stat mystat;
+	int cantidadBloques;
+	div_t restoDivision;
+	int i;
+
+	char *pmap;
+
+	char *contenidoBloque;
+	long long tamanioBloque = 20971520; // Tamanio 20 MB
+	long long bloqueALeer;
+	long long bloqueAnterior;
+	long long tamanioRestanteDelArchivo;
+
+	fd = open(path,O_RDWR);
+	fstat(fd,&mystat);
+	restoDivision = div(mystat.st_size,tamanioBloque);
+	if(restoDivision.rem > 0){
+		cantidadBloques = restoDivision.quot + 1;
+	}else{
+		cantidadBloques = restoDivision.quot;
+	}
+
+	pmap = mmap(0,mystat.st_size, PROT_READ|PROT_WRITE ,MAP_SHARED,fd,0);
+	bloqueAnterior = 0;
+	tamanioRestanteDelArchivo = mystat.st_size;
+
+	for(contadorBloque=0;contadorBloque < cantidadBloques;contadorBloque++){
+		bloqueALeer = tamanioBloque + bloqueAnterior;
+		while(pmap[bloqueALeer] != '\n'){
+			bloqueALeer = bloqueALeer - 1;
+		}
+		bloqueALeer = bloqueALeer - bloqueAnterior;
+		contenidoBloque = malloc(bloqueALeer);
+		memcpy(contenidoBloque,pmap+bloqueAnterior,bloqueALeer);
+		bloqueAnterior = bloqueALeer + 1;
+
+		printf("%c\n",pmap[tamanioRestanteDelArchivo-1]);
+		printf("%c\n",pmap[tamanioRestanteDelArchivo]);
+
+
+
+
+		free(contenidoBloque);
+	}
+
+	i = socketNodoGlobal;
+	mensaje = "MATIASSSASAS";
+	escribirBloque.bloque = 100;
+	escribirBloque.data = mensaje;
+	escribirBloqueEnNodo(i,escribirBloque);
 
 	doc = bson_new ();
 	doc2 = bson_new ();
@@ -178,12 +229,12 @@ void insertarArchivoAMongo (t_archivo archivo){
 	BSON_APPEND_DOCUMENT(doc2, "1", doc3);
 	bson_destroy (doc3);
 
-	BSON_APPEND_UTF8(doc, "Nombre", archivo.nombre);
-	BSON_APPEND_INT32 (doc, "Tamanio", archivo.tamanio);
-	BSON_APPEND_INT32(doc, "Directorio Padre" , archivo.directorioPadre);
-	BSON_APPEND_UTF8(doc, "Direccion Fisica", archivo.path);
-	BSON_APPEND_INT32(doc, "Estado", archivo.estado);
-	BSON_APPEND_INT32(doc, "Cantidad Bloques", archivo.cantidadBloque);
+	BSON_APPEND_UTF8(doc, "Nombre", "Marceloasdasdasdasd");
+	BSON_APPEND_INT32 (doc, "Tamanio", mystat.st_size);
+	BSON_APPEND_INT32(doc, "Directorio Padre" , 53);
+	BSON_APPEND_UTF8(doc, "Direccion Fisica", path);
+	BSON_APPEND_UTF8(doc, "Estado", "Disponible");
+	BSON_APPEND_INT32(doc, "Cantidad Bloques", cantidadBloques);
 	BSON_APPEND_ARRAY(doc, "Bloques", doc2);
 
 	if (!mongoc_collection_insert (archivos, MONGOC_INSERT_NONE, doc, NULL, &error)) {
@@ -192,6 +243,7 @@ void insertarArchivoAMongo (t_archivo archivo){
 
 	bson_destroy (doc);
 	bson_destroy (doc2);
+	munmap(pmap,strlen(pmap));
 }
 
 t_copia infoBloqueyCopia(int nroBloque, int nroCopia, bson_t *doc4){

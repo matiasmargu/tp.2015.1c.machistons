@@ -14,18 +14,12 @@ void *atenderConsola(void*arg) {
 		Copiar_Arch_Al_MDFS, Copiar_Arch_Al_FSLocal, Solicitar_MD5, Salir};
 
 	int i;
-	t_archivo archivoNuevo;
+
 	char bufferComando[MAXSIZE_COMANDO];
 	char **comandoSeparado;
 	char *separator=" ";
-
-	long long tamanioBloque = 20971520; // Tamanio 20 MB
-
-	char* pmap;
-	int fd, contadorBloque;
-	struct stat mystat;
-	int cantidadBloques;
-	div_t restoDivision;
+	char *separador2="\n";
+	char **comandoSeparado2;
 
 	bson_t *doc;
 	bson_t *query;
@@ -62,17 +56,7 @@ void *atenderConsola(void*arg) {
 				case Eliminar_Directorio: // 6
 					break;
 				case Renombrar_Directorio: // 7
-					fd = open("/home/utnso/Escritorio/201303hourly.txt",O_RDWR);
-					fstat(fd,&mystat);
-					restoDivision = div(mystat.st_size,tamanioBloque);
-					if(restoDivision.rem > 0){
-						cantidadBloques = restoDivision.quot + 1;
-					}else{
-						cantidadBloques = restoDivision.quot;
-					}
-					for(contadorBloque=0;contadorBloque < cantidadBloques;contadorBloque++){
 
-					}
 					break;
 				case Mover_Directorio: // 8
 					break;
@@ -106,20 +90,12 @@ void *atenderConsola(void*arg) {
 					verificarEstadoFS();
 					break;
 				case Copiar_Arch_Al_MDFS: // 14
-					i = socketNodoGlobal;
-					mensaje = "MATIASSSASAS";
-					escribirBloque.bloque = 100;
-					escribirBloque.data = mensaje;
-					escribirBloqueEnNodo(i,escribirBloque);
+					//comandoSeparado2=string_split(comandoSeparado[1], separador2);
+					// comandoSeparado2[0]
+					// verificar si hay espacio para este archivo
+					insertarArchivoAMongoYAlMDFS("/home/utnso/Escritorio/201303hourly.txt");
 					break;
 				case Copiar_Arch_Al_FSLocal: // 15
-					archivoNuevo.nombre = "CarlosJSFNASFN.txt";
-					archivoNuevo.tamanio = 123;
-					archivoNuevo.directorioPadre = 1;
-					archivoNuevo.estado = 0;
-					archivoNuevo.cantidadBloque = 2;
-					archivoNuevo.path = "/home/utnso/Escritorio/Carlos.txt";
-					insertarArchivoAMongo(archivoNuevo);
 					break;
 				case Solicitar_MD5: // 16
 					break;
@@ -156,7 +132,7 @@ void imprimirMenu(void){
 			" 	Operaciones sobre nodos de datos:\n"
 			"	  Agregar: 12 \n"
 			"	  Eliminar: 13 \n"
-			"	Copiar un archivo local al MDFS: 14 \n"
+			"	Copiar un archivo local al MDFS: 14 DireccionFisicaDelArchivo \n"
 			"	Copiar un archivo del MDFS al filesystem local: 15 \n"
 			"	Solicitar el MD5 de un archivo en MDFS: 16 \n"
 			"	SALIR 17 \n");
@@ -164,7 +140,11 @@ void imprimirMenu(void){
 }
 
 void mensajeEstadoInactivoFS(){
-	printf("El FileSystem se encuentra inactivo debido a que no posee los suficientes nodos c");
+	printf("El FileSystem se encuentra inactivo debido a que no posee los suficientes nodos conectado\n"
+			"Por favor, agregar los nodos necesarios para que el FileSystem se encuentre en estado Operativo\n"
+			"Cantidad de Nodos Activos: %i\n"
+			"Cantidad de Nodos Necesarios: %i\n"
+			"Ingrese 0 para imprimir el menu\n", nodosActivos, nodosNecesarios);
 }
 
 void formatear(){
