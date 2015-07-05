@@ -187,6 +187,9 @@ void insertarArchivoAMongoYAlMDFS (char* path){
 	bloqueAnterior = 0;
 	tamanioRestanteDelArchivo = mystat.st_size;
 
+	doc = bson_new ();
+	doc2 = bson_new ();
+
 	for(contadorBloque=0;contadorBloque < cantidadBloques;contadorBloque++){
 		bloqueALeer = tamanioBloque + bloqueAnterior;
 		while(pmap[bloqueALeer] != '\n'){
@@ -197,37 +200,20 @@ void insertarArchivoAMongoYAlMDFS (char* path){
 		memcpy(contenidoBloque,pmap+bloqueAnterior,bloqueALeer);
 		bloqueAnterior = bloqueALeer + 1;
 
-		printf("%c\n",pmap[tamanioRestanteDelArchivo-1]);
-		printf("%c\n",pmap[tamanioRestanteDelArchivo]);
+		escribirBloque.data = contenidoBloque;
+		doc3 = bson_new ();
+
+		i = socketNodoGlobal;
+		escribirBloque.bloque = 40;
+		escribirBloqueEnNodo(i,escribirBloque);
+		agregarCopia(doc3, "3", 76, 40);
 
 
-
+		BSON_APPEND_DOCUMENT(doc2, string_itoa(contadorBloque), doc3);
+		bson_destroy (doc3);
 
 		free(contenidoBloque);
 	}
-
-	i = socketNodoGlobal;
-	mensaje = "MATIASSSASAS";
-	escribirBloque.bloque = 100;
-	escribirBloque.data = mensaje;
-	escribirBloqueEnNodo(i,escribirBloque);
-
-	doc = bson_new ();
-	doc2 = bson_new ();
-
-	doc3 = bson_new ();
-	agregarCopia(doc3, "1", 65, 40);
-	agregarCopia(doc3, "2", 21, 210);
-	agregarCopia(doc3, "3", 76, 39);
-	BSON_APPEND_DOCUMENT(doc2, "0", doc3);
-	bson_destroy (doc3);
-
-	doc3 = bson_new ();
-	agregarCopia(doc3, "1", 2, 56);
-	agregarCopia(doc3, "2", 5, 190);
-	agregarCopia(doc3, "3", 8, 23);
-	BSON_APPEND_DOCUMENT(doc2, "1", doc3);
-	bson_destroy (doc3);
 
 	BSON_APPEND_UTF8(doc, "Nombre", "Marceloasdasdasdasd");
 	BSON_APPEND_INT32 (doc, "Tamanio", mystat.st_size);
