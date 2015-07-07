@@ -294,24 +294,50 @@ t_cargaBitarray_aux *armarVectorDeBitarray(int cantidadDeNodos, int nodos_activo
 }
 
 void algoritmoMap(t_cargaBitarray_aux *bitmapAuxiliar,int bloque,int nodo,int *vector_contador, int cant){
-	int k;
-	int bloque_aux, cant_copias;
-	cant_copias = bitarray_get_max_bit(bitmapAuxiliar->bitmap);
-	bloque_aux = bitmapAuxiliar->bloque_arch;
-	for(k=0;k<=cant;k++){
 
-		int v[cant];
+	char *vectorVictimas;
+	bitarray_create(vectorVictimas,cant);
 
-
-
-
-
-		/*if()
-		cant_copias = bitarray_get_max_bit(bitmapAuxiliar->bitmap);
-		bloque_aux = bitmapAuxiliar->bloque_arch;
-	*/
-
+	bool r = buscarVictimasPorBloque(&bitmapAuxiliar, cant, vectorVictimas);
+	if(r == false){
+		r = buscarVictimaPorNodo();
+		if(r == false){
+			buscoPorContadores();
+		}
+		else{
+			//asigno
+		}
 	}
+	else{
+		//asigno
+	}
+}
+
+bool buscarVictimaPorBloque(t_cargaBitarray_aux bitmap[], int tamanio, t_bitarray *vectorVictimas){
+	int min = bitarray_get_max_bit(bitmap[0]->bitmap);
+	int victim_pos = 0;
+	int i;
+	bool flag = false;
+
+	for(i=1;i<=tamanio;i++){
+		if((bitarray_get_max_bit(bitmap[i]->bitmap)) < min){
+			bitarray_set_bit(vectorVictimas,i);
+			min = bitarray_get_max_bit(bitmap[i]->bitmap);
+			victim_pos = i;
+			flag = true;
+		}
+	}
+	if(flag == false) bitarray_set_bit(vectorVictimas,0);
+
+	for(i=0;i<=tamanio;i++){
+		if((i != victim_pos) && (bitarray_get_max_bit(bitmap[i]->bitmap) == min)){
+			bitarray_set_bit(vectorVictimas,i);
+		}
+	}
+
+	if(bitarray_get_max_bit(vectorVictimas) == tamanio) return false;
+	else return true;
+
 }
 
 
@@ -340,7 +366,7 @@ void planificarMap(){
 				t_cargaBitarray_aux bitmapAuxiliar[cantidad_nodos_activos];
 				bitmapAuxiliar = cargarBitmapAuxiliar(bitmap,bloques_alineados);
 				int bloque, nodo;
-				algoritmoMap(bitmapAuxiliar, bloque, nodo, &vector_contador);
+				algoritmoMap(bitmapAuxiliar, bloque, nodo, &vector_contador, bloques_alineados);
 				k++;
 			}
 		}
