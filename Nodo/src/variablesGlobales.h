@@ -28,27 +28,25 @@
 #include <sys/types.h>
 #include <fcntl.h>
 #include <sys/mman.h>
-
+#include <sys/ioctl.h>
+#include <netinet/in.h>
+#include <net/if.h>
+#include <arpa/inet.h>
 
 FILE* fileMapper;
 FILE* fileReducer;
-FILE* registroDeLosBloques;
+FILE* nuevoArchivo;
 
 char *ip_nodo;
 int puerto_nodo;
-
 char *archivo_bin;
 char *dir_temp;
 char *nodo_nuevo;
+char *ip_fs;
+char *puerto_fs;
 
 char* script_mapper;
 char* script_reducer;
-
-char* pmap;
-int fd;
-struct stat mystat;
-char* punteroAlArray;//punteroAlArray
-int nuevoNodo;
 
 t_log* logger; // Log Global
 t_config* archivoConfiguracion;
@@ -58,16 +56,14 @@ void *mapper(void* arg);
 void *reducer(void* arg);
 
 //Funciones de memoria
-char* mapearAMemoriaVirtual();
-char* mapeoDeArchivo(int fdr);
-int conseguirIntegerDelRegistro(FILE* fd,int nroDelBloque);
-void escribeEnArchivoSegunNroDeBloque(FILE* fd,int nroDelBloque,int tamanio);
+char* mapearAMemoriaVirtual(char* archivo_bin);
+int tamanioEspecifico(char* pmap,int nroDelBloque);
 void formateoElRegistro(FILE* fdf);
 
 //Funciones de serializacion y deserializacion
-int recive_y_deserialisa_SCRIPT(char *script, int socket, uint32_t tamanioTotal);
+int recive_y_deserialisa_CHARp(char *script, int socket, uint32_t tamanioTotal);
 int recive_y_deserialisa_SET_BLOQUE(estructuraSetBloque *bloque, int socket, uint32_t tamanioTotal);
-char* serializarIPyPUERTO(char* ip_fs,char* puerto_fs, int tamanioData);
+char* serializarIP_PUERTO_ESTADOnodo(char* ip_fs,char* puerto_fs,char* nodo_nuevo, int tamanioData);
 char* serializarBloqueDeDatos(char* bloque, int tamanioData);
 
 //Funciones de handshake
@@ -81,5 +77,9 @@ void *atenderJob(void* arg);
 //Funciones para escribir archivos
 int escribirScript(char* script_virtual,char* dir_temp, int comando);
 
+//Para laburar con archivos de configuracion
+void crearNuevaConfiguracion();
+void leerRutaDeConfiguracion();
+char* obtenerIP();
 
 #endif /* VARIABLESGLOBALES_H_ */

@@ -12,6 +12,7 @@
 #define PACKAGESIZE 1024	// Define cual va a ser el size maximo del paquete a enviar
 
 #include "../commons/log.h"
+#include "../commons/collections/list.h"
 
 
 
@@ -28,12 +29,15 @@
 }t_marta_job;
 
 
+
+
 //JOB -> MARTA
 typedef struct{
 	int numeroBloque;
 	int rutina;
 	int resultado; // 0 = FALLO , 1 = EXITOSO
 	int idNodo;
+	char* nombreArchivo;   //AGREGAR ESTO EN LA PARTE DEL SEND A MARTA DEL NODOO
 }t_job_marta;
 
 
@@ -100,6 +104,25 @@ typedef struct{
 	char* data;
 	int tamanioData;
 }estructuraGetBloque;
+
+typedef struct{// a la hora de mandar el tamanio total tenemos que ver si es map o reduce lo que nos va  a llegar
+	int tamanio;
+    int rutina;
+} t_tamanio;
+
+typedef struct{
+	int rutina; // 1 mapper 2 reducer
+	char* ip_nodo;
+	char* puerto;
+	t_list* lista_nombres_archivos_temporales; // donde devuelve el resultado
+	int idNodo;
+}t_marta_job_archivo_reduce;
+
+typedef struct{
+	char* nombreArchivo;
+	t_list listaDeBloques;
+	int idNodo;
+}t_datos_map;
 
 
 int crearServidor(char* PUERTO);

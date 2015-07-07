@@ -43,6 +43,7 @@ void *atenderMarta(void*arg){
 
 	bson_t *doc;
 	bson_t *query;
+	mongoc_cursor_t *cursor;
 
 	int offset;
 	int size_to_send;
@@ -98,7 +99,7 @@ void *atenderMarta(void*arg){
 		}
 
 	}
-
+	bson_destroy (query);
 	return NULL;
 }
 

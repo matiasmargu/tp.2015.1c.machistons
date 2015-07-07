@@ -19,6 +19,8 @@ int main()
 	archivos = mongoc_client_get_collection (client, "fileSystem", "archivos");
 	nodos = mongoc_client_get_collection (client, "fileSystem", "nodos");
 	//
+	aplicarNodoGlobal();
+	nodosActivos = 0;
 
 	fd_set master;
 	fd_set read_fds;
@@ -60,11 +62,14 @@ int main()
 
 	fdmax = listener;
 
+	int entero; //Para el handshake
+
 	logger = log_create("LOG_FILESYSTEM", "log_filesystem" ,false, LOG_LEVEL_INFO);
 
 	for (;;){
 	read_fds = master;
 	select(fdmax+1, &read_fds, NULL, NULL, NULL);
+	printf("select activo\n");
 	for(i = 0; i <= fdmax; i++)
 	{
 	    if(FD_ISSET(i, &read_fds))
@@ -106,7 +111,7 @@ int main()
 	    					log_info(logger,"Hilo Marta creado satisfactoriamente");
 	    					contHM++;
 	    					break;
-	    			case 2: // Este es Nodo
+	    				case 2: // Este es Nodo
 	    					socketNodoGlobal = i;
 	    					pthread_create(hiloNodo+contHN, NULL, agregoNodoaMongo, (void *)i);
 	    					log_info(logger,"Hilo Nodo creado satisfactoriamente");

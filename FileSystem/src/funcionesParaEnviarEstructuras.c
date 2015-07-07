@@ -67,6 +67,11 @@ void *agregoNodoaMongo (void*arg){
 	recv(socket, &tamanioTotalMensaje, sizeof(int), 0);
 	if(recive_y_deserialisa_IPyPUERTO_Nodo(&ipyPuertoNodo, socket, tamanioTotalMensaje)){
 		doc = bson_new ();
+		BSON_APPEND_UTF8(doc, "Es", "Nodo");
+		pthread_mutex_lock(&mutex);
+		BSON_APPEND_INT32(doc, "ID Nodo", idNodoGlobal);
+		idNodoGlobal++;
+		pthread_mutex_unlock(&mutex);
 		BSON_APPEND_INT32(doc, "Socket", socket);
 		BSON_APPEND_UTF8 (doc, "IP", ipyPuertoNodo.IP);
 		BSON_APPEND_UTF8(doc, "PUERTO" , ipyPuertoNodo.PUERTO);
@@ -79,8 +84,24 @@ void *agregoNodoaMongo (void*arg){
 	return NULL;
 }
 
-void escribirBloqueEnNodo (int socket, estructuraSetBloque estructura){
+void aplicarNodoGlobal(){
+	bson_t *query;
+	int cantidad;
+	query = BCON_NEW("Es","Nodo");
+	cantidad = mongoc_collection_count(nodos, MONGOC_QUERY_NONE, query,0,0,NULL,NULL);
+	idNodoGlobal = cantidad + 1;
+	bson_destroy (query);
+}
 
+void verificarEstadoFS(){
+	bson_t *query;
+	query = BCON_NEW("Estado","Disponible");
+	nodosActivos = mongoc_collection_count(nodos, MONGOC_QUERY_NONE, query,0,0,NULL,NULL);
+	bson_destroy (query);
+}
+
+void escribirBloqueEnNodo (int socket, estructuraSetBloque estructura){
+	int entero; //Para el handshake
 	entero = 2;
 	send(socket, &entero, sizeof(int), 0);
 	estructura.tamanioData = sizeof(int) + sizeof(int) + strlen(estructura.data) + 1;
@@ -92,6 +113,7 @@ void escribirBloqueEnNodo (int socket, estructuraSetBloque estructura){
 }
 
 char *pedirContenidoBloqueA (int socket, int nroBloque){
+	int entero; //Para el handshake
 	entero = 1;
 	send(socket, &entero, sizeof(int), 0);
 	entero = nroBloque;
@@ -133,35 +155,72 @@ void agregarCopia (bson_t *documento, char* numeroCopia, int idNodo, int bloque)
 	bson_destroy (doc4);
 }
 
-void insertarArchivoAMongo (t_archivo archivo){
+void insertarArchivoAMongoYAlMDFS (char* path){
 	bson_t *doc;
 	bson_t *doc2;
 	bson_t *doc3;
 	bson_error_t error;
+	int fd, contadorBloque;
+	struct stat mystat;
+	int cantidadBloques;
+	div_t restoDivision;
+	int i;
+
+	char *pmap;
+
+	char *contenidoBloque;
+	long long tamanioBloque = 20971520; // Tamanio 20 MB
+	long long bloqueALeer;
+	long long bloqueAnterior;
+	long long tamanioRestanteDelArchivo;
+
+	fd = open(path,O_RDWR);
+	fstat(fd,&mystat);
+	restoDivision = div(mystat.st_size,tamanioBloque);
+	if(restoDivision.rem > 0){
+		cantidadBloques = restoDivision.quot + 1;
+	}else{
+		cantidadBloques = restoDivision.quot;
+	}
+
+	pmap = mmap(0,mystat.st_size, PROT_READ|PROT_WRITE ,MAP_SHARED,fd,0);
+	bloqueAnterior = 0;
+	tamanioRestanteDelArchivo = mystat.st_size;
 
 	doc = bson_new ();
 	doc2 = bson_new ();
 
-	doc3 = bson_new ();
-	agregarCopia(doc3, "1", 65, 40);
-	agregarCopia(doc3, "2", 21, 210);
-	agregarCopia(doc3, "3", 76, 39);
-	BSON_APPEND_DOCUMENT(doc2, "0", doc3);
-	bson_destroy (doc3);
+	for(contadorBloque=0;contadorBloque < cantidadBloques;contadorBloque++){
+		bloqueALeer = tamanioBloque + bloqueAnterior;
+		while(pmap[bloqueALeer] != '\n'){
+			bloqueALeer = bloqueALeer - 1;
+		}
+		bloqueALeer = bloqueALeer - bloqueAnterior;
+		contenidoBloque = malloc(bloqueALeer);
+		memcpy(contenidoBloque,pmap+bloqueAnterior,bloqueALeer);
+		bloqueAnterior = bloqueALeer + 1;
 
-	doc3 = bson_new ();
-	agregarCopia(doc3, "1", 2, 56);
-	agregarCopia(doc3, "2", 5, 190);
-	agregarCopia(doc3, "3", 8, 23);
-	BSON_APPEND_DOCUMENT(doc2, "1", doc3);
-	bson_destroy (doc3);
+		escribirBloque.data = contenidoBloque;
+		doc3 = bson_new ();
 
-	BSON_APPEND_UTF8(doc, "Nombre", archivo.nombre);
-	BSON_APPEND_INT32 (doc, "Tamanio", archivo.tamanio);
-	BSON_APPEND_INT32(doc, "Directorio Padre" , archivo.directorioPadre);
-	BSON_APPEND_UTF8(doc, "Direccion Fisica", archivo.path);
-	BSON_APPEND_INT32(doc, "Estado", archivo.estado);
-	BSON_APPEND_INT32(doc, "Cantidad Bloques", archivo.cantidadBloque);
+		i = socketNodoGlobal;
+		escribirBloque.bloque = 40;
+		escribirBloqueEnNodo(i,escribirBloque);
+		agregarCopia(doc3, "3", 76, 40);
+
+
+		BSON_APPEND_DOCUMENT(doc2, string_itoa(contadorBloque), doc3);
+		bson_destroy (doc3);
+
+		free(contenidoBloque);
+	}
+
+	BSON_APPEND_UTF8(doc, "Nombre", "Marceloasdasdasdasd");
+	BSON_APPEND_INT32 (doc, "Tamanio", mystat.st_size);
+	BSON_APPEND_INT32(doc, "Directorio Padre" , 53);
+	BSON_APPEND_UTF8(doc, "Direccion Fisica", path);
+	BSON_APPEND_UTF8(doc, "Estado", "Disponible");
+	BSON_APPEND_INT32(doc, "Cantidad Bloques", cantidadBloques);
 	BSON_APPEND_ARRAY(doc, "Bloques", doc2);
 
 	if (!mongoc_collection_insert (archivos, MONGOC_INSERT_NONE, doc, NULL, &error)) {
@@ -170,6 +229,7 @@ void insertarArchivoAMongo (t_archivo archivo){
 
 	bson_destroy (doc);
 	bson_destroy (doc2);
+	munmap(pmap,strlen(pmap));
 }
 
 t_copia infoBloqueyCopia(int nroBloque, int nroCopia, bson_t *doc4){

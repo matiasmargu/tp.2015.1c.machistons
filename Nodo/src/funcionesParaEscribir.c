@@ -22,5 +22,6 @@ int escribirScript(char* script_virtual,char* dir_temp, int comando){
 		fputs(script_reducer,fileReducer);
 		fclose(fileReducer);
 	}
+	free(direccion);
 	return status;
 }
