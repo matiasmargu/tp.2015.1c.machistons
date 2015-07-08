@@ -225,7 +225,7 @@ void  *conectarseAlJob(void*arg){
    		nombre.archivo = archivos_separados[a];
    		if(!(list_any_satisfy(lista_archivos, (nombre.archivo == archivo.nombre)))){
    			// Le pide al FS que le envie los datos del archivo
-   			tamanioTotal = sizeof(int)+ strlen(nombre.archivo)+1;
+   			tamanioTotal = sizeof(int)+ string_length(nombre.archivo)+1;
    			send(socketFS, &tamanioTotal, sizeof(int),0);
    			archivoAEnviar =  serializar_charpuntero( &nombre, tamanioTotal);
    			send(socketFS,archivoAEnviar,tamanioTotal,0);
@@ -282,7 +282,7 @@ int calcularCantidadDeBloques(t_list* lista_archivos){
 void inicializarBitarray(t_bitarray *bitmap, int tamanio){
 	int i;
 	for(i=0;i < tamanio;i++){
-		 bitarray_set_bit(bitmap, i);
+		 bitarray_clean_bit(bitmap, i);
 	}
 }
 
@@ -290,34 +290,32 @@ int buscarPorNodo(int idNodo, int nodos_activos[], int pos){
 	return 1;
 }
 
-t_cargaBitarray_aux *armarVectorDeBitarray(int cantidadDeNodos, int nodos_activos[], int sub_indice){
+t_cargaBitarray_aux *armarVectorDeBitarray(t_cargaBitarray_aux *vectorDeBitArrays, int cantidadDeNodos, int nodos_activos[], int *sub_indice){
 
-	int f;
 	//int cantidadDeBloquesTotales = calcularCantidadDeBloques(lista_archivos);
-	t_cargaBitarray_aux vectorDeBitArrays[] = malloc(sizeof(t_cargaBitarray_aux));
 	t_archivo *un_archivo;
 	// OJO CON ESTO, NO ESTOY SEGURO SI NO HAY QUE PASARLO CARGADO CON 0 PREVIAMENTE
-	char* un_nombre = malloc(cantidadDeNodos * sizeof(char));
+	char *un_nombre = malloc(cantidadDeNodos * sizeof(char));
 
 	//seteo los bitarrays
 	int j,h, k;
-	sub_indice = 0;
+	(*sub_indice) = 0;
 	for(j=0 ; j< list_size(lista_archivos);j++){
 		un_archivo = list_get(lista_archivos,j);
 		for(h=0;h < un_archivo->cantidadDeBloques;h++){
 			t_bloque* bloque = list_get(un_archivo->bloques,h);
 
-			vectorDeBitArrays = realloc(vectorDeBitArrays,sizeof(t_cargaBitarray_aux)*(sub_indice+1));
-			vectorDeBitArrays[sub_indice].nombre_arch = un_archivo->nombre;
-			vectorDeBitArrays[sub_indice].bloque_arch = bloque->NumeroBloque;
-			vectorDeBitArrays[sub_indice].bitmap = bitarray_create(&un_nombre, cantidadDeNodos);
-			inicializarBitarray(vectorDeBitArrays[sub_indice].bitmap, cantidadDeNodos);
+			vectorDeBitArrays = realloc(vectorDeBitArrays,sizeof(t_cargaBitarray_aux)*((*sub_indice)+1));
+			vectorDeBitArrays[(*sub_indice)].nombre_arch = un_archivo->nombre;
+			vectorDeBitArrays[(*sub_indice)].bloque_arch = bloque->NumeroBloque;
+			vectorDeBitArrays[(*sub_indice)].bitmap = bitarray_create(un_nombre, cantidadDeNodos);
+			inicializarBitarray(vectorDeBitArrays[(*sub_indice)].bitmap, cantidadDeNodos);
 
 				for(k=0;k < 3; k++){
 					int pos;
-					if(buscarPorNodo(bloque->copias[k]->idNodo, nodos_activos, pos)) bitarray_set_bit(vectorDeBitArrays[sub_indice].bitmap, pos);
+					if(buscarPorNodo(bloque->copias[k]->idNodo, nodos_activos, pos)) bitarray_set_bit(vectorDeBitArrays[(*sub_indice)].bitmap, pos);
 				}
-			sub_indice ++;
+			(*sub_indice) ++;
 		}
 	}
 
@@ -326,36 +324,17 @@ t_cargaBitarray_aux *armarVectorDeBitarray(int cantidadDeNodos, int nodos_activo
 
 }
 
-void algoritmoMap(t_cargaBitarray_aux *bitmapAuxiliar,int bloque,int nodo,int *vector_contador, int cant){
 
-	char *vectorVictimas;
-	bitarray_create(vectorVictimas,cant);
-
-	bool r = buscarVictimasPorBloque(&bitmapAuxiliar, cant, vectorVictimas);
-	if(r == false){
-		r = buscarVictimaPorNodo();
-		if(r == false){
-			buscoPorContadores();
-		}
-		else{
-			//asigno
-		}
-	}
-	else{
-		//asigno
-	}
-}
-
-bool buscarVictimaPorBloque(t_cargaBitarray_aux bitmap[], int tamanio, t_bitarray *vectorVictimas){
-	int min = bitarray_get_max_bit(bitmap[0]->bitmap);
+bool buscarVictimasPorBloque(t_cargaBitarray_aux bitmap[], int tamanio, t_bitarray *vectorVictimas){
+	int min = bitarray_get_max_bit(bitmap[0].bitmap);
 	int victim_pos = 0;
 	int i;
 	bool flag = false;
 
 	for(i=1;i<=tamanio;i++){
-		if((bitarray_get_max_bit(bitmap[i]->bitmap)) < min){
+		if((bitarray_get_max_bit(bitmap[i].bitmap)) < min){
 			bitarray_set_bit(vectorVictimas,i);
-			min = bitarray_get_max_bit(bitmap[i]->bitmap);
+			min = bitarray_get_max_bit(bitmap[i].bitmap);
 			victim_pos = i;
 			flag = true;
 		}
@@ -363,7 +342,7 @@ bool buscarVictimaPorBloque(t_cargaBitarray_aux bitmap[], int tamanio, t_bitarra
 	if(flag == false) bitarray_set_bit(vectorVictimas,0);
 
 	for(i=0;i<=tamanio;i++){
-		if((i != victim_pos) && (bitarray_get_max_bit(bitmap[i]->bitmap) == min)){
+		if((i != victim_pos) && (bitarray_get_max_bit(bitmap[i].bitmap) == min)){
 			bitarray_set_bit(vectorVictimas,i);
 		}
 	}
@@ -372,6 +351,25 @@ bool buscarVictimaPorBloque(t_cargaBitarray_aux bitmap[], int tamanio, t_bitarra
 	else return true;
 
 }
+
+int algoritmoMap(t_cargaBitarray_aux *bitmapAuxiliar, t_bitarray *vectorVictimas, int *vector_contador, int cant){
+
+	bool r = buscarVictimasPorBloque(bitmapAuxiliar, cant, vectorVictimas);
+	if(r == false){
+		r = buscarVictimasPorNodo();
+		if(r == false){
+			buscarVictimasPorContadores();
+		}
+		else{
+			return 0;
+		}
+	}
+
+	return 1;
+
+}
+
+
 
 
 void planificarMap(){
@@ -386,21 +384,30 @@ void planificarMap(){
 		pthread_mutex_unlock(&mutex_nodos);
 
 
-		int tamanio;
-		t_cargaBitarray_aux bitmap[] = armarVectorDeBitarray(cantidad_nodos_activos, nodos_activos, tamanio);
-		int division = tamanio/cantidad_nodos_activos;
-		int resto_division = tamanio%cantidad_nodos_activos;
+		int *tamanio = malloc(sizeof(int));
+		t_cargaBitarray_aux *bitmap = malloc(sizeof(t_cargaBitarray_aux));
+		armarVectorDeBitarray(bitmap, cantidad_nodos_activos, nodos_activos, tamanio);
+		int division = (*tamanio)/cantidad_nodos_activos;
+		int resto_division = (*tamanio)%cantidad_nodos_activos;
 		if(resto_division == 0) division--;
-		int vector_contador[cantidad_nodos_activos];
+		int *vector_contador = malloc(sizeof(int)*cantidad_nodos_activos);
 		int j;
 		for(j=0;j <= division;j++){
 			int k = 0;
 			int bloques_alineados = division;
 			if((resto_division != 0) && (j == division)) bloques_alineados = resto_division-1;
 			while(k <= bloques_alineados){
-				bitmapAuxiliar = cargarBitmapAuxiliar(bitmap,bloques_alineados);
-				int bloque, nodo;
-				algoritmoMap(bitmapAuxiliar, bloque, nodo, &vector_contador, bloques_alineados);
+				cargarBitmapAuxiliar(bitmapAuxiliar, bitmap, bloques_alineados);
+
+				char *vectorVictimas_string = malloc(sizeof(char)*bloques_alineados);
+				t_bitarray *vectorVictimas = bitarray_create(vectorVictimas_string,bloques_alineados);
+
+				algoritmoMap(bitmapAuxiliar, vectorVictimas, vector_contador, bloques_alineados);
+				if (j == 0){
+					//si j==0 quiere decir que la alineacion de vectorVictimas es pura
+					//si j > 0 quiere decir que la alineacion de vectorVictimas es k*cantidad_nodos_activos
+					// alineacion = posicion del bloque dentro del bitmap grande
+				}
 				k++;
 			}
 		}
@@ -566,7 +573,7 @@ serializar_nodo_a_mapear(t_nodos nodo_a_mapear,int tamanioTotal){
 		int offset = 0;
 		int size_to_send;
 
-		size_to_send =  sizeof(nodo_a_mapear.);
+		size_to_send =  sizeof(nodo_a_mapear);
 		memcpy(serializedPackage + offset, &(bloque->bloque), size_to_send);
 		offset += size_to_send;
 
