@@ -26,7 +26,7 @@
 t_log* logger; // Log Global
 
 // VARIABLE GLOBAL
-t_list *lista_archivos;
+t_list *lista_archivos; // guarda t_archivo
 t_list *lista_nodos_estado;
 pthread_mutex_t mutex ;//= PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutex_nodos;// = PTHREAD_MUTEX_INITIALIZER;
@@ -73,7 +73,7 @@ typedef struct{
 typedef struct{
 	char* nombre_arch;
 	int bloque_arch;
-	t_bitarray bitmap;
+	t_bitarray *bitmap;
 }t_cargaBitarray_aux;
 
 typedef struct{
