@@ -325,47 +325,68 @@ t_cargaBitarray_aux *armarVectorDeBitarray(t_cargaBitarray_aux *vectorDeBitArray
 }
 
 
-bool buscarVictimasPorBloque(t_cargaBitarray_aux bitmap[], int tamanio, t_bitarray *vectorVictimas){
+int buscarVictimasPorBloque(t_cargaBitarray_aux bitmap[], int tamanio, t_bitarray *vectorVictimas){
 	int min = bitarray_get_max_bit(bitmap[0].bitmap);
-	int victim_pos = 0;
 	int i;
 	bool flag = false;
-
+	// busco el menor
 	for(i=1;i<=tamanio;i++){
-		if((bitarray_get_max_bit(bitmap[i].bitmap)) < min){
+		if((bitarray_get_max_bit(bitmap[i].bitmap)) <= min){
 			bitarray_set_bit(vectorVictimas,i);
 			min = bitarray_get_max_bit(bitmap[i].bitmap);
-			victim_pos = i;
 			flag = true;
 		}
 	}
+	// si flag es false, el primero es el elegido
 	if(flag == false) bitarray_set_bit(vectorVictimas,0);
-
-	for(i=0;i<=tamanio;i++){
-		if((i != victim_pos) && (bitarray_get_max_bit(bitmap[i].bitmap) == min)){
-			bitarray_set_bit(vectorVictimas,i);
-		}
+	// 0 = no pudo encontrar
+	// 1 = encontro 1 victima
+	// 2 = encontro 2 o mas victimas
+	if(bitarray_get_max_bit(vectorVictimas) == 0) return 0;
+	else{
+		if(bitarray_get_max_bit(vectorVictimas) == 1) return 1; else return 2;
 	}
-
-	if(bitarray_get_max_bit(vectorVictimas) == tamanio) return false;
-	else return true;
 
 }
 
-int algoritmoMap(t_cargaBitarray_aux *bitmapAuxiliar, t_bitarray *vectorVictimas, int *vector_contador, int cant){
+bool buscarVictimasPorContadores(t_cargaBitarray_aux bitmap[], int tamanio, t_bitarray *vectorVictimas, int *vector_contador){
 
-	bool r = buscarVictimasPorBloque(bitmapAuxiliar, cant, vectorVictimas);
-	if(r == false){
-		r = buscarVictimasPorNodo();
-		if(r == false){
-			buscarVictimasPorContadores();
+	int i, victim;
+	bool flag = false;
+	for(i=0;i<tamanio;i++){
+		if(bitarray_test_bit(vectorVictimas,i) == 1 && flag == false){
+			victim = i;
+			flag = true;
 		}
-		else{
-			return 0;
+		else if(bitarray_test_bit(vectorVictimas,i) == 1 && flag == true){
+			if(vector_contador[i] < vector_contador[victim]){
+				victim = i;
+			}
 		}
 	}
+	//limpio el vector victimas, dejando solo a la victima elegida
+	for(i=0;i<tamanio;i++) if(i != victim) bitarray_clean_bit(vectorVictimas,i);
+}
 
-	return 1;
+int algoritmoMap(t_cargaBitarray_aux *bitmapAuxiliar, int *vector_contador, int cant){
+
+
+
+	int r = buscarVictimasPorBloque(bitmapAuxiliar, cant, vectorVictimas);
+	if(r == 2){
+		r = buscarVictimasPorNodo();
+		if(r == 2){
+			r = buscarVictimasPorContadores(bitmapAuxiliar, cant, vectorVictimas, vector_contador);
+			if (r == false){
+				return 0;
+			}
+		}
+	}
+	// busco el bloque que se eligio y lo devuelvo
+	for(r=0;r<cant;r++){
+		if(bitarray_test_bit(vectorVictimas,r) == 1) return r;
+	}
+	free(vectorVictimas);
 
 }
 
@@ -390,19 +411,25 @@ void planificarMap(){
 		int division = (*tamanio)/cantidad_nodos_activos;
 		int resto_division = (*tamanio)%cantidad_nodos_activos;
 		if(resto_division == 0) division--;
+		// vector_contador = vector de contadores para planificar (esto no cambia hasta que termina el planificarMap)
 		int *vector_contador = malloc(sizeof(int)*cantidad_nodos_activos);
 		int j;
+		// inicializo vector_contador
+		for(j=0;j<cantidad_nodos_activos;j++) vector_contador[j] = 0;
+
 		for(j=0;j <= division;j++){
 			int k = 0;
 			int bloques_alineados = division;
 			if((resto_division != 0) && (j == division)) bloques_alineados = resto_division-1;
+
 			while(k <= bloques_alineados){
+				// tengo que cargar el auxiliar con los bloques que va a planificar el algoritmo de map
+				// ej: si es la primera pasada, auxiliar va a tener la cantidad de bloques
+				// si es la 2da pasada, auxiliar va a tener la cantidad de bloques menos el que ya se eligio antes
 				cargarBitmapAuxiliar(bitmapAuxiliar, bitmap, bloques_alineados);
 
-				char *vectorVictimas_string = malloc(sizeof(char)*bloques_alineados);
-				t_bitarray *vectorVictimas = bitarray_create(vectorVictimas_string,bloques_alineados);
-
-				algoritmoMap(bitmapAuxiliar, vectorVictimas, vector_contador, bloques_alineados);
+				int victim_pos = algoritmoMap(bitmapAuxiliar, vector_contador, bloques_alineados);
+				vector_contador[victim_pos] ++;
 				if (j == 0){
 					//si j==0 quiere decir que la alineacion de vectorVictimas es pura
 					//si j > 0 quiere decir que la alineacion de vectorVictimas es k*cantidad_nodos_activos
@@ -411,6 +438,7 @@ void planificarMap(){
 				k++;
 			}
 		}
+		free(vector_contador);
 	}
 
 }
