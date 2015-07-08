@@ -27,7 +27,7 @@ void *atenderConsola(void*arg) {
 	bson_t *query;
 	mongoc_cursor_t *cursor;
 	bson_iter_t iter;
-	int socketNodo;
+	int idNodo;
 	char* IPNodo;
 	char* PUERTONodo;
 
@@ -91,10 +91,10 @@ void *atenderConsola(void*arg) {
 
 					while (mongoc_cursor_next (cursor, &doc)) {
 						if (bson_iter_init (&iter, doc)) {
-							if(bson_iter_find (&iter, "Socket"))socketNodo = bson_iter_int32(&iter);
+							if(bson_iter_find (&iter, "ID Nodo"))idNodo = bson_iter_int32(&iter);
 							if(bson_iter_find (&iter, "IP"))IPNodo = bson_iter_utf8(&iter,NULL);
 							if(bson_iter_find (&iter, "PUERTO"))PUERTONodo = bson_iter_utf8(&iter,NULL);
-							printf("%i\n%s\n%s\n",socketNodo,IPNodo,PUERTONodo);
+							printf("Socket %i\n%s\n%s\n",idNodo,IPNodo,PUERTONodo);
 						}
 					}
 					verificarEstadoFS();

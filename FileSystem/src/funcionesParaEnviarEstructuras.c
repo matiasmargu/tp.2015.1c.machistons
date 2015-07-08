@@ -62,29 +62,40 @@ int recive_y_deserialisa_IPyPUERTO_Nodo(estructuraIPyNodo *bloque, int socket, u
 
 void *agregoNodoaMongo (void*arg){
 	int socket = (int)arg;
+	int nodoNuevoOViejo;
 	bson_t *doc;
 	bson_error_t error;
 	int tamanioTotalMensaje;
 	estructuraIPyNodo ipyPuertoNodo;
 
-	recv(socket, &tamanioTotalMensaje, sizeof(int), 0);
-	if(recive_y_deserialisa_IPyPUERTO_Nodo(&ipyPuertoNodo, socket, tamanioTotalMensaje)){
-		doc = bson_new ();
-		BSON_APPEND_UTF8(doc, "Es", "Nodo");
-		pthread_mutex_lock(&mutex);
-		BSON_APPEND_INT32(doc, "ID Nodo", idNodoGlobal);
-		send(socket, &idNodoGlobal, sizeof(int), 0);
-		idNodoGlobal++;
-		pthread_mutex_unlock(&mutex);
-		BSON_APPEND_INT32(doc, "Socket", socket);
-		BSON_APPEND_UTF8 (doc, "IP", ipyPuertoNodo.IP);
-		BSON_APPEND_UTF8(doc, "PUERTO" , ipyPuertoNodo.PUERTO);
-		BSON_APPEND_UTF8(doc, "Estado", "No Disponible");
-		if (!mongoc_collection_insert (nodos, MONGOC_INSERT_NONE, doc, NULL, &error)) {
-    	        log_error(logger, error.message);
+	recv(socket, &nodoNuevoOViejo, sizeof(int),0);
+	switch(nodoNuevoOViejo){
+	case 32: //Nodo Nuevo
+		recv(socket, &tamanioTotalMensaje, sizeof(int), 0);
+		if(recive_y_deserialisa_IPyPUERTO_Nodo(&ipyPuertoNodo, socket, tamanioTotalMensaje)){
+			doc = bson_new ();
+			BSON_APPEND_UTF8(doc, "Es", "Nodo");
+			pthread_mutex_lock(&mutex);
+			BSON_APPEND_INT32(doc, "ID Nodo", idNodoGlobal);
+			send(socket, &idNodoGlobal, sizeof(int), 0);
+			idNodoGlobal++;
+			pthread_mutex_unlock(&mutex);
+			BSON_APPEND_INT32(doc, "Socket", socket);
+			BSON_APPEND_UTF8 (doc, "IP", ipyPuertoNodo.IP);
+			BSON_APPEND_UTF8(doc, "PUERTO" , ipyPuertoNodo.PUERTO);
+			BSON_APPEND_UTF8(doc, "Estado", "No Disponible");
+			if (!mongoc_collection_insert (nodos, MONGOC_INSERT_NONE, doc, NULL, &error)) {
+				log_error(logger, error.message);
+					}
+			bson_destroy (doc);
 		}
-		bson_destroy (doc);
+		break;
+	case 48: // Nodo Viejo
+		break;
+
 	}
+
+
 	return NULL;
 }
 
