@@ -21,19 +21,8 @@ int main(void) {
 
 	logger = log_create("LOG_JOB", "log_job" ,false, LOG_LEVEL_INFO);
 
-	char* puerto_marta;
-	char* ip_marta;
-	char* mapper;
-	char* reduce;
-	char* combiner;
-	char* lista_archivos;
-	char* archivo_resultado;
-	int i;
-	int c;
-	int tamanioTotal;
-	int numero;
-	int saludo;
-	int handshakeMarta;
+	char* puerto_marta,ip_marta,mapper,reduce,combiner,archivo_resultado,lista_archivos;
+	int tamanioTotal,numero,saludo,handshakeMarta,i,c,entero;
 	t_charpuntero structCombiner;
 	t_charpuntero nombre;
     t_marta_job Marta_Job;
@@ -119,6 +108,20 @@ int tamanioTotalReduce = sizeof(int)+ strlen(rutinaReduce.archivo)+1;
 send(socketNodo, &tamanioTotalReduce, sizeof(int),0);
 rutinaReduceAEnviar =  serializar_charpuntero(&rutinaReduce, tamanioTotalReduce);
 send(socketNodo,rutinaReduceAEnviar,tamanioTotal,0);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*
 //DE ACA PARA ABAJO NO BORRAR HAY QUE HACER MODIFICACIONES
