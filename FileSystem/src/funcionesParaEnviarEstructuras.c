@@ -42,6 +42,7 @@ int recive_y_deserialisa_IPyPUERTO_Nodo(estructuraIPyNodo *bloque, int socket, u
 	recv(socket, buffer, tamanioTotal, 0);
 
 	int tamanioDinamico;
+
 	memcpy(&tamanioDinamico, buffer + offset, sizeof(int));
 	offset += sizeof(int);
 	bloque->IP = malloc(tamanioDinamico);
@@ -54,6 +55,9 @@ int recive_y_deserialisa_IPyPUERTO_Nodo(estructuraIPyNodo *bloque, int socket, u
 	memcpy(bloque->PUERTO, buffer + offset, tamanioDinamico);
 	offset += tamanioDinamico;
 
+	memcpy(&bloque->tamanioArchivoDatos, buffer + offset, sizeof(int));
+	offset += sizeof(int);
+
 	free(buffer);
 	return status;
 }
@@ -64,13 +68,21 @@ void *agregoNodoaMongo (void*arg){
 	int socket = (int)arg;
 	int nodoNuevoOViejo;
 	bson_t *doc;
+	bson_t *doc2;
 	bson_error_t error;
 	int tamanioTotalMensaje;
 	estructuraIPyNodo ipyPuertoNodo;
-
+	div_t restoDivision;
+	long long tamanioBloque = 20971520; // Tamanio 20 MB
+	int cantidadBloques;
+	int a;
+	a= 60;
+	send(socket, &a, sizeof(int),0);
 	recv(socket, &nodoNuevoOViejo, sizeof(int),0);
+
 	switch(nodoNuevoOViejo){
 	case 32: //Nodo Nuevo
+		send(socket, &a, sizeof(int),0);
 		recv(socket, &tamanioTotalMensaje, sizeof(int), 0);
 		if(recive_y_deserialisa_IPyPUERTO_Nodo(&ipyPuertoNodo, socket, tamanioTotalMensaje)){
 			doc = bson_new ();
@@ -83,7 +95,15 @@ void *agregoNodoaMongo (void*arg){
 			BSON_APPEND_INT32(doc, "Socket", socket);
 			BSON_APPEND_UTF8 (doc, "IP", ipyPuertoNodo.IP);
 			BSON_APPEND_UTF8(doc, "PUERTO" , ipyPuertoNodo.PUERTO);
+			restoDivision = div(ipyPuertoNodo.tamanioArchivoDatos,tamanioBloque);
+			if(restoDivision.rem > 0){
+				cantidadBloques = restoDivision.quot + 1;
+			}else{
+				cantidadBloques = restoDivision.quot;
+			}
+			BSON_APPEND_UTF8(doc, "Coneccion", "Conectado");
 			BSON_APPEND_UTF8(doc, "Estado", "No Disponible");
+			BSON_APPEND_INT32(doc, "Cantidad de Bloques Total", cantidadBloques);
 			if (!mongoc_collection_insert (nodos, MONGOC_INSERT_NONE, doc, NULL, &error)) {
 				log_error(logger, error.message);
 					}
@@ -91,6 +111,7 @@ void *agregoNodoaMongo (void*arg){
 		}
 		break;
 	case 48: // Nodo Viejo
+		printf("matis gays\n");
 		break;
 
 	}
