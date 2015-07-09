@@ -14,6 +14,7 @@
 
 
 int main(void) {
+	printf("a\n");
 
 	char* rutaArchivoConfiguracion = "/home/utnso/git/tp-2015-1c-machistons/Configuracion/job.conf";
 
@@ -30,6 +31,7 @@ int main(void) {
     t_job_nodo Job_Nodo;
 
 
+    printf("a\n");
 //LEEMOS TODOS LOS ARCHIVOS DE LA CONFIGURACION
 archivoConfiguracion = config_create(rutaArchivoConfiguracion);
 puerto_marta = config_get_string_value(archivoConfiguracion, "PUERTO_MARTA");
@@ -42,12 +44,12 @@ archivo_resultado = config_get_string_value(archivoConfiguracion, "RESULTADO");
 
 //NOS CONECTAMOS CON MARTA
 int socketMarta = crearCliente (ip_marta, puerto_marta);
-handshakeMarta = 9;
+handshakeMarta = 72;
 send(socketMarta,&handshakeMarta,sizeof(int),0);
-recv(socketMarta, &saludo, sizeof(int),0);
+//recv(socketMarta, &saludo, sizeof(int),0);
 log_info(logger,"Conexion establecida con proceso Marta");
 printf("Conexion establecida con proceso Marta:%i \n",saludo);
-
+/*
 //ACA LE MANDAMOS A MARTA LA LISTA DE ARCHIVOS COMO UN CHAR*
 char* archivoAEnviar;
 nombre.archivo = lista_archivos;
@@ -109,17 +111,15 @@ int tamanioTotalReduce = sizeof(int)+ strlen(rutinaReduce.archivo)+1;
 send(socketNodo, &tamanioTotalReduce, sizeof(int),0);
 rutinaReduceAEnviar =  serializar_charpuntero(&rutinaReduce, tamanioTotalReduce);
 send(socketNodo,rutinaReduceAEnviar,tamanioTotal,0);
-
-
+*/
+pthread_t hilomap;
 
 // hecho por mati N ayer :D
 while (x!=1){
 	recv(socketMarta,&entero,sizeof(int),0);
 	switch(entero){
-	case 1: // aca viene un map
-		recv(socketMarta,&prueba,sizeof(int),0);
-		pthread_t hiloMap;
-		pthread_create(&hiloMap,NULL,mandarPruebaAMarta,(void *)prueba);
+	case 1: // aca vieene un map
+		pthread_create(&hilomap,NULL,mandarPruebaAMarta,(void *)socketMarta);
 		break;
 	case 2: // aca viene un reduce
 		recv(socketMarta,&prueba,sizeof(int),0);
@@ -127,10 +127,10 @@ while (x!=1){
 		pthread_create(&hiloReduce,NULL,mandarPruebaAMarta,(void *)prueba);
 		break;
 	case 3: // aca me viene y me dice que ya se termino
-		x = 0;
+		x = 1;
 	}
 }
-
+/*/
 while (y!=1){
 	recv(socketNodo,&entero2,sizeof(int),0);
 	switch(entero2){
@@ -145,11 +145,11 @@ while (y!=1){
 		pthread_create(&hiloRespuestaReduce,NULL,mandarPrueba2ANodo,(void *)prueba2);
 		break;
 	case 3: // aca me viene y me dice que ya se termino
-		y = 0;
+		y = 1;
 	}
 }
 
-
+*/
 // estos warnings son boludos no pasa nada
 
 
@@ -182,7 +182,7 @@ while (y!=1){
 			pthread_create(&resultado, NULL, (void*) conectarseAlNodo, &CAN);
 			if(Marta_Job.rutina == 1){
 			log_info(logger,"Se creo un hilo mapper  "); //AGREGAR PARAMETROS RECIBIDOS
-			printf("Se creo un hilo mapper");
+			0printf("Se creo un hilo mapper");
 			}
 			else{log_info(logger,"Se creo un hilo reducer "); //AGREGAR PARAMETROS RECIBIDOS
 			printf("Se creo un hilo reducer");
@@ -212,7 +212,7 @@ while (y!=1){
 
 	return EXIT_SUCCESS;
 }
-}
+
 
 
 
