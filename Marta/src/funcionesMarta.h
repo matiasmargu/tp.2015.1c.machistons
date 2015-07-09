@@ -50,7 +50,7 @@ typedef struct {
 
 typedef struct{
 	int NumeroBloque;
-	t_copia **copias;
+	t_copia *copias;
 }t_bloque;
 
 typedef struct{

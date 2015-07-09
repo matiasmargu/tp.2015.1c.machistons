@@ -107,7 +107,7 @@ int recive_y_guarda_estructura(t_archivo arch, int socket, uint32_t tamanioTotal
 	offset += tamanioNombre;
 */
 	// COPIO LA CANT_BLOQUES DEL ARCHIVO
-	memcpy(&arch.cantidadDeBloques, buffer+offset, sizeof(int));
+	memcpy(&(arch.cantidadDeBloques), buffer+offset, sizeof(int));
 	offset += sizeof(int);
 
 	// COPIO LOS BLOQUES QUE CONTIENE EL ARCHIVO A UN ESTRUCTURA DE LISTA
@@ -116,7 +116,7 @@ int recive_y_guarda_estructura(t_archivo arch, int socket, uint32_t tamanioTotal
 	for(i=0; i< arch.cantidadDeBloques; i++){
 
 		t_bloque bloque;
-		memcpy(&bloque.NumeroBloque, buffer+offset, sizeof(int));
+		memcpy(&(bloque.NumeroBloque), buffer+offset, sizeof(int));
 		offset += sizeof(int);
 
 		int j;
@@ -156,7 +156,7 @@ char* serializar_charpuntero(t_charpuntero *nombre, int tamanioTotal){
 		}
 
 //FUNCION QUE EJECUTA EL HILO QUE ATIENDE A CADA JOB
-void  *conectarseAlJob(void*arg){
+void *conectarseAlJob(void*arg){
 
 	int socket = (int)arg;
 	int saludo = 9 ;
