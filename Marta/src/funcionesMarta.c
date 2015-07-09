@@ -325,71 +325,37 @@ t_cargaBitarray_aux *armarVectorDeBitarray(t_cargaBitarray_aux *vectorDeBitArray
 }
 
 
-int buscarVictimasPorBloque(t_cargaBitarray_aux bitmap[], int tamanio, t_cargaBitarray_aux *vectorVictimas){
+void buscarVictimasPorBloque(t_cargaBitarray_aux bitmap[], int tamanio, int *vector_contador, int cant_nodos, int *bloqueArch_pos, int *nodo){
 	int min = bitarray_get_max_bit(bitmap[0].bitmap);
+	int min_pos = 0;
 	int i;
-	bool flag = false;
 	// busco el menor
 	for(i=1;i<=tamanio;i++){
-		if((bitarray_get_max_bit(bitmap[i].bitmap)) <= min){
-			bitarray_set_bit(vectorVictimas->bitmap,i);
+		if((bitarray_get_max_bit(bitmap[i].bitmap)) < min){
 			min = bitarray_get_max_bit(bitmap[i].bitmap);
-			flag = true;
+			min_pos = i;
 		}
 	}
-	// si flag es false, el primero es el elegido
-	if(flag == false) bitarray_set_bit(vectorVictimas->bitmap,0);
-	// 0 = no pudo encontrar
-	// 1 = encontro 1 victima
-	// 2 = encontro 2 o mas victimas
-	if(bitarray_get_max_bit(vectorVictimas->bitmap) == 0) return 0;
-	else{
-		if(bitarray_get_max_bit(vectorVictimas->bitmap) == 1) return 1; else return 2;
-	}
-
+	//Del mas chico que encontre, defino donde se va a asignar por contadores de nodos
+	nodo = buscarVictimaPorContadores(bitmap[min_pos], vector_contador, cant_nodos);
+	bloqueArch_pos = min_pos;
 }
 
-buscarVictimasPorContadores(t_cargaBitarray_aux bitmap[], int tamanio, t_cargaBitarray_aux *vectorVictimas, int *vector_contador){
+int buscarVictimasPorContadores(t_cargaBitarray_aux bitmap, int *vector_contador, int cant_nodos){
 
-	int i, victim;
-	bool flag = false;
-	for(i=0;i<tamanio;i++){
-		if(bitarray_test_bit(vectorVictimas->bitmap,i) == 1 && flag == false){
-			victim = i;
-			flag = true;
-		}
-		else if(bitarray_test_bit(vectorVictimas->bitmap,i) == 1 && flag == true){
-			if(vector_contador[i] < vector_contador[victim]){
-				victim = i;
+	int i;
+	int min = 10000;
+	int nodo = 0;
+	for(i=0;i<cant_nodos;i++){
+		if(bitarray_test_bit(bitmap.bitmap)){
+			if(vector_contador[i] < min){
+				min = vector_contador[i];
+				nodo = i;
 			}
 		}
 	}
-	//limpio el vector victimas, dejando solo a la victima elegida
-	for(i=0;i<tamanio;i++) if(i == victim) bitarray_set_bit(vectorVictimas->bitmap,i);
+	return nodo;
 }
-
-algoritmoMap(t_cargaBitarray_aux *bitmapAuxiliar, int *vector_contador, t_cargaBitarray_aux *vectorVictimas, int cant){
-
-
-
-	int r = buscarVictimasPorBloque(bitmapAuxiliar, cant, vectorVictimas);
-	if(r == 2){
-		r = buscarVictimasPorNodo();
-		if(r == 2){
-			r = buscarVictimasPorContadores(bitmapAuxiliar, cant, vectorVictimas, vector_contador);
-			if (r == false){
-				;
-			}
-		}
-	}
-	// busco el bloque que se eligio y lo devuelvo
-	for(r=0;r<cant;r++){
-		if(bitarray_test_bit(vectorVictimas->bitmap,r) == 1) ;
-	}
-
-}
-
-
 
 
 void planificarMap(){
@@ -412,30 +378,30 @@ void planificarMap(){
 		if(resto_division == 0) division--;
 		// vector_contador = vector de contadores para planificar (esto no cambia hasta que termina el planificarMap)
 		int *vector_contador = malloc(sizeof(int)*cantidad_nodos_activos);
-		int j;
+		int j, bloqueArch_pos,bloque,nodo;
 		// inicializo vector_contador
 		for(j=0;j<cantidad_nodos_activos;j++) vector_contador[j] = 0;
-
+		//
 		for(j=0;j <= division;j++){
 			int k = 0;
-			int bloques_alineados = division;
-			if((resto_division != 0) && (j == division)) bloques_alineados = resto_division-1;
+			int tamanio_bitmapAux = division;
+			if((resto_division != 0) && (j == division)) tamanio_bitmapAux = resto_division-1;
+			// tengo que cargar el auxiliar con los bloques que va a planificar el algoritmo de map
+			// ej: si es la primera pasada, auxiliar va a tener la cantidad de bloques
+			// si es la 2da pasada, auxiliar va a tener la cantidad de bloques menos el que ya se eligio antes
+			cargarBitmapAuxiliar(bitmapAuxiliar, bitmap, tamanio_bitmapAux);
 
-			while(k <= bloques_alineados){
-				// tengo que cargar el auxiliar con los bloques que va a planificar el algoritmo de map
-				// ej: si es la primera pasada, auxiliar va a tener la cantidad de bloques
-				// si es la 2da pasada, auxiliar va a tener la cantidad de bloques menos el que ya se eligio antes
-				cargarBitmapAuxiliar(bitmapAuxiliar, bitmap, bloques_alineados);
-
+			while(k <= tamanio_bitmapAux){
+				/*
 				char *vectorVictimas_str = malloc(sizeof(char) * cantidad_nodos_activos);
 				t_cargaBitarray_aux *vectorVictimas = malloc(sizeof(t_cargaBitarray_aux));
 				vectorVictimas->bitmap = bitarray_create(vectorVictimas_str, cantidad_nodos_activos);
 				inicializarBitarray(vectorVictimas->bitmap, cantidad_nodos_activos);
+				*/
+				buscarVictimasPorBloque(bitmapAuxiliar, tamanio_bitmapAux, vector_contador, cantidad_nodos_activos, bloqueArch_pos, nodo);
+				bloque = bitmapAuxiliar[bloqueArch_pos].bloque_arch;
+				eliminarBloque(bitmapAuxiliar, bloqueArch_pos, tamanio_bitmapAux);
 
-				algoritmoMap(bitmapAuxiliar, vector_contador, vectorVictimas, bloques_alineados);
-				//aca hay que recorrer el vector victimas y buscar el que tiene el bit en 1.
-				// cuando lo encontramos vamos a buscar el bloque qe se asigno y lo eliminamos para la proxima pasada
-				vector_contador[victim_pos] ++;
 				if (j == 0){
 					//si j==0 quiere decir que la alineacion de vectorVictimas es pura
 					//si j > 0 quiere decir que la alineacion de vectorVictimas es k*cantidad_nodos_activos
