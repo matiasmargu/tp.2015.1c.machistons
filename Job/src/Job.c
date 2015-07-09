@@ -12,7 +12,6 @@
 
 //FALTA PONER EN LOG Cabeceras de mensajes enviados y recibidos de cada hilo/proceso
 
-void *mandarPruebaAMarta(void*arg);
 
 int main(void) {
 
@@ -24,7 +23,7 @@ int main(void) {
 	logger = log_create("LOG_JOB", "log_job" ,false, LOG_LEVEL_INFO);
 
 	char* puerto_marta,ip_marta,mapper,reduce,combiner,archivo_resultado,lista_archivos;
-	int tamanioTotal,numero,saludo,handshakeMarta,i,c,entero,x = 0,prueba;
+	int tamanioTotal,numero,saludo,handshakeMarta,i,c,entero,x = 0,prueba,y = 0,entero2,prueba2;
 	t_charpuntero structCombiner;
 	t_charpuntero nombre;
     t_marta_job Marta_Job;
@@ -132,18 +131,26 @@ while (x!=1){
 	}
 }
 
+while (y!=1){
+	recv(socketNodo,&entero2,sizeof(int),0);
+	switch(entero2){
+	case 1: // aca viene una respuesta de un map
+		recv(socketMarta,&prueba2,sizeof(int),0);
+		pthread_t hiloRespuestaMap;
+		pthread_create(&hiloRespuestaMap,NULL,mandarPrueba2ANodo,(void *)prueba2);
+		break;
+	case 2: // aca viene una respuesta de un reduce
+		recv(socketMarta,&prueba2,sizeof(int),0);
+		pthread_t hiloRespuestaReduce;
+		pthread_create(&hiloRespuestaReduce,NULL,mandarPrueba2ANodo,(void *)prueba2);
+		break;
+	case 3: // aca me viene y me dice que ya se termino
+		y = 0;
+	}
+}
+
 
 // estos warnings son boludos no pasa nada
-void *mandarPruebaAMarta(void*arg){
-
-	char * ip_marta,puerto_marta; // cuando se ponga el ip y el puerto se setean
-	int socketMarta = crearCliente (ip_marta/* poner ip*/, puerto_marta /* poner puerto*/);
-    int prueba = (int)arg;
-
-    send(socketMarta,prueba,sizeof(int),0);
-
-    return 0;
-}
 
 
 
@@ -206,5 +213,6 @@ void *mandarPruebaAMarta(void*arg){
 	return EXIT_SUCCESS;
 }
 }
+
 
 
