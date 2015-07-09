@@ -6,7 +6,7 @@
  */
 
 #include "funcionesMarta.h"
-
+/*
 int recive_y_deserialisa(t_charpuntero* nombre, int socket, uint32_t tamanioTotal){
 	int status;
 	char *buffer = malloc(tamanioTotal);
@@ -98,14 +98,14 @@ int recive_y_guarda_estructura(t_archivo arch, int socket, uint32_t tamanioTotal
 	recv(socket, buffer, tamanioTotal, 0);
 	//LO QUE RECIBO TIENE ESTA ESTRCTURA: [TAM_ESTRUC][TAM_NOM][NOMBRE][CANT_BLOQ]   [NUMERO_BLOQ][ID_NODO][NUMERO_BLOQ][ID_NODO][NUMERO_BLOQ][ID_NODO][NUMERO_BLOQ]
 
-/*	// COPIO EL NOMBRE DEL ARCHIVO
+	// COPIO EL NOMBRE DEL ARCHIVO
 	int tamanioNombre;
 	offset += sizeof(int);
 	memcpy(&tamanioNombre, buffer+offset, sizeof(int));
 	offset += sizeof(int);
 	memcpy(&arch.nombre, buffer+offset, tamanioNombre);
 	offset += tamanioNombre;
-*/
+
 	// COPIO LA CANT_BLOQUES DEL ARCHIVO
 	memcpy(&(arch.cantidadDeBloques), buffer+offset, sizeof(int));
 	offset += sizeof(int);
@@ -154,7 +154,7 @@ char* serializar_charpuntero(t_charpuntero *nombre, int tamanioTotal){
 
 			return serializedPackage;
 		}
-
+/*
 //FUNCION QUE EJECUTA EL HILO QUE ATIENDE A CADA JOB
 void *conectarseAlJob(void*arg){
 
@@ -285,7 +285,7 @@ void inicializarBitarray(t_bitarray *bitmap, int tamanio){
 		 bitarray_clean_bit(bitmap, i);
 	}
 }
-
+/*
 int buscarPorNodo(int idNodo, int nodos_activos[], int pos){
 	return 1;
 }
@@ -363,7 +363,7 @@ void planificarMap(){
 	int cantidad_nodos_activos = 4;	// ESTO ME LO MANDA EL FS, JUNTO CON LOS NODOS_ACTIVOS
 	int nodos_activos[cantidad_nodos_activos]; //LOS ID DE LOS NODOS ACTIVOS NECESITO QUE ME LOS MANDES ASI GASTON: [1,14,22,31] ORDENADOS DE MENOR A MAYOR
 	t_cargaBitarray_aux bitmapAuxiliar[cantidad_nodos_activos];
-
+    int victim_pos;
 	if(list_is_empty(lista_nodos_estado)){
 		pthread_mutex_lock(&mutex_nodos);
 		lista_nodos_estado = list_create();
@@ -512,62 +512,16 @@ char* serializar_estructura_t_marta_a_job(t_marta_job estructura_t_marta_a_job, 
 */
 
 
-//ESTO SE USA EN EL REDUCE , NO BORRAR
-
-/*
-struct linkelement{
-		t_nodos* data;
-		struct linkelement *next;
-	};
-typedef struct linkelement tlinkelement;
-typedef struct {
-		tlinkelement *head;
-		int elements_count;
-	} t_lista;
-
-	static tlinkelement* list_create_element(t_nodos* data) {
-		tlinkelement* element = malloc(sizeof(tlinkelement));
-		element->data = data;
-		element->next = NULL;
-		return element;
-	}
-	static tlinkelement* list_get_element(t_lista* self, int index) {
-		int cont = 0;
-
-		if ((self->elements_count > index) && (index >= 0)) {
-			tlinkelement *element = self->head;
-			while (cont < index) {
-				element = element->next;
-				cont++;
-			}
-			return element;
-		}
-		return NULL;
-	}
-
-	static void list_link_element(tlinkelement* previous, tlinkelement* next) {
-		if (previous != NULL) {
-			previous->next = next;
-		}
-	}
-
-	int lista_add(t_lista *self, t_nodos *data) {
-		tlinkelement *new_element = list_create_element(data);
-
-		if (self->elements_count == 0) {
-			self->head = new_element;
-		} else {
-			list_link_element(list_get_element(self, self->elements_count - 1), new_element);
-		}
-		self->elements_count++;
-		return self->elements_count - 1;
-	}
-*/
 
 //HASTA ACA ES LO DEL REDUCE QUE NO HAY QE BORRAR
-
+/*
 serializar_nodo_a_mapear(t_nodos nodo_a_mapear,int tamanioTotal){
 
+	    typedef struct {
+	    	int bloque;
+	    	char * data;
+	    }t_bloque;
+        t_bloque bloque;
 	    char *serializedPackage = malloc(tamanioTotal);
 
 		int offset = 0;
@@ -637,14 +591,14 @@ void *recibirResultadoMap(void*arg){
 	t_job_marta* resultadoMap;
 
 	recv(socketJob, &tamanioTotal, sizeof(int),0);
-	   	int estado = 1; // Estructura que manjea el status de los recieve.
+	   	int estado2 = 1; // Estructura que manjea el status de los recieve.
 	   	resultadoMap = malloc(tamanioTotal);
-	   	estado = recive_y_deserialisa(&resultadoMap, socketJob, tamanioTotal);
-	   	if(estado){
+	   	estado2 = recive_y_deserialisa(&resultadoMap, socketJob, tamanioTotal);
+	   	if(estado2){
 
 	   	}
 
-
+}
 
 
 

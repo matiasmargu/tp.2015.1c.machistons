@@ -18,7 +18,7 @@ int main(void) {
 	char* rutaArchivoConfiguracion = "/home/utnso/git/tp-2015-1c-machistons/Configuracion/marta.conf";
 	t_charpuntero archivoAFS;
 	char* archivoAFSAEnviar, combiner;
-	int tamanioCombiner,d, puerto_job, entero, socketjob,tamanioTotalAFS;
+	int tamanioCombiner,d, puerto_job, entero, socketjob,tamanioTotalAFS,prueba;
 	t_config* archivoConfiguracion;
 	archivoConfiguracion = config_create(rutaArchivoConfiguracion);
 
@@ -100,17 +100,27 @@ int main(void) {
    		    			switch(entero){ // HANDSHAKE
    		    				case 72: // ACA EL JOB LE PASA LISTA DE ARCHIVOS Y EL COMBINER
    		    					socketjob = i;
-   		    					pthread_create(&hilo_job, NULL, conectarseAlJob,(void *)socketjob);//mitrar
-
+   		    					/*pthread_create(&hilo_job, NULL, conectarseAlJob,(void *)socketjob);//mitrar
+                                */
+   		    					recv(socketjob,&prueba,sizeof(int),0);
+   		    					printf("%i/n",prueba);
+   		    					send(socketjob,prueba,sizeof(int),0);// este para el entero
+   		    					send(socketjob,2,sizeof(int),0);
    		    					break;
    		    				case 42: //ACA EL JOB LE PASA EL RESULTADO DEL MAP
    		    					socketjob = i;
-   		    					pthread_create(&hilo_job, NULL, recibirResultadoMap,(void *)socketjob);
-
-   		    					break;
+   		    					/*pthread_create(&hilo_job, NULL, recibirResultadoMap,(void *)socketjob);
+                                */
+   		    					recv(socketjob,&prueba,sizeof(int),0);
+   		    					printf("%i/n",prueba);
+   		    				    break;
    		    				case 25: //ACA EL JOB LE PASA EL RESULTADO DEL REDUCE
-   		    					socketjob = i;
+   		    					socketjob = i;/*
    		    					pthread_create(&hilo_job, NULL, recibirResultadoReduce,(void *)socketjob);
+                                */
+   		    					recv(socketjob,&prueba,sizeof(int),0);
+   		    					printf("%i/n",prueba);
+
 
    		    					break;
    		    				}

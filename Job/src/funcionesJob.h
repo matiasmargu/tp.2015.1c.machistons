@@ -37,6 +37,7 @@ typedef struct{
 	t_marta_job Marta_Job;
 	int	socketMarta;
 	int	numeroDeBloque;
+	int idNodo;
 	t_job_nodo Job_Nodo;
 	}t_conectarseAlNodo;
 

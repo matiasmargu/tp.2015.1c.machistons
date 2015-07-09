@@ -16,13 +16,15 @@ t_job_nodo Job_Nodo;
 t_conectarseAlNodo CAN;
 
 void conectarseAlNodo(t_conectarseAlNodo CAN){
+	printf("a/n");
 
+	int tamanioReduce;
 	int socketNodo = crearCliente (CAN.Marta_Job.ip_nodo, CAN.Marta_Job.puerto);
 	int tamanioNodo;
 	Job_Nodo.NumerobloqueDeDAtos = CAN.numeroDeBloque;
     Job_Nodo.nombreRutina = CAN.Marta_Job.rutina;
     Job_Nodo.resultado = CAN.Marta_Job.nombre_archivo_resultado;
-
+    char * archivoResultadoReduce;
 
    switch(CAN.Marta_Job.rutina ){
    case 1:
@@ -56,13 +58,13 @@ void conectarseAlNodo(t_conectarseAlNodo CAN){
 
 	 //  send(socketNodo,&Job_Nodo_Reduce,sizeof(struct job_nodo),0);
 
-	  	int tamanioTotalReduce = sizeof(int)+sizeof(int)+sizeof(int)+sizeof(int)+sizeof(int);
+	   tamanioReduce = sizeof(int)+sizeof(int)+sizeof(int)+sizeof(int)+sizeof(int);
 	  			t_job_marta *job_marta_reduce;
 	  		      job_marta_reduce->numeroBloque = CAN.numeroDeBloque;
 	  		      job_marta_reduce->rutina = CAN.Marta_Job.rutina;
 	  		      job_marta_reduce->resultado = resultado;
 	  		      send(CAN.socketMarta, &tamanioTotal, sizeof(int),0);
-	  		      char* archivoResultadoReduce =  serializar_job_marta(&job_marta_reduce, tamanioTotalReduce);
+	  		      archivoResultadoReduce =  serializar_job_marta(&job_marta_reduce, tamanioReduce);
 	  		      send(CAN.socketMarta, &archivoResultadoReduce, tamanioTotal,0);
 
 
@@ -220,13 +222,10 @@ void liberarMensaje(char *package){
 }
 
 void *mandarPruebaAMarta(void*arg){
-
-	char * ip_marta,puerto_marta; // cuando se ponga el ip y el puerto se setean
-	int socketMarta = crearCliente (ip_marta/* poner ip*/, puerto_marta /* poner puerto*/);
-    int prueba = (int)arg;
-
-    send(socketMarta,prueba,sizeof(int),0);
-
+	int socketMarta =(int)arg;
+    int prueba;
+	recv(socketMarta,&prueba,sizeof(int),0);
+    printf("%i",prueba);
     return 0;
 }
 
