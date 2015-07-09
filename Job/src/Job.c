@@ -12,6 +12,8 @@
 
 //FALTA PONER EN LOG Cabeceras de mensajes enviados y recibidos de cada hilo/proceso
 
+void *mandarPruebaAMarta(void*arg);
+
 int main(void) {
 
 	char* rutaArchivoConfiguracion = "/home/utnso/git/tp-2015-1c-machistons/Configuracion/job.conf";
@@ -22,7 +24,7 @@ int main(void) {
 	logger = log_create("LOG_JOB", "log_job" ,false, LOG_LEVEL_INFO);
 
 	char* puerto_marta,ip_marta,mapper,reduce,combiner,archivo_resultado,lista_archivos;
-	int tamanioTotal,numero,saludo,handshakeMarta,i,c,entero;
+	int tamanioTotal,numero,saludo,handshakeMarta,i,c,entero,x = 0,prueba;
 	t_charpuntero structCombiner;
 	t_charpuntero nombre;
     t_marta_job Marta_Job;
@@ -111,12 +113,37 @@ send(socketNodo,rutinaReduceAEnviar,tamanioTotal,0);
 
 
 
+// hecho por mati N ayer :D
+while (x!=1){
+	recv(socketMarta,&entero,sizeof(int),0);
+	switch(entero){
+	case 1: // aca viene un map
+		recv(socketMarta,&prueba,sizeof(int),0);
+		pthread_t hiloMap;
+		pthread_create(&hiloMap,NULL,mandarPruebaAMarta,(void *)prueba);
+		break;
+	case 2: // aca viene un reduce
+		recv(socketMarta,&prueba,sizeof(int),0);
+		pthread_t hiloReduce;
+		pthread_create(&hiloReduce,NULL,mandarPruebaAMarta,(void *)prueba);
+		break;
+	case 3: // aca me viene y me dice que ya se termino
+		x = 0;
+	}
+}
 
 
+// estos warnings son boludos no pasa nada
+void *mandarPruebaAMarta(void*arg){
 
+	char * ip_marta,puerto_marta; // cuando se ponga el ip y el puerto se setean
+	int socketMarta = crearCliente (ip_marta/* poner ip*/, puerto_marta /* poner puerto*/);
+    int prueba = (int)arg;
 
+    send(socketMarta,prueba,sizeof(int),0);
 
-
+    return 0;
+}
 
 
 
