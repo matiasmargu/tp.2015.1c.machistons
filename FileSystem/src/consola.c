@@ -63,6 +63,7 @@ void *atenderConsola(void*arg) {
 					BSON_APPEND_INT32(doc, "Socket", 5);
 					BSON_APPEND_UTF8 (doc, "IP", "9952");
 					BSON_APPEND_UTF8(doc, "PUERTO" , "172.458.6.12");
+					BSON_APPEND_UTF8(doc, "Coneccion", "Conectado");
 					BSON_APPEND_UTF8(doc, "Estado", "Disponible");
 					if (!mongoc_collection_insert (nodos, MONGOC_INSERT_NONE, doc, NULL, NULL)) {
 						log_error(logger, "Error al insertar Nodo");
