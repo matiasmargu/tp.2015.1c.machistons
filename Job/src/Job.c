@@ -12,6 +12,7 @@
 
 //FALTA PONER EN LOG Cabeceras de mensajes enviados y recibidos de cada hilo/proceso
 
+
 int main(void) {
 
 	char* rutaArchivoConfiguracion = "/home/utnso/git/tp-2015-1c-machistons/Configuracion/job.conf";
@@ -21,19 +22,8 @@ int main(void) {
 
 	logger = log_create("LOG_JOB", "log_job" ,false, LOG_LEVEL_INFO);
 
-	char* puerto_marta;
-	char* ip_marta;
-	char* mapper;
-	char* reduce;
-	char* combiner;
-	char* lista_archivos;
-	char* archivo_resultado;
-	int i;
-	int c;
-	int tamanioTotal;
-	int numero;
-	int saludo;
-	int handshakeMarta;
+	char* puerto_marta,ip_marta,mapper,reduce,combiner,archivo_resultado,lista_archivos;
+	int tamanioTotal,numero,saludo,handshakeMarta,i,c,entero,x = 0,prueba,y = 0,entero2,prueba2;
 	t_charpuntero structCombiner;
 	t_charpuntero nombre;
     t_marta_job Marta_Job;
@@ -120,6 +110,53 @@ send(socketNodo, &tamanioTotalReduce, sizeof(int),0);
 rutinaReduceAEnviar =  serializar_charpuntero(&rutinaReduce, tamanioTotalReduce);
 send(socketNodo,rutinaReduceAEnviar,tamanioTotal,0);
 
+
+
+// hecho por mati N ayer :D
+while (x!=1){
+	recv(socketMarta,&entero,sizeof(int),0);
+	switch(entero){
+	case 1: // aca viene un map
+		recv(socketMarta,&prueba,sizeof(int),0);
+		pthread_t hiloMap;
+		pthread_create(&hiloMap,NULL,mandarPruebaAMarta,(void *)prueba);
+		break;
+	case 2: // aca viene un reduce
+		recv(socketMarta,&prueba,sizeof(int),0);
+		pthread_t hiloReduce;
+		pthread_create(&hiloReduce,NULL,mandarPruebaAMarta,(void *)prueba);
+		break;
+	case 3: // aca me viene y me dice que ya se termino
+		x = 0;
+	}
+}
+
+while (y!=1){
+	recv(socketNodo,&entero2,sizeof(int),0);
+	switch(entero2){
+	case 1: // aca viene una respuesta de un map
+		recv(socketMarta,&prueba2,sizeof(int),0);
+		pthread_t hiloRespuestaMap;
+		pthread_create(&hiloRespuestaMap,NULL,mandarPrueba2ANodo,(void *)prueba2);
+		break;
+	case 2: // aca viene una respuesta de un reduce
+		recv(socketMarta,&prueba2,sizeof(int),0);
+		pthread_t hiloRespuestaReduce;
+		pthread_create(&hiloRespuestaReduce,NULL,mandarPrueba2ANodo,(void *)prueba2);
+		break;
+	case 3: // aca me viene y me dice que ya se termino
+		y = 0;
+	}
+}
+
+
+// estos warnings son boludos no pasa nada
+
+
+
+
+
+
 /*
 //DE ACA PARA ABAJO NO BORRAR HAY QUE HACER MODIFICACIONES
 
@@ -176,5 +213,6 @@ send(socketNodo,rutinaReduceAEnviar,tamanioTotal,0);
 	return EXIT_SUCCESS;
 }
 }
+
 
 

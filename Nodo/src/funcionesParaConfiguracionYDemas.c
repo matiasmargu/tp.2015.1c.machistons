@@ -23,6 +23,20 @@ void leerRutaDeConfiguracion(){
 	ip_fs = config_get_string_value(archivoConfiguracion, "IP_FS");
 	puerto_fs = config_get_string_value(archivoConfiguracion, "PUERTO_FS");
 
+	if(nodo_nuevo=="NO"){
+		id_nodo = config_get_string_value(archivoConfiguracion, "ID_NODO");
+	}
+
+
+	config_destroy(archivoConfiguracion);
+}
+
+void leerID_NODO(){
+	char* rutaArchivoConfiguracion = "/home/utnso/git/tp-2015-1c-machistons/Configuracion/nodo.conf";
+	archivoConfiguracion = config_create(rutaArchivoConfiguracion);
+
+	id_nodo = config_get_string_value(archivoConfiguracion, "ID_NODO");
+
 	config_destroy(archivoConfiguracion);
 }
 
@@ -49,27 +63,13 @@ void crearNuevaConfiguracion(){
 	nodo_nuevo = "NO";
 
 	fputs("IP_NODO=",nuevoArchivo);
-	char* ip=obtenerIP();
-	fputs(ip,nuevoArchivo);
+	fputs(ip_nodo,nuevoArchivo);
 	fputc('\n',nuevoArchivo);
 
 	fputs("PUERTO_NODO=6000\n",nuevoArchivo);
 	fclose(nuevoArchivo);
-}
 
-
-char* obtenerIP(){
-	int fd;
-	struct ifreq ifr;
-	char* ip;
-
-	fd = socket(AF_INET, SOCK_DGRAM, 0);
-	ifr.ifr_addr.sa_family = AF_INET;
-	strncpy(ifr.ifr_name, "eth0", IFNAMSIZ-1);
-
-	ioctl(fd, SIOCGIFADDR, &ifr);
-	ip = inet_ntoa(((struct sockaddr_in *)&ifr.ifr_addr)->sin_addr);
-
-	return ip;
-	close(fd);
+	fputs("ID_NODO=",nuevoArchivo);
+	fputs(id_nodo,nuevoArchivo);
+	fputc('\n',nuevoArchivo);
 }

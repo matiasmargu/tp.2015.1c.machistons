@@ -21,11 +21,13 @@ void *atenderConsola(void*arg) {
 	char *separador2="\n";
 	char **comandoSeparado2;
 
+	char *mensaje; // Para mandar mensajes serializados
+
 	bson_t *doc;
 	bson_t *query;
 	mongoc_cursor_t *cursor;
 	bson_iter_t iter;
-	int socketNodo;
+	int idNodo;
 	char* IPNodo;
 	char* PUERTONodo;
 
@@ -52,6 +54,20 @@ void *atenderConsola(void*arg) {
 				case Mover_Arch: // 4
 					break;
 				case Crear_Directorio: // 5
+					doc = bson_new ();
+					BSON_APPEND_UTF8(doc, "Es", "Nodo");
+					pthread_mutex_lock(&mutex);
+					BSON_APPEND_INT32(doc, "ID Nodo", idNodoGlobal);
+					idNodoGlobal++;
+					pthread_mutex_unlock(&mutex);
+					BSON_APPEND_INT32(doc, "Socket", 5);
+					BSON_APPEND_UTF8 (doc, "IP", "9952");
+					BSON_APPEND_UTF8(doc, "PUERTO" , "172.458.6.12");
+					BSON_APPEND_UTF8(doc, "Estado", "Disponible");
+					if (!mongoc_collection_insert (nodos, MONGOC_INSERT_NONE, doc, NULL, NULL)) {
+						log_error(logger, "Error al insertar Nodo");
+					}
+					bson_destroy (doc);
 					break;
 				case Eliminar_Directorio: // 6
 					break;
@@ -70,15 +86,15 @@ void *atenderConsola(void*arg) {
 				case Copiar_Bloque_Arch: // 11
 					break;
 				case Agregar_Nodo: // 12
-					query = BCON_NEW("Estado", "No disponible");
+					query = BCON_NEW("Estado", "No Disponible");
 					cursor = mongoc_collection_find (nodos, MONGOC_QUERY_NONE, 0, 0, 0, query, NULL, NULL);
 
 					while (mongoc_cursor_next (cursor, &doc)) {
 						if (bson_iter_init (&iter, doc)) {
-							if(bson_iter_find (&iter, "Socket"))socketNodo = bson_iter_int32(&iter);
+							if(bson_iter_find (&iter, "ID Nodo"))idNodo = bson_iter_int32(&iter);
 							if(bson_iter_find (&iter, "IP"))IPNodo = bson_iter_utf8(&iter,NULL);
 							if(bson_iter_find (&iter, "PUERTO"))PUERTONodo = bson_iter_utf8(&iter,NULL);
-							printf("%i\n%s\n%s\n",socketNodo,IPNodo,PUERTONodo);
+							printf("Socket %i\n%s\n%s\n",idNodo,IPNodo,PUERTONodo);
 						}
 					}
 					verificarEstadoFS();
@@ -93,7 +109,14 @@ void *atenderConsola(void*arg) {
 					//comandoSeparado2=string_split(comandoSeparado[1], separador2);
 					// comandoSeparado2[0]
 					// verificar si hay espacio para este archivo
-					insertarArchivoAMongoYAlMDFS("/home/utnso/Escritorio/201303hourly.txt");
+					//insertarArchivoAMongoYAlMDFS("/home/utnso/Escritorio/201303hourly.txt");
+					if(insertarArchivoAMongoYAlMDFS("/home/utnso/Escritorio/Nuevo.txt")== 20){
+						printf("Se agrego correctamente el archivo al MDFS\n"
+								"Ingrese 0 para imprimir el menu\n");
+					}else{
+						printf("No hay espacio libre para almacenar el archivo"
+								"Ingrese 0 para imprimir el menu\n");
+					}
 					break;
 				case Copiar_Arch_Al_FSLocal: // 15
 					break;

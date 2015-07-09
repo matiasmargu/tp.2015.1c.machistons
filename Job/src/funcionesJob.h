@@ -58,5 +58,7 @@ char* serializar_charpuntero(t_charpuntero *nombre, int tamanioTotal);
 char* serializar_job_marta(t_job_marta *job_marta, int tamanioTotal);
 int recive_y_deserialisa_marta_job(t_marta_job *bloque, int socket, uint32_t tamanioTotal);
 void liberarMensaje(char *);
+void *mandarPruebaAMarta(void*arg);
+void *mandarPrueba2ANodo(void*arg);
 
 #endif /* FUNCIONES_H_ */

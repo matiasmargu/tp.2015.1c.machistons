@@ -65,8 +65,6 @@ typedef struct{
 
 t_log* logger; // Log Global
 
-char *mensaje; // Para mandar mensajes serializados
-
 int idNodoGlobal;
 pthread_mutex_t mutex;
 
@@ -76,21 +74,18 @@ int nodosNecesarios;
 int nodosActivos;
 
 // Estructuras de Interfaz con Nodo
-estructuraSetBloque escribirBloque;
+
 t_getBloque infoBloque;
 int socketNodoGlobal;
-int tamanioTotalMensaje;
-estructuraIPyNodo ipyPuertoNodo;
 //
 
 // Variables MongoDB
 mongoc_client_t *client;
-
 mongoc_collection_t *directorios;
 mongoc_collection_t *archivos;
 mongoc_collection_t *nodos;
 
-void aplicarNodoGlobal();
+void aplicarNodoGlobalYponerNodosNoDisponible();
 void verificarEstadoFS();
 
 // Funcion para liberar mensaje serializado
@@ -108,7 +103,7 @@ int recive_y_deserialisa_IPyPUERTO_Nodo(estructuraIPyNodo *bloque, int socket, u
 // Funciones para Agregar Datos a Mongo
 
 void *agregoNodoaMongo (void*arg);
-void insertarArchivoAMongoYAlMDFS (char* path);
+int insertarArchivoAMongoYAlMDFS (char* path);
 void agregarCopia (bson_t *documento, char* numeroCopia, int idNodo, int bloque);
 
 // Funcion Interfaz Marta

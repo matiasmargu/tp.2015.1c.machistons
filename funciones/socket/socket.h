@@ -98,6 +98,7 @@ typedef struct{
 typedef struct{
 	char* IP;
 	char* PUERTO;
+	int tamanioArchivoDatos;
 }estructuraIPyNodo;
 
 typedef struct{

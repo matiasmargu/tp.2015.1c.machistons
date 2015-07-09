@@ -219,3 +219,24 @@ void liberarMensaje(char *package){
 	free(*package);
 }
 
+void *mandarPruebaAMarta(void*arg){
+
+	char * ip_marta,puerto_marta; // cuando se ponga el ip y el puerto se setean
+	int socketMarta = crearCliente (ip_marta/* poner ip*/, puerto_marta /* poner puerto*/);
+    int prueba = (int)arg;
+
+    send(socketMarta,prueba,sizeof(int),0);
+
+    return 0;
+}
+
+void *mandarPrueba2ANodo(void*arg){
+
+	char * ip_nodo,puerto_nodo; // cuando se ponga el ip y el puerto se setean
+	int socketNodo = crearCliente (ip_nodo/* poner ip*/, puerto_nodo /* poner puerto*/);
+    int prueba2 = (int)arg;
+
+    send(socketNodo,prueba2,sizeof(int),0);
+
+    return 0;
+}

@@ -27,7 +27,22 @@ int main(void) {
 	log_info(logger, "Se creo correctamente el archivo de configuracion");
 	//printf("Se escribio en el log\n");
 
-	leerRutaDeConfiguracion();
+	char* rutaArchivoConfiguracion = "/home/utnso/git/tp-2015-1c-machistons/Configuracion/nodo.conf";
+	archivoConfiguracion = config_create(rutaArchivoConfiguracion);
+
+
+	archivo_bin = config_get_string_value(archivoConfiguracion, "ARCHIVO_BIN");
+	dir_temp = config_get_string_value(archivoConfiguracion, "DIR_TEMP");
+	nodo_nuevo = config_get_string_value(archivoConfiguracion, "NODO_NUEVO");
+	ip_nodo = config_get_string_value(archivoConfiguracion, "IP_NODO");
+	puerto_nodo = config_get_int_value(archivoConfiguracion, "PUERTO_NODO");
+	ip_fs = config_get_string_value(archivoConfiguracion, "IP_FS");
+	puerto_fs = config_get_string_value(archivoConfiguracion, "PUERTO_FS");
+
+	if(string_equals_ignore_case(nodo_nuevo,"NO")){
+		id_nodo = config_get_string_value(archivoConfiguracion, "ID_NODO");
+	}
+
 	handshakeConFS();
 
 //Esta es el select
@@ -95,7 +110,7 @@ int main(void) {
 		}
 		}
 
-	//config_destroy(archivoConfiguracion);
+	config_destroy(archivoConfiguracion);
 	log_destroy(logger);
 	free(ip_nodo);
 	free(archivo_bin);

@@ -44,6 +44,7 @@ char *dir_temp;
 char *nodo_nuevo;
 char *ip_fs;
 char *puerto_fs;
+char* id_nodo;
 
 char* script_mapper;
 char* script_reducer;
@@ -63,7 +64,7 @@ void formateoElRegistro(FILE* fdf);
 //Funciones de serializacion y deserializacion
 int recive_y_deserialisa_CHARp(char *script, int socket, uint32_t tamanioTotal);
 int recive_y_deserialisa_SET_BLOQUE(estructuraSetBloque *bloque, int socket, uint32_t tamanioTotal);
-char* serializarIP_PUERTO_ESTADOnodo(char* ip_fs,char* puerto_fs,char* nodo_nuevo, int tamanioData);
+char* serializarIP_PUERTO(char* ip_fs,char* puerto_fs, int tamanioData);
 char* serializarBloqueDeDatos(char* bloque, int tamanioData);
 
 //Funciones de handshake
@@ -80,6 +81,6 @@ int escribirScript(char* script_virtual,char* dir_temp, int comando);
 //Para laburar con archivos de configuracion
 void crearNuevaConfiguracion();
 void leerRutaDeConfiguracion();
-char* obtenerIP();
+void leerID_NODO();
 
 #endif /* VARIABLESGLOBALES_H_ */

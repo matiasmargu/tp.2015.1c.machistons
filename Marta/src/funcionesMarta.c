@@ -649,6 +649,8 @@ void planificarReduce(char* nombreArchivo, int cantidadPosicionesVectorNodo, t_n
 
 void aplicarReduce(t_aplicarReduce structRecibido){
 
+
+
 	t_mandarAlHilo mandarAlHilo;
 	mandarAlHilo.cantidadArchivosTemporales = structRecibido.cantidadArchivosTemporales;
 	mandarAlHilo.idNodo = structRecibido.idNodo;
