@@ -30,6 +30,9 @@ t_list *lista_archivos; // guarda t_archivo
 t_list *lista_nodos_estado;
 pthread_mutex_t mutex ;//= PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutex_nodos;// = PTHREAD_MUTEX_INITIALIZER;
+t_list* listaDeArchivos; // global
+
+
 
 typedef struct{
 	char* archivo;

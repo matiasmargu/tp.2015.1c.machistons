@@ -9,20 +9,14 @@
 #define FUNCIONES_H_
 
 #include <sys/socket.h>
-#include <socket/socket.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
 #include <pthread.h>
 #include <socket/socket.h>
-#include <sys/socket.h>
 #include <netdb.h>
 #include <unistd.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
-#include <stdlib.h>
 #include <assert.h>
 #include <string.h>
 #include <./commons/config.h>
@@ -30,11 +24,9 @@
 #include <./commons/string.h>
 #include <./commons/collections/list.h>
 #include <sys/types.h>
-#include <sys/socket.h>
 #include <netdb.h>
 #include <unistd.h>
 #include <pthread.h>
-#include <socket/socket.h>
 #include <stdint.h>
 
 typedef struct{

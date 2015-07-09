@@ -98,12 +98,19 @@ int main(void) {
    		    		}
    		    		else{
    		    			switch(entero){ // HANDSHAKE
-   		    				case 9: // Este es JOB
+   		    				case 72: // ACA EL JOB LE PASA LISTA DE ARCHIVOS Y EL COMBINER
    		    					socketjob = i;
-   		    					pthread_create(&hilo_job, NULL, conectarseAlJob,(void *)socketjob);
+   		    					pthread_create(&hilo_job, NULL, conectarseAlJob,(void *)socketjob);//mitrar
 
    		    					break;
-   		    				case 2: //
+   		    				case 42: //ACA EL JOB LE PASA EL RESULTADO DEL MAP
+   		    					socketjob = i;
+   		    					pthread_create(&hilo_job, NULL, recibirResultadoMap,(void *)socketjob);
+
+   		    					break;
+   		    				case 25: //ACA EL JOB LE PASA EL RESULTADO DEL REDUCE
+   		    					socketjob = i;
+   		    					pthread_create(&hilo_job, NULL, recibirResultadoReduce,(void *)socketjob);
 
    		    					break;
    		    				}
