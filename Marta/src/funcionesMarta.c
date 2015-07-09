@@ -658,7 +658,19 @@ void aplicarReduce(t_aplicarReduce structRecibido){
 }
 
 
+void *recibirResultadoMap(void*arg){
 
+	int socketJob = (int)arg;
+	int tamanioTotal, estado;
+	t_job_marta* resultadoMap;
+
+	recv(socketJob, &tamanioTotal, sizeof(int),0);
+	   	int estado = 1; // Estructura que manjea el status de los recieve.
+	   	resultadoMap = malloc(tamanioTotal);
+	   	estado = recive_y_deserialisa(&resultadoMap, socketJob, tamanioTotal);
+	   	if(estado){
+
+	   	}
 
 
 
