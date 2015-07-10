@@ -6,7 +6,7 @@
  */
 
 #include "funcionesMarta.h"
-/*
+
 int recive_y_deserialisa(t_charpuntero* nombre, int socket, uint32_t tamanioTotal){
 	int status;
 	char *buffer = malloc(tamanioTotal);
@@ -98,14 +98,14 @@ int recive_y_guarda_estructura(t_archivo arch, int socket, uint32_t tamanioTotal
 	recv(socket, buffer, tamanioTotal, 0);
 	//LO QUE RECIBO TIENE ESTA ESTRCTURA: [TAM_ESTRUC][TAM_NOM][NOMBRE][CANT_BLOQ]   [NUMERO_BLOQ][ID_NODO][NUMERO_BLOQ][ID_NODO][NUMERO_BLOQ][ID_NODO][NUMERO_BLOQ]
 
-	// COPIO EL NOMBRE DEL ARCHIVO
+/*	// COPIO EL NOMBRE DEL ARCHIVO
 	int tamanioNombre;
 	offset += sizeof(int);
 	memcpy(&tamanioNombre, buffer+offset, sizeof(int));
 	offset += sizeof(int);
 	memcpy(&arch.nombre, buffer+offset, tamanioNombre);
 	offset += tamanioNombre;
-
+*/
 	// COPIO LA CANT_BLOQUES DEL ARCHIVO
 	memcpy(&(arch.cantidadDeBloques), buffer+offset, sizeof(int));
 	offset += sizeof(int);
@@ -154,7 +154,7 @@ char* serializar_charpuntero(t_charpuntero *nombre, int tamanioTotal){
 
 			return serializedPackage;
 		}
-/*
+
 //FUNCION QUE EJECUTA EL HILO QUE ATIENDE A CADA JOB
 void *conectarseAlJob(void*arg){
 
@@ -260,7 +260,6 @@ int calcularCantidadDeBloques(t_list* lista_archivos){
 		archivo = list_get(lista_archivos,j);
 		for(h=0;h < archivo->cantidadDeBloques;h++){
 				t_bloque* bloque = list_get(archivo->bloques,h);
-
 				for(k=0;k < 3; k++){
 					for(p=0;p < list_size(listaDeBloques); p++){
 						//ESTO ESTA MAL , HAY QUE VER COMO SE PUEDE ARREGLAR
@@ -285,7 +284,7 @@ void inicializarBitarray(t_bitarray *bitmap, int tamanio){
 		 bitarray_clean_bit(bitmap, i);
 	}
 }
-/*
+
 int buscarPorNodo(int idNodo, int nodos_activos[], int pos){
 	return 1;
 }
@@ -325,37 +324,73 @@ t_cargaBitarray_aux *armarVectorDeBitarray(t_cargaBitarray_aux *vectorDeBitArray
 }
 
 
-void buscarVictimasPorBloque(t_cargaBitarray_aux bitmap[], int tamanio, int *vector_contador, int cant_nodos, int *bloqueArch_pos, int *nodo){
+int buscarVictimasPorBloque(t_cargaBitarray_aux bitmap[], int tamanio, t_cargaBitarray_aux *vectorVictimas){
 	int min = bitarray_get_max_bit(bitmap[0].bitmap);
-	int min_pos = 0;
 	int i;
+	bool flag = false;
 	// busco el menor
 	for(i=1;i<=tamanio;i++){
-		if((bitarray_get_max_bit(bitmap[i].bitmap)) < min){
+		if((bitarray_get_max_bit(bitmap[i].bitmap)) <= min){
+			bitarray_set_bit(vectorVictimas->bitmap,i);
 			min = bitarray_get_max_bit(bitmap[i].bitmap);
-			min_pos = i;
+			flag = true;
 		}
 	}
-	//Del mas chico que encontre, defino donde se va a asignar por contadores de nodos
-	nodo = buscarVictimaPorContadores(bitmap[min_pos], vector_contador, cant_nodos);
-	bloqueArch_pos = min_pos;
+	// si flag es false, el primero es el elegido
+	if(flag == false) bitarray_set_bit(vectorVictimas->bitmap,0);
+	// 0 = no pudo encontrar
+	// 1 = encontro 1 victima
+	// 2 = encontro 2 o mas victimas
+	if(bitarray_get_max_bit(vectorVictimas->bitmap) == 0) return 0;
+	else{
+		if(bitarray_get_max_bit(vectorVictimas->bitmap) == 1) return 1; else return 2;
+	}
+
 }
 
-int buscarVictimasPorContadores(t_cargaBitarray_aux bitmap, int *vector_contador, int cant_nodos){
+buscarVictimasPorContadores(t_cargaBitarray_aux bitmap[], int tamanio, t_cargaBitarray_aux *vectorVictimas, int *vector_contador){
 
-	int i;
-	int min = 10000;
-	int nodo = 0;
-	for(i=0;i<cant_nodos;i++){
-		if(bitarray_test_bit(bitmap.bitmap)){
-			if(vector_contador[i] < min){
-				min = vector_contador[i];
-				nodo = i;
+	int i, victim;
+	bool flag = false;
+	for(i=0;i<tamanio;i++){
+		if(bitarray_test_bit(vectorVictimas->bitmap,i) == 1 && flag == false){
+			victim = i;
+			flag = true;
+		}
+		else if(bitarray_test_bit(vectorVictimas->bitmap,i) == 1 && flag == true){
+			if(vector_contador[i] < vector_contador[victim]){
+				victim = i;
 			}
 		}
 	}
-	return nodo;
+	//limpio el vector victimas, dejando solo a la victima elegida
+	for(i=0;i<tamanio;i++) if(i == victim) bitarray_set_bit(vectorVictimas->bitmap,i);
 }
+
+
+algoritmoMap(t_cargaBitarray_aux *bitmapAuxiliar, int *vector_contador, t_cargaBitarray_aux *vectorVictimas, int cant){
+
+
+
+	int r = buscarVictimasPorBloque(bitmapAuxiliar, cant, vectorVictimas);
+	if(r == 2){
+		r = buscarVictimasPorNodo();
+		if(r == 2){
+			r = buscarVictimasPorContadores(bitmapAuxiliar, cant, vectorVictimas, vector_contador);
+			if (r == false){
+				;
+			}
+		}
+	}
+	// busco el bloque que se eligio y lo devuelvo
+	for(r=0;r<cant;r++){
+		if(bitarray_test_bit(vectorVictimas->bitmap,r) == 1) ;
+	}
+
+}
+
+
+
 
 
 void planificarMap(){
@@ -363,7 +398,7 @@ void planificarMap(){
 	int cantidad_nodos_activos = 4;	// ESTO ME LO MANDA EL FS, JUNTO CON LOS NODOS_ACTIVOS
 	int nodos_activos[cantidad_nodos_activos]; //LOS ID DE LOS NODOS ACTIVOS NECESITO QUE ME LOS MANDES ASI GASTON: [1,14,22,31] ORDENADOS DE MENOR A MAYOR
 	t_cargaBitarray_aux bitmapAuxiliar[cantidad_nodos_activos];
-    int victim_pos;
+
 	if(list_is_empty(lista_nodos_estado)){
 		pthread_mutex_lock(&mutex_nodos);
 		lista_nodos_estado = list_create();
@@ -378,30 +413,30 @@ void planificarMap(){
 		if(resto_division == 0) division--;
 		// vector_contador = vector de contadores para planificar (esto no cambia hasta que termina el planificarMap)
 		int *vector_contador = malloc(sizeof(int)*cantidad_nodos_activos);
-		int j, bloqueArch_pos,bloque,nodo;
+		int j;
 		// inicializo vector_contador
 		for(j=0;j<cantidad_nodos_activos;j++) vector_contador[j] = 0;
-		//
+
 		for(j=0;j <= division;j++){
 			int k = 0;
-			int tamanio_bitmapAux = division;
-			if((resto_division != 0) && (j == division)) tamanio_bitmapAux = resto_division-1;
-			// tengo que cargar el auxiliar con los bloques que va a planificar el algoritmo de map
-			// ej: si es la primera pasada, auxiliar va a tener la cantidad de bloques
-			// si es la 2da pasada, auxiliar va a tener la cantidad de bloques menos el que ya se eligio antes
-			cargarBitmapAuxiliar(bitmapAuxiliar, bitmap, tamanio_bitmapAux);
+			int bloques_alineados = division;
+			if((resto_division != 0) && (j == division)) bloques_alineados = resto_division-1;
 
-			while(k <= tamanio_bitmapAux){
-				/*
+			while(k <= bloques_alineados){
+				// tengo que cargar el auxiliar con los bloques que va a planificar el algoritmo de map
+				// ej: si es la primera pasada, auxiliar va a tener la cantidad de bloques
+				// si es la 2da pasada, auxiliar va a tener la cantidad de bloques menos el que ya se eligio antes
+				cargarBitmapAuxiliar(bitmapAuxiliar, bitmap, bloques_alineados);
+
 				char *vectorVictimas_str = malloc(sizeof(char) * cantidad_nodos_activos);
 				t_cargaBitarray_aux *vectorVictimas = malloc(sizeof(t_cargaBitarray_aux));
 				vectorVictimas->bitmap = bitarray_create(vectorVictimas_str, cantidad_nodos_activos);
 				inicializarBitarray(vectorVictimas->bitmap, cantidad_nodos_activos);
-				*/
-				buscarVictimasPorBloque(bitmapAuxiliar, tamanio_bitmapAux, vector_contador, cantidad_nodos_activos, bloqueArch_pos, nodo);
-				bloque = bitmapAuxiliar[bloqueArch_pos].bloque_arch;
-				eliminarBloque(bitmapAuxiliar, bloqueArch_pos, tamanio_bitmapAux);
 
+				algoritmoMap(bitmapAuxiliar, vector_contador, vectorVictimas, bloques_alineados);
+				//aca hay que recorrer el vector victimas y buscar el que tiene el bit en 1.
+				// cuando lo encontramos vamos a buscar el bloque qe se asigno y lo eliminamos para la proxima pasada
+				vector_contador[victim_pos] ++;
 				if (j == 0){
 					//si j==0 quiere decir que la alineacion de vectorVictimas es pura
 					//si j > 0 quiere decir que la alineacion de vectorVictimas es k*cantidad_nodos_activos
@@ -442,86 +477,109 @@ int recive_y_deserialisa_paquete_nodos(t_charpuntero* ip, t_charpuntero* puerto,
 /*
 char* serializar_estructura_t_marta_a_job(t_marta_job estructura_t_marta_a_job, int tamanioTotal){
 			char *serializedPackage = malloc(tamanioTotal);
-
 			int offset = 0;
 			int size_to_send;
-
             // estructura_t_marta_a_job->ip
 			int tamanioNombre = strlen(estructura_t_marta_a_job.ip) + 1;
 			size_to_send = sizeof(int);
 			memcpy(serializedPackage + offset, &tamanioNombre, size_to_send);
 			offset += size_to_send;
-
 			size_to_send =  strlen(estructura_t_marta_a_job.ip) + 1;
 			memcpy(serializedPackage + offset, estructura_t_marta_a_job.ip, size_to_send);
 			offset += size_to_send;
-
 			// estructura_t_marta_a_job->puerto_nodo
 			tamanioNombre = strlen(estructura_t_marta_a_job.puerto_nodos) + 1;
 			size_to_send = sizeof(int);
 			memcpy(serializedPackage + offset, &tamanioNombre, size_to_send);
 			offset += size_to_send;
-
 			size_to_send =  strlen(estructura_t_marta_a_job.puerto_nodos) + 1;
 			memcpy(serializedPackage + offset, estructura_t_marta_a_job.puerto_nodos, size_to_send);
 			offset += size_to_send;
-
 			// el map o reduce
 			size_to_send = sizeof(int);
 			memcpy(serializedPackage + offset, &estructura_t_marta_a_job.map_o_reduce, size_to_send);
 			offset += size_to_send;
-
-
 		    // El vector_bloque_nodos
 		    // El estructura_t_marta_a_job->vector_bloque_nodos->nombre_arch
 			 tamanioNombre = strlen(estructura_t_marta_a_job.vector_bloque_nodos.nombre_arch) + 1;
 			size_to_send = sizeof(int);
 			memcpy(serializedPackage + offset, &tamanioNombre, size_to_send);
 			offset += size_to_send;
-
 			size_to_send =  strlen(estructura_t_marta_a_job.vector_bloque_nodos.nombre_arch) + 1;
 			memcpy(serializedPackage + offset, estructura_t_marta_a_job.vector_bloque_nodos.nombre_arch , size_to_send);
 			offset += size_to_send;
-
 			// El estructura_t_marta_a_job->vector_bloque_nodos->bloque_arch
 			size_to_send = sizeof(int);
 			memcpy(serializedPackage + offset, &estructura_t_marta_a_job.vector_bloque_nodos.bloque_arch, size_to_send);
 			offset += size_to_send;
-
-
 		    //El bitmap
-
 			tamanioNombre = strlen(estructura_t_marta_a_job.vector_bloque_nodos.bitmap->bitarray) + 1;
 			size_to_send = sizeof(int);
 			memcpy(serializedPackage + offset, &tamanioNombre, size_to_send);
 			offset += size_to_send;
-
 			size_to_send =  strlen(estructura_t_marta_a_job.vector_bloque_nodos.bitmap->bitarray) + 1;
 			memcpy(serializedPackage + offset, estructura_t_marta_a_job.vector_bloque_nodos.bitmap->bitarray , size_to_send);
 			offset += size_to_send;
-
-
 			//El size_t size del bitmap
 			size_to_send = sizeof(int);
 		    memcpy(serializedPackage + offset, &estructura_t_marta_a_job.vector_bloque_nodos.bitmap->size, size_to_send);
 			offset += size_to_send;
-
 			return serializedPackage;
 }
-
 */
 
 
+//ESTO SE USA EN EL REDUCE , NO BORRAR
+
+/*
+struct linkelement{
+		t_nodos* data;
+		struct linkelement *next;
+	};
+typedef struct linkelement tlinkelement;
+typedef struct {
+		tlinkelement *head;
+		int elements_count;
+	} t_lista;
+	static tlinkelement* list_create_element(t_nodos* data) {
+		tlinkelement* element = malloc(sizeof(tlinkelement));
+		element->data = data;
+		element->next = NULL;
+		return element;
+	}
+	static tlinkelement* list_get_element(t_lista* self, int index) {
+		int cont = 0;
+		if ((self->elements_count > index) && (index >= 0)) {
+			tlinkelement *element = self->head;
+			while (cont < index) {
+				element = element->next;
+				cont++;
+			}
+			return element;
+		}
+		return NULL;
+	}
+	static void list_link_element(tlinkelement* previous, tlinkelement* next) {
+		if (previous != NULL) {
+			previous->next = next;
+		}
+	}
+	int lista_add(t_lista *self, t_nodos *data) {
+		tlinkelement *new_element = list_create_element(data);
+		if (self->elements_count == 0) {
+			self->head = new_element;
+		} else {
+			list_link_element(list_get_element(self, self->elements_count - 1), new_element);
+		}
+		self->elements_count++;
+		return self->elements_count - 1;
+	}
+*/
 
 //HASTA ACA ES LO DEL REDUCE QUE NO HAY QE BORRAR
-/*
+
 serializar_nodo_a_mapear(t_nodos nodo_a_mapear,int tamanioTotal){
 
-	    typedef struct {
-	    	int bloque;
-	    	char * data;
-	    }t_bloque;
-        t_bloque bloque;
 	    char *serializedPackage = malloc(tamanioTotal);
 
 		int offset = 0;
@@ -584,21 +642,9 @@ void aplicarReduce(t_aplicarReduce structRecibido){
 }
 
 
-void *recibirResultadoMap(void*arg){
 
-	int socketJob = (int)arg;
-	int tamanioTotal, estado;
-	t_job_marta* resultadoMap;
 
-	recv(socketJob, &tamanioTotal, sizeof(int),0);
-	   	int estado2 = 1; // Estructura que manjea el status de los recieve.
-	   	resultadoMap = malloc(tamanioTotal);
-	   	estado2 = recive_y_deserialisa(&resultadoMap, socketJob, tamanioTotal);
-	   	if(estado2){
 
-	   	}
-
-}
 
 
 
@@ -617,7 +663,6 @@ void *recibirResultadoMap(void*arg){
 /*
 //marta tiene que verificar previo a esta funcion que llega un hilo mapper
 planificarReduce(int socketJob, int accionATomar,  char* archivoTemporalAAlmacenar, t_lista vectorNodos, int cantidadNodos, int idNodo, char* ip, char* puerto){
-
 int aux = 0,cont,accionQueElJobDeberaTomar;
 t_nodos nodo_a_mapear;
 char* archivo_serializado;
@@ -627,10 +672,8 @@ t_nodos nodo;
            if(presenciaCombiner == "SI"){
               switch(accionATomar){
                     case 1: // aca nos llega que almacenemos un archivo temporal
-
 	                       for(cont=0; cont < cantidadNodos; aux ++){
 		                       while (aux2 != NULL){
-
 			                        if(vectorNodos.head->data->idNodo == idNodo){
 				                       vectorNodos.head->data->vector_archivos_temporales = archivoTemporalAAlmacenar; //Agregarlo al vector
 				                       numero = 1;
@@ -639,46 +682,33 @@ t_nodos nodo;
 		                       }
 	 	                       if(numero ==0){
 	 	                    	   nodo.idNodo = idNodo;
-
 			                     lista_add(&vectorNodos,);
 		                       }
-
 	                        }
 	                break;
                     case 2: // aca nos llega que un nodo esta mapeado seria el idNodo con su ip y puerto
-
                     	nodo_a_mapear = list_find(*vectorNodos,vectorNodos.head.data.idNodo == idNodo);
-
                     	int tamanioTotal = sizeof(nodo_a_mapear.idNodo) + sizeof(nodo_a_mapear.ipNodo) + sizeof(nodo_a_mapear.puertoNodo) + sizeof(nodo_a_mapear.cantidadArchivosTemporales) + sizeof(nodo_a_mapear.vector_archivos_temporales) + sizeof(nodo_a_mapear.archivoResultadoReduce);
-
                     	archivo_serializado = serializar_nodo_a_mapear(nodo_a_mapear,tamanioTotal);
-
                     	send(socketJob, &accionQueElJobDeberaTomar, sizeof(int),0);
                     	send(socketJob, &tamanioTotal, sizeof(int),0);
                     	send(socketJob, &archivo_serializado, sizeof(int),0);
-
               }
 }
-
-
 	t_tamanio tamanioTotal;
 // el requisito aca es que todos los nodos tengan todos los reduce hechos, desp cuando esten todos hechos
 	                           // ahi recien vamos a poder decirle a un nodo (hay uqe ver el criterio para elegirlo) que haga todos los reduce
 	t_job_marta Job_Marta;
 	t_matriz matrizMapper[cantidadDeArchivos][cantidadDeNodos];
 	int cont2,cont3;
-
 	for(cont2=0;cont2<cantidadDeArchivos;cont2++){
 		for(cont3=0;cont3<cantidadDeNodos;cont3++){
 			matrizMapper[cont2][cont3].bloques_mapeados = 0 ;
 			// inicializar el nombre de archivo, que hay que ir buscando los archivos que tenemos e ir poniendolos
-
 			// inicializar t_bloque_mapeado que es una lista de bloques, hay que ir buscando por nodo si esta el bloque o no
 			// en el nodo y ahi sumarlo a ese vector
 		}
 	}
-
-
 	t_marta_job_archivo_reduce Marta_Job;
 	Marta_Job.lista_nombres_archivos_resultado = list_create(); // esto si son varios o no depende de lo mismo que arriba
 	int tamanioTotal,respuestaReduce/* si es uno se hizo bien y si es 0 mal*/;
@@ -687,31 +717,23 @@ t_nodos nodo;
 	//HAY QUE VER SI EL RECV SE HACE ANTES DEL FOR
 	// Es jodido el tema, no se xq pones hasta la cant de nodos... el recv que hagamos puede ser de cualquier nodo, no necesariamente va a haber
 	//una cierta cantidad de recv, ni necesariamente van a venir ordenados
-
 	cont = 0;
 	while(cont < cantidadDeNodos - 1){ // este ciclo es para cuando todavia queden recv para hacer, cuando no queden mas, el cont del ciclo for de
 		                               // abajo va a quedar igual a cantidadDeNoddos - 1
-
 		recv(socketJob, &tamanioTotal, sizeof(int),0);
-
 	    int estado = 1;
-
 	   estado =  recive_y_deserialisa_job(&Job_Marta, socketJob, tamanioTotal);
 	     if(estado){
-
 	    	 contador = 0;
 	         cantidadBloquesPresentes = 0;
      		 contadorFinal = 0;
-
 	    	if(Job_Marta.resultado ==1){
 	    	 matrizMapper[Job_Marta.numeroBloque][Job_Marta.idNodo].resultadoMap = Job_Marta.resultado;
-
 	    	 for(j=0;j<cantidadDeBloques ;j++){
 		         if((matrizMapper[j][Job_Marta.idNodo].presencia) == 1){
 		             cantidadBloquesPresentes ++;
 		             if(matrizMapper[j][Job_Marta.idNodo].resultadoMap == 1){
 		            	contador ++;
-
 		            	list_add(Marta_Job.lista_nombres_archivos_resultado ,Job_Marta.nombreArchivo);
      			     }
 		         }
@@ -721,33 +743,20 @@ t_nodos nodo;
 		    	  Marta_Job.idNodo = Job_Marta.idNodo;
 		    	  Marta_Job.ip_nodo = 3 ;// ACA HAY Q BUSAR COMO PONER LA IP
 		    	  Marta_Job.puerto = 3 ;// ACA HAY Q BUSCAR EL PUERTO
-
 		    	  //serializar y mandar el reduce al job
-
 		    	  // hay que ver que estructura va a tener
 	 	     		//	send(socketJob, ) para el reduce
-
-
-
-
 		}else{
 			//aca significa que no se pudo hacer el map bien y entonces hay que mandar de vuelta lo que nos vino a la funcion  planificar map
 		}
 	  }
-
 	}
-
    }
 }
-
-
-
 // aca hay que verificar que nos llega un hilo reduce
 rePlanificar_y_planificar_reduce_general(int socketJob, int cantidadDeNodos, int cantidadDeBloques, char* presenciaCombiner){
-
 	int respuestaReduce/* si es uno se hizo bien y si es 0 mal*/;
 /*	int cont,reduceRealizado[cantidadDeNodos],aux;
-
 	recv(socketJob, &respuestaReduce, sizeof(int),0);
 	if(respuestaReduce == 1){
 	   aux = 0;
