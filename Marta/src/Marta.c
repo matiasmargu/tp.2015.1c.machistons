@@ -123,6 +123,8 @@ int main(void) {
 
 
    		    					break;
+   		    				case 69: //Aca recibo la info de los nodos cada vez que cambian.
+   		    					break;
    		    				}
    		    			}
    		    	}
