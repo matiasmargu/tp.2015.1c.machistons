@@ -33,9 +33,9 @@
 #include <net/if.h>
 #include <arpa/inet.h>
 
-FILE* fileMapper;
-FILE* fileReducer;
+
 FILE* nuevoArchivo;
+
 
 char *ip_nodo;
 int puerto_nodo;
@@ -44,27 +44,30 @@ char *dir_temp;
 char *nodo_nuevo;
 char *ip_fs;
 char *puerto_fs;
-char* id_nodo;
+int id_nodo;
 
-char* script_mapper;
-char* script_reducer;
+char* rutaArchivoConfiguracion;
 
 t_log* logger; // Log Global
 t_config* archivoConfiguracion;
 
 //Funciones de mapper y reducer
-void *mapper(void* arg);
+void mapper(void* arg);
 void *reducer(void* arg);
 
 //Funciones de memoria
 char* mapearAMemoriaVirtual(char* archivo_bin);
 int tamanioEspecifico(char* pmap,int nroDelBloque);
 void formateoElRegistro(FILE* fdf);
+char* mapearDeFD_charp(int fd);
+void liberar(char **paquete);
 
 //Funciones de serializacion y deserializacion
 int recive_y_deserialisa_CHARp(char *script, int socket, uint32_t tamanioTotal);
 int recive_y_deserialisa_SET_BLOQUE(estructuraSetBloque *bloque, int socket, uint32_t tamanioTotal);
+int recive_y_deserializa_EST_REDUCE(t_job_nodo_reduce *bloque, int socket, uint32_t tamanioTotal);
 char* serializarIP_PUERTO(char* ip_fs,char* puerto_fs, int tamanioData);
+char* serializarCHARp(char* Aserializar, int tamanioData);
 char* serializarBloqueDeDatos(char* bloque, int tamanioData);
 
 //Funciones de handshake

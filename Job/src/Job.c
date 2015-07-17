@@ -14,11 +14,7 @@
 
 
 int main(void) {
-	printf("a\n");
-	char*="lola";
 
-
-/*
 	char* rutaArchivoConfiguracion = "/home/utnso/git/tp-2015-1c-machistons/Configuracion/job.conf";
 
 	t_config* archivoConfiguracion;
@@ -34,7 +30,6 @@ int main(void) {
     t_job_nodo Job_Nodo;
 
 
-    printf("a\n");
 //LEEMOS TODOS LOS ARCHIVOS DE LA CONFIGURACION
 archivoConfiguracion = config_create(rutaArchivoConfiguracion);
 puerto_marta = config_get_string_value(archivoConfiguracion, "PUERTO_MARTA");
@@ -46,13 +41,12 @@ lista_archivos = config_get_string_value(archivoConfiguracion, "ARCHIVOS");
 archivo_resultado = config_get_string_value(archivoConfiguracion, "RESULTADO");
 
 //NOS CONECTAMOS CON MARTA
-int socketMarta = crearCliente (ip_marta, puerto_marta);
-handshakeMarta = 72;
+int socketMarta = crearCliente ("192.168.0.104", "3000");handshakeMarta = 72;
 send(socketMarta,&handshakeMarta,sizeof(int),0);
 //recv(socketMarta, &saludo, sizeof(int),0);
 log_info(logger,"Conexion establecida con proceso Marta");
-printf("Conexion establecida con proceso Marta:%i \n",saludo);
-/*
+printf("Conexion establecida con proceso Marta \n");
+
 //ACA LE MANDAMOS A MARTA LA LISTA DE ARCHIVOS COMO UN CHAR*
 char* archivoAEnviar;
 nombre.archivo = lista_archivos;
@@ -116,10 +110,18 @@ rutinaReduceAEnviar =  serializar_charpuntero(&rutinaReduce, tamanioTotalReduce)
 send(socketNodo,rutinaReduceAEnviar,tamanioTotal,0);
 
 pthread_t hilomap;
+int prueba3;
+int entero5;
+recv(socketMarta,&prueba3,sizeof(int),0);
+entero5 = 1;
+recv(socketMarta,&prueba3,sizeof(int),0);
+send(socketMarta,&entero5,sizeof(int),0);
+printf("lo mande\n");
 
-// hecho por mati N ayer :D
 while (x!=1){
+	send(socketMarta,&prueba3,sizeof(int),0);
 	recv(socketMarta,&entero,sizeof(int),0);
+	printf("no se queda esperanda\n");
 	switch(entero){
 	case 1: // aca vieene un map
 		pthread_create(&hilomap,NULL,mandarPruebaAMarta,(void *)socketMarta);
@@ -133,7 +135,7 @@ while (x!=1){
 		x = 1;
 	}
 }
-
+/*/
 while (y!=1){
 	recv(socketNodo,&entero2,sizeof(int),0);
 	switch(entero2){
@@ -199,7 +201,7 @@ while (y!=1){
 }
 
 
-
+*/
 
 
 
@@ -212,7 +214,7 @@ while (y!=1){
 	free(reduce);
 	free(ip_marta);
 	free(combiner);
-*/
+
 	return EXIT_SUCCESS;
 }
 

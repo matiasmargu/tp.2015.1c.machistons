@@ -6,12 +6,12 @@
  */
 #include "variablesGlobales.h"
 
-char* mapearAMemoriaVirtual(char* archivo_bin){
+char* mapearAMemoriaVirtual(char* archivo){
 	char* pmap;
 	int fd;
 	struct stat mystat;
 
-	fd = open(archivo_bin,O_RDWR);
+	fd = open(archivo,O_RDWR);
 		if(fd == -1){
 		printf("Error al leer el ARCHIBO_BIN\n");
 		exit(1);
@@ -31,6 +31,28 @@ char* mapearAMemoriaVirtual(char* archivo_bin){
 	}
 	return pmap;
 }
+
+char* mapearDeFD_charp(int fd){
+	//Con open(nombre del archivo (path),O_RDWR);
+	struct stat mystat;
+	char* pmap;
+
+	if(fstat(fd,&mystat) < 0){
+		printf("Error al establecer fstat\n");
+		close(fd);
+		exit(1);
+	}
+
+	pmap = mmap(0,mystat.st_size, PROT_READ|PROT_WRITE ,MAP_SHARED,fd,0);
+	if(pmap == MAP_FAILED){
+		printf("Error al mapear a memoria\n");
+		close(fd);
+		exit(1);
+	}
+	return pmap;
+}
+
+
 int tamanioEspecifico(char* pmap,int nroDelBloque){
 	int i;
 	int contador=0;
@@ -41,10 +63,14 @@ int tamanioEspecifico(char* pmap,int nroDelBloque){
 		if(pmap[i]=='/'){
 			centinela = 1;
 		}
+		if(contador == 20*1024*1024){
+			centinela =1;
+		}
 
+		//printf("Impirimir: %c\n",pmap[i])
 	}
-
-	return (contador - 1);
+	//printf("todo bien \n");
+	return (contador -1);
 }
 
 
@@ -64,6 +90,10 @@ void formateoElRegistro(FILE* fdf){
 	         i = 0;
 	    }
 	}
+}
+
+void liberar(char **paquete){
+	free(*paquete);
 }
 
 

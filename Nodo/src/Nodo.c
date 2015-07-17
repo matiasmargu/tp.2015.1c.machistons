@@ -13,6 +13,10 @@
 
 int main(void) {
 
+	pthread_t hiloJob[1000];
+
+	int contJ=0;
+
 	logger = log_create("LOG_Nodo", "log_nodo" ,false, LOG_LEVEL_INFO);
 	int entero;
 
@@ -27,7 +31,7 @@ int main(void) {
 	log_info(logger, "Se creo correctamente el archivo de configuracion");
 	//printf("Se escribio en el log\n");
 
-	char* rutaArchivoConfiguracion = "/home/utnso/git/tp-2015-1c-machistons/Configuracion/nodo.conf";
+	rutaArchivoConfiguracion = "/home/utnso/git/tp-2015-1c-machistons/Configuracion/nodo.conf";
 	archivoConfiguracion = config_create(rutaArchivoConfiguracion);
 
 
@@ -40,10 +44,10 @@ int main(void) {
 	puerto_fs = config_get_string_value(archivoConfiguracion, "PUERTO_FS");
 
 	if(string_equals_ignore_case(nodo_nuevo,"NO")){
-		id_nodo = config_get_string_value(archivoConfiguracion, "ID_NODO");
+		id_nodo = config_get_int_value(archivoConfiguracion, "ID_NODO");
 	}
 
-	handshakeConFS();
+	//handshakeConFS();
 
 //Esta es el select
 
@@ -98,7 +102,8 @@ int main(void) {
 		    		{
 		    			switch(entero){
 		    			case 8: // Este es el Job
-		    				handshakeConJob(i);
+		    				pthread_create(&hiloJob[contJ], NULL, &atenderJob, (void *)i);
+		    				contJ++;
 		    				break;
 		    			case 7: // Este es otro Nodo
 
@@ -112,6 +117,7 @@ int main(void) {
 
 	config_destroy(archivoConfiguracion);
 	log_destroy(logger);
+	liberar(&rutaArchivoConfiguracion);
 	free(ip_nodo);
 	free(archivo_bin);
 	free(dir_temp);

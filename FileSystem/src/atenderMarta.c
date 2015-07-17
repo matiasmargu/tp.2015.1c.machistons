@@ -7,33 +7,18 @@
 
 #include "librerias_y_estructuras.h"
 
-typedef struct{
-	char* archivo;
-}t_charpuntero;
-
-int recive_y_deserialisa(t_charpuntero* nombre, int socket, uint32_t tamanioTotal){
-	int status = 1;
-	char *buffer = malloc(tamanioTotal);
-	int offset=0;
-	recv(socket, buffer, tamanioTotal, 0);
-	int tamanioDinamico;
-	memcpy(&tamanioDinamico, buffer + offset, sizeof(int));
-	offset += sizeof(int);
-	nombre->archivo = malloc(tamanioDinamico);
-	memcpy(nombre->archivo, buffer + offset, tamanioDinamico);
-	offset += tamanioDinamico;
-	free(buffer);
-	return status;
-}
-
 void *atenderMarta(void*arg){
 
 	int socketMarta = (int)arg;
-
-	int tamanioArchivo;
-	t_charpuntero nombreArchivo;
-
+	int tamanioNombreArchivo;
+	char* nombreArchivo;
+	char *paqueteAEnviar;
 	int tamanioTotal;
+	int cantidadNodos;
+
+	int idNodo;
+	const char *IPNodo;
+	const char *PUERTONodo;
 
 	t_archivo archivo;
 	bson_iter_t iter;
@@ -45,68 +30,134 @@ void *atenderMarta(void*arg){
 	bson_t *query;
 	mongoc_cursor_t *cursor;
 
+	int entero;
+	int enteroPrueba;
+	enteroPrueba = 160;
+
 	int offset;
 	int size_to_send;
+	int tamanioDinamico;
+	send(socketMarta, &enteroPrueba,sizeof(int),0);
 
 	for(;;){
-		recv(socketMarta, &tamanioArchivo, sizeof(tamanioArchivo),0);
-		if(recive_y_deserialisa(&nombreArchivo, socketMarta, tamanioArchivo)){
+		if(recv(socketMarta, &entero, sizeof(int),0)< 0) return NULL; // Entero para aceptar el pedido de Marta
+		switch(entero){
+			case 72: // Info Archivo
 
-			offset = 0;
+				send(socketMarta, &enteroPrueba,sizeof(int),0);
+				if(recv(socketMarta, &tamanioNombreArchivo, sizeof(int),0)< 0)return NULL;
+				send(socketMarta, &enteroPrueba,sizeof(int),0);
 
-			query = BCON_NEW("Nombre",nombreArchivo.archivo);
-			cursor = mongoc_collection_find (archivos, MONGOC_QUERY_NONE, 0, 0, 0, query, NULL, NULL);
+				nombreArchivo = malloc(tamanioNombreArchivo);
+				if(recv(socketMarta, nombreArchivo, tamanioNombreArchivo, 0)< 0) return NULL;
 
-			while (mongoc_cursor_next (cursor, &doc)) {
-				if (bson_iter_init (&iter, doc)) {
-					if(bson_iter_find (&iter, "Cantidad Bloques"))archivo.cantidadBloque = bson_iter_int32(&iter);
+				query = bson_new ();
+				offset = 0;
+				query = BCON_NEW("Nombre",nombreArchivo);
+				cursor = mongoc_collection_find (archivos, MONGOC_QUERY_NONE, 0, 0, 0, query, NULL, NULL);
 
-					tamanioTotal = sizeof(archivo.cantidadBloque) + sizeof(int) * 7 * archivo.cantidadBloque;
-					send(socketMarta, &tamanioTotal, sizeof(int),0);
+				while (mongoc_cursor_next (cursor, &doc)) {
+					if (bson_iter_init (&iter, doc)) {
+						if(bson_iter_find (&iter, "Cantidad Bloques"))archivo.cantidadBloque = bson_iter_int32(&iter);
 
-					char *paqueteAEnviar = malloc(tamanioTotal);
+						tamanioTotal = sizeof(archivo.cantidadBloque) + sizeof(int) * 7 * archivo.cantidadBloque;
+						send(socketMarta, &tamanioTotal, sizeof(int),0);  // Envio el tamanio de toda la info del archivo solicitado
+						if(recv(socketMarta, &enteroPrueba, sizeof(int), 0)< 0) return NULL;
 
-					size_to_send =  sizeof(archivo.cantidadBloque);
-					memcpy(paqueteAEnviar + offset, &(archivo.cantidadBloque), size_to_send);
-					offset += size_to_send;
+						paqueteAEnviar = malloc(tamanioTotal);
 
-					for(nroBloque=0;nroBloque<archivo.cantidadBloque;nroBloque++){
-
-						size_to_send =  sizeof(nroBloque);
-						memcpy(paqueteAEnviar + offset, &(nroBloque), size_to_send);
+						size_to_send =  sizeof(archivo.cantidadBloque);
+						memcpy(paqueteAEnviar + offset, &(archivo.cantidadBloque), size_to_send);
 						offset += size_to_send;
 
-						for(nroCopia=1;nroCopia<=3;nroCopia++){
+						for(nroBloque=0;nroBloque<archivo.cantidadBloque;nroBloque++){
 
-						info = infoBloqueyCopia(nroBloque, nroCopia, doc);
+							size_to_send =  sizeof(nroBloque);
+							memcpy(paqueteAEnviar + offset, &(nroBloque), size_to_send);
+							offset += size_to_send;
 
-						size_to_send =  sizeof(info.id_nodo);
-						memcpy(paqueteAEnviar + offset, &(info.id_nodo), size_to_send);
-						offset += size_to_send;
+							for(nroCopia=1;nroCopia<=3;nroCopia++){
 
-						size_to_send =  sizeof(info.bloque);
-						memcpy(paqueteAEnviar + offset, &(info.bloque), size_to_send);
-						offset += size_to_send;
+								info = infoBloqueyCopia(nroBloque, nroCopia, doc);
 
-						}
+								size_to_send =  sizeof(info.id_nodo);
+								memcpy(paqueteAEnviar + offset, &(info.id_nodo), size_to_send);
+								offset += size_to_send;
 
+								size_to_send =  sizeof(info.bloque);
+								memcpy(paqueteAEnviar + offset, &(info.bloque), size_to_send);
+								offset += size_to_send;
+
+									}
+
+								}
+
+						send(socketMarta, paqueteAEnviar, tamanioTotal, 0); // Envio toda la info del archivo solicitado
+						liberarMensaje(&paqueteAEnviar);
+							}
 					}
 
-					send(socketMarta, paqueteAEnviar, tamanioTotal, 0);
+					bson_destroy (query);
+					liberarMensaje(&nombreArchivo);
+			break;
+			case 68: // Info Nodos
+				query = bson_new ();
+				BSON_APPEND_UTF8(query, "Estado", "Disponible");
+				BSON_APPEND_UTF8 (query, "Coneccion", "Conectado");
+				BSON_APPEND_UTF8(query, "Es" , "Nodo");
+				cantidadNodos = mongoc_collection_count(nodos, MONGOC_QUERY_NONE, query,0,0,NULL,NULL);
+				if(cantidadNodos > 0){
+
+					tamanioTotal = 0;
+					cursor = mongoc_collection_find (nodos, MONGOC_QUERY_NONE, 0, 0, 0, query, NULL, NULL);
+					while (mongoc_cursor_next (cursor, &doc)) {
+						if (bson_iter_init (&iter, doc)) {
+							if(bson_iter_find (&iter, "ID Nodo"))idNodo = bson_iter_int32(&iter);
+							if(bson_iter_find (&iter, "IP"))IPNodo = bson_iter_utf8(&iter,NULL);
+							if(bson_iter_find (&iter, "PUERTO"))PUERTONodo = bson_iter_utf8(&iter,NULL);
+
+							tamanioTotal = sizeof(int) + sizeof(int) + strlen(IPNodo)+ 1 + sizeof(int) + strlen(PUERTONodo) +1 + tamanioTotal;
+						}
+					}
+					send(socketMarta, &tamanioTotal, sizeof(int),0);    // Envio el tamanio Total de toda la info Nodos
+					paqueteAEnviar = malloc(tamanioTotal);
+					offset = 0;
+
+					cursor = mongoc_collection_find (nodos, MONGOC_QUERY_NONE, 0, 0, 0, query, NULL, NULL);
+					while (mongoc_cursor_next (cursor, &doc)) {
+						if (bson_iter_init (&iter, doc)) {
+							if(bson_iter_find (&iter, "ID Nodo"))idNodo = bson_iter_int32(&iter);
+							if(bson_iter_find (&iter, "IP"))IPNodo = bson_iter_utf8(&iter,NULL);
+							if(bson_iter_find (&iter, "PUERTO"))PUERTONodo = bson_iter_utf8(&iter,NULL);
+
+							size_to_send =  sizeof(idNodo);
+							memcpy(paqueteAEnviar + offset, &(idNodo), size_to_send);
+							offset += size_to_send;
+
+							tamanioDinamico = strlen(IPNodo) + 1;
+							size_to_send = sizeof(int);
+							memcpy(paqueteAEnviar + offset, &tamanioDinamico, size_to_send);
+							offset += size_to_send;
+							size_to_send =  strlen(IPNodo) + 1;
+							memcpy(paqueteAEnviar + offset, IPNodo, size_to_send);
+							offset += size_to_send;
+
+							tamanioDinamico = strlen(PUERTONodo) + 1;
+							size_to_send = sizeof(int);
+							memcpy(paqueteAEnviar + offset, &tamanioDinamico, size_to_send);
+							offset += size_to_send;
+							size_to_send =  strlen(PUERTONodo) + 1;
+							memcpy(paqueteAEnviar + offset, PUERTONodo, size_to_send);
+							offset += size_to_send;
+						}
+					}
+
+					send(socketMarta, paqueteAEnviar, tamanioTotal, 0); // Envio toda la info Nodos
 					liberarMensaje(&paqueteAEnviar);
 				}
-			}
+				bson_destroy (query);
+			break;
 		}
-
 	}
-	bson_destroy (query);
 	return NULL;
 }
-
-/*
-					if(bson_iter_find (&iter, "Nombre")) archivo.nombre = bson_iter_utf8(&iter,NULL);
-					if(bson_iter_find (&iter, "Tamanio"))archivo.tamanio = bson_iter_int32(&iter);
-					if(bson_iter_find (&iter, "Directorio Padre"))archivo.directorioPadre = bson_iter_int32(&iter);
-					if(bson_iter_find (&iter, "Direccion Fisica"))archivo.path = bson_iter_utf8(&iter,NULL);
-					if(bson_iter_find (&iter, "Estado"))archivo.estado = bson_iter_int32(&iter);
-					*/

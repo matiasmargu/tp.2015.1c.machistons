@@ -31,7 +31,7 @@
 
 // Variables de Consola
 
-#define MAXSIZE_COMANDO 50
+#define MAXSIZE_COMANDO 200
 #define MAXCOMANDOS 6
 #define MAXBUFERTECLADO 1000
 
@@ -66,7 +66,9 @@ typedef struct{
 t_log* logger; // Log Global
 
 int idNodoGlobal;
+int idDirectorioGlobal;
 pthread_mutex_t mutex;
+pthread_mutex_t mutexParaIDDirectorio;
 
 // Variables para control de estado FS
 
@@ -87,6 +89,8 @@ mongoc_collection_t *nodos;
 
 void aplicarNodoGlobalYponerNodosNoDisponible();
 void verificarEstadoFS();
+void darDeBajaElNodo(int socket);
+void agregarNodo();
 
 // Funcion para liberar mensaje serializado
 
@@ -99,6 +103,7 @@ int recive_y_deserializa_Contenido_Bloque(t_getBloque *bloque, int socket, uint3
 char *pedirContenidoBloqueA (int socket, int nroBloque);
 char* serializarParaGetBloque(estructuraSetBloque *bloque);
 int recive_y_deserialisa_IPyPUERTO_Nodo(estructuraIPyNodo *bloque, int socket, uint32_t tamanioTotal);
+char* recive_y_deserialisa_SOLOIP_Nodo(int socket, uint32_t tamanioTotal);
 
 // Funciones para Agregar Datos a Mongo
 
@@ -117,5 +122,7 @@ void imprimirMenu(void);
 void mensajeEstadoInactivoFS();
 void *atenderConsola(void*arg);
 void formatear();
+void eliminarDirectorio();
+void crearDirectorio();
 
 #endif /* LIBRERIAS_Y_ESTRUCTURAS_H_ */

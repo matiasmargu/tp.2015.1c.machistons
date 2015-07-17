@@ -1,0 +1,1584 @@
+[INFO] 19:27:25:441 log_job/(17774:17774): Conexion establecida con proceso Marta
+[INFO] 19:40:25:982 log_job/(19299:19299): Conexion establecida con proceso Marta
+[INFO] 19:41:44:483 log_job/(19398:19398): Conexion establecida con proceso Marta
+[INFO] 12:26:25:497 log_job/(5262:5262): Se ha establecido la conexion con Marta
+[INFO] 12:28:06:584 log_job/(5357:5357): Se ha establecido la conexion con Marta
+[INFO] 12:28:47:570 log_job/(5370:5370): Se ha establecido la conexion con Marta
+[INFO] 13:17:40:2 log_job/(2316:2316): Se ha establecido la conexion con Marta
+[INFO] 13:19:35:512 log_job/(2645:2645): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 13:20:26:111 log_job/(2676:2676): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 13:21:31:494 log_job/(2690:2690): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 13:22:05:495 log_job/(2727:2727): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 13:22:47:73 log_job/(2747:2747): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 13:23:18:529 log_job/(2759:2759): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 13:23:28:331 log_job/(2768:2768): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 13:24:31:308 log_job/(2876:2876): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 13:24:57:11 log_job/(2944:2944): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 13:25:36:534 log_job/(3016:3016): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 13:25:45:252 log_job/(3025:3025): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 13:26:34:548 log_job/(3043:3043): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 13:27:06:12 log_job/(3057:3057): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 13:27:13:970 log_job/(3064:3064): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 13:28:14:1 log_job/(3165:3165): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 13:28:25:603 log_job/(3217:3217): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 13:28:56:505 log_job/(3221:3221): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 13:29:12:622 log_job/(3232:3232): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 13:29:37:955 log_job/(3313:3313): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 13:29:54:912 log_job/(3317:3317): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 13:30:27:371 log_job/(3443:3443): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 13:31:34:468 log_job/(3568:3568): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 13:33:05:880 log_job/(3813:3813): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 13:34:04:64 log_job/(3968:3968): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 13:35:15:732 log_job/(4061:4061): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 13:38:37:351 log_job/(4140:4140): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 13:40:01:377 log_job/(4161:4161): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 13:42:04:501 log_job/(4183:4183): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 13:44:26:19 log_job/(4214:4214): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 13:45:27:380 log_job/(4317:4317): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 13:45:54:405 log_job/(4401:4401): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 13:47:26:837 log_job/(4538:4538): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 13:59:30:379 log_job/(5064:5064): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 14:00:18:623 log_job/(5140:5140): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 14:01:26:534 log_job/(5194:5194): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 14:02:17:276 log_job/(5279:5279): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 14:03:04:856 log_job/(5287:5287): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 14:04:10:163 log_job/(5309:5309): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 14:05:34:105 log_job/(5391:5391): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 14:10:47:902 log_job/(5728:5728): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 14:10:52:982 log_job/(5728:5735): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+[INFO] 14:10:52:983 log_job/(5728:5734): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+[INFO] 14:10:52:983 log_job/(5728:5733): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+[INFO] 14:10:52:983 log_job/(5728:5732): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+[INFO] 14:10:52:983 log_job/(5728:5731): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+[INFO] 14:15:47:196 log_job/(6130:6130): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 14:24:06:705 log_job/(6500:6500): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 14:27:57:51 log_job/(6601:6601): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 14:28:10:844 log_job/(6605:6605): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 14:28:10:881 log_job/(6605:6611): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+[INFO] 14:28:10:881 log_job/(6605:6610): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+[INFO] 14:28:10:881 log_job/(6605:6609): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+[INFO] 14:28:10:881 log_job/(6605:6608): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+[INFO] 14:28:10:881 log_job/(6605:6607): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+[INFO] 14:35:47:521 log_job/(6808:6808): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 14:35:47:772 log_job/(6808:6814): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:35:47:772 log_job/(6808:6813): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:35:47:772 log_job/(6808:6812): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:35:47:772 log_job/(6808:6811): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:35:47:772 log_job/(6808:6810): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:35:47:907 log_job/(6808:6813): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 14:35:47:907 log_job/(6808:6812): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 14:35:47:907 log_job/(6808:6811): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 14:35:47:908 log_job/(6808:6810): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 14:36:29:503 log_job/(6816:6816): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 14:36:29:541 log_job/(6816:6822): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:36:29:541 log_job/(6816:6821): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:36:29:541 log_job/(6816:6820): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:36:29:541 log_job/(6816:6819): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:36:29:541 log_job/(6816:6818): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:36:29:666 log_job/(6816:6821): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 14:36:29:666 log_job/(6816:6820): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 14:36:29:666 log_job/(6816:6819): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 14:36:29:667 log_job/(6816:6818): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 14:36:47:400 log_job/(6825:6825): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 14:36:47:429 log_job/(6825:6831): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:36:47:429 log_job/(6825:6830): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:36:47:429 log_job/(6825:6829): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:36:47:429 log_job/(6825:6828): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:36:47:429 log_job/(6825:6827): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:36:47:561 log_job/(6825:6830): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 14:36:47:561 log_job/(6825:6829): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 14:36:47:562 log_job/(6825:6828): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 14:36:47:562 log_job/(6825:6827): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 14:39:18:971 log_job/(6835:6835): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 14:39:19:6 log_job/(6835:6841): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:39:19:6 log_job/(6835:6840): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:39:19:6 log_job/(6835:6839): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:39:19:6 log_job/(6835:6838): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:39:19:6 log_job/(6835:6837): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:40:01:919 log_job/(6921:6921): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 14:40:01:982 log_job/(6921:6927): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:40:01:982 log_job/(6921:6926): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:40:01:982 log_job/(6921:6925): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:40:01:982 log_job/(6921:6924): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:40:01:982 log_job/(6921:6923): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:40:59:742 log_job/(6933:6933): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 14:40:59:821 log_job/(6933:6939): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:40:59:821 log_job/(6933:6938): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:40:59:821 log_job/(6933:6937): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:40:59:822 log_job/(6933:6936): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:40:59:822 log_job/(6933:6935): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:43:33:343 log_job/(7009:7009): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 14:43:45:4 log_job/(7012:7012): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 14:43:45:114 log_job/(7012:7018): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:43:45:115 log_job/(7012:7017): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:43:45:115 log_job/(7012:7016): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:43:45:115 log_job/(7012:7015): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:43:45:115 log_job/(7012:7014): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:45:25:445 log_job/(7172:7172): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 14:45:25:463 log_job/(7172:7178): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:45:25:463 log_job/(7172:7177): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:45:25:463 log_job/(7172:7176): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:45:25:463 log_job/(7172:7175): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:45:25:463 log_job/(7172:7174): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:46:50:21 log_job/(7181:7181): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 14:46:50:38 log_job/(7181:7187): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:46:50:38 log_job/(7181:7186): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:46:50:38 log_job/(7181:7185): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:46:50:38 log_job/(7181:7184): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:46:50:38 log_job/(7181:7183): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:48:00:381 log_job/(7190:7190): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 14:48:00:535 log_job/(7190:7196): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:48:00:535 log_job/(7190:7195): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:48:00:535 log_job/(7190:7194): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:48:00:535 log_job/(7190:7193): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:48:00:535 log_job/(7190:7192): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:48:26:52 log_job/(7199:7199): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 14:48:27:455 log_job/(7199:7205): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:48:27:455 log_job/(7199:7204): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:48:27:455 log_job/(7199:7203): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:48:27:455 log_job/(7199:7202): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:48:27:455 log_job/(7199:7201): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:48:28:116 log_job/(7199:7204): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 14:48:28:117 log_job/(7199:7203): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 14:48:28:117 log_job/(7199:7202): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 14:48:28:117 log_job/(7199:7201): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 14:50:21:564 log_job/(7209:7209): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 14:50:31:933 log_job/(7212:7212): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 14:51:08:772 log_job/(7215:7215): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 14:51:08:955 log_job/(7215:7221): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:51:08:956 log_job/(7215:7220): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:51:08:956 log_job/(7215:7219): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:51:08:956 log_job/(7215:7218): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:51:08:956 log_job/(7215:7217): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:52:54:846 log_job/(7225:7225): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 14:52:54:861 log_job/(7225:7231): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:52:54:861 log_job/(7225:7230): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:52:54:861 log_job/(7225:7229): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:52:54:861 log_job/(7225:7228): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:52:54:861 log_job/(7225:7227): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:53:08:991 log_job/(7225:7230): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 14:53:08:991 log_job/(7225:7229): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 14:53:08:991 log_job/(7225:7228): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 14:53:08:992 log_job/(7225:7227): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 14:53:31:502 log_job/(7234:7234): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 14:53:31:580 log_job/(7234:7240): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:53:31:580 log_job/(7234:7239): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:53:31:580 log_job/(7234:7238): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:53:31:580 log_job/(7234:7237): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:53:31:580 log_job/(7234:7236): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:54:12:582 log_job/(7243:7243): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 14:54:30:858 log_job/(7247:7247): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 14:54:31:57 log_job/(7247:7253): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:54:31:57 log_job/(7247:7252): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:54:31:57 log_job/(7247:7251): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:54:31:57 log_job/(7247:7250): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:54:31:57 log_job/(7247:7249): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:55:48:167 log_job/(7256:7256): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 14:55:48:214 log_job/(7256:7262): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:55:48:214 log_job/(7256:7261): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:55:48:214 log_job/(7256:7260): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:55:48:214 log_job/(7256:7259): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 14:55:48:214 log_job/(7256:7258): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:01:07:211 log_job/(7269:7269): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 15:01:07:393 log_job/(7269:7275): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:01:07:393 log_job/(7269:7274): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:01:07:393 log_job/(7269:7273): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:01:07:393 log_job/(7269:7272): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:01:07:393 log_job/(7269:7271): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:01:07:490 log_job/(7269:7274): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 15:01:07:490 log_job/(7269:7273): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 15:01:07:490 log_job/(7269:7272): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 15:01:07:490 log_job/(7269:7271): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 15:07:03:882 log_job/(7286:7286): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 15:07:03:936 log_job/(7286:7292): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:07:03:936 log_job/(7286:7291): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:07:03:936 log_job/(7286:7290): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:07:03:936 log_job/(7286:7289): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:07:03:936 log_job/(7286:7288): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:20:39:320 log_job/(7348:7348): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 15:20:39:336 log_job/(7348:7354): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:20:39:336 log_job/(7348:7353): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:20:39:336 log_job/(7348:7352): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:20:39:336 log_job/(7348:7351): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:20:39:336 log_job/(7348:7350): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:20:53:411 log_job/(7348:7353): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 15:20:53:411 log_job/(7348:7352): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 15:20:53:411 log_job/(7348:7351): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 15:20:53:411 log_job/(7348:7350): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 15:24:46:854 log_job/(7396:7396): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 15:24:46:870 log_job/(7396:7402): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:24:46:870 log_job/(7396:7401): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:24:46:870 log_job/(7396:7400): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:24:46:870 log_job/(7396:7399): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:24:46:870 log_job/(7396:7398): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:26:32:404 log_job/(7629:7629): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 15:26:32:463 log_job/(7629:7635): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:26:32:463 log_job/(7629:7634): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:26:32:463 log_job/(7629:7633): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:26:32:463 log_job/(7629:7632): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:26:32:463 log_job/(7629:7631): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:27:39:59 log_job/(7639:7639): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 15:27:39:202 log_job/(7639:7645): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:27:39:202 log_job/(7639:7644): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:27:39:202 log_job/(7639:7643): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:27:39:202 log_job/(7639:7642): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:27:39:202 log_job/(7639:7641): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:28:26:362 log_job/(7648:7648): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 15:28:26:378 log_job/(7648:7654): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:28:26:378 log_job/(7648:7653): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:28:26:378 log_job/(7648:7652): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:28:26:378 log_job/(7648:7651): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:28:26:378 log_job/(7648:7650): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:32:31:536 log_job/(7668:7668): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 15:32:31:551 log_job/(7668:7674): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:32:31:551 log_job/(7668:7673): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:32:31:568 log_job/(7668:7671): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:32:31:568 log_job/(7668:7670): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:32:31:569 log_job/(7668:7672): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:37:24:162 log_job/(7864:7864): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 15:37:24:178 log_job/(7864:7870): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:37:24:179 log_job/(7864:7869): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:37:24:179 log_job/(7864:7868): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:37:24:179 log_job/(7864:7867): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:37:24:179 log_job/(7864:7866): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:38:32:61 log_job/(7930:7930): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 15:38:32:111 log_job/(7930:7936): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:38:32:111 log_job/(7930:7935): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:38:32:111 log_job/(7930:7934): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:38:32:111 log_job/(7930:7933): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:38:32:112 log_job/(7930:7932): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:38:37:647 log_job/(7937:7937): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 15:38:39:358 log_job/(7939:7939): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 15:38:40:90 log_job/(7941:7941): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 15:38:40:814 log_job/(7943:7943): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 15:39:32:267 log_job/(7947:7947): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 15:39:32:286 log_job/(7947:7953): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:39:32:286 log_job/(7947:7952): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:39:32:286 log_job/(7947:7951): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:39:32:286 log_job/(7947:7950): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:39:32:286 log_job/(7947:7949): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:40:03:779 log_job/(7955:7955): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 15:40:03:915 log_job/(7955:7961): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:40:03:916 log_job/(7955:7960): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:40:03:916 log_job/(7955:7959): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:40:03:916 log_job/(7955:7958): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:40:03:916 log_job/(7955:7957): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:40:05:767 log_job/(7955:7960): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 15:40:05:767 log_job/(7955:7959): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 15:40:05:767 log_job/(7955:7958): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 15:40:05:767 log_job/(7955:7957): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 15:40:30:969 log_job/(7964:7964): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 15:40:31:41 log_job/(7964:7970): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:40:31:41 log_job/(7964:7969): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:40:31:41 log_job/(7964:7968): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:40:31:41 log_job/(7964:7967): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:40:31:41 log_job/(7964:7966): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:41:30:674 log_job/(7973:7973): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 15:41:30:797 log_job/(7973:7979): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:41:30:797 log_job/(7973:7978): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:41:30:798 log_job/(7973:7976): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:41:30:797 log_job/(7973:7977): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:41:30:798 log_job/(7973:7975): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:42:08:276 log_job/(7981:7981): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 15:42:08:337 log_job/(7981:7987): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:42:08:337 log_job/(7981:7986): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:42:08:337 log_job/(7981:7985): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:42:08:337 log_job/(7981:7984): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:42:08:337 log_job/(7981:7983): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:42:31:275 log_job/(7990:7990): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 15:42:31:296 log_job/(7990:7996): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:42:31:296 log_job/(7990:7995): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:42:31:296 log_job/(7990:7994): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:42:31:296 log_job/(7990:7993): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:42:31:296 log_job/(7990:7992): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:42:49:710 log_job/(7998:7998): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 15:42:49:749 log_job/(7998:8004): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:42:49:749 log_job/(7998:8003): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:42:49:749 log_job/(7998:8002): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:42:49:749 log_job/(7998:8001): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:42:49:749 log_job/(7998:8000): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:44:37:282 log_job/(8009:8009): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 15:44:37:307 log_job/(8009:8015): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:44:37:307 log_job/(8009:8014): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:44:37:307 log_job/(8009:8013): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:44:37:307 log_job/(8009:8012): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:44:37:307 log_job/(8009:8011): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:45:00:852 log_job/(8017:8017): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 15:45:00:874 log_job/(8017:8023): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:45:00:875 log_job/(8017:8022): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:45:00:875 log_job/(8017:8021): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:45:00:875 log_job/(8017:8020): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:45:00:875 log_job/(8017:8019): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:45:03:799 log_job/(8017:8022): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 15:45:03:799 log_job/(8017:8021): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 15:45:03:800 log_job/(8017:8020): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 15:45:03:800 log_job/(8017:8019): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 15:46:33:439 log_job/(8027:8027): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 15:46:33:457 log_job/(8027:8033): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:46:33:457 log_job/(8027:8032): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:46:33:457 log_job/(8027:8031): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:46:33:457 log_job/(8027:8030): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:46:33:457 log_job/(8027:8029): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:47:24:287 log_job/(8116:8116): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 15:47:24:339 log_job/(8116:8122): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:47:24:339 log_job/(8116:8121): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:47:24:339 log_job/(8116:8120): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:47:24:339 log_job/(8116:8119): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:47:24:339 log_job/(8116:8118): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:47:40:991 log_job/(8116:8121): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 15:47:40:992 log_job/(8116:8120): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 15:47:40:992 log_job/(8116:8119): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 15:47:40:992 log_job/(8116:8118): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 15:48:23:165 log_job/(8125:8125): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 15:48:24:380 log_job/(8125:8131): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:48:24:380 log_job/(8125:8130): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:48:24:380 log_job/(8125:8129): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:48:24:380 log_job/(8125:8128): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:48:24:380 log_job/(8125:8127): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:48:48:187 log_job/(8125:8130): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 15:48:48:187 log_job/(8125:8129): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 15:48:48:187 log_job/(8125:8128): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 15:48:48:187 log_job/(8125:8127): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 15:49:48:437 log_job/(8135:8135): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 15:49:48:517 log_job/(8135:8141): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:49:48:517 log_job/(8135:8140): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:49:48:517 log_job/(8135:8139): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:49:48:517 log_job/(8135:8138): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:49:48:518 log_job/(8135:8137): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:51:39:710 log_job/(8155:8155): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 15:51:39:744 log_job/(8155:8161): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:51:39:744 log_job/(8155:8160): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:51:39:744 log_job/(8155:8159): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:51:39:744 log_job/(8155:8158): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:51:39:744 log_job/(8155:8157): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:54:02:188 log_job/(8165:8165): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 15:54:02:214 log_job/(8165:8171): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:54:02:214 log_job/(8165:8170): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:54:02:214 log_job/(8165:8169): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:54:02:214 log_job/(8165:8168): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:54:02:214 log_job/(8165:8167): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:54:48:776 log_job/(8175:8175): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 15:54:48:812 log_job/(8175:8181): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:54:48:812 log_job/(8175:8180): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:54:48:812 log_job/(8175:8179): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:54:48:812 log_job/(8175:8178): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:54:48:812 log_job/(8175:8177): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:55:51:25 log_job/(8184:8184): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 15:56:02:199 log_job/(8187:8187): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 15:56:02:269 log_job/(8187:8193): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:56:02:269 log_job/(8187:8192): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:56:02:269 log_job/(8187:8191): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:56:02:269 log_job/(8187:8190): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:56:02:269 log_job/(8187:8189): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:58:00:497 log_job/(8271:8271): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 15:58:00:529 log_job/(8271:8277): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:58:00:529 log_job/(8271:8276): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:58:00:529 log_job/(8271:8275): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:58:00:529 log_job/(8271:8274): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:58:00:529 log_job/(8271:8273): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:59:37:135 log_job/(8369:8369): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 15:59:37:175 log_job/(8369:8375): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:59:37:175 log_job/(8369:8374): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:59:37:175 log_job/(8369:8373): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:59:37:175 log_job/(8369:8372): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 15:59:37:175 log_job/(8369:8371): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:26:45:805 log_job/(8453:8453): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 16:26:45:890 log_job/(8453:8459): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:26:45:890 log_job/(8453:8458): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:26:45:890 log_job/(8453:8457): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:26:45:890 log_job/(8453:8456): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:26:45:890 log_job/(8453:8455): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:26:47:599 log_job/(8453:8458): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 16:26:47:599 log_job/(8453:8457): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 16:26:47:599 log_job/(8453:8456): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 16:26:47:599 log_job/(8453:8455): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 16:29:07:319 log_job/(8609:8609): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 16:29:36:547 log_job/(8612:8612): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 16:29:36:633 log_job/(8612:8618): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:29:36:633 log_job/(8612:8617): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:29:36:633 log_job/(8612:8616): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:29:36:633 log_job/(8612:8615): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:29:36:633 log_job/(8612:8614): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:29:38:429 log_job/(8612:8617): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 16:29:38:429 log_job/(8612:8616): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 16:29:38:429 log_job/(8612:8615): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 16:29:38:429 log_job/(8612:8614): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 16:30:18:350 log_job/(8625:8625): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 16:30:18:383 log_job/(8625:8631): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:30:18:383 log_job/(8625:8630): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:30:18:383 log_job/(8625:8629): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:30:18:383 log_job/(8625:8628): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:30:18:384 log_job/(8625:8627): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:32:11:670 log_job/(8625:8630): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 16:32:11:670 log_job/(8625:8629): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 16:32:11:670 log_job/(8625:8628): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 16:32:11:670 log_job/(8625:8627): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 16:33:01:527 log_job/(8635:8635): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 16:33:01:684 log_job/(8635:8641): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:33:01:684 log_job/(8635:8640): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:33:01:684 log_job/(8635:8639): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:33:01:684 log_job/(8635:8638): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:33:01:684 log_job/(8635:8637): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:43:16:415 log_job/(8916:8916): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 16:44:11:817 log_job/(8920:8920): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 16:44:11:837 log_job/(8920:8926): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:44:11:837 log_job/(8920:8925): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:44:11:837 log_job/(8920:8924): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:44:11:837 log_job/(8920:8923): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:44:11:837 log_job/(8920:8922): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:44:23:826 log_job/(8920:8925): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 16:44:23:826 log_job/(8920:8924): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 16:44:23:826 log_job/(8920:8923): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 16:44:23:826 log_job/(8920:8922): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 16:45:14:251 log_job/(8938:8938): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 16:45:14:277 log_job/(8938:8944): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:45:14:277 log_job/(8938:8943): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:45:14:277 log_job/(8938:8942): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:45:14:277 log_job/(8938:8941): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:45:14:277 log_job/(8938:8940): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:45:16:96 log_job/(8938:8943): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 16:45:16:97 log_job/(8938:8942): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 16:45:16:97 log_job/(8938:8941): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 16:45:16:97 log_job/(8938:8940): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 16:46:05:412 log_job/(9030:9030): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 16:46:16:818 log_job/(9033:9033): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 16:46:16:848 log_job/(9033:9039): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:46:16:848 log_job/(9033:9038): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:46:16:848 log_job/(9033:9037): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:46:16:848 log_job/(9033:9036): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:46:16:848 log_job/(9033:9035): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:46:18:686 log_job/(9033:9037): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 16:46:18:687 log_job/(9033:9038): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 16:46:18:687 log_job/(9033:9036): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 16:46:18:687 log_job/(9033:9035): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 16:47:41:233 log_job/(9057:9057): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 16:47:41:376 log_job/(9057:9063): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:47:41:376 log_job/(9057:9062): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:47:41:376 log_job/(9057:9061): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:47:41:376 log_job/(9057:9060): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:47:41:376 log_job/(9057:9059): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:47:41:658 log_job/(9057:9062): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 16:47:41:658 log_job/(9057:9061): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 16:47:41:658 log_job/(9057:9060): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 16:47:41:658 log_job/(9057:9059): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 16:50:49:829 log_job/(9073:9073): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 16:50:50:80 log_job/(9073:9079): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:50:50:80 log_job/(9073:9078): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:50:50:80 log_job/(9073:9077): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:50:50:80 log_job/(9073:9076): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:50:50:81 log_job/(9073:9075): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:50:50:361 log_job/(9073:9078): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 16:50:50:361 log_job/(9073:9077): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 16:50:50:361 log_job/(9073:9076): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 16:50:50:361 log_job/(9073:9075): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 16:52:29:855 log_job/(9087:9087): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 16:52:30:170 log_job/(9087:9093): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:52:30:170 log_job/(9087:9092): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:52:30:170 log_job/(9087:9091): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:52:30:170 log_job/(9087:9090): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:52:30:171 log_job/(9087:9089): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:52:30:446 log_job/(9087:9092): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 16:52:30:446 log_job/(9087:9091): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 16:52:30:446 log_job/(9087:9090): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 16:52:30:446 log_job/(9087:9089): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 16:53:17:780 log_job/(9095:9095): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 16:53:18:345 log_job/(9095:9101): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:53:18:345 log_job/(9095:9100): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:53:18:346 log_job/(9095:9099): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:53:18:346 log_job/(9095:9098): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:53:18:346 log_job/(9095:9097): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:53:18:627 log_job/(9095:9100): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 16:53:18:627 log_job/(9095:9099): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 16:53:18:627 log_job/(9095:9098): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 16:53:18:627 log_job/(9095:9097): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 16:56:53:750 log_job/(9105:9105): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 16:56:53:776 log_job/(9105:9111): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:56:53:776 log_job/(9105:9110): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:56:53:776 log_job/(9105:9109): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:56:53:776 log_job/(9105:9108): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:56:53:776 log_job/(9105:9107): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:56:54:465 log_job/(9105:9110): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 16:56:54:466 log_job/(9105:9109): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 16:56:54:466 log_job/(9105:9108): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 16:56:54:466 log_job/(9105:9107): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 16:57:19:578 log_job/(9113:9113): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 16:57:19:684 log_job/(9113:9119): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:57:19:684 log_job/(9113:9118): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:57:19:684 log_job/(9113:9117): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:57:19:684 log_job/(9113:9116): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:57:19:684 log_job/(9113:9115): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 16:57:20:374 log_job/(9113:9118): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 16:57:20:375 log_job/(9113:9117): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 16:57:20:375 log_job/(9113:9116): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 16:57:20:375 log_job/(9113:9115): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 17:10:48:828 log_job/(9232:9232): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 17:10:48:870 log_job/(9232:9238): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:10:48:870 log_job/(9232:9237): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:10:48:870 log_job/(9232:9236): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:10:48:870 log_job/(9232:9235): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:10:48:870 log_job/(9232:9234): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:10:49:318 log_job/(9232:9237): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 17:10:49:319 log_job/(9232:9236): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 17:10:49:319 log_job/(9232:9235): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 17:10:49:319 log_job/(9232:9234): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 17:11:49:888 log_job/(9240:9240): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 17:11:49:910 log_job/(9240:9246): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:11:49:910 log_job/(9240:9245): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:11:49:910 log_job/(9240:9244): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:11:49:910 log_job/(9240:9243): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:11:49:910 log_job/(9240:9242): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:11:50:277 log_job/(9240:9245): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 17:11:50:277 log_job/(9240:9244): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 17:11:50:277 log_job/(9240:9243): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 17:11:50:277 log_job/(9240:9242): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 17:12:37:982 log_job/(9252:9252): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 17:12:38:17 log_job/(9252:9258): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:12:38:17 log_job/(9252:9257): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:12:38:17 log_job/(9252:9256): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:12:38:17 log_job/(9252:9255): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:12:38:17 log_job/(9252:9254): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:13:18:547 log_job/(9252:9257): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 17:13:18:547 log_job/(9252:9256): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 17:13:18:547 log_job/(9252:9255): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 17:13:18:547 log_job/(9252:9254): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 17:46:16:834 log_job/(9555:9555): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 17:47:58:347 log_job/(9558:9558): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 17:47:58:374 log_job/(9558:9564): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:47:58:374 log_job/(9558:9563): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:47:58:374 log_job/(9558:9562): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:47:58:374 log_job/(9558:9561): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:47:58:374 log_job/(9558:9560): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:47:58:644 log_job/(9558:9563): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 17:47:58:644 log_job/(9558:9562): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 17:47:58:644 log_job/(9558:9561): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 17:47:58:644 log_job/(9558:9560): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 17:48:59:487 log_job/(9567:9567): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 17:48:59:511 log_job/(9567:9573): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:48:59:511 log_job/(9567:9572): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:48:59:511 log_job/(9567:9571): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:48:59:511 log_job/(9567:9570): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:48:59:511 log_job/(9567:9569): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:48:59:828 log_job/(9567:9572): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 17:48:59:828 log_job/(9567:9571): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 17:48:59:828 log_job/(9567:9570): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 17:48:59:828 log_job/(9567:9569): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 17:49:55:338 log_job/(9575:9575): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 17:49:55:519 log_job/(9575:9581): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:49:55:519 log_job/(9575:9580): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:49:55:519 log_job/(9575:9579): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:49:55:519 log_job/(9575:9578): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:49:55:519 log_job/(9575:9577): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:49:55:793 log_job/(9575:9580): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 17:49:55:793 log_job/(9575:9579): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 17:49:55:793 log_job/(9575:9578): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 17:49:55:793 log_job/(9575:9577): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 17:50:38:543 log_job/(9582:9582): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 17:50:38:580 log_job/(9582:9588): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:50:38:580 log_job/(9582:9587): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:50:38:580 log_job/(9582:9586): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:50:38:580 log_job/(9582:9585): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:50:38:580 log_job/(9582:9584): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:50:38:839 log_job/(9582:9587): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 17:50:38:839 log_job/(9582:9586): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 17:50:38:839 log_job/(9582:9585): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 17:50:38:839 log_job/(9582:9584): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 17:51:10:922 log_job/(9589:9589): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 17:51:10:942 log_job/(9589:9595): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:51:10:942 log_job/(9589:9594): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:51:10:942 log_job/(9589:9593): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:51:10:942 log_job/(9589:9592): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:51:10:942 log_job/(9589:9591): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:51:11:447 log_job/(9589:9594): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 17:51:11:447 log_job/(9589:9593): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 17:51:11:447 log_job/(9589:9592): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 17:51:11:447 log_job/(9589:9591): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 17:51:37:573 log_job/(9596:9596): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 17:51:37:611 log_job/(9596:9602): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:51:37:611 log_job/(9596:9601): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:51:37:611 log_job/(9596:9600): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:51:37:611 log_job/(9596:9599): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:51:37:611 log_job/(9596:9598): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:51:37:884 log_job/(9596:9601): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 17:51:37:884 log_job/(9596:9600): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 17:51:37:885 log_job/(9596:9599): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 17:51:37:885 log_job/(9596:9598): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 17:52:04:825 log_job/(9603:9603): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 17:52:04:845 log_job/(9603:9609): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:52:04:845 log_job/(9603:9608): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:52:04:845 log_job/(9603:9607): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:52:04:845 log_job/(9603:9606): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:52:04:845 log_job/(9603:9605): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:52:05:115 log_job/(9603:9608): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 17:52:05:115 log_job/(9603:9607): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 17:52:05:115 log_job/(9603:9606): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 17:52:05:115 log_job/(9603:9605): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 17:53:40:943 log_job/(9610:9610): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 17:53:41:169 log_job/(9610:9616): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:53:41:169 log_job/(9610:9615): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:53:41:169 log_job/(9610:9614): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:53:41:169 log_job/(9610:9613): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:53:41:169 log_job/(9610:9612): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:53:41:429 log_job/(9610:9615): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 17:53:41:429 log_job/(9610:9614): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 17:53:41:429 log_job/(9610:9613): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 17:53:41:429 log_job/(9610:9612): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 17:54:49:565 log_job/(9617:9617): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 17:54:49:706 log_job/(9617:9623): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:54:49:706 log_job/(9617:9622): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:54:49:706 log_job/(9617:9621): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:54:49:706 log_job/(9617:9620): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:54:49:706 log_job/(9617:9619): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:54:49:973 log_job/(9617:9622): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 17:54:49:973 log_job/(9617:9621): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 17:54:49:973 log_job/(9617:9620): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 17:54:49:973 log_job/(9617:9619): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 17:56:04:714 log_job/(9624:9624): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 17:56:05:56 log_job/(9624:9630): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:56:05:56 log_job/(9624:9629): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:56:05:56 log_job/(9624:9628): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:56:05:56 log_job/(9624:9627): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:56:05:56 log_job/(9624:9626): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 17:56:05:323 log_job/(9624:9629): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 17:56:05:323 log_job/(9624:9628): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 17:56:05:323 log_job/(9624:9627): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 17:56:05:323 log_job/(9624:9626): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:03:33:827 log_job/(9632:9632): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 18:03:33:876 log_job/(9632:9638): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:03:33:876 log_job/(9632:9637): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:03:33:876 log_job/(9632:9636): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:03:33:876 log_job/(9632:9635): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:03:33:876 log_job/(9632:9634): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:03:34:146 log_job/(9632:9637): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:03:34:146 log_job/(9632:9636): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:03:34:146 log_job/(9632:9635): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:03:34:146 log_job/(9632:9634): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:03:53:479 log_job/(9639:9639): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 18:03:53:993 log_job/(9639:9645): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:03:53:993 log_job/(9639:9644): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:03:53:993 log_job/(9639:9643): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:03:53:993 log_job/(9639:9642): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:03:53:993 log_job/(9639:9641): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:03:59:349 log_job/(9639:9644): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:03:59:349 log_job/(9639:9643): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:03:59:349 log_job/(9639:9642): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:03:59:349 log_job/(9639:9641): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:04:27:307 log_job/(9646:9646): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 18:04:27:686 log_job/(9646:9652): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:04:27:686 log_job/(9646:9651): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:04:27:686 log_job/(9646:9650): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:04:27:686 log_job/(9646:9649): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:04:27:686 log_job/(9646:9648): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:04:33:72 log_job/(9646:9651): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:04:33:72 log_job/(9646:9650): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:04:33:72 log_job/(9646:9649): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:04:33:73 log_job/(9646:9648): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:06:02:511 log_job/(9653:9653): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 18:06:02:670 log_job/(9653:9659): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:06:02:670 log_job/(9653:9658): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:06:02:670 log_job/(9653:9657): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:06:02:670 log_job/(9653:9656): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:06:02:670 log_job/(9653:9655): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:06:02:937 log_job/(9653:9658): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:06:02:937 log_job/(9653:9657): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:06:02:937 log_job/(9653:9656): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:06:02:937 log_job/(9653:9655): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:06:37:698 log_job/(9660:9660): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 18:06:37:775 log_job/(9660:9666): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:06:37:776 log_job/(9660:9665): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:06:37:776 log_job/(9660:9664): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:06:37:776 log_job/(9660:9663): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:06:37:776 log_job/(9660:9662): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:06:38:71 log_job/(9660:9665): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:06:38:71 log_job/(9660:9664): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:06:38:71 log_job/(9660:9663): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:06:38:71 log_job/(9660:9662): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:07:05:346 log_job/(9667:9667): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 18:07:05:642 log_job/(9667:9673): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:07:05:642 log_job/(9667:9672): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:07:05:642 log_job/(9667:9671): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:07:05:642 log_job/(9667:9670): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:07:05:642 log_job/(9667:9669): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:07:05:898 log_job/(9667:9672): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:07:05:898 log_job/(9667:9671): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:07:05:898 log_job/(9667:9670): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:07:05:898 log_job/(9667:9669): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:12:10:643 log_job/(9690:9690): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 18:12:31:750 log_job/(9694:9694): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 18:12:42:245 log_job/(9696:9696): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 18:12:56:8 log_job/(9698:9698): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 18:14:54:964 log_job/(9711:9711): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 18:14:55:134 log_job/(9711:9717): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:14:55:134 log_job/(9711:9716): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:14:55:134 log_job/(9711:9715): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:14:55:134 log_job/(9711:9714): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:14:55:134 log_job/(9711:9713): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:14:56:118 log_job/(9711:9716): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:14:56:119 log_job/(9711:9715): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:14:56:119 log_job/(9711:9714): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:14:56:119 log_job/(9711:9713): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:15:29:567 log_job/(9719:9719): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 18:15:29:604 log_job/(9719:9725): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:15:29:604 log_job/(9719:9724): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:15:29:604 log_job/(9719:9723): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:15:29:604 log_job/(9719:9722): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:15:29:604 log_job/(9719:9721): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:15:29:861 log_job/(9719:9724): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:15:29:861 log_job/(9719:9723): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:15:29:861 log_job/(9719:9722): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:15:29:861 log_job/(9719:9721): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:15:50:340 log_job/(9728:9728): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 18:15:50:552 log_job/(9728:9734): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:15:50:553 log_job/(9728:9733): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:15:50:553 log_job/(9728:9732): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:15:50:553 log_job/(9728:9731): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:15:50:553 log_job/(9728:9730): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:15:50:864 log_job/(9728:9733): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:15:50:864 log_job/(9728:9732): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:15:50:864 log_job/(9728:9731): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:15:50:864 log_job/(9728:9730): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:16:20:918 log_job/(9736:9736): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 18:16:21:53 log_job/(9736:9742): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:16:21:53 log_job/(9736:9741): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:16:21:53 log_job/(9736:9740): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:16:21:53 log_job/(9736:9739): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:16:21:53 log_job/(9736:9738): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:16:21:307 log_job/(9736:9741): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:16:21:307 log_job/(9736:9740): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:16:21:307 log_job/(9736:9739): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:16:21:307 log_job/(9736:9738): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:17:12:241 log_job/(9757:9757): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 18:17:12:280 log_job/(9757:9763): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:17:12:280 log_job/(9757:9762): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:17:12:280 log_job/(9757:9761): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:17:12:280 log_job/(9757:9760): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:17:12:280 log_job/(9757:9759): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:17:12:537 log_job/(9757:9762): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:17:12:538 log_job/(9757:9761): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:17:12:538 log_job/(9757:9760): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:17:12:538 log_job/(9757:9759): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:18:05:813 log_job/(9768:9768): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 18:18:05:874 log_job/(9768:9774): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:18:05:874 log_job/(9768:9773): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:18:05:874 log_job/(9768:9772): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:18:05:874 log_job/(9768:9771): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:18:05:874 log_job/(9768:9770): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:18:06:140 log_job/(9768:9773): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:18:06:140 log_job/(9768:9772): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:18:06:140 log_job/(9768:9771): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:18:06:140 log_job/(9768:9770): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:18:51:483 log_job/(9788:9788): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 18:18:51:518 log_job/(9788:9794): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:18:51:518 log_job/(9788:9793): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:18:51:518 log_job/(9788:9792): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:18:51:518 log_job/(9788:9791): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:18:51:518 log_job/(9788:9790): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:18:52:59 log_job/(9788:9792): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:18:52:60 log_job/(9788:9793): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:18:52:60 log_job/(9788:9791): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:18:52:60 log_job/(9788:9790): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:19:15:241 log_job/(9813:9813): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 18:19:15:278 log_job/(9813:9819): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:19:15:278 log_job/(9813:9818): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:19:15:278 log_job/(9813:9817): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:19:15:278 log_job/(9813:9816): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:19:15:278 log_job/(9813:9815): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:19:15:532 log_job/(9813:9818): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:19:15:533 log_job/(9813:9817): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:19:15:534 log_job/(9813:9816): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:19:15:534 log_job/(9813:9815): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:19:34:618 log_job/(9831:9831): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 18:19:34:646 log_job/(9831:9837): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:19:34:646 log_job/(9831:9836): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:19:34:646 log_job/(9831:9835): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:19:34:646 log_job/(9831:9834): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:19:34:646 log_job/(9831:9833): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:19:34:923 log_job/(9831:9836): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:19:34:924 log_job/(9831:9835): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:19:34:924 log_job/(9831:9834): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:19:34:924 log_job/(9831:9833): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:20:16:320 log_job/(9938:9938): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 18:20:18:335 log_job/(9938:9944): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:20:18:335 log_job/(9938:9943): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:20:18:336 log_job/(9938:9942): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:20:18:336 log_job/(9938:9941): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:20:18:336 log_job/(9938:9940): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:20:18:613 log_job/(9938:9943): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:20:18:613 log_job/(9938:9942): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:20:18:613 log_job/(9938:9941): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:20:18:613 log_job/(9938:9940): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:20:51:157 log_job/(9948:9948): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 18:20:51:605 log_job/(9948:9954): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:20:51:606 log_job/(9948:9953): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:20:51:606 log_job/(9948:9952): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:20:51:606 log_job/(9948:9951): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:20:51:606 log_job/(9948:9950): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:20:51:919 log_job/(9948:9953): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:20:51:920 log_job/(9948:9952): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:20:51:920 log_job/(9948:9951): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:20:51:920 log_job/(9948:9950): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:21:34:179 log_job/(9956:9956): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 18:21:34:226 log_job/(9956:9962): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:21:34:226 log_job/(9956:9961): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:21:34:226 log_job/(9956:9960): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:21:34:226 log_job/(9956:9959): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:21:34:226 log_job/(9956:9958): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:21:34:472 log_job/(9956:9961): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:21:34:472 log_job/(9956:9960): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:21:34:472 log_job/(9956:9959): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:21:34:473 log_job/(9956:9958): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:22:15:311 log_job/(9964:9964): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 18:22:20:535 log_job/(9964:9970): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:22:20:535 log_job/(9964:9969): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:22:20:535 log_job/(9964:9968): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:22:20:535 log_job/(9964:9967): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:22:20:535 log_job/(9964:9966): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:22:20:893 log_job/(9964:9969): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:22:20:893 log_job/(9964:9968): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:22:20:893 log_job/(9964:9967): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:22:20:893 log_job/(9964:9966): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:22:47:343 log_job/(9971:9971): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 18:22:47:369 log_job/(9971:9977): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:22:47:369 log_job/(9971:9976): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:22:47:369 log_job/(9971:9975): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:22:47:369 log_job/(9971:9974): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:22:47:369 log_job/(9971:9973): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:22:47:620 log_job/(9971:9976): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:22:47:620 log_job/(9971:9975): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:22:47:620 log_job/(9971:9974): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:22:47:620 log_job/(9971:9973): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:23:07:249 log_job/(9978:9978): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 18:23:07:461 log_job/(9978:9984): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:23:07:461 log_job/(9978:9983): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:23:07:461 log_job/(9978:9982): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:23:07:461 log_job/(9978:9981): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:23:07:461 log_job/(9978:9980): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:23:07:726 log_job/(9978:9983): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:23:07:727 log_job/(9978:9982): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:23:07:727 log_job/(9978:9981): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:23:07:727 log_job/(9978:9980): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:23:51:573 log_job/(9986:9986): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 18:23:51:897 log_job/(9986:9992): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:23:51:898 log_job/(9986:9991): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:23:51:898 log_job/(9986:9990): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:23:51:898 log_job/(9986:9989): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:23:51:898 log_job/(9986:9988): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:23:52:161 log_job/(9986:9991): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:23:52:161 log_job/(9986:9990): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:23:52:161 log_job/(9986:9989): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:23:52:161 log_job/(9986:9988): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:36:25:942 log_job/(10099:10099): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 18:36:26:3 log_job/(10099:10105): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:36:26:4 log_job/(10099:10104): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:36:26:4 log_job/(10099:10103): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:36:26:4 log_job/(10099:10102): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:36:26:4 log_job/(10099:10101): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 18:36:26:286 log_job/(10099:10104): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:36:26:286 log_job/(10099:10103): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:36:26:286 log_job/(10099:10102): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 18:36:26:286 log_job/(10099:10101): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+

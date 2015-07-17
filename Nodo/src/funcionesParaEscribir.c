@@ -7,21 +7,29 @@
 #include "variablesGlobales.h"
 
 
-int escribirScript(char* script_virtual,char* dir_temp, int comando){
+
+int escribirScript(char* script_virtual,char* dir, int comando){
 	int status = 0;
-	char* direccion=dir_temp;
+	char* direccion=malloc(strlen(dir));
+	FILE* fileMapper;
+	FILE* fileReducer;
+
+	strcpy(direccion,dir);
+
+	printf("Antes de escribir: %s\n",direccion);
 
 	if(comando==1){
-		strcat(direccion,"/map.sh");
-		fileMapper=fopen(dir_temp,"w");
-		fputs(script_mapper,fileMapper);
+		strcat(direccion,"/mapper");
+		printf("Antes de escribir: %s\n",direccion);
+		fileMapper=fopen(direccion,"w");
+		fputs(script_virtual,fileMapper);
 		fclose(fileMapper);
 	}else{
-		strcat(direccion,"/reducer.sh");
-		fileReducer=fopen(dir_temp,"w");
-		fputs(script_reducer,fileReducer);
+		strcat(direccion,"/reducer");
+		fileReducer=fopen(direccion,"w");
+		fputs(script_virtual,fileReducer);
 		fclose(fileReducer);
 	}
-	free(direccion);
+	liberar(&direccion);
 	return status;
 }

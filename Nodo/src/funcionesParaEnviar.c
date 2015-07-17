@@ -7,25 +7,66 @@
 
 #include "variablesGlobales.h"
 
+int recive_y_deserializa_EST_REDUCE(t_job_nodo_reduce *bloque, int socket, uint32_t tamanioTotal){
+	int status;
+	char *buffer = malloc(tamanioTotal);
+	int offset=0;
+	int tamanioDinamico;
+
+	recv(socket, buffer, tamanioTotal, 0);
+
+	memcpy(&tamanioDinamico, buffer + offset, sizeof(int));
+	offset += sizeof(int);
+
+	bloque->nombreArchivoResultado = malloc(tamanioDinamico);
+	memcpy(bloque->nombreArchivoResultado, buffer + offset, tamanioDinamico);
+	offset += tamanioDinamico;
+
+	memcpy(&(bloque->cantidadArchivos),buffer + offset, sizeof(bloque->cantidadArchivos));
+	offset += sizeof(bloque->cantidadArchivos);
+
+	int a;
+	char* archivo;
+
+	//deserializa la lista
+	bloque->archivosAreducir = list_create();
+	for(a=0;a<  (bloque->cantidadArchivos) ; a++){
+		memcpy(&tamanioDinamico, buffer + offset, sizeof(int));
+		offset += sizeof(int);
+		archivo = malloc(tamanioDinamico);
+		memcpy(archivo, buffer + offset, tamanioDinamico);
+		offset += tamanioDinamico;
+		printf("el archivooo %s \n\n",archivo);
+		list_add(bloque->archivosAreducir,archivo);
+	}
+	free(buffer);
+	free(archivo);
+	return status;
+}
+
 int recive_y_deserialisa_SET_BLOQUE(estructuraSetBloque *bloque, int socket, uint32_t tamanioTotal){
 	int status;
 	char *buffer = malloc(tamanioTotal);
 	int offset=0;
+	int tamanioDinamico;
 
 	recv(socket, buffer, tamanioTotal, 0);
 
 	memcpy(&(bloque->bloque), buffer + offset, sizeof(bloque->bloque));
 	offset += sizeof(bloque->bloque);
 
-	int tamanioDinamico;
+	printf("Este es el tamaño del numero de bloques: %i\n",sizeof(bloque->bloque));
+
 	memcpy(&tamanioDinamico, buffer + offset, sizeof(int));
 	offset += sizeof(int);
 
-
+	printf("Este es el tamaño del bloque de datos que me dijeron: %i\n",tamanioDinamico);
 
 	bloque->data = malloc(tamanioDinamico);
 	memcpy(bloque->data, buffer + offset, tamanioDinamico);
 	offset += tamanioDinamico;
+
+	printf("Este es el tamaño del bloque seteado: %i\n",strlen(bloque->data));
 
 	free(buffer);
 	return status;
@@ -48,6 +89,24 @@ int recive_y_deserialisa_CHARp(char *script, int socket, uint32_t tamanioTotal){
 
 	free(buffer);
 	return status;
+}
+
+char* serializarCHARp(char* Aserializar, int tamanioData){
+	int offset = 0;
+	int size_to_send;
+
+	char *serializedPackage = malloc(tamanioData);
+
+	int tamanioNombre = strlen(Aserializar) + 1;
+	size_to_send = sizeof(int);
+	memcpy(serializedPackage + offset, &tamanioNombre, size_to_send);
+	offset += size_to_send;
+
+	size_to_send =  strlen(Aserializar) + 1;
+	memcpy(serializedPackage + offset, ip_nodo, size_to_send);
+	offset += size_to_send;
+
+	return serializedPackage;
 }
 
 
@@ -109,6 +168,11 @@ void handshakeConFS (){
 	//Esta es la coneccion con el FS
 	pthread_t hiloFS;
 
+	char* copiaIPFS = ip_fs;
+	char* copiaBIN = archivo_bin;
+	char* copiaTMP = dir_temp;
+	char* copiaIPNODO = ip_nodo;
+
 	int socket_fs = crearCliente(ip_fs,puerto_fs);
 
 	int entero2 = 2; // handshake con FS
@@ -127,60 +191,79 @@ void handshakeConFS (){
 		int tamanioData = sizeof(int) + strlen(ip_nodo) + 1 + sizeof(int) + strlen(string_itoa(puerto_nodo)) + 1 + sizeof(int);
 
 		recv(socket_fs,&nodo,sizeof(int),0);
-		printf("%i\n",tamanioData);
 
 		send(socket_fs, &tamanioData, sizeof(int), 0);
 		mensaje = serializarIP_PUERTO(ip_nodo, string_itoa(puerto_nodo), tamanioData);
 		send(socket_fs,mensaje,tamanioData,0);
 
-		printf("mande todo lo que tenia que mandar\n");
-
 		recv(socket_fs, &id_nodo, sizeof(int), 0);
 
-		nuevoArchivo = fopen("/home/utnso/git/tp-2015-1c-machistons/Configuracion/nodo.conf","w");
+		nuevoArchivo = fopen(rutaArchivoConfiguracion,"w");
 
+		printf("%i\n",id_nodo);
 		fputs("PUERTO_FS=3001\n",nuevoArchivo);
 
 		fputs("IP_FS=",nuevoArchivo);
-		fputs(ip_fs,nuevoArchivo);
+		fputs(copiaIPFS,nuevoArchivo);
 		fputc('\n',nuevoArchivo);
 
 		fputs("ARCHIVO_BIN=",nuevoArchivo);
-		fputs(archivo_bin,nuevoArchivo);
+		fputs(copiaBIN,nuevoArchivo);
 		fputc('\n',nuevoArchivo);
 
 		fputs("DIR_TEMP=",nuevoArchivo);
-		fputs(dir_temp,nuevoArchivo);
+		fputs(copiaTMP,nuevoArchivo);
 		fputc('\n',nuevoArchivo);
 
 		fputs("NODO_NUEVO=NO\n",nuevoArchivo);
 		nodo_nuevo = "NO";
 
 		fputs("IP_NODO=",nuevoArchivo);
-		fputs(ip_nodo,nuevoArchivo);
+		fputs(copiaIPNODO,nuevoArchivo);
 		fputc('\n',nuevoArchivo);
 
 		fputs("PUERTO_NODO=6000\n",nuevoArchivo);
 
 		fputs("ID_NODO=",nuevoArchivo);
-		fputs(id_nodo,nuevoArchivo);
-		fputc('\n',nuevoArchivo);
+		fputs(string_itoa(id_nodo),nuevoArchivo);
 
 		fclose(nuevoArchivo);
+
+
+		archivo_bin = config_get_string_value(archivoConfiguracion, "ARCHIVO_BIN");
+		dir_temp = config_get_string_value(archivoConfiguracion, "DIR_TEMP");
+		nodo_nuevo = config_get_string_value(archivoConfiguracion, "NODO_NUEVO");
+		ip_nodo = config_get_string_value(archivoConfiguracion, "IP_NODO");
+		puerto_nodo = config_get_int_value(archivoConfiguracion, "PUERTO_NODO");
+		ip_fs = config_get_string_value(archivoConfiguracion, "IP_FS");
+		puerto_fs = config_get_string_value(archivoConfiguracion, "PUERTO_FS");
+
+		if(string_equals_ignore_case(nodo_nuevo,"NO")){
+			id_nodo = config_get_int_value(archivoConfiguracion, "ID_NODO");
+		}
+
 
 	}else{
 
 		int nodo=48;
 		send(socket_fs,&nodo,sizeof(int),0);
 
+		recv(socket_fs,&nodo,sizeof(int),0);
 		send(socket_fs,&id_nodo, sizeof(int), 0);
 
+		recv(socket_fs,&nodo,sizeof(int),0);
+
+		int tamanioIPNODO = sizeof(int) + strlen(ip_nodo) + 1;
+		mensaje =  serializarCHARp(ip_nodo,tamanioIPNODO);
+
+
+		send(socket_fs,&tamanioIPNODO, sizeof(int),0);
+		recv(socket_fs,&nodo,sizeof(int),0);;
+		send(socket_fs,mensaje,tamanioIPNODO,0);
 	}
 
-	free(mensaje);
-
-	printf("%i\n",socket_fs);
-	pthread_create(&hiloFS, NULL, &atenderNFS, (void *)socket_fs);
+	printf("Este es el socket: %i\n",socket_fs);
+	pthread_create(&hiloFS, NULL, atenderNFS, (void *)socket_fs);
 
 
 }

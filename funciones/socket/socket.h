@@ -19,17 +19,26 @@
 
 //Marta->Job
  typedef struct{
-	int rutina; //1=mapper o 2=reducer
 	char* ip_nodo;
 	char* puerto;
-	char* bloques;
+	t_list* bloques;
 	char* nombre_archivo_resultado; //donde va a devolverle el resultado
 	int idNodo;
-
-}t_marta_job;
-
+	int cantidadBloques;
 
 
+}t_marta_job_map;
+
+
+typedef struct{
+	int idNodo;
+	t_list* listaArchivosTemporales;
+	char* archivoResultadoReduce;
+	char* ipNodo;
+	char* puertoNodo;
+	int cantidadArchivos;
+
+}t_marta_job_reduce;
 
 //JOB -> MARTA
 typedef struct{
@@ -38,8 +47,14 @@ typedef struct{
 	int resultado; // 0 = FALLO , 1 = EXITOSO
 	int idNodo;
 	char* nombreArchivo;   //AGREGAR ESTO EN LA PARTE DEL SEND A MARTA DEL NODOO
-}t_job_marta;
+}t_job_marta_map;
 
+typedef struct{
+	int rutina;
+	int idNodo;
+	int resultado; // 0 = FALLO , 1 = EXITOSO
+	char* nombreArchivo;
+}t_job_marta_reduce;
 
 //Marta->FS
 struct Marta_FileSystem {
@@ -72,16 +87,13 @@ typedef struct {
 }nodo_job;
 
 //Job->Nodo
+
+
 typedef struct{
-
-
-	char* resultado;
-	int nombreRutina; //1=mapper o 2=reducer
-    int NumerobloqueDeDAtos;
-
-}t_job_nodo;
-
-
+	t_list* archivosAreducir;
+	char* nombreArchivoResultado;
+	int cantidadArchivos;
+}t_job_nodo_reduce;
 
 
 
