@@ -4,7 +4,7 @@
  *  Created on: 6/6/2015
  *      Author: utnso
  */
-
+/*
 #include "funcionesMarta.h"
 
 int recive_y_deserialisa(char *nombre, int socket, uint32_t tamanioTotal){
@@ -52,6 +52,7 @@ char* serializar_aplicarReduce(t_mandarAlHilo *estructura, int tamanioTotal){
 				return serializedPackage;
 }
 */
+/*
 int recive_y_deserialisa_job(t_job_marta* job_marta, int socket,uint32_t tamanioTotal ){
 	int status;
 	char *buffer = malloc(tamanioTotal);
@@ -141,7 +142,7 @@ char* serializar_charpuntero(t_charpuntero *nombre, int tamanioTotal){
 			memcpy(serializedPackage + offset, nombre->archivo, size_to_send);
 			offset += size_to_send;
 			return serializedPackage;
-		}
+}
 
 //FUNCION QUE EJECUTA EL HILO QUE ATIENDE A CADA JOB
 void *conectarseAlJob(void*arg){
@@ -303,90 +304,7 @@ t_cargaBitarray_aux *armarVectorDeBitarray(t_cargaBitarray_aux *vectorDeBitArray
 	return vectorDeBitArrays; //LIBERAR ESTA MEMORIA DESP Y ELIMINAR CADA BITARRAY TMB
 }
 
-void buscarVictimasPorBloque(t_cargaBitarray_aux bitmap[], int tamanio, int *vector_contador, int cant_nodos, int *bloqueArch_pos, int *nodo){
-	int min = bitarray_get_max_bit(bitmap[0].bitmap);
-	int min_pos = 0;
-	int i;
-	// busco el menor
-	for(i=1;i<=tamanio;i++){
-		if((bitarray_get_max_bit(bitmap[i].bitmap)) < min){
-			min = bitarray_get_max_bit(bitmap[i].bitmap);
-			min_pos = i;
-		}
-	}
-	//Del mas chico que encontre, defino donde se va a asignar por contadores de nodos
-	nodo = buscarVictimasPorContadores(bitmap[min_pos], vector_contador, cant_nodos);
-	bloqueArch_pos = min_pos;
-}
 
-int buscarVictimasPorContadores(t_cargaBitarray_aux bitmap, int *vector_contador, int cant_nodos){
-	int i;
-	int min = 10000;
-	int nodo = 0;
-	for(i=0;i<cant_nodos;i++){
-		if(bitarray_test_bit(bitmap.bitmap,i)){
-			if(vector_contador[i] < min){
-				min = vector_contador[i];
-				nodo = i;
-			}
-		}
-	}
-	return nodo;
-}
-
-void planificarMap(){
-	// PARA PLANIFICAR NECESITO SABER LOS NODOS ACTIVOS. PARA ESO SE LO PIDO AL FS
-	int cantidad_nodos_activos = 4;	// ESTO ME LO MANDA EL FS, JUNTO CON LOS NODOS_ACTIVOS
-	int nodos_activos[cantidad_nodos_activos]; //LOS ID DE LOS NODOS ACTIVOS NECESITO QUE ME LOS MANDES ASI GASTON: [1,14,22,31] ORDENADOS DE MENOR A MAYOR
-	t_cargaBitarray_aux bitmapAuxiliar[cantidad_nodos_activos];
-    int victim_pos;
-	if(list_is_empty(lista_nodos_estado)){
-		pthread_mutex_lock(&mutex_nodos);
-		lista_nodos_estado = list_create();
-		pthread_mutex_unlock(&mutex_nodos);
-		int *tamanio = malloc(sizeof(int));
-		t_cargaBitarray_aux *bitmap = malloc(sizeof(t_cargaBitarray_aux));
-		armarVectorDeBitarray(bitmap, cantidad_nodos_activos, nodos_activos, tamanio);
-		int division = (*tamanio)/cantidad_nodos_activos;
-		int resto_division = (*tamanio)%cantidad_nodos_activos;
-		if(resto_division == 0) division--;
-		// vector_contador = vector de contadores para planificar (esto no cambia hasta que termina el planificarMap)
-		int *vector_contador = malloc(sizeof(int)*cantidad_nodos_activos);
-		int j, bloqueArch_pos,bloque,nodo;
-		// inicializo vector_contador
-		for(j=0;j<cantidad_nodos_activos;j++) vector_contador[j] = 0;
-		//
-		for(j=0;j <= division;j++){
-			int k = 0;
-			int tamanio_bitmapAux = division;
-			if((resto_division != 0) && (j == division)) tamanio_bitmapAux = resto_division-1;
-			// tengo que cargar el auxiliar con los bloques que va a planificar el algoritmo de map
-			// ej: si es la primera pasada, auxiliar va a tener la cantidad de bloques
-			// si es la 2da pasada, auxiliar va a tener la cantidad de bloques menos el que ya se eligio antes
-			cargarBitmapAuxiliar(bitmapAuxiliar, bitmap, tamanio_bitmapAux);
-			while(k <= tamanio_bitmapAux){
-				/*
-				char *vectorVictimas_str = malloc(sizeof(char) * cantidad_nodos_activos);
-				t_cargaBitarray_aux *vectorVictimas = malloc(sizeof(t_cargaBitarray_aux));
-				vectorVictimas->bitmap = bitarray_create(vectorVictimas_str, cantidad_nodos_activos);
-				inicializarBitarray(vectorVictimas->bitmap, cantidad_nodos_activos);
-				*/
-				buscarVictimasPorBloque(bitmapAuxiliar, tamanio_bitmapAux, vector_contador, cantidad_nodos_activos, bloqueArch_pos, nodo);
-				bloque = bitmapAuxiliar[bloqueArch_pos].bloque_arch;
-				eliminarBloque(bitmapAuxiliar, bloqueArch_pos, tamanio_bitmapAux);
-
-				if (j == 0){
-					//si j==0 quiere decir que la alineacion de vectorVictimas es pura
-					//si j > 0 quiere decir que la alineacion de vectorVictimas es k*cantidad_nodos_activos
-					// alineacion = posicion del bloque dentro del bitmap grande
-				}
-				k++;
-			}
-		}
-		free(vector_contador);
-	}
-
-}
 
 int recive_y_deserialisa_paquete_nodos(t_charpuntero* ip, t_charpuntero* puerto, int ipnodo, uint32_t tamanioTotal){
 	int status;

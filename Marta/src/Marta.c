@@ -9,21 +9,24 @@
  */
 
 
-#include "funcionesMarta.h"
+#include "librerias_y_estructuras.h"
 
 
 int main(void) {
 
+	char* puerto_fs;
+	char* ip_fs;
 
 	char* rutaArchivoConfiguracion = "/home/utnso/git/tp-2015-1c-machistons/Configuracion/marta.conf";
-	t_charpuntero archivoAFS;
-	char* archivoAFSAEnviar, combiner;
+	char* archivoAFSAEnviar;
+	char *combiner;
 	int tamanioCombiner,d, puerto_job, entero, socketjob,tamanioTotalAFS,prueba;
 	t_config* archivoConfiguracion;
 	archivoConfiguracion = config_create(rutaArchivoConfiguracion);
 
 	puerto_job = config_get_int_value(archivoConfiguracion, "PUERTO_MARTA") ;
-
+   	puerto_fs = config_get_string_value(archivoConfiguracion, "PUERTO_FS") ;
+	ip_fs = config_get_string_value(archivoConfiguracion, "IP_FS");
 
 
 	pthread_t hilo_job;
@@ -56,6 +59,38 @@ int main(void) {
 		FD_SET(listener, &master);
 
 		fdmax = listener;
+
+		//ACA SE CONECTA CON FS
+	    int handshakeFS;
+	   	socketFS = crearCliente (ip_fs, puerto_fs);
+
+	   	handshakeFS = 25;
+	   	send(socketFS,&handshakeFS,sizeof(int),0);
+	   	recv(socketFS,&handshakeFS, sizeof(int),0);
+
+	   	inicializar_pedido_FS();
+	   	int tamanio_total;
+	   	recv(socketFS,&tamanio_total,sizeof(int),0);
+	   	send(socketFS,&handshakeFS,sizeof(int),0);
+
+	   	printf("%i\n", tamanio_total);
+
+	   	t_archivo archivo_prueba;
+	   	archivo_prueba.bloques = list_create();
+
+	   	recive_y_guarda_estructura(archivo_prueba,socketFS,tamanio_total);
+	   	printf("dsadasdas\n");
+	   	t_bloque *bloque = list_get(archivo_prueba.bloques,14);
+	   	t_copia *copia = list_get(bloque->copias,1);
+	   	printf("idNodo: %i\n numBloque: %i\n", copia->idNodo, copia->Numerobloque);
+
+
+	   	printf("gaston traga penes\n");
+
+
+
+
+
 
 	// Termina Configuracion
 
@@ -100,8 +135,8 @@ int main(void) {
    		    			switch(entero){ // HANDSHAKE
    		    				case 72: // ACA EL JOB LE PASA LISTA DE ARCHIVOS Y EL COMBINER
    		    					socketjob = i;
-   		    					/*pthread_create(&hilo_job, NULL, conectarseAlJob,(void *)socketjob);//mitrar
-                                */
+   		    					//pthread_create(&hilo_job, NULL, conectarseAlJob,(void *)socketjob);//mitrar
+
    		    					recv(socketjob,&prueba,sizeof(int),0);
    		    					printf("%i/n",prueba);
    		    					send(socketjob,prueba,sizeof(int),0);// este para el entero
