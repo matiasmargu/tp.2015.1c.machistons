@@ -144,8 +144,9 @@ int main(void) {
    		    					break;
    		    				case 42: //ACA EL JOB LE PASA EL RESULTADO DEL MAP
    		    					socketjob = i;
-   		    					/*pthread_create(&hilo_job, NULL, recibirResultadoMap,(void *)socketjob);
-                                */
+
+   		    					pthread_create(&hilo_job, NULL, recibirResultadoMap,(void *)socketjob);
+
    		    					recv(socketjob,&prueba,sizeof(int),0);
    		    					printf("%i/n",prueba);
    		    				    break;

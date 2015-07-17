@@ -15,7 +15,10 @@
 
 int main(void) {
 	printf("a\n");
+	char*="lola";
 
+
+/*
 	char* rutaArchivoConfiguracion = "/home/utnso/git/tp-2015-1c-machistons/Configuracion/job.conf";
 
 	t_config* archivoConfiguracion;
@@ -111,7 +114,7 @@ int tamanioTotalReduce = sizeof(int)+ strlen(rutinaReduce.archivo)+1;
 send(socketNodo, &tamanioTotalReduce, sizeof(int),0);
 rutinaReduceAEnviar =  serializar_charpuntero(&rutinaReduce, tamanioTotalReduce);
 send(socketNodo,rutinaReduceAEnviar,tamanioTotal,0);
-*/
+
 pthread_t hilomap;
 
 // hecho por mati N ayer :D
@@ -130,7 +133,7 @@ while (x!=1){
 		x = 1;
 	}
 }
-/*/
+
 while (y!=1){
 	recv(socketNodo,&entero2,sizeof(int),0);
 	switch(entero2){
@@ -196,7 +199,7 @@ while (y!=1){
 }
 
 
-*/
+
 
 
 
@@ -209,7 +212,7 @@ while (y!=1){
 	free(reduce);
 	free(ip_marta);
 	free(combiner);
-
+*/
 	return EXIT_SUCCESS;
 }
 

@@ -4,7 +4,7 @@
  *  Created on: 6/6/2015
  *      Author: utnso
  */
-/*
+
 #include "funcionesMarta.h"
 
 int recive_y_deserialisa(char *nombre, int socket, uint32_t tamanioTotal){
@@ -23,7 +23,7 @@ int recive_y_deserialisa(char *nombre, int socket, uint32_t tamanioTotal){
 }
 
 
-/*
+
 char* serializar_aplicarReduce(t_mandarAlHilo *estructura, int tamanioTotal){
 	char *serializedPackage = malloc(tamanioTotal);
 		int offset = 0;
@@ -51,8 +51,8 @@ char* serializar_aplicarReduce(t_mandarAlHilo *estructura, int tamanioTotal){
 		}
 				return serializedPackage;
 }
-*/
-/*
+
+
 int recive_y_deserialisa_job(t_job_marta* job_marta, int socket,uint32_t tamanioTotal ){
 	int status;
 	char *buffer = malloc(tamanioTotal);
@@ -153,7 +153,7 @@ void *conectarseAlJob(void*arg){
 	char* combiner;
 	int tamanioCombiner;
 	//MANDAMOS HANDSHAKE A JOB
-	send(socket,&saludo,sizeof(int),0);
+	send(socket,r&saludo,sizeof(int),0);
 	//ACA RECIBIMOS LA LISTA DE ARCHIVOS DE JOB COMO UN CHAR*
    	recv(socket, &tamanioTotal, sizeof(int),0);
    	int estado2 = 1; // Estructura que manjea el status de los recieve.
@@ -327,10 +327,10 @@ int recive_y_deserialisa_paquete_nodos(t_charpuntero* ip, t_charpuntero* puerto,
 
 	free(buffer);
 	return status;
-}
+}r
 
 
-/*
+
 char* serializar_estructura_t_marta_a_job(t_marta_job estructura_t_marta_a_job, int tamanioTotal){
 			char *serializedPackage = malloc(tamanioTotal);
 			int offset = 0;
@@ -382,12 +382,12 @@ char* serializar_estructura_t_marta_a_job(t_marta_job estructura_t_marta_a_job, 
 			offset += size_to_send;
 			return serializedPackage;
 }
-*/
+
 
 
 
 //HASTA ACA ES LO DEL REDUCE QUE NO HAY QE BORRAR
-/*
+
 serializar_nodo_a_mapear(t_nodos nodo_a_mapear,int tamanioTotal){
 	    typedef struct {
 	    	int bloque;
@@ -411,7 +411,18 @@ serializar_nodo_a_mapear(t_nodos nodo_a_mapear,int tamanioTotal){
 }
 		}
 }
-void planificarReduce(char* nombreArchivo, int cantidadPosicionesVectorNodo, t_nodoPorArchivo nodoPorArchivo, int socketjob){
+
+
+typedef struct {
+	char* nombreArchivo;
+	int cantidadPosicionesVectorNodo;
+	 t_nodoPorArchivo nodoPorArchivo;
+	 int socketjob;
+} t_recibido_post_map;
+
+
+void *planificarReduce(t_recibido_post_map *reduce){
+
 	int i;
 	char* resultado;
 	for(i=0; i< cantidadPosicionesVectorNodo; i++){
@@ -427,6 +438,9 @@ void planificarReduce(char* nombreArchivo, int cantidadPosicionesVectorNodo, t_n
 	return;
 	}
 }
+
+
+
 void aplicarReduce(t_aplicarReduce structRecibido){
 	t_mandarAlHilo mandarAlHilo;
 	mandarAlHilo.cantidadArchivosTemporales = structRecibido.cantidadArchivosTemporales;
@@ -438,6 +452,10 @@ void aplicarReduce(t_aplicarReduce structRecibido){
 	char* archivoAenviar = serializar_aplicarReduce(&mandarAlHilo, tamanioTotal);
 	send(structRecibido.socketJob,archivoAenviar,tamanioTotal,0);
 }
+
+
+
+
 void *recibirResultadoMap(void*arg){
 	int socketJob = (int)arg;
 	int tamanioTotal, estado;
@@ -449,7 +467,10 @@ void *recibirResultadoMap(void*arg){
 	   	if(estado2){
 	   	}
 }
-/*
+
+
+
+
 //marta tiene que verificar previo a esta funcion que llega un hilo mapper
 planificarReduce(int socketJob, int accionATomar,  char* archivoTemporalAAlmacenar, t_lista vectorNodos, int cantidadNodos, int idNodo, char* ip, char* puerto){
 int aux = 0,cont,accionQueElJobDeberaTomar;
@@ -501,7 +522,7 @@ t_nodos nodo;
 	t_marta_job_archivo_reduce Marta_Job;
 	Marta_Job.lista_nombres_archivos_resultado = list_create(); // esto si son varios o no depende de lo mismo que arriba
 	int tamanioTotal,respuestaReduce/* si es uno se hizo bien y si es 0 mal*/;
-	/*int i ,k,j,aux, h,cont,contador, cantidadBloquesPresentes, contadorFinal;
+	int i ,k,j,aux, h,cont,contador, cantidadBloquesPresentes, contadorFinal;
 	int reduceRealizado[cantidadDeNodos];
 	//HAY QUE VER SI EL RECV SE HACE ANTES DEL FOR
 	// Es jodido el tema, no se xq pones hasta la cant de nodos... el recv que hagamos puede ser de cualquier nodo, no necesariamente va a haber
@@ -544,8 +565,8 @@ t_nodos nodo;
 }
 // aca hay que verificar que nos llega un hilo reduce
 rePlanificar_y_planificar_reduce_general(int socketJob, int cantidadDeNodos, int cantidadDeBloques, char* presenciaCombiner){
-	int respuestaReduce/* si es uno se hizo bien y si es 0 mal*/;
-/*	int cont,reduceRealizado[cantidadDeNodos],aux;
+	int respuestaReduce si es uno se hizo bien y si es 0 mal;
+	int cont,reduceRealizado[cantidadDeNodos],aux;
 	recv(socketJob, &respuestaReduce, sizeof(int),0);
 	if(respuestaReduce == 1){
 	   aux = 0;
@@ -563,4 +584,4 @@ rePlanificar_y_planificar_reduce_general(int socketJob, int cantidadDeNodos, int
     	// de vuelta llamar a la funcion de planificar reduce
     }
 }
-*/
+
