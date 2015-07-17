@@ -28,6 +28,7 @@ t_log* logger; // Log Global
 
 // VARIABLE GLOBAL
 t_list *lista_archivos; // guarda t_archivo
+int cant_nodos;
 t_list *lista_nodos_estado;
 pthread_mutex_t mutex ;//= PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutex_nodos;// = PTHREAD_MUTEX_INITIALIZER;
@@ -54,12 +55,14 @@ typedef struct {
 
 typedef struct{
 	int NumeroBloque;
+	int estado;
 	t_copia *copias;
 }t_bloque;
 
 typedef struct{
 	int id_nodo;
-	t_list *archivos;
+	char *ip_nodo;
+	char *puerto_nodo;
 }t_nodo;
 
 typedef struct{
@@ -111,17 +114,6 @@ typedef struct{
 
 }t_mandarAlHilo;
 
-typedef struct {
-	char* nombre_archivo_temporal;
-	int resultado;
-	int idNodo;
-} t_respuesta_reduce;
-
-typedef struct {
-	char* archivoTemporal;
-	int idNodo;
-}t_respuestaCorrecta;
-
 int recive_y_deserialisa(t_charpuntero* nombre, int socket, uint32_t tamanioTotal);
 int recive_y_guarda_estructura(t_archivo arch, int socket, uint32_t tamanioTotal);
 char* serializar_charpuntero(t_charpuntero* nombre, int tamanioTotal);
@@ -129,8 +121,7 @@ void  *conectarseAlJob(void*arg);
 int recive_y_deserialisa_job(t_job_marta* job_marta, int socket,uint32_t tamanioTotal );
 int recive_y_deserialisa_paquete_nodos(t_charpuntero* ip, t_charpuntero* puerto, int ipnodo, uint32_t tamanioTotal);
 char* serializar_estructura_t_marta_a_job(t_marta_job estructura_t_marta_a_job, int tamanioTotal);
-void *aplicarReduce(t_aplicarReduce structRecibido);
+void aplicarReduce(t_aplicarReduce structRecibido);
 char* serializar_aplicarReduce(t_mandarAlHilo *estructura, int tamanioTotal);
-void *recibirResultadoReduce(t_respuesta_reduce *respuesta_reduce);
 
 #endif /* FUNCTIONS_H_ */
