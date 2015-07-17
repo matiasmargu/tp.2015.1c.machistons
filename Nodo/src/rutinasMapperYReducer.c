@@ -76,13 +76,10 @@ void mapper(void* arg){
 		dup(pipes[0]);
 		close(pipes[1]);
 
-		FILE * stdout=fopen("tmp/resultadotemporal.tmp", "w");
+		FILE * stdout=fopen("/tmp/resultadotemporal.tmp", "w");
 		dup2(fileno(stdout), 1);
-		printf("prueba uno\n");
 		int resultado_map = system("./mapper");
-
 	}
-	printf("hola\n");
 
 	close(1);
 	dup(fdMap);

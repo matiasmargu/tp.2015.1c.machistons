@@ -44,17 +44,10 @@ void* atenderJob(void* arg){
 
 				recv(socket,script_mapper,tamanioScript,0);
 
-				escribirScript(script_mapper,dir_temp,1);
-
-
-				strcpy(direccionAuxiliar,dir_temp);
-				strcat(direccionAuxiliar,"/mapper.sh");
-
-				printf("Despues de escribirse: %s\n",dir_temp);
-				printf("Despues de escribirse: %s\n",direccionAuxiliar);
+				escribirScript(script_mapper,1);
 
 				i = strtol(modo, 0, 8);
-				chmod(direccionAuxiliar,modo);
+				chmod("mapper",modo);
 
 				printf("se asignaron los permisos\n");
 
@@ -72,7 +65,7 @@ void* atenderJob(void* arg){
 				script_reducer=malloc(tamanioScript);
 
 				recv(socket,script_reducer,tamanioScript,0);
-				escribirScript(script_reducer,dir_temp,2);
+				escribirScript(script_reducer,2);
 				send(socket, &comando,sizeof(int),0);
 
 				strcpy(direccionAuxiliar,dir_temp);
