@@ -139,10 +139,10 @@ int main(void) {
    		    					socketjob = i;
    		    					pthread_create(&hilo_job, NULL, atenderJob,(void *)socketjob);//mitrar
 
-   		    					recv(socketjob,&prueba,sizeof(int),0);
-   		    					printf("%i/n",prueba);
-   		    					send(socketjob,prueba,sizeof(int),0);// este para el entero
-   		    					send(socketjob,2,sizeof(int),0);
+   		    					//recv(socketjob,&prueba,sizeof(int),0);
+   		    					//printf("%i/n",prueba);
+   		    					//send(socketjob,prueba,sizeof(int),0);// este para el entero
+   		    					//send(socketjob,2,sizeof(int),0);
    		    					break;
    		    				case 42: //ACA EL JOB LE PASA EL RESULTADO DEL MAP
    		    					socketjob = i;

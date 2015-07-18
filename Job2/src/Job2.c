@@ -69,9 +69,9 @@ int main(void) {
 	log_info(logger,"Se ha establecido la conexion con Marta, su ip es %s y su puerto %s",ip_marta,puerto_marta);
 	printf("Conexion establecida con Marta, su ip es %s y su puerto %s  \n",ip_marta,puerto_marta);
 	send(socketMarta, &tamanioCombiner, sizeof(int),0);
-
 	recv(socketMarta, &enteroPrueba, sizeof(int),0);
 	send(socketMarta,combiner,tamanioCombiner,0);
+
 
 	//LISTA DE ARCHIVOS
 

@@ -23,6 +23,7 @@ void *atenderJob(void *arg){
 
 	send(socketJob, &enteroPrueba, sizeof(int),0);
 	recv(socketJob, combiner, tamanio,0);
+	printf("el combiner es %s\n",combiner);
 
 	if(string_equals_ignore_case(combiner ,"SI")) job.combiner = 1;
 	else job.combiner = 0;
@@ -35,7 +36,7 @@ void *atenderJob(void *arg){
 	send(socketJob, &enteroPrueba, sizeof(int),0);
 	recv(socketJob, listaArchivosJob, tamanio,0);
 
-	printf("%s\n",listaArchivosJob);
+	printf("lista de archivos job %s\n",listaArchivosJob);
 	char **arrayArchivosJob = string_get_string_as_array(listaArchivosJob);
 
 	send(socketJob, &enteroPrueba, sizeof(int),0);
@@ -43,7 +44,7 @@ void *atenderJob(void *arg){
 	send(socketJob, &enteroPrueba, sizeof(int),0);
 	char* archivoResultadoFinal = malloc(tamanio);
 	recv(socketJob, archivoResultadoFinal, tamanio,0);
-	printf("%s\n",archivoResultadoFinal);
+	printf("archivo resultado final %s\n",archivoResultadoFinal);
 	// Le pido al FS
 
 	return NULL;
