@@ -35,6 +35,8 @@ t_log* logger; // Log Global
 
 // VARIABLE GLOBAL
 int socketFS;
+char *ip_fs;
+char *puerto_fs;
 int idJobGlobal;
 t_list *lista_archivos; // guarda t_archivo
 t_list *lista_jobs;
@@ -114,6 +116,18 @@ typedef struct{
 	char** vector_archivos_temporales;
 	char* archivoResultadoReduce;
 }t_nodos;
+
+typedef struct{
+	int idJob;
+	t_list *tabla_procesos;
+}t_lista_job;
+
+typedef struct{
+	int estado; // 0 = todavia no se mando a ejecutar; 1 = en ejecucion; 2 = Fin; 3 = Error
+	int bloque_archivo;
+	char *nombre_archivo_resultado;
+	int id_nodo;
+}t_tablaProcesos_porJob;
 
 
 

@@ -14,8 +14,6 @@
 
 int main(void) {
 
-	char* puerto_fs;
-	char* ip_fs;
 
 	char* rutaArchivoConfiguracion = "/home/utnso/git/tp-2015-1c-machistons/Configuracion/marta.conf";
 	char* archivoAFSAEnviar;
