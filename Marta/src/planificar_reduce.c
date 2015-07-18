@@ -7,16 +7,25 @@
 
 #include "librerias_y_estructuras.h"
 
-t_lista_job *tabla;
-t_lista_job *tabla2;
-t_lista_job *tabla3;
-t_tablaProcesos_porJob *campoDeTabla;
-t_tablaProcesos_porJob *campoDeTabla2;
-t_tablaProcesos_porJob *campoDeTabla3;
-t_tablaProcesos_porJob *campoDeTabla4;
-t_tablaProcesos_porJob *campoDeTabla5;
-t_tablaProcesos_porJob *campoDeTabla6;
-t_list* lista_job_tabla;
+typedef struct{
+	int id_nodo;
+	char *ip_nodo;
+	char *puerto_nodo;
+}t_nodo2;
+
+
+typedef struct{
+	int idJob;
+	t_list *tabla_procesos;
+}t_lista_job2;
+
+typedef struct{
+	int estado; // 0 = todavia no se mando a ejecutar; 1 = en ejecucion; 2 = Fin; 3 = Error
+	int bloque_archivo;
+	char *nombre_archivo_resultado;
+	int id_nodo;
+}t_tablaProcesos_porJob2;
+
 
 typedef struct {
 	int idNodo;
@@ -25,6 +34,20 @@ typedef struct {
 	t_list * archivosAReducir;
     char* nombreArchivoResultado;
 }t_archivosAReducirPorNodo;
+
+
+
+
+t_lista_job2 *tabla;
+t_lista_job2 *tabla2;
+t_lista_job2 *tabla3;
+t_tablaProcesos_porJob2 *campoDeTabla;
+t_tablaProcesos_porJob2 *campoDeTabla2;
+t_tablaProcesos_porJob2 *campoDeTabla3;
+t_tablaProcesos_porJob2 *campoDeTabla4;
+t_tablaProcesos_porJob2 *campoDeTabla5;
+t_tablaProcesos_porJob2 *campoDeTabla6;
+t_list* lista_job_tabla;
 
 
 
@@ -80,12 +103,12 @@ void planificarReduce(){
 	list_add(lista_job_tabla,tabla3);
 
 	lista_nodos_estado = list_create();
-	t_nodo *nodo1;
-	t_nodo *nodo2;
-	t_nodo *nodo3;
-	t_nodo *nodo4;
-	t_nodo *nodo5;
-	t_nodo *nodo6;
+	t_nodo2 *nodo1;
+	t_nodo2 *nodo2;
+	t_nodo2 *nodo3;
+	t_nodo2 *nodo4;
+	t_nodo2 *nodo5;
+	t_nodo2 *nodo6;
 
 	nodo1->id_nodo = 4;
 	nodo1->ip_nodo = "44.25";
@@ -117,12 +140,12 @@ void planificarReduce(){
 	//
     int a,b,c,d,aux,variableParaResultadoReduce,tamanioListaJobTabla,tamanioListaTablaDeProcesosPorJob,tamanioListaArchivosAReducirPorNodo;
 	int tamanioListaDeNodos;
-    t_lista_job *campoDeLaLista;
-	t_tablaProcesos_porJob *campoDeLaListaTablaDeProcesos;
+    t_lista_job2 *campoDeLaLista;
+	t_tablaProcesos_porJob2 *campoDeLaListaTablaDeProcesos;
     t_list * lista_archivosAReducirPorNodo;
     t_archivosAReducirPorNodo *campoArchivosAReducirPorNodo;
     t_archivosAReducirPorNodo *campoAAgregarAListaReducirPorNodo;
-    t_nodo *campoDeListaDeNodo;
+    t_nodo2 *campoDeListaDeNodo;
 	lista_archivosAReducirPorNodo = list_create();
 
 	// lo que buscamos es recorrer cada campo de la lista para ordenar por id de nodo la lista de archivos a
