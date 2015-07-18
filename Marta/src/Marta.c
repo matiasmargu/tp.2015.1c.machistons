@@ -60,6 +60,8 @@ int main(void) {
 
 		fdmax = listener;
 
+
+		/*
 		//ACA SE CONECTA CON FS
 	    int handshakeFS;
 	   	socketFS = crearCliente (ip_fs, puerto_fs);
@@ -87,7 +89,7 @@ int main(void) {
 
 	   	printf("gaston traga penes\n");
 
-
+		*/
 
 
 
@@ -133,9 +135,9 @@ int main(void) {
    		    		}
    		    		else{
    		    			switch(entero){ // HANDSHAKE
-   		    				case 72: // ACA EL JOB LE PASA LISTA DE ARCHIVOS Y EL COMBINER
+   		    				case 1: // ACA EL JOB LE PASA LISTA DE ARCHIVOS Y EL COMBINER
    		    					socketjob = i;
-   		    					//pthread_create(&hilo_job, NULL, conectarseAlJob,(void *)socketjob);//mitrar
+   		    					pthread_create(&hilo_job, NULL, atenderJob,(void *)socketjob);//mitrar
 
    		    					recv(socketjob,&prueba,sizeof(int),0);
    		    					printf("%i/n",prueba);
@@ -145,7 +147,7 @@ int main(void) {
    		    				case 42: //ACA EL JOB LE PASA EL RESULTADO DEL MAP
    		    					socketjob = i;
 
-   		    					pthread_create(&hilo_job, NULL, recibirResultadoMap,(void *)socketjob);
+   		    					//pthread_create(&hilo_job, NULL, recibirResultadoMap,(void *)socketjob);
 
    		    					recv(socketjob,&prueba,sizeof(int),0);
    		    					printf("%i/n",prueba);

@@ -37,6 +37,7 @@ t_log* logger; // Log Global
 int socketFS;
 int idJobGlobal;
 t_list *lista_archivos; // guarda t_archivo
+t_list *lista_jobs;
 int cant_nodos;
 t_list *lista_nodos_estado;
 pthread_mutex_t mutex ;//= PTHREAD_MUTEX_INITIALIZER;
@@ -118,9 +119,10 @@ typedef struct{
 
 int recive_y_guarda_estructura(t_archivo arch, int socket, uint32_t tamanioTotal);
 void  *conectarseAlJob(void*arg);
-int recive_y_deserialisa_job(t_job_marta* job_marta, int socket,uint32_t tamanioTotal );
-char* serializar_estructura_t_marta_a_job(t_marta_job estructura_t_marta_a_job, int tamanioTotal);
+//int recive_y_deserialisa_job(t_job_marta* job_marta, int socket,uint32_t tamanioTotal );
+//char* serializar_estructura_t_marta_a_job(t_marta_job estructura_t_marta_a_job, int tamanioTotal);
 void aplicarReduce(t_aplicarReduce structRecibido);
+void *atenderJob(void *arg);
 
 
 #endif /* LIBRERIAS_Y_ESTRUCTURAS_H_ */
