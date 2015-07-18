@@ -233,7 +233,7 @@ void * recibirListaDeArchivos(void*arg){
 	t_config* archivoConfiguracion;
 	char* archivoAEnviar;
 	char* structASerializar;
-	t_archivo_job* archivoEnPosicionA;
+
 	t_job job;
 	int enteroPrueba;
 	enteroPrueba = 60;

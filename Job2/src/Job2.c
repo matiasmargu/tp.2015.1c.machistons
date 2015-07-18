@@ -57,7 +57,7 @@ int main(void) {
 
 	rutinaMapperTraducida = mapearAMemoriaVirtual(mapper);
 	rutinaReduceTraducida = mapearAMemoriaVirtual(reduce);
-	printf("rutinaMappper TRADUCIDA  %s\n",rutinaMapperTraducida);
+	//printf("rutinaMappper TRADUCIDA  %s\n",rutinaMapperTraducida);
 
 	///MANDAMOS LA LISTA DE ARCHIVOS A MARTA Y EL COMBINER
 

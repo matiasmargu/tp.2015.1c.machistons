@@ -1582,3 +1582,4 @@
 
 [INFO] 18:36:26:286 log_job/(10099:10101): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
 
+[INFO] 22:04:44:738 log_job/(12206:12206): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
