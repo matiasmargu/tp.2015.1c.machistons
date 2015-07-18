@@ -262,6 +262,7 @@ void handshakeConFS (){
 		send(socket_fs,mensaje,tamanioIPNODO,0);
 	}
 
+
 	printf("Este es el socket: %i\n",socket_fs);
 	pthread_create(&hiloFS, NULL, atenderNFS, (void *)socket_fs);
 

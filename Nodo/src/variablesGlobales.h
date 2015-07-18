@@ -86,4 +86,10 @@ void crearNuevaConfiguracion();
 void leerRutaDeConfiguracion();
 void leerID_NODO();
 
+//Funciones para la depuracion
+void eliminarEnters(char* buffer, int tamanio);
+
+//Funciones esenciales
+int getBloque(int nroDeBloque, char* bloque);
+
 #endif /* VARIABLESGLOBALES_H_ */

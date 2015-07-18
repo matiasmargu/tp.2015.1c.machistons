@@ -10,39 +10,25 @@
 
 void mapper(void* arg){
 
-	int a=0;
 	FILE* fdAux;
 
-	char* pmap;
 	char* bloque;
 	char* nombreDelArchivo;
 
 	int comando =1;
-	int tamanioDelNombre;
 	int socket = (int) arg;
 
 	pid_t pid;
 
 //***************************************************
 
-	int tamanioBloque, tamanioBloqueExacto,nroDelBloque;
-
-	pmap = mapearAMemoriaVirtual(archivo_bin);
-	//Aca me pasa el nro de bloque
 	send(socket, &comando,sizeof(int),0);
-	//recv(socket,&nroDelBloque,sizeof(int),0);
-	nroDelBloque = 0;
-	printf("el numero de bloque es: %i\n",nroDelBloque);
-	tamanioBloque=tamanioEspecifico(pmap,nroDelBloque);
-	printf("el tamaño del bloque es: %i\n",tamanioBloque);
 
-	bloque=malloc(tamanioBloque);
+	//Deveria recivir el nro del bloque
+	int nroDeBloque=0;
+	int tamanioDelBloque=getBloque(nroDeBloque, bloque);
 
-	tamanioBloqueExacto = nroDelBloque * 1024 * 1024* 20;
-	memcpy(bloque,pmap + tamanioBloqueExacto,tamanioBloque);
-
-
-	FILE* fdArch2 = fopen("/tmp/amappear.txt","w+");
+	FILE* fdArch2 = fopen("/tmp/aMappear.txt","w+");
 	fputs(bloque, fdArch2);
 	fclose(fdArch2);
 
@@ -51,7 +37,7 @@ void mapper(void* arg){
 
 	pipe(pipes);
 
-	//*******************************************
+//*******************************************
 
 	if((pid = fork()) == -1){
 		printf("Error en el fork");
@@ -68,7 +54,7 @@ void mapper(void* arg){
 		dup(pipes[1]);
 
 		close(pipes[0]);
-		execlp("cat","cat","/tmp/amappear.txt", NULL);
+		execlp("cat","cat","/tmp/aMappear.txt", NULL);
 
 	}else{
 
@@ -78,7 +64,7 @@ void mapper(void* arg){
 
 		FILE * stdout=fopen("/tmp/resultadotemporal.tmp", "w");
 		dup2(fileno(stdout), 1);
-		int resultado_map = system("./mapper");
+		system("./tmp/mapper");
 	}
 
 	close(1);
@@ -86,7 +72,6 @@ void mapper(void* arg){
 	close(fdMap);
 
 	free(nombreDelArchivo);
-	free(pmap);
 	free(bloque);
 	fclose(fdAux);
 }

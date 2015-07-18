@@ -7,6 +7,7 @@ C_SRCS += \
 ../src/Nodo.c \
 ../src/atenderJob.c \
 ../src/atenderNodoYFS.c \
+../src/funcionesDepuracion.c \
 ../src/funcionesParaConfiguracionYDemas.c \
 ../src/funcionesParaEnviar.c \
 ../src/funcionesParaEscribir.c \
@@ -17,6 +18,7 @@ OBJS += \
 ./src/Nodo.o \
 ./src/atenderJob.o \
 ./src/atenderNodoYFS.o \
+./src/funcionesDepuracion.o \
 ./src/funcionesParaConfiguracionYDemas.o \
 ./src/funcionesParaEnviar.o \
 ./src/funcionesParaEscribir.o \
@@ -27,6 +29,7 @@ C_DEPS += \
 ./src/Nodo.d \
 ./src/atenderJob.d \
 ./src/atenderNodoYFS.d \
+./src/funcionesDepuracion.d \
 ./src/funcionesParaConfiguracionYDemas.d \
 ./src/funcionesParaEnviar.d \
 ./src/funcionesParaEscribir.d \
@@ -38,7 +41,7 @@ C_DEPS += \
 src/%.o: ../src/%.c
 	@echo 'Building file: $<'
 	@echo 'Invoking: GCC C Compiler'
-	gcc -I"/home/utnso/git/tp-2015-1c-machistons/funciones" -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
+	gcc -I"/home/utnso/tp-2015-1c-machistons/funciones" -O0 -g3 -Wall -c -fmessage-length=0 -MMD -MP -MF"$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -o "$@" "$<"
 	@echo 'Finished building: $<'
 	@echo ' '
 

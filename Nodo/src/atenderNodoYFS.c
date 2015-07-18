@@ -14,15 +14,16 @@ void *atenderNFS(void*arg){
 	char *bufferSet;
 	char* paquetito;
 
-	int i,a,offset,tamanioDelPaquetito;
+	int i,offset,tamanioDelPaquetito;
 	int socket= (int)arg;
 	int entero; // handshake para saber quien es: FS(23)
 	int nroDelBloque;
 	int tamanioBloque;
-	int tamanio;
-	estructuraSetBloque set;
 	int n;
 	int cantidadDePaquetitos;
+
+	int variableDelPaquetito = 64*1024;
+	int tamanioReal;
 
 	char* pmap = mapearAMemoriaVirtual(archivo_bin);
 
@@ -66,51 +67,33 @@ void *atenderNFS(void*arg){
 
 			printf("El tamaño del buffer: %i\n",tamanioBloque);
 
-
 			send(socket,&entero,sizeof(int),0);
 			bufferSet=malloc(tamanioBloque);
-			recv(socket,&cantidadDePaquetitos,sizeof(int),0);
-
-			printf("La cantidad de paquetitos es: %i\n",cantidadDePaquetitos);
-
-			send(socket,&entero,sizeof(int),0);
 
 			offset = 0;
-			for(a=0;a<cantidadDePaquetitos;a++){
+			while(tamanioBloque != offset){
 
-				recv(socket,&tamanioDelPaquetito,sizeof(int),0);
-				send(socket,&entero,sizeof(int),0);
-				//printf("Tamanio calculado : %i\n",tamanioDelPaquetito);
+				if((tamanioBloque-offset)<variableDelPaquetito){
+					tamanioDelPaquetito = tamanioBloque-offset;
+				}else{
+					tamanioDelPaquetito = variableDelPaquetito;
+				}
 
 				paquetito = malloc(tamanioDelPaquetito);
 
-				recv(socket,paquetito,tamanioDelPaquetito,0);
-				send(socket,&entero,sizeof(int),0);
+				tamanioReal = recv(socket,paquetito,tamanioDelPaquetito,0);
 
-
-				memcpy(bufferSet + offset,paquetito,tamanioDelPaquetito);
-				offset += tamanioDelPaquetito;
-
-				printf("El offset: %i .. Tamaño del paquetito ESTABLECIDO %i -> Tamaño del paqueta REAL %i  de la vuelta numero: %i\n",offset,tamanioDelPaquetito,strlen(paquetito),a);
-
-				recv(socket,&entero,sizeof(int),0);
-				send(socket,&entero,sizeof(int),0);
+				memcpy(bufferSet + offset,paquetito,tamanioReal);
+				offset += tamanioReal;
 
 				liberar(&paquetito);
 			}
 
 			printf("Este es el tamaño del buffer set DESPUES: %i\n",strlen(bufferSet));
 
-			/*
-			printf("En el bloque %i me escribe %ibytes\n",set.bloque,strlen(set.data));
-
-			tamanio= strlen(set.data);
-
-			memcpy(pmap+(1024*1024*20*(nroDelBloque)),set.data,tamanio);
-			//memcpy(pmap+(nroDelBloque*10),set.data,tamanio);
+			memcpy(pmap+(1024*1024*20*(nroDelBloque)),bufferSet,strlen(bufferSet));
 			msync(pmap,strlen(pmap),0);
 			printf("se seteo correctamente\n");
-			*/
 			liberar(&bufferSet);
 			//ok = 20;
 			//send(socket,&ok, sizeof(int),0);
@@ -147,10 +130,10 @@ void *atenderNFS(void*arg){
 		//FORMATEO
 			n = strlen(pmap);
 			for(i=0;i<n;i++){
-				memcpy(pmap+i,'/',sizeof(char));
+				pmap[i]='/';
 			}
 			msync(pmap,strlen(pmap),0);
-			printf("se formatero el archivo binario\n");
+			printf("se formateo el archivo binario\n");
 		break;
 	}
 }
