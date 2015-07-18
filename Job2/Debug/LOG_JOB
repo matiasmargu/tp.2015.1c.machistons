@@ -1592,3 +1592,125 @@
 [INFO] 12:48:54:259 log_job/(3352:3352): Se ha establecido la conexion con Marta, su ip es 10.5.5.174 y su puerto 3000
 [INFO] 13:04:46:361 log_job/(3633:3633): Se ha establecido la conexion con Marta, su ip es 10.5.5.174 y su puerto 3000
 [INFO] 13:09:12:172 log_job/(3655:3655): Se ha establecido la conexion con Marta, su ip es 10.5.5.174 y su puerto 3000
+[INFO] 13:21:20:338 log_job/(2511:2511): Se ha establecido la conexion con Marta, su ip es 192.168.3.33 y su puerto 3000
+[INFO] 13:21:22:393 log_job/(2511:2517): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 13:21:22:393 log_job/(2511:2516): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 13:21:22:393 log_job/(2511:2515): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 13:21:22:394 log_job/(2511:2514): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 13:21:22:394 log_job/(2511:2513): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 13:21:22:639 log_job/(2511:2516): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 13:21:22:639 log_job/(2511:2515): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 13:21:22:640 log_job/(2511:2514): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 13:21:22:640 log_job/(2511:2513): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 13:23:33:421 log_job/(2523:2523): Se ha establecido la conexion con Marta, su ip es 192.168.3.33 y su puerto 3000
+[INFO] 13:23:33:447 log_job/(2523:2529): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 13:23:33:447 log_job/(2523:2528): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 13:23:33:447 log_job/(2523:2527): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 13:23:33:447 log_job/(2523:2526): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 13:23:33:447 log_job/(2523:2525): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 13:23:33:572 log_job/(2523:2528): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 13:23:33:573 log_job/(2523:2527): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 13:23:33:573 log_job/(2523:2526): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 13:23:33:573 log_job/(2523:2525): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 13:24:24:813 log_job/(2532:2532): Se ha establecido la conexion con Marta, su ip es 192.168.3.33 y su puerto 3000
+[INFO] 13:24:24:848 log_job/(2532:2538): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 13:24:24:848 log_job/(2532:2537): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 13:24:24:849 log_job/(2532:2536): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 13:24:24:849 log_job/(2532:2535): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 13:24:24:849 log_job/(2532:2534): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 13:24:25:310 log_job/(2532:2537): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 13:24:25:310 log_job/(2532:2536): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 13:24:25:311 log_job/(2532:2535): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 13:24:25:311 log_job/(2532:2534): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
+
+[INFO] 13:33:30:968 log_job/(2632:2632): Se ha establecido la conexion con Marta, su ip es 192.168.3.33 y su puerto 3000
+[INFO] 13:41:29:502 log_job/(2815:2815): Se ha establecido la conexion con Marta, su ip es 192.168.3.33 y su puerto 3000
+[INFO] 13:41:30:584 log_job/(2815:2820): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 13:41:30:584 log_job/(2815:2819): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 13:41:30:584 log_job/(2815:2818): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 13:41:30:584 log_job/(2815:2821): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 13:41:30:584 log_job/(2815:2817): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:7, socketNodo:7, nombre del archivo de resultado: pepitoloco, socketMarta 4, id del Nodo 3
+
+[INFO] 13:45:08:462 log_job/(3257:3257): Se ha establecido la conexion con Marta, su ip es 192.168.3.33 y su puerto 3000
+[INFO] 13:47:30:615 log_job/(3357:3357): Se ha establecido la conexion con Marta, su ip es 192.168.3.33 y su puerto 3000
+[INFO] 13:48:46:632 log_job/(3362:3362): Se ha establecido la conexion con Marta, su ip es 192.168.3.33 y su puerto 3000
+[INFO] 13:55:24:944 log_job/(3651:3651): Se ha establecido la conexion con Marta, su ip es 192.168.3.33 y su puerto 3000
+[INFO] 13:56:12:121 log_job/(3702:3702): Se ha establecido la conexion con Marta, su ip es 192.168.3.139 y su puerto 3000
+[INFO] 13:57:26:74 log_job/(3706:3706): Se ha establecido la conexion con Marta, su ip es 192.168.3.139 y su puerto 3000
+[INFO] 13:58:15:755 log_job/(3707:3707): Se ha establecido la conexion con Marta, su ip es 192.168.3.139 y su puerto 3000
+[INFO] 14:37:57:267 log_job/(3936:3936): Se ha establecido la conexion con Marta, su ip es 192.168.3.139 y su puerto 3000
+[INFO] 14:39:57:185 log_job/(3940:3940): Se ha establecido la conexion con Marta, su ip es 192.168.3.139 y su puerto 3000
+[INFO] 14:40:24:54 log_job/(3942:3942): Se ha establecido la conexion con Marta, su ip es 192.168.3.139 y su puerto 3000
+[INFO] 14:51:01:181 log_job/(4030:4030): Se ha establecido la conexion con Marta, su ip es 192.168.3.139 y su puerto 3000
+[INFO] 14:55:44:554 log_job/(4037:4037): Se ha establecido la conexion con Marta, su ip es 192.168.3.139 y su puerto 3000
+[INFO] 14:57:50:72 log_job/(4040:4040): Se ha establecido la conexion con Marta, su ip es 192.168.3.139 y su puerto 3000
+[INFO] 14:59:06:891 log_job/(4042:4042): Se ha establecido la conexion con Marta, su ip es 192.168.3.139 y su puerto 3000
+[INFO] 14:59:54:88 log_job/(4044:4044): Se ha establecido la conexion con Marta, su ip es 192.168.3.139 y su puerto 3000
+[INFO] 15:00:27:389 log_job/(4045:4045): Se ha establecido la conexion con Marta, su ip es 192.168.3.139 y su puerto 3000
+[INFO] 15:04:04:897 log_job/(4053:4053): Se ha establecido la conexion con Marta, su ip es 192.168.3.139 y su puerto 3000
+[INFO] 15:05:37:49 log_job/(4057:4057): Se ha establecido la conexion con Marta, su ip es 192.168.3.139 y su puerto 3000
+[INFO] 15:07:34:219 log_job/(4059:4059): Se ha establecido la conexion con Marta, su ip es 192.168.3.139 y su puerto 3000
+[INFO] 15:08:16:850 log_job/(4061:4061): Se ha establecido la conexion con Marta, su ip es 192.168.3.139 y su puerto 3000
+[INFO] 15:09:04:422 log_job/(4063:4063): Se ha establecido la conexion con Marta, su ip es 192.168.3.139 y su puerto 3000
+[INFO] 15:09:59:619 log_job/(4065:4065): Se ha establecido la conexion con Marta, su ip es 192.168.3.139 y su puerto 3000
+[INFO] 15:15:20:702 log_job/(4156:4156): Se ha establecido la conexion con Marta, su ip es 192.168.3.139 y su puerto 3000
+[INFO] 15:15:56:262 log_job/(4158:4158): Se ha establecido la conexion con Marta, su ip es 192.168.3.139 y su puerto 3000
+[INFO] 15:21:50:205 log_job/(4169:4169): Se ha establecido la conexion con Marta, su ip es 192.168.3.139 y su puerto 3000
+[INFO] 15:23:59:363 log_job/(4173:4173): Se ha establecido la conexion con Marta, su ip es 192.168.3.139 y su puerto 3000
+[INFO] 15:25:12:541 log_job/(4176:4176): Se ha establecido la conexion con Marta, su ip es 192.168.3.139 y su puerto 3000
+[INFO] 15:26:47:149 log_job/(4180:4180): Se ha establecido la conexion con Marta, su ip es 192.168.3.139 y su puerto 3000
+[INFO] 15:28:37:849 log_job/(4182:4182): Se ha establecido la conexion con Marta, su ip es 192.168.3.139 y su puerto 3000
+[INFO] 15:29:49:12 log_job/(4185:4185): Se ha establecido la conexion con Marta, su ip es 192.168.3.139 y su puerto 3000
+[INFO] 15:31:03:607 log_job/(4187:4187): Se ha establecido la conexion con Marta, su ip es 192.168.3.139 y su puerto 3000
+[INFO] 15:31:13:388 log_job/(4188:4188): Se ha establecido la conexion con Marta, su ip es 192.168.3.139 y su puerto 3000
+[INFO] 15:34:16:283 log_job/(4192:4192): Se ha establecido la conexion con Marta, su ip es 192.168.3.139 y su puerto 3000
+[INFO] 15:35:08:111 log_job/(4195:4195): Se ha establecido la conexion con Marta, su ip es 192.168.3.139 y su puerto 3000
+[INFO] 15:35:20:88 log_job/(4196:4196): Se ha establecido la conexion con Marta, su ip es 192.168.3.139 y su puerto 3000
+[INFO] 15:36:26:20 log_job/(4198:4198): Se ha establecido la conexion con Marta, su ip es 192.168.3.139 y su puerto 3000
+[INFO] 15:36:50:492 log_job/(4200:4200): Se ha establecido la conexion con Marta, su ip es 192.168.3.139 y su puerto 3000
+[INFO] 15:37:29:230 log_job/(4202:4202): Se ha establecido la conexion con Marta, su ip es 192.168.3.139 y su puerto 3000
+[INFO] 15:41:43:531 log_job/(4210:4210): Se ha establecido la conexion con Marta, su ip es 192.168.3.139 y su puerto 3000
+[INFO] 15:42:01:653 log_job/(4211:4211): Se ha establecido la conexion con Marta, su ip es 192.168.3.139 y su puerto 3000
+[INFO] 15:51:04:952 log_job/(4232:4232): Se ha establecido la conexion con Marta, su ip es 192.168.3.139 y su puerto 3000
+[INFO] 15:56:30:478 log_job/(4315:4315): Se ha establecido la conexion con Marta, su ip es 192.168.3.139 y su puerto 3000
+[INFO] 15:57:16:338 log_job/(4525:4525): Se ha establecido la conexion con Marta, su ip es 192.168.3.139 y su puerto 3000
+[INFO] 15:58:27:130 log_job/(4553:4553): Se ha establecido la conexion con Marta, su ip es 192.168.3.139 y su puerto 3000
+[INFO] 15:59:28:292 log_job/(4555:4555): Se ha establecido la conexion con Marta, su ip es 192.168.3.139 y su puerto 3000
+[INFO] 16:02:26:998 log_job/(4559:4559): Se ha establecido la conexion con Marta, su ip es 192.168.3.139 y su puerto 3000
+[INFO] 16:08:15:247 log_job/(4568:4568): Se ha establecido la conexion con Marta, su ip es 192.168.3.139 y su puerto 3000
+[INFO] 16:08:45:165 log_job/(4570:4570): Se ha establecido la conexion con Marta, su ip es 192.168.3.139 y su puerto 3000
+[INFO] 16:09:24:923 log_job/(4572:4572): Se ha establecido la conexion con Marta, su ip es 192.168.3.139 y su puerto 3000
+[INFO] 16:11:43:66 log_job/(4575:4575): Se ha establecido la conexion con Marta, su ip es 192.168.3.139 y su puerto 3000
+[INFO] 16:12:04:278 log_job/(4578:4578): Se ha establecido la conexion con Marta, su ip es 192.168.3.139 y su puerto 3000
+[INFO] 16:12:20:624 log_job/(4579:4579): Se ha establecido la conexion con Marta, su ip es 192.168.3.139 y su puerto 3000
+[INFO] 16:15:14:427 log_job/(4585:4585): Se ha establecido la conexion con Marta, su ip es 192.168.3.139 y su puerto 3000
