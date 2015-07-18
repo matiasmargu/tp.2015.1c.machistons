@@ -47,7 +47,7 @@ int main(void) {
 		id_nodo = config_get_int_value(archivoConfiguracion, "ID_NODO");
 	}
 
-	//handshakeConFS();
+	handshakeConFS();
 
 //Esta es el select
 
@@ -102,6 +102,7 @@ int main(void) {
 		    		{
 		    			switch(entero){
 		    			case 8: // Este es el Job
+		    				printf("Se ha conectado un Job\n");
 		    				pthread_create(&hiloJob[contJ], NULL, &atenderJob, (void *)i);
 		    				contJ++;
 		    				break;
