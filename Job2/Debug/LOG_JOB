@@ -1582,3 +1582,13 @@
 
 [INFO] 18:36:26:286 log_job/(10099:10101): Finalizo el hilo para mapear el bloque 7  en el nodo 3 ,el resultado fue FALLO EL MAP 
 
+[INFO] 22:04:44:738 log_job/(12206:12206): Se ha establecido la conexion con Marta, su ip es 192.168.3.28 y su puerto 3000
+[INFO] 12:28:45:641 log_job/(2378:2378): Se ha establecido la conexion con Marta, su ip es 10.5.5.174 y su puerto 3000
+[INFO] 12:30:35:774 log_job/(2554:2554): Se ha establecido la conexion con Marta, su ip es 10.5.5.174 y su puerto 3000
+[INFO] 12:31:55:969 log_job/(2694:2694): Se ha establecido la conexion con Marta, su ip es 10.5.5.174 y su puerto 3000
+[INFO] 12:33:13:765 log_job/(2776:2776): Se ha establecido la conexion con Marta, su ip es 10.5.5.174 y su puerto 3000
+[INFO] 12:35:01:135 log_job/(2978:2978): Se ha establecido la conexion con Marta, su ip es 10.5.5.174 y su puerto 3000
+[INFO] 12:37:00:745 log_job/(3061:3061): Se ha establecido la conexion con Marta, su ip es 10.5.5.174 y su puerto 3000
+[INFO] 12:48:54:259 log_job/(3352:3352): Se ha establecido la conexion con Marta, su ip es 10.5.5.174 y su puerto 3000
+[INFO] 13:04:46:361 log_job/(3633:3633): Se ha establecido la conexion con Marta, su ip es 10.5.5.174 y su puerto 3000
+[INFO] 13:09:12:172 log_job/(3655:3655): Se ha establecido la conexion con Marta, su ip es 10.5.5.174 y su puerto 3000

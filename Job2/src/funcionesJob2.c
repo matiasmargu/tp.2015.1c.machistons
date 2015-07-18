@@ -314,6 +314,13 @@ void* mapearBloque(t_hilo_map *structRecibido){
 
 
 void* reducirArchivos(t_hilo_reduce *structRecibido){
+	char* unArchivo;
+	//recorrer lista para log
+//	for(a=0; a< list_size(structRecibido->archivos); a++){
+	//	unArchivo = list_get(structRecibido->archivos, a);
+//	 string_append(char** original, ",");
+//	 string_append(char** original, unArchivo);
+	//}
 
 	log_info(logger,"Se levanto un hilo para enviar los archivos a reducir,los parametros recibidos son: socketNodo:%i, nombre del archivo de resultado: %s, socketMarta %i, id del Nodo %i y la lista de archivos\n",structRecibido->socketNodo,structRecibido->nombreArchivoResultado,structRecibido->socketMarta,structRecibido->idNodo);
 	printf("Se levanto un hilo para enviar los archivos a reducir,los parametros recibidos son: socketNodo:%i, nombre del archivo de resultado: %s, socketMarta %i, id del Nodo %i y la lista de archivos\n",structRecibido->socketNodo,structRecibido->nombreArchivoResultado,structRecibido->socketMarta,structRecibido->idNodo);

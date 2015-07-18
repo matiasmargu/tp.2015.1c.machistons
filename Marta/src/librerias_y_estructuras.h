@@ -35,8 +35,11 @@ t_log* logger; // Log Global
 
 // VARIABLE GLOBAL
 int socketFS;
+char *ip_fs;
+char *puerto_fs;
 int idJobGlobal;
 t_list *lista_archivos; // guarda t_archivo
+t_list *lista_jobs;
 int cant_nodos;
 t_list *lista_nodos_estado;
 pthread_mutex_t mutex ;//= PTHREAD_MUTEX_INITIALIZER;
@@ -114,13 +117,26 @@ typedef struct{
 	char* archivoResultadoReduce;
 }t_nodos;
 
+typedef struct{
+	int idJob;
+	t_list *tabla_procesos;
+}t_lista_job;
+
+typedef struct{
+	int estado; // 0 = todavia no se mando a ejecutar; 1 = en ejecucion; 2 = Fin; 3 = Error
+	int bloque_archivo;
+	char *nombre_archivo_resultado;
+	int id_nodo;
+}t_tablaProcesos_porJob;
+
 
 
 int recive_y_guarda_estructura(t_archivo arch, int socket, uint32_t tamanioTotal);
 void  *conectarseAlJob(void*arg);
-int recive_y_deserialisa_job(t_job_marta* job_marta, int socket,uint32_t tamanioTotal );
-char* serializar_estructura_t_marta_a_job(t_marta_job estructura_t_marta_a_job, int tamanioTotal);
+//int recive_y_deserialisa_job(t_job_marta* job_marta, int socket,uint32_t tamanioTotal );
+//char* serializar_estructura_t_marta_a_job(t_marta_job estructura_t_marta_a_job, int tamanioTotal);
 void aplicarReduce(t_aplicarReduce structRecibido);
+void *atenderJob(void *arg);
 
 
 #endif /* LIBRERIAS_Y_ESTRUCTURAS_H_ */

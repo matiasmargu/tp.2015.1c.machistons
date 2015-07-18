@@ -98,7 +98,7 @@ void liberarMensaje(char **package);
 
 // Funciones Interfaz Nodo
 
-void escribirBloqueEnNodo (int socket, estructuraSetBloque escribirBloque);
+int escribirBloqueEnNodo (int socket, estructuraSetBloque escribirBloque);
 int recive_y_deserializa_Contenido_Bloque(t_getBloque *bloque, int socket, uint32_t tamanioTotal);
 char *pedirContenidoBloqueA (int socket, int nroBloque);
 char* serializarParaGetBloque(estructuraSetBloque *bloque);
