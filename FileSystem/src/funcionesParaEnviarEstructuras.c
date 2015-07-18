@@ -247,7 +247,8 @@ void agregarNodo(){
 	cantidad = mongoc_collection_count(nodos, MONGOC_QUERY_NONE, query,0,0,NULL,NULL);
 	if(cantidad > 0){
 		cursor = mongoc_collection_find (nodos, MONGOC_QUERY_NONE, 0, 0, 0, query, NULL, NULL);
-		printf("Los nodos que se pueden agregar son los siguientes:");
+
+		printf("Los nodos que se pueden agregar son los siguientes:\n");
 		while (mongoc_cursor_next (cursor, &doc)) {
 			if (bson_iter_init (&iter, doc)) {
 				if(bson_iter_find (&iter, "ID Nodo"))idNodo = bson_iter_int32(&iter);
@@ -267,6 +268,8 @@ void agregarNodo(){
 				"}");
 		mongoc_collection_update(nodos, MONGOC_UPDATE_NONE, query, update, NULL, NULL);
 		bson_destroy (query);
+		printf("Se ha agregado el nodo %i correctamente\n"
+				"Ingrese 0 para imprimir el menu\n", atoi(comandoSeparado[0]));
 		verificarEstadoFS();
 	}else{
 		printf("No hay nodos conectados para agregar\n"
@@ -302,7 +305,7 @@ void verificarEstadoFS(){
 	bson_destroy (query);
 }
 
-void escribirBloqueEnNodo (int socket, estructuraSetBloque estructura){
+int escribirBloqueEnNodo (int socket, estructuraSetBloque estructura){
 
 	int entero; //Para el handshake
 	char *mensaje; // Para mandar mensajes serializados
@@ -313,20 +316,28 @@ void escribirBloqueEnNodo (int socket, estructuraSetBloque estructura){
 	int size_to_send;
 	int offset;
 	char* paquetito;
+	int tamanioPaquetitos;
+
+	tamanioPaquetitos = 1448;
+
 
 	entero = 2;
 	send(socket, &entero, sizeof(int), 0);
-	recv(socket, &entero, sizeof(int), 0); // Entero para que no se boludee
+
+	if(recv(socket, &entero, sizeof(int), 0)<0) return -1; // Entero para que no se boludee
+
+
+	entero = 65;
 
 	estructura.tamanioData = strlen(estructura.data);
 
 	send(socket, &estructura.bloque, sizeof(int), 0); // Envio el numero de bloque a escribir
-	recv(socket, &entero, sizeof(int), 0); // Entero para que no se boludee
+	if(recv(socket, &entero, sizeof(int), 0)<0) return -1; // Entero para que no se boludee
 
 	send(socket, &estructura.tamanioData, sizeof(int), 0);
-	recv(socket, &entero, sizeof(int), 0); // Entero para que no se boludee
+	if(recv(socket, &entero, sizeof(int), 0)<0) return -1; // Entero para que no se boludee
 
-	restoDivision = div(estructura.tamanioData,32768);
+	restoDivision = div(estructura.tamanioData,tamanioPaquetitos);
 	if(restoDivision.rem > 0){
 		cantidadSend = restoDivision.quot + 1;
 	}else{
@@ -334,14 +345,14 @@ void escribirBloqueEnNodo (int socket, estructuraSetBloque estructura){
 	}
 
 	send(socket, &cantidadSend, sizeof(int), 0);
-	recv(socket, &entero, sizeof(int), 0); // Entero para que no se boludee
+	if(recv(socket, &entero, sizeof(int), 0)<0) return -1; // Entero para que no se boludee
 
 	offset = 0;
 	for(a=0;a<cantidadSend;a++){
-		if((estructura.tamanioData - offset) < 32768){
+		if((estructura.tamanioData - offset) < tamanioPaquetitos){
 			size_to_send =  estructura.tamanioData - offset;
 		}else{
-			size_to_send = 32768;
+			size_to_send = tamanioPaquetitos;
 		}
 		paquetito = malloc(size_to_send);
 		memcpy(paquetito, estructura.data + offset , size_to_send);
@@ -351,9 +362,14 @@ void escribirBloqueEnNodo (int socket, estructuraSetBloque estructura){
 		recv(socket, &entero, sizeof(int), 0); // Entero para que no se boludee
 		send(socket, paquetito, size_to_send, 0);
 		recv(socket, &entero, sizeof(int), 0); // Entero para que no se boludee
+
+		send(socket, &entero, sizeof(int), 0);
+		recv(socket, &entero, sizeof(int), 0);
+
+		printf("Offset %i   ,Tamanio paquete calculado %i  ,Tamanio paquete real %i  , numero de vuelta %i  \n",offset,size_to_send,strlen(paquetito),a);
 		liberarMensaje(&paquetito);
 	}
-	printf("%i\n",estructura.tamanioData);
+	return 90;
 }
 
 char *pedirContenidoBloqueA (int socket, int nroBloque){
@@ -461,10 +477,6 @@ int insertarArchivoAMongoYAlMDFS (char* path){
 		escribirBloque.bloque = 40;
 
 		escribirBloqueEnNodo(i,escribirBloque);
-
-		while(1){
-
-		}
 
 		agregarCopia(doc3, "1", 21, 30);
 		agregarCopia(doc3, "2", 58, 10);

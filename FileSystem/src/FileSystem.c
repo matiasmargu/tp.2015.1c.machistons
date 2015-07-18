@@ -26,8 +26,9 @@ int main()
 	fd_set read_fds;
 
 	pthread_t hiloConsola;
-	pthread_t hiloMarta[200];
-	pthread_t hiloNodo[200];
+
+	pthread_t hiloMarta[1000];
+	pthread_t hiloNodo[1000];
 	int contHM = 1; // Contador para hilos de marta, varios por si se cae y se vuelve a conectar
 	int contHN = 1; // Contador para hilos de Nodo, varios porque se van a conectar muchos.
 

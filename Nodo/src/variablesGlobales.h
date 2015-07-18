@@ -79,7 +79,7 @@ void *atenderNFS(void*arg);
 void *atenderJob(void* arg);
 
 //Funciones para escribir archivos
-int escribirScript(char* script_virtual,char* dir_temp, int comando);
+int escribirScript(char* script_virtual, int comando);
 
 //Para laburar con archivos de configuracion
 void crearNuevaConfiguracion();
