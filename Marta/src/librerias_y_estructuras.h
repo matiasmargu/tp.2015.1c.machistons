@@ -35,6 +35,7 @@ t_log* logger; // Log Global
 
 // VARIABLE GLOBAL
 int socketFS;
+int contador_cant_job;
 char *ip_fs;
 char *puerto_fs;
 int idJobGlobal;
@@ -44,6 +45,7 @@ int cant_nodos;
 t_list *lista_nodos_estado;
 pthread_mutex_t mutex ;//= PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutex_nodos;// = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t mutex_contador_job;
 
 
 typedef struct{
@@ -60,7 +62,12 @@ typedef struct {
 typedef struct{
 	int NumeroBloque;
 	int estado;
-	t_list *copias;
+	int copia1_idnodo;
+	int copia2_idnodo;
+	int copia3_idnodo;
+	int copia1_numbloque;
+	int copia2_numbloque;
+	int copia3_numbloque;
 }t_bloque;
 
 typedef struct{
@@ -125,18 +132,19 @@ typedef struct{
 typedef struct{
 	int estado; // 0 = todavia no se mando a ejecutar; 1 = en ejecucion; 2 = Fin; 3 = Error
 	int bloque_archivo;
-	char *nombre_archivo_resultado;
+	char *nombre_archivo_resultado; // del mapeo
 	int id_nodo;
 }t_tablaProcesos_porJob;
 
 
 
-int recive_y_guarda_estructura(t_archivo arch, int socket, uint32_t tamanioTotal);
+int recive_y_guarda_estructura(t_archivo *arch, int socket, uint32_t tamanioTotal);
 void  *conectarseAlJob(void*arg);
 //int recive_y_deserialisa_job(t_job_marta* job_marta, int socket,uint32_t tamanioTotal );
 //char* serializar_estructura_t_marta_a_job(t_marta_job estructura_t_marta_a_job, int tamanioTotal);
 void aplicarReduce(t_aplicarReduce structRecibido);
 void *atenderJob(void *arg);
+void inicializar_pedido_FS();
 
 
 #endif /* LIBRERIAS_Y_ESTRUCTURAS_H_ */

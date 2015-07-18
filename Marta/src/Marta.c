@@ -14,7 +14,7 @@
 
 int main(void) {
 
-
+	contador_cant_job = 0;
 	char* rutaArchivoConfiguracion = "/home/utnso/git/tp-2015-1c-machistons/Configuracion/marta.conf";
 	char* archivoAFSAEnviar;
 	char *combiner;
@@ -59,19 +59,19 @@ int main(void) {
 		fdmax = listener;
 
 
-		/*
+
 		//ACA SE CONECTA CON FS
 	    int handshakeFS;
 	   	socketFS = crearCliente (ip_fs, puerto_fs);
 
-	   	handshakeFS = 25;
+	   	handshakeFS = 68;
 	   	send(socketFS,&handshakeFS,sizeof(int),0);
-	   	recv(socketFS,&handshakeFS, sizeof(int),0);
 
-	   	inicializar_pedido_FS();
+	   	t_nodo *infoNodo = malloc(sizeof(t_nodo));
 	   	int tamanio_total;
 	   	recv(socketFS,&tamanio_total,sizeof(int),0);
 	   	send(socketFS,&handshakeFS,sizeof(int),0);
+
 
 	   	printf("%i\n", tamanio_total);
 
@@ -87,7 +87,7 @@ int main(void) {
 
 	   	printf("gaston traga penes\n");
 
-		*/
+
 
 
 
@@ -97,7 +97,6 @@ int main(void) {
 
 
    	// Empieza el select
-
 
 
    	for (;;){

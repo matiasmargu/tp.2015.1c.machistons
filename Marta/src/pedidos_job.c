@@ -27,6 +27,7 @@ void *atenderJob(void *arg){
 
 	if(string_equals_ignore_case(combiner ,"SI")) job.combiner = 1;
 	else job.combiner = 0;
+	printf("%i\n",job.combiner);
 
 	send(socketJob, &enteroPrueba, sizeof(int),0);
 	//ACA RECIBIMOS LA LISTA DE ARCHIVOS DE JOB COMO UN CHAR*
@@ -45,13 +46,18 @@ void *atenderJob(void *arg){
 	send(socketJob, &enteroPrueba, sizeof(int),0);
 	char* archivoResultadoFinal = malloc(tamanio);
 	recv(socketJob, archivoResultadoFinal, tamanio,0);
+	job.arch_resultado_final = archivoResultadoFinal;
 
-	printf("archivo resultado final %s\n",archivoResultadoFinal);
+	printf("archivo resultado final %s\n",job.arch_resultado_final);
+	job.id_job = contador_cant_job;
+	pthread_mutex_lock(&mutex_contador_job);
+	contador_cant_job ++;
+	pthread_mutex_unlock(&mutex_contador_job);
 
 
 	//ACA SE CONECTA CON FS
 	int handshakeFS;
-	socketFS = crearCliente (ip_fs, puerto_fs);
+	socketFS = crearCliente(ip_fs, puerto_fs);
 
 	handshakeFS = 25;
 	send(socketFS,&handshakeFS,sizeof(int),0);
@@ -62,19 +68,28 @@ void *atenderJob(void *arg){
 	recv(socketFS,&tamanio_total,sizeof(int),0);
 	send(socketFS,&handshakeFS,sizeof(int),0);
 
-	printf("%i\n", tamanio_total);
+	printf("tamamnio total: %i\n", tamanio_total);
 
-	t_archivo archivo_prueba;
-	archivo_prueba.bloques = list_create();
-
+	t_archivo *archivo_prueba = malloc(sizeof(t_archivo));
+	archivo_prueba->bloques = list_create();
+	printf("entro al recive\n\n");
 	recive_y_guarda_estructura(archivo_prueba,socketFS,tamanio_total);
 	printf("dsadasdas\n");
-	t_bloque *bloque = list_get(archivo_prueba.bloques,14);
-	t_copia *copia = list_get(bloque->copias,1);
-	printf("idNodo: %i\n numBloque: %i\n", copia->idNodo, copia->Numerobloque);
 
+	//t_bloque *bloque = list_get(archivo_prueba.bloques,1);
+	//printf("numero de bloque final: %i\n\n\n",bloque->NumeroBloque);
+	//printf("idcopiafinal: %i, numbloquefinal: %i\n",bloque->copia1_idnodo,bloque->copia1_numbloque);
 
-	printf("gaston traga penes\n");
+	printf("Tamaño de la lista: %i\n\n", list_size(archivo_prueba->bloques));
+
+	t_bloque *bloque = list_get(archivo_prueba->bloques,1);
+	printf("numero de bloque final posta: %i\n", bloque->NumeroBloque);
+
+	bloque = list_get(archivo_prueba->bloques,2);
+	printf("numero de bloque final posta: %i\n", bloque->NumeroBloque);
+	printf("dsadas");
+
+	//printf("gaston traga penes\n");
 
 	return NULL;
 }
