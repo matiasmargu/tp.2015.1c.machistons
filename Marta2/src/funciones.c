@@ -321,13 +321,13 @@ void * recibirListaDeArchivos(void*arg){
 
 
 
-	   		   	//PROBANDO MANDAR A MAPEAR AL JOB
+	   		/*   	//PROBANDO MANDAR A MAPEAR AL JOB
 	   		  	int pruebaaa;
 	   		   	pruebaaa = 30;
 	   		 send(socketJob,&pruebaaa,sizeof(int),0);
 	   		recv(socketJob, &enteroPrueba, sizeof(int),0);
 	   		t_marta_job_map structPrueba;
-	   		structPrueba.ip_nodo = "192.168.3.80";
+	   		structPrueba.ip_nodo = "192.168.3.101";
 	   		structPrueba.puerto = "6000";
 	   		structPrueba.idNodo = 3;
 	   		structPrueba.cantidadBloques = 5;
@@ -364,7 +364,7 @@ void * recibirListaDeArchivos(void*arg){
    		char* structAEnviaar =  serializar_marta_job_map(&structPruebaa, tamanioStructPruebaa);
 		send(socketJob,structAEnviaar,tamanioStructPruebaa,0);
 
-
+*/
 				//PROBANDO MANDAR A  REDUCIR AL JOB (NO BORRAR)
 	   		 int c, tamanioLista;
 	   		 char* archivoo;
@@ -372,7 +372,7 @@ void * recibirListaDeArchivos(void*arg){
 	   		 send(socketJob,&prueba5,sizeof(int),0);
 	   		 recv(socketJob, &enteroPrueba, sizeof(int),0);
 	   		 t_marta_job_reduce structPrueba2;
-	   		 structPrueba2.ipNodo = "192.168.0.112";
+	   		 structPrueba2.ipNodo = "192.168.3.101";
  	   		 structPrueba2.puertoNodo = "5000";
  	   		 structPrueba2.idNodo = 88;
  	   		 structPrueba2.cantidadArchivos = 5;
@@ -395,6 +395,6 @@ void * recibirListaDeArchivos(void*arg){
 	   		char* structAEnviar2 =  serializar_marta_job_reduce(&structPrueba2, tamanioStructPrueba2);
 	   		send(socketJob,structAEnviar2,tamanioStructPrueba2,0);
 
-*/
+
 
 	   	}

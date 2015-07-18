@@ -38,7 +38,6 @@ void* atenderJob(void* arg){
 				recv(socket,&tamanioScript,sizeof(int),0);
 				send(socket, &comando,sizeof(int),0);
 
-				printf("Tamaño del script: %i\n",tamanioScript);
 
 				script_mapper=malloc(tamanioScript);
 
@@ -47,7 +46,7 @@ void* atenderJob(void* arg){
 				escribirScript(script_mapper,1);
 
 				i = strtol(modo, 0, 8);
-				chmod("mapper",modo);
+				chmod("/tmp/mapper",modo);
 
 				printf("se asignaron los permisos\n");
 
