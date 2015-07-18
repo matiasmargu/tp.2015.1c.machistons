@@ -96,4 +96,21 @@ void liberar(char **paquete){
 	free(*paquete);
 }
 
+int getBloque(int nroDeBloque, char* bloque){
+	int tamanioBloque, tamanioBloqueExacto,nroDelBloque;
+
+	char* pmap;
+
+	pmap = mapearAMemoriaVirtual(archivo_bin);
+	tamanioBloque=tamanioEspecifico(pmap,nroDelBloque);
+
+	bloque=malloc(tamanioBloque);
+
+	tamanioBloqueExacto = nroDelBloque * 1024 * 1024* 20;
+	memcpy(bloque,pmap + tamanioBloqueExacto,tamanioBloque);
+
+	liberar(&pmap);
+	return tamanioBloqueExacto;
+}
+
 

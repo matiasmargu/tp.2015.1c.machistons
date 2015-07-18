@@ -308,27 +308,12 @@ void verificarEstadoFS(){
 int escribirBloqueEnNodo (int socket, estructuraSetBloque estructura){
 
 	int entero; //Para el handshake
-	char *mensaje; // Para mandar mensajes serializados
-	int tamanioDatos;
-	div_t restoDivision;
-	int cantidadSend;
-	int a;
-	int size_to_send;
-	int offset;
-	char* paquetito;
-	int tamanioPaquetitos;
-
-	tamanioPaquetitos = 1448;
-
 
 	entero = 2;
 	send(socket, &entero, sizeof(int), 0);
-
 	if(recv(socket, &entero, sizeof(int), 0)<0) return -1; // Entero para que no se boludee
 
-
 	entero = 65;
-
 	estructura.tamanioData = strlen(estructura.data);
 
 	send(socket, &estructura.bloque, sizeof(int), 0); // Envio el numero de bloque a escribir
@@ -337,38 +322,8 @@ int escribirBloqueEnNodo (int socket, estructuraSetBloque estructura){
 	send(socket, &estructura.tamanioData, sizeof(int), 0);
 	if(recv(socket, &entero, sizeof(int), 0)<0) return -1; // Entero para que no se boludee
 
-	restoDivision = div(estructura.tamanioData,tamanioPaquetitos);
-	if(restoDivision.rem > 0){
-		cantidadSend = restoDivision.quot + 1;
-	}else{
-		cantidadSend = restoDivision.quot;
-	}
+	send(socket, estructura.data, estructura.tamanioData,0);
 
-	send(socket, &cantidadSend, sizeof(int), 0);
-	if(recv(socket, &entero, sizeof(int), 0)<0) return -1; // Entero para que no se boludee
-
-	offset = 0;
-	for(a=0;a<cantidadSend;a++){
-		if((estructura.tamanioData - offset) < tamanioPaquetitos){
-			size_to_send =  estructura.tamanioData - offset;
-		}else{
-			size_to_send = tamanioPaquetitos;
-		}
-		paquetito = malloc(size_to_send);
-		memcpy(paquetito, estructura.data + offset , size_to_send);
-		offset += size_to_send;
-
-		send(socket, &size_to_send, sizeof(int),0);
-		recv(socket, &entero, sizeof(int), 0); // Entero para que no se boludee
-		send(socket, paquetito, size_to_send, 0);
-		recv(socket, &entero, sizeof(int), 0); // Entero para que no se boludee
-
-		send(socket, &entero, sizeof(int), 0);
-		recv(socket, &entero, sizeof(int), 0);
-
-		printf("Offset %i   ,Tamanio paquete calculado %i  ,Tamanio paquete real %i  , numero de vuelta %i  \n",offset,size_to_send,strlen(paquetito),a);
-		liberarMensaje(&paquetito);
-	}
 	return 90;
 }
 
@@ -474,7 +429,7 @@ int insertarArchivoAMongoYAlMDFS (char* path){
 		doc3 = bson_new ();
 
 		i = socketNodoGlobal;
-		escribirBloque.bloque = 40;
+		escribirBloque.bloque = 0;
 
 		escribirBloqueEnNodo(i,escribirBloque);
 
