@@ -47,6 +47,9 @@ pthread_mutex_t mutex ;//= PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutex_nodos;// = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutex_contador_job;
 
+typedef struct{
+	t_list *lista;
+}t_prueba;
 
 typedef struct{
 	char* nombre;
@@ -139,6 +142,7 @@ typedef struct{
 
 
 int recive_y_guarda_estructura(t_archivo *arch, int socket, uint32_t tamanioTotal);
+void recive_y_guarda_infoNodo(int tamanio, int socket, void *array);
 void  *conectarseAlJob(void*arg);
 //int recive_y_deserialisa_job(t_job_marta* job_marta, int socket,uint32_t tamanioTotal );
 //char* serializar_estructura_t_marta_a_job(t_marta_job estructura_t_marta_a_job, int tamanioTotal);

@@ -20,28 +20,38 @@ void inicializar_pedido_FS(){
 	   	send(socketFS,nombre_archivo, tam, 0);
 }
 
-void recive_y_guarda_infoNodo(t_nodo *infoNodo, int tamanio, int socket, t_list *infoNodos){
+void recive_y_guarda_infoNodo(int tamanio, int socket, void *lista_nodos){
 	//Esquema de la estructura que recibo del FileSystem:
 	//[ID_NODO][TAMAÑO_IP][IP_NODO][TAMAÑO_PUERTO][PUERTO_NODO]....
 	//Previamente recibo el tamaño total de esto
 	int offset = 0;
+	t_nodo *infoNodo;
 	void *buffer = malloc(tamanio);
 	recv(socket,buffer,tamanio,0);
+	memcpy(&cant_nodos,buffer + offset,sizeof(int));
+	offset += sizeof(int);
 	int i;
 	for(i=0;i<cant_nodos;i++){
+		infoNodo = malloc(sizeof(t_nodo));
 		memcpy(&(infoNodo->id_nodo),buffer + offset,sizeof(int));
 		offset += sizeof(int);
 
 		memcpy(&tamanio,buffer+offset,sizeof(int));
 		offset += sizeof(int);
-		memcpy(&(infoNodo->ip_nodo),buffer + offset,tamanio);
+		infoNodo->ip_nodo = malloc(tamanio);
+		memcpy(infoNodo->ip_nodo,buffer + offset,tamanio);
 		offset += tamanio;
 
 		memcpy(&tamanio,buffer+offset,sizeof(int));
 		offset += sizeof(int);
-		memcpy(&(infoNodo->puerto_nodo),buffer + offset,tamanio);
+		infoNodo->puerto_nodo = malloc(tamanio);
+		memcpy(infoNodo->puerto_nodo,buffer + offset,tamanio);
+		offset += tamanio;
 
-		list_add_in_index(infoNodos,(infoNodo->id_nodo),infoNodo);
+
+		printf("idNodo: %i\n ipNodo: %s\n puertoNodo: %s\n\n",infoNodo->id_nodo, infoNodo->ip_nodo, infoNodo->puerto_nodo);
+		list_add_in_index(lista_nodos,infoNodo->id_nodo,infoNodo);
+		printf("tamaño de la lista dentro de la funcion: %i\n",list_size(lista_nodos));
 	}
 }
 
@@ -58,7 +68,7 @@ int recive_y_guarda_estructura(t_archivo *arch, int socket, uint32_t tamanioTota
 	// COPIO LOS BLOQUES QUE CONTIENE EL ARCHIVO A UN ESTRUCTURA DE LISTA
 	int i;
 	t_bloque *bloque;
-	t_bloque *bloque2 = malloc(sizeof(t_bloque));
+	//t_bloque *bloque2 = malloc(sizeof(t_bloque));
 	//t_copia **copia = malloc(3*sizeof(t_copia));
 	t_copia copia_aux;
 	printf("antes de entrar al for\n\n");
@@ -98,20 +108,8 @@ int recive_y_guarda_estructura(t_archivo *arch, int socket, uint32_t tamanioTota
 		//t_bloque *bloquePrueba = list_get(arch.bloques, bloque.NumeroBloque);
 		//printf("numero de bloque desp de guardarlo: %i\n",bloquePrueba->NumeroBloque);
 
-
 	}
-	/*
-	int *das2 = 20;
-	list_add_in_index(arch.bloques, 2,&das2);
-	*das2 = 70;
-	list_add_in_index(arch.bloques,1,&das2);
 
-	int *das = 0;
-	das = list_get(arch.bloques,2);
-	printf("%i\n",*das);
-	das = list_get(arch.bloques,1);
-	printf("%i\n",*das);
-	*/
 
 	return 0;
 }

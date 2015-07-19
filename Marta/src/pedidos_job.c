@@ -63,8 +63,18 @@ void *atenderJob(void *arg){
 	send(socketFS,&handshakeFS,sizeof(int),0);
 	recv(socketFS,&handshakeFS, sizeof(int),0);
 
-	inicializar_pedido_FS();
-	int tamanio_total;
+	char *nombre_archivo = arrayArchivosJob[0];
+	int tamanio_total = strlen(nombre_archivo);
+	handshakeFS = 72; // pido info de archivos
+	send(socketFS,&handshakeFS, sizeof(int), 0);
+	recv(socketFS,&handshakeFS, sizeof(int),0);
+
+	send(socketFS,&tamanio_total, sizeof(int), 0);
+	recv(socketFS,&handshakeFS, sizeof(int),0);
+
+	send(socketFS,nombre_archivo, tamanio_total, 0);
+
+
 	recv(socketFS,&tamanio_total,sizeof(int),0);
 	send(socketFS,&handshakeFS,sizeof(int),0);
 
@@ -89,7 +99,19 @@ void *atenderJob(void *arg){
 	printf("numero de bloque final posta: %i\n", bloque->NumeroBloque);
 	printf("dsadas");
 
-	//printf("gaston traga penes\n");
+	//pido lista de nodos
+
+	handshakeFS = 68;
+	send(socketFS,&handshakeFS,sizeof(int),0);
+	tamanio_total = 0;
+	lista_nodos_estado = list_create();
+
+	recv(socketFS,&tamanio_total,sizeof(int),0);
+	send(socketFS,&handshakeFS,sizeof(int),0);
+
+	recive_y_guarda_infoNodo(tamanio_total, socketFS, lista_nodos_estado);
+
+	printf("gaston traga penes\n");
 
 	return NULL;
 }
