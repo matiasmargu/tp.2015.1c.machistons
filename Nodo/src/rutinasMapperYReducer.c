@@ -10,6 +10,8 @@
 
 void mapper(void* arg){
 
+#define SIZE 512
+
 	FILE* fdAux;
 
 	char* bloque;
@@ -28,14 +30,11 @@ void mapper(void* arg){
 	int nroDeBloque=0;
 	int tamanioDelBloque=getBloque(nroDeBloque, bloque);
 
-	FILE* fdArch2 = fopen("/tmp/aMappear.txt","w+");
-	fputs(bloque, fdArch2);
-	fclose(fdArch2);
+	int pipe_padreAHijo[2];
+	int pipe_hijoAPadre[2];
 
-	int pipes[2];
-	int fdMap = dup(1);
-
-	pipe(pipes);
+	pipe(pipe_padreAHijo);
+	pipe(pipe_hijoAPadre);
 
 //*******************************************
 
@@ -45,87 +44,34 @@ void mapper(void* arg){
 	}
 
 
-	if(pid == 0) {
+	 if ( (pid=fork()) == 0 )
+	  { // hijo
+	    close( pipe_padreAHijo[1] ); /* cerramos el lado de escritura del pipe */
+	    close( pipe_hijoAPadre[0] ); /* cerramos el lado de lectura del pipe */
 
-		printf("Por aca todo bien");
+	    //Aca leo del padre
+	    //while( (readbytes=read( a[0], buffer, SIZE ) ) > 0)
+	      //write( 1, , readbytes );
+	    close( pipe_padreAHijo[0] );
 
-		close(1);//cierro stdout
-		//Ahora tengo que estableces el nuevo stdout
-		dup(pipes[1]);
+	    //Aca escribo en el padre
+	 //   write( pipe_hijoAPadre[1], buffer, strlen( buffer ) );
+	    close( pipe_hijoAPadre[1] );
+	  }
+	  else
+	  { // padre
+	    close( pipe_padreAHijo[0] ); /* cerramos el lado de lectura del pipe */
+	    close( pipe_hijoAPadre[1] ); /* cerramos el lado de escritura del pipe */
 
-		close(pipes[0]);
-		execlp("cat","cat","/tmp/aMappear.txt", NULL);
+	    //Aca escribe en hijo
+	    //write( pipe_padreAHijo[1], buffer, strlen( buffer ) );
+	    close( pipe_padreAHijo[1]);
 
-	}else{
-
-		close(0);
-		dup(pipes[0]);
-		close(pipes[1]);
-
-		FILE * stdout=fopen("/tmp/resultadotemporal.tmp", "w");
-		dup2(fileno(stdout), 1);
-		system("./tmp/mapper");
-	}
-
-	close(1);
-	dup(fdMap);
-	close(fdMap);
-
-	free(nombreDelArchivo);
-	free(bloque);
-	fclose(fdAux);
+	    //Aca leo del hijo
+	   // while( (readbytes=read( pipe_hijoAPadre[0], buffer, SIZE )) > 0)
+	    //  write( 1, buffer, readbytes );
+	    //close( pipe_hijoAPadre[0]);
+	  }
+	  waitpid( pid, NULL, 0 );
 }
-/*
-void *reducer(void* arg){
-	int tamanioDeLaEstructura;
-	int socket = (void*) arg;
-	int pipes[NUM_PIPES][2];
-	int comando=2;
-	t_job_nodo_reduce red;
 
-	pipe(pipes[PARENT_LEE_EN_CHILD_PIPE ]);
-	pipe(pipes[PARENT_ESCRIBE_EN_CHILD_PIPE ]);
-
-
-	if(!fork()) {
-	//Con esto establezco que el child lea del parent
-		char* script[]={"/tmp/reducer","-q",0};
-		dup2(CHILD_LEE_FD, STDIN_FILENO);
-		dup2(CHILD_ESCRIBE_FD, STDOUT_FILENO);
-
-		close(CHILD_LEE_FD);
-		close(CHILD_ESCRIBE_FD);
-		close(PARENT_LEE_FD);
-		close(PARENT_ESCRIBE_FD);
-
-		printf("Esta por ejecutar\n");
-
-		execv(script[0], script);
-
-	}else{
-
-		char* bloqueReduce[1024*1024*20];
-
-		close(CHILD_LEE_FD);
-		close(CHILD_ESCRIBE_FD);
-
-		recv(socket,&tamanioDeLaEstructura,sizeof(int),0);
-		send(socket, &comando,sizeof(int),0);
-		recive_y_deserializa_EST_REDUCE(&red,socket,tamanioDeLaEstructura);
-
-		//Escribo en child
-		write(PARENT_ESCRIBE_FD,red.archivosAreducir,strlen(red.archivosAreducir));
-
-		//Leo y escribo el nuevo archivo
-		read(PARENT_LEE_FD, bloqueReduce ,sizeof(bloqueReduce)-1);
-
-		FILE* fdAux = fopen(red.nombreArchivoResultado,"w");
-		fputs(bloqueReduce,fdAux);
-		fclose(fdAux);
-
-
-
-	}
-	printf("Termino el mapper\n");
-	return NULL;
-}*/

@@ -50,7 +50,7 @@ void* atenderJob(void* arg){
 
 				printf("se asignaron los permisos\n");
 
-				pthread_create(&hiloMapper[cont1], NULL, (void*) mapper,(void*) socket);
+				//pthread_create(&hiloMapper[cont1], NULL, (void*) mapper,(void*) socket);
 				cont1++;
 				break;
 
