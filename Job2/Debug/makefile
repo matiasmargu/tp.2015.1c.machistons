@@ -23,22 +23,22 @@ endif
 # Add inputs and outputs from these tool invocations to the build variables 
 
 # All Target
-all: Job2
+all: Job
 
 dependents:
-	-cd /home/utnso/git/tp-2015-1c-machistons/funciones/Debug && $(MAKE) all
+	-cd /home/utnso/git/tp-2015-1c-machistons/funciones/Debug && $(MAKE) clean all
 
 # Tool invocations
-Job2: $(OBJS) $(USER_OBJS) /home/utnso/git/tp-2015-1c-machistons/funciones/Debug/libfunciones.so
+Job: $(OBJS) $(USER_OBJS) /home/utnso/git/tp-2015-1c-machistons/funciones/Debug/libfunciones.so
 	@echo 'Building target: $@'
 	@echo 'Invoking: GCC C Linker'
-	gcc -L"/home/utnso/git/tp-2015-1c-machistons/funciones/Debug" -o "Job2" $(OBJS) $(USER_OBJS) $(LIBS)
+	gcc -L"/home/utnso/git/tp-2015-1c-machistons/funciones/Debug" -o "Job" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) $(OBJS)$(C_DEPS)$(EXECUTABLES) Job2
+	-$(RM) $(OBJS)$(C_DEPS)$(EXECUTABLES) Job
 	-@echo ' '
 
 .PHONY: all clean dependents

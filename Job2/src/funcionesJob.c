@@ -5,7 +5,7 @@
  *      Author: utnso
  */
 
-#include "funcionesJob2.h"
+#include "funcionesJob.h"
 
 
 int recive_y_deserialisa_marta_job_reduce(t_marta_job_reduce *bloque, int socket, uint32_t tamanioTotal){

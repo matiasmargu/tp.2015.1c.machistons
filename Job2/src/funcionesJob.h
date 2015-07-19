@@ -5,8 +5,8 @@
  *      Author: utnso
  */
 
-#ifndef FUNCIONESJOB2_H_
-#define FUNCIONESJOB2_H_
+#ifndef JOB_SRC_FUNCIONESJOB2_H_
+#define JOB_SRC_FUNCIONESJOB2_H_
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -69,4 +69,4 @@ char* mapearAMemoriaVirtual(char* archivo);
 char *serializar_job_marta_reduce(t_job_marta_reduce *job_marta,int tamanioTotal);
 
 
-#endif /* FUNCIONESJOB2_H_ */
+#endif /* JOB_SRC_FUNCIONESJOB2_H_ */

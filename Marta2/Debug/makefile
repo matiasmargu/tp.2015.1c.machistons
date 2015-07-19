@@ -26,7 +26,7 @@ endif
 all: Marta2
 
 dependents:
-	-cd /home/utnso/git/tp-2015-1c-machistons/funciones/Debug && $(MAKE) all
+	-cd /home/utnso/git/tp-2015-1c-machistons/funciones/Debug && $(MAKE) clean all
 
 # Tool invocations
 Marta2: $(OBJS) $(USER_OBJS) /home/utnso/git/tp-2015-1c-machistons/funciones/Debug/libfunciones.so
