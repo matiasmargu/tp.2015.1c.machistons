@@ -88,6 +88,7 @@ void leerID_NODO();
 
 //Funciones para la depuracion
 void eliminarEnters(char* buffer, int tamanio);
+void formatearArchivo(char* pmap);
 
 //Funciones esenciales
 int getBloque(int nroDeBloque, char* bloque);

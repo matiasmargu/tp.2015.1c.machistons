@@ -136,11 +136,18 @@ char* serializarIP_PUERTO(char* ip_fs,char* puerto_fs, int tamanioData){
 	offset += size_to_send;
 
 	char* archivo = mapearAMemoriaVirtual(archivo_bin);
-	int tamanioDatos = strlen(archivo);
+
+	FILE* fdAux = fopen(archivo_bin,"r");
+	fseek(fdAux, 0L, SEEK_SET);
+	fseek(fdAux, 0L, SEEK_END);
+
+	int tamanioDatos = ftell(fdAux);
+
 	size_to_send = sizeof(int);
 	memcpy(serializedPackage + offset, &tamanioDatos, size_to_send);
 	munmap(archivo,strlen(archivo));
 
+	fclose(fdAux);
 	return serializedPackage;
 }
 
@@ -172,6 +179,8 @@ void handshakeConFS (){
 	char* copiaBIN = archivo_bin;
 	char* copiaTMP = dir_temp;
 	char* copiaIPNODO = ip_nodo;
+	char* copiaPUERTO_N = string_itoa(puerto_nodo);
+	char* copiaPUERTO_F = puerto_fs;
 
 	int socket_fs = crearCliente(ip_fs,puerto_fs);
 
@@ -201,7 +210,9 @@ void handshakeConFS (){
 		nuevoArchivo = fopen(rutaArchivoConfiguracion,"w");
 
 		printf("%i\n",id_nodo);
-		fputs("PUERTO_FS=3001\n",nuevoArchivo);
+		fputs("PUERTO_FS=",nuevoArchivo);
+		fputs(copiaPUERTO_F,nuevoArchivo);
+		fputc('\n',nuevoArchivo);
 
 		fputs("IP_FS=",nuevoArchivo);
 		fputs(copiaIPFS,nuevoArchivo);
@@ -222,7 +233,9 @@ void handshakeConFS (){
 		fputs(copiaIPNODO,nuevoArchivo);
 		fputc('\n',nuevoArchivo);
 
-		fputs("PUERTO_NODO=6000\n",nuevoArchivo);
+		fputs("PUERTO_NODO=",nuevoArchivo);
+		fputs(copiaPUERTO_N,nuevoArchivo);
+		fputc('\n',nuevoArchivo);
 
 		fputs("ID_NODO=",nuevoArchivo);
 		fputs(string_itoa(id_nodo),nuevoArchivo);

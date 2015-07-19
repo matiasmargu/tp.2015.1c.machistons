@@ -27,6 +27,10 @@ void *atenderNFS(void*arg){
 
 	char* pmap = mapearAMemoriaVirtual(archivo_bin);
 
+	if(string_equals_ignore_case(nodo_nuevo,"SI")){
+		formatearArchivo(pmap);
+	}
+
 	printf("Este es el socket: %i\n",socket);
 
 
@@ -39,21 +43,26 @@ void *atenderNFS(void*arg){
 			send(socket,&entero,sizeof(int),0);
 			recv(socket,&nroDelBloque,sizeof(int),0);
 
+			printf("%i\n",nroDelBloque);
+
 			tamanioBloque=tamanioEspecifico(pmap,nroDelBloque);
 
-			printf("%i\n",tamanioBloque);
+			printf("Este es el tamaño del bloque: %i\n",tamanioBloque);
 			char* bloque=malloc(tamanioBloque);
 
 			int tamanioBloqueExacto = nroDelBloque * 1024 * 1024* 20;
 			memcpy(bloque,pmap + tamanioBloqueExacto,tamanioBloque);
 
-			int tamanioData = sizeof(int) + strlen(bloque) + 1;
-			//printf("%i\n",tamanioData);
-			mensaje = serializarBloqueDeDatos(bloque,tamanioData);
-			send(socket,&tamanioData,sizeof(int),0);
-			send(socket,mensaje,tamanioData,0);
-			free(mensaje);
-			free(bloque);
+			printf("Este es el posta: %i\n",strlen(bloque));
+
+			send(socket,&tamanioBloque,sizeof(int),0);
+			recv(socket,&entero,sizeof(int),0);
+
+			int loQueMande = send(socket,bloque,tamanioBloque,0);
+			printf("Lo envie y esto fue el tamaño que envie: %i\n",loQueMande);
+
+			//free(mensaje);
+			//free(bloque);
 		//ok = 20;
 		//send(socket,&ok, sizeof(int),0);
 		break;
@@ -91,7 +100,8 @@ void *atenderNFS(void*arg){
 
 			printf("Este es el tamaño del buffer set DESPUES: %i\n",strlen(bufferSet));
 
-			memcpy(pmap+(1024*1024*20*(nroDelBloque)),bufferSet,strlen(bufferSet));
+			memcpy(pmap+(1024*1024*20*(nroDelBloque)),bufferSet,strlen(bufferSet)+sizeof('/'));
+
 			msync(pmap,strlen(pmap),0);
 			printf("se seteo correctamente\n");
 			liberar(&bufferSet);
@@ -117,7 +127,7 @@ void *atenderNFS(void*arg){
 
 			mensaje = serializarBloqueDeDatos(buffer,strlen(file));
 
-			tamanioData = strlen(file);
+			int tamanioData = strlen(file);
 			send(socket,&tamanioData,sizeof(int),0);
 			send(socket,mensaje,strlen(file),0);
 			free(mensaje);
@@ -135,9 +145,12 @@ void *atenderNFS(void*arg){
 			msync(pmap,strlen(pmap),0);
 			printf("se formateo el archivo binario\n");
 		break;
+
+		free(bloque);
 	}
 }
 }
+
 	munmap(pmap,strlen(pmap));
 	return NULL;
 }
