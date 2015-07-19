@@ -122,6 +122,7 @@ void *atenderMarta(void*arg){
 					send(socketMarta, &tamanioTotal, sizeof(int),0);    // Envio el tamanio Total de toda la info Nodos
 					paqueteAEnviar = malloc(tamanioTotal);
 					offset = 0;
+					if(recv(socketMarta, &entero, sizeof(int),0)< 0)return NULL;
 
 					cursor = mongoc_collection_find (nodos, MONGOC_QUERY_NONE, 0, 0, 0, query, NULL, NULL);
 					while (mongoc_cursor_next (cursor, &doc)) {

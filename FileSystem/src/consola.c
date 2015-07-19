@@ -75,7 +75,7 @@ void *atenderConsola(void*arg) {
 					break;
 				case Eliminar_Nodo: // 13
 					i = socketNodoGlobal;
-					mensaje = pedirContenidoBloqueA(i, 10);
+					mensaje = pedirContenidoBloqueA(i, 0);
 					printf("%s\n",mensaje);
 					verificarEstadoFS();
 					break;
