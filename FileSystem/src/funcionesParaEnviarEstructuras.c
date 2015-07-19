@@ -327,38 +327,45 @@ int escribirBloqueEnNodo (int socket, estructuraSetBloque estructura){
 	return 90;
 }
 
-char *pedirContenidoBloqueA (int socket, int nroBloque){
-	int entero; //Para el handshake
-	int tamanioTotalMensaje;
+char *pedirContenidoBloqueA (int socket, int nroBloque){  // Devuelve 90 si esta bien o -1 si se callo el bloque
+	int entero;
+	int variableDelPaquetito = 64*1024;
+	int tamanioBloque;
+	char *bufferSet;
+	int offset;
+	char *paquetito;
+	int tamanioDelPaquetito;
+	int tamanioReal;
+
 	entero = 1;
 	send(socket, &entero, sizeof(int), 0);
+	if(recv(socket, &entero, sizeof(int), 0)<0) return "error"; // Entero para que no se boludee
+
 	entero = nroBloque;
 	send(socket, &entero,sizeof(int), 0);
-	recv(socket, &tamanioTotalMensaje, sizeof(int), 0);
-	if(recive_y_deserializa_Contenido_Bloque(&infoBloque, socket, tamanioTotalMensaje)){
-		return infoBloque.datos;
+
+	if(recv(socket,&tamanioBloque,sizeof(int),0)<0) return "error";
+	printf("El tamaño del buffer: %i\n",tamanioBloque);
+
+	bufferSet=malloc(tamanioBloque);
+	send(socket,&entero,sizeof(int),0); //Basura
+	offset = 0;
+	while(tamanioBloque != offset){
+		if((tamanioBloque-offset)<variableDelPaquetito){
+			tamanioDelPaquetito = tamanioBloque-offset;
+		}else{
+			tamanioDelPaquetito = variableDelPaquetito;
+		}
+		paquetito = malloc(tamanioDelPaquetito);
+		tamanioReal = recv(socket,paquetito,tamanioDelPaquetito,0);
+		memcpy(bufferSet + offset,paquetito,tamanioReal);
+		offset += tamanioReal;
+		liberarMensaje(&paquetito);
+		printf("offset: %i, tamanio Paquete: %i, tamanioReal: %i\n",offset, tamanioDelPaquetito, tamanioReal);
 	}
-	infoBloque.datos = "error";
-	return infoBloque.datos;
+	return bufferSet;
 }
 
-int recive_y_deserializa_Contenido_Bloque(t_getBloque *bloque, int socket, uint32_t tamanioTotal){
-	int status = 1;
-	char *buffer = malloc(tamanioTotal);
-	int offset=0;
-
-	recv(socket, buffer, tamanioTotal, 0);
-
-	int tamanioDinamico;
-	memcpy(&tamanioDinamico, buffer + offset, sizeof(int));
-	offset += sizeof(int);
-	bloque->datos = malloc(tamanioDinamico);
-	memcpy(bloque->datos, buffer + offset, tamanioDinamico);
-	offset += tamanioDinamico;
-
-	free(buffer);
-	return status;
-}
 
 // Funciones de Archivos
 
@@ -406,6 +413,8 @@ int insertarArchivoAMongoYAlMDFS (char* path){
 
 	doc = bson_new ();
 	doc2 = bson_new ();
+
+	cantidadBloques = 1;
 
 	for(contadorBloque=0;contadorBloque < cantidadBloques;contadorBloque++){
 

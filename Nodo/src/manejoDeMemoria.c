@@ -54,23 +54,23 @@ char* mapearDeFD_charp(int fd){
 
 
 int tamanioEspecifico(char* pmap,int nroDelBloque){
-	int i;
-	int contador=0;
-	int centinela=0;
+	int i,contador=0,b=0;
 
-	for(i=pmap[nroDelBloque*20*1024*1024];centinela==0;i++){
+	for(i=pmap[nroDelBloque*20*1024*1024];b==0;i++){
+
 		contador++;
 		if(pmap[i]=='/'){
-			centinela = 1;
+			b=1;
 		}
+
 		if(contador == 20*1024*1024){
-			centinela =1;
+			b=1;
 		}
 
 		//printf("Impirimir: %c\n",pmap[i])
 	}
 	//printf("todo bien \n");
-	return (contador -1);
+	return (contador-1);
 }
 
 
@@ -111,6 +111,16 @@ int getBloque(int nroDeBloque, char* bloque){
 
 	liberar(&pmap);
 	return tamanioBloqueExacto;
+}
+
+void formatearArchivo(char* pmap){
+	int n,i;
+
+	n = strlen(pmap);
+		for(i=0;i<n;i++){
+	pmap[i]='/';
+	}
+	msync(pmap,strlen(pmap),0);
 }
 
 

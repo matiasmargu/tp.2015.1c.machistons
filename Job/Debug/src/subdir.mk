@@ -4,16 +4,16 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
-../src/Job2.c \
-../src/funcionesJob2.c 
+../src/Job.c \
+../src/funcionesJob.c 
 
 OBJS += \
-./src/Job2.o \
-./src/funcionesJob2.o 
+./src/Job.o \
+./src/funcionesJob.o 
 
 C_DEPS += \
-./src/Job2.d \
-./src/funcionesJob2.d 
+./src/Job.d \
+./src/funcionesJob.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes
