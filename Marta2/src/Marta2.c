@@ -174,8 +174,8 @@ printf("arriba\n");
 
 
 		//
-	    int a,b,c,d,aux,aux3,variableParaResultadoReduce,tamanioListaJobTabla,tamanioListaTablaDeProcesosPorJob,tamanioListaArchivosAReducirPorNodo;
-		int tamanioListaDeNodos,auxla=0;
+	    int a,b,c,d,aux,variableParaResultadoReduce,tamanioListaJobTabla,tamanioListaTablaDeProcesosPorJob,tamanioListaArchivosAReducirPorNodo;
+		int tamanioListaDeNodos;
 	    t_lista_job2 *campoDeLaLista;
 	    campoDeLaLista = malloc(tamanio23);
 		t_tablaProcesos_porJob2 *campoDeLaListaTablaDeProcesos;
@@ -220,11 +220,10 @@ printf("arriba\n");
 		    				                	}
 		    				                }// agrega el campo a la lista
 		    				                list_add(lista_archivosAReducirPorNodo,campoAAgregarAListaReducirPorNodo);
+		    				                printf("el id qe se agrega es %i\n",campoAAgregarAListaReducirPorNodo->idNodo);
 
 
-
-		    	}
-		    	else{
+		    	}else{
 		    	aux=0;
 		    	for(c=0;c <tamanioListaArchivosAReducirPorNodo && aux ==0;c++){
 		    		campoArchivosAReducirPorNodo = list_get(lista_archivosAReducirPorNodo,c);
@@ -251,25 +250,27 @@ printf("arriba\n");
 		                	}
 		                }// agrega el campo a la lista
 		                list_add(lista_archivosAReducirPorNodo,campoAAgregarAListaReducirPorNodo);
+		                printf("el id qe se agrega es %i\n",campoAAgregarAListaReducirPorNodo->idNodo);
 
 		    		}
 		    }
 		}
 		}
-		int e;
+
+		}
+
+
+int e;
 		int tamanio;
+
 		tamanio = list_size(lista_archivosAReducirPorNodo);
 		printf("%i\n",tamanio);
 		for(e=0;e<tamanio;e++){
 			campoAAgregarAListaReducirPorNodo = list_get(lista_archivosAReducirPorNodo,e);
+			printf("idDelNodo %i\n",	campoAAgregarAListaReducirPorNodo->idNodo);
 			printf("idnodo %i ipnodo %s puertonodo %s nombreDeArchivoResultado %s\n\n\n",campoAAgregarAListaReducirPorNodo->idNodo,campoAAgregarAListaReducirPorNodo->ipNodo,campoAAgregarAListaReducirPorNodo->puertoNodo,campoAAgregarAListaReducirPorNodo->nombreArchivoResultado);
 
 		}
-		}
-
-
-
-
 
 
 
