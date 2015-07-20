@@ -33,11 +33,13 @@ void *atenderMarta(void*arg){
 	int entero;
 	int enteroPrueba;
 	enteroPrueba = 160;
+	char* nombrePrueba;
 
 	int offset;
 	int size_to_send;
 	int tamanioDinamico;
 	send(socketMarta, &enteroPrueba,sizeof(int),0);
+
 
 	for(;;){
 		if(recv(socketMarta, &entero, sizeof(int),0)< 0) return NULL; // Entero para aceptar el pedido de Marta
@@ -48,11 +50,15 @@ void *atenderMarta(void*arg){
 				if(recv(socketMarta, &tamanioNombreArchivo, sizeof(int),0)< 0)return NULL;
 				send(socketMarta, &enteroPrueba,sizeof(int),0);
 
+				nombrePrueba = malloc(tamanioNombreArchivo);
+				if(recv(socketMarta, nombrePrueba, tamanioNombreArchivo, 0)< 0) return NULL;
 				nombreArchivo = malloc(tamanioNombreArchivo);
-				if(recv(socketMarta, nombreArchivo, tamanioNombreArchivo, 0)< 0) return NULL;
+				memcpy(nombreArchivo,nombrePrueba,tamanioNombreArchivo);
+				printf("%s\n",nombreArchivo);
 
 				query = bson_new ();
 				offset = 0;
+
 				query = BCON_NEW("Nombre",nombreArchivo);
 				cursor = mongoc_collection_find (archivos, MONGOC_QUERY_NONE, 0, 0, 0, query, NULL, NULL);
 
@@ -96,19 +102,16 @@ void *atenderMarta(void*arg){
 						liberarMensaje(&paqueteAEnviar);
 							}
 					}
-
 					bson_destroy (query);
-					liberarMensaje(&nombreArchivo);
-			break;
+					break;
 			case 68: // Info Nodos
 				query = bson_new ();
 				BSON_APPEND_UTF8(query, "Estado", "Disponible");
-				BSON_APPEND_UTF8 (query, "Coneccion", "Conectado");
+				BSON_APPEND_UTF8 (query, "Conexion", "Conectado");
 				BSON_APPEND_UTF8(query, "Es" , "Nodo");
 				cantidadNodos = mongoc_collection_count(nodos, MONGOC_QUERY_NONE, query,0,0,NULL,NULL);
 				if(cantidadNodos > 0){
-
-					tamanioTotal = 0;
+					tamanioTotal = sizeof(int);
 					cursor = mongoc_collection_find (nodos, MONGOC_QUERY_NONE, 0, 0, 0, query, NULL, NULL);
 					while (mongoc_cursor_next (cursor, &doc)) {
 						if (bson_iter_init (&iter, doc)) {
@@ -119,10 +122,15 @@ void *atenderMarta(void*arg){
 							tamanioTotal = sizeof(int) + sizeof(int) + strlen(IPNodo)+ 1 + sizeof(int) + strlen(PUERTONodo) +1 + tamanioTotal;
 						}
 					}
+
 					send(socketMarta, &tamanioTotal, sizeof(int),0);    // Envio el tamanio Total de toda la info Nodos
 					paqueteAEnviar = malloc(tamanioTotal);
 					offset = 0;
 					if(recv(socketMarta, &entero, sizeof(int),0)< 0)return NULL;
+
+					size_to_send =  sizeof(cantidadNodos);
+					memcpy(paqueteAEnviar + offset, &(cantidadNodos), size_to_send);
+					offset += size_to_send;
 
 					cursor = mongoc_collection_find (nodos, MONGOC_QUERY_NONE, 0, 0, 0, query, NULL, NULL);
 					while (mongoc_cursor_next (cursor, &doc)) {
@@ -157,7 +165,7 @@ void *atenderMarta(void*arg){
 					liberarMensaje(&paqueteAEnviar);
 				}
 				bson_destroy (query);
-			break;
+				break;
 		}
 	}
 	return NULL;
