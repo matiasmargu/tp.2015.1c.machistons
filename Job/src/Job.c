@@ -53,10 +53,12 @@ int main(void) {
 	lista_archivos = config_get_string_value(archivoConfiguracion, "ARCHIVOS");
 	archivo_resultado = config_get_string_value(archivoConfiguracion, "RESULTADO");
 
+	printf("antes de marta\n");
 	int socketMarta = crearCliente (ip_marta,puerto_marta);
+	printf("despues de marta\n");
 
-	rutinaMapperTraducida = mapearAMemoriaVirtual(mapper);
-	rutinaReduceTraducida = mapearAMemoriaVirtual(reduce);
+	//rutinaMapperTraducida = mapearAMemoriaVirtual(mapper);
+	//rutinaReduceTraducida = mapearAMemoriaVirtual(reduce);
 	//printf("rutinaMappper TRADUCIDA  %s\n",rutinaMapperTraducida);
 
 	///MANDAMOS LA LISTA DE ARCHIVOS A MARTA Y EL COMBINER
@@ -65,7 +67,9 @@ int main(void) {
 	send(socketMarta, &handshake, sizeof(int),0);
 	//COMBINER
 	tamanioCombiner = strlen(combiner)+1;
+	printf("hasta aca llega \n");
 	recv(socketMarta, &enteroPrueba, sizeof(int),0);
+	printf("dasdasdsa\n");
 	log_info(logger,"Se ha establecido la conexion con Marta, su ip es %s y su puerto %s",ip_marta,puerto_marta);
 	printf("Conexion establecida con Marta, su ip es %s y su puerto %s  \n",ip_marta,puerto_marta);
 	send(socketMarta, &tamanioCombiner, sizeof(int),0);

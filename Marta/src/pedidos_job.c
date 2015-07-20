@@ -62,9 +62,16 @@ void *atenderJob(void *arg){
 	handshakeFS = 25;
 	send(socketFS,&handshakeFS,sizeof(int),0);
 	recv(socketFS,&handshakeFS, sizeof(int),0);
-
-	char *nombre_archivo = arrayArchivosJob[0];
-	int tamanio_total = strlen(nombre_archivo);
+	int tamanio_total;
+	printf("dasdas\n");
+	//char *nombre_archivo = arrayArchivosJob[0];
+	//printf("archivo Job: %s\n", arrayArchivosJob[0]);
+	inicializar_pedido_FS();
+	/*
+	char **array_aux = string_split(arrayArchivosJob[0],"\n");
+	tamanio_total = strlen(array_aux[0]);
+	printf("archivo Job: %s\n", array_aux[0]);
+	printf("tamanio archivo job: %i\n",tamanio_total);
 	handshakeFS = 72; // pido info de archivos
 	send(socketFS,&handshakeFS, sizeof(int), 0);
 	recv(socketFS,&handshakeFS, sizeof(int),0);
@@ -72,8 +79,8 @@ void *atenderJob(void *arg){
 	send(socketFS,&tamanio_total, sizeof(int), 0);
 	recv(socketFS,&handshakeFS, sizeof(int),0);
 
-	send(socketFS,nombre_archivo, tamanio_total, 0);
-
+	send(socketFS,array_aux[0], tamanio_total, 0);
+	*/
 
 	recv(socketFS,&tamanio_total,sizeof(int),0);
 	send(socketFS,&handshakeFS,sizeof(int),0);
@@ -84,7 +91,7 @@ void *atenderJob(void *arg){
 	archivo_prueba->bloques = list_create();
 	printf("entro al recive\n\n");
 	recive_y_guarda_estructura(archivo_prueba,socketFS,tamanio_total);
-	printf("dsadasdas\n");
+	printf("\n");
 
 	//t_bloque *bloque = list_get(archivo_prueba.bloques,1);
 	//printf("numero de bloque final: %i\n\n\n",bloque->NumeroBloque);
@@ -92,12 +99,10 @@ void *atenderJob(void *arg){
 
 	printf("Tamaño de la lista: %i\n\n", list_size(archivo_prueba->bloques));
 
-	t_bloque *bloque = list_get(archivo_prueba->bloques,1);
-	printf("numero de bloque final posta: %i\n", bloque->NumeroBloque);
+	t_bloque *bloque = list_get(archivo_prueba->bloques,2);
+	printf("numero de bloque final posta: %i\n\n", bloque->NumeroBloque);
 
-	bloque = list_get(archivo_prueba->bloques,2);
-	printf("numero de bloque final posta: %i\n", bloque->NumeroBloque);
-	printf("dsadas");
+	printf("NODOS: \n");
 
 	//pido lista de nodos
 

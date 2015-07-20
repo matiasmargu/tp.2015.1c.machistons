@@ -16,8 +16,10 @@ void inicializar_pedido_FS(){
 
 	   	send(socketFS,&tam, sizeof(int), 0);
 	   	recv(socketFS,&handshakeFS, sizeof(int),0);
-
-	   	send(socketFS,nombre_archivo, tam, 0);
+	   	printf("Nombre_archivo: %s\n",nombre_archivo);
+	   	printf("tamanio antes del send: %i\n",tam);
+	   	tam = send(socketFS,nombre_archivo, tam, 0);
+	   	printf("tamanio despues del send: %i\n",tam);
 }
 
 void recive_y_guarda_infoNodo(int tamanio, int socket, void *lista_nodos){
@@ -104,7 +106,7 @@ int recive_y_guarda_estructura(t_archivo *arch, int socket, uint32_t tamanioTota
 		printf("idnodo: %i, numbloque: %i\n", bloque->copia3_idnodo, bloque->copia3_numbloque);
 		printf("numero de bloque prueba: %i\n\n",bloque->NumeroBloque);
 
-		list_add_in_index(arch->bloques, bloque->NumeroBloque, &bloque);
+		list_add_in_index(arch->bloques, bloque->NumeroBloque, bloque);
 		//t_bloque *bloquePrueba = list_get(arch.bloques, bloque.NumeroBloque);
 		//printf("numero de bloque desp de guardarlo: %i\n",bloquePrueba->NumeroBloque);
 
