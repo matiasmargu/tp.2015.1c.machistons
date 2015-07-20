@@ -120,17 +120,15 @@ void *agregoNodoaMongo (void*arg){
 			BSON_APPEND_UTF8 (doc, "IP", ipyPuertoNodo.IP);
 			BSON_APPEND_UTF8(doc, "PUERTO" , ipyPuertoNodo.PUERTO);
 			restoDivision = div(ipyPuertoNodo.tamanioArchivoDatos,tamanioBloque);
-			if(restoDivision.rem > 0){
-				cantidadBloques = restoDivision.quot + 1;
-			}else{
-				cantidadBloques = restoDivision.quot;
-			}
-			BSON_APPEND_UTF8(doc, "Coneccion", "Conectado");
+			cantidadBloques = restoDivision.quot;
+			BSON_APPEND_UTF8(doc, "Conexion", "Conectado");
 			BSON_APPEND_UTF8(doc, "Estado", "No Disponible");
 			BSON_APPEND_INT32(doc, "Cantidad de Bloques Total", cantidadBloques);
+			pthread_mutex_lock(&mutex);
 			if (!mongoc_collection_insert (nodos, MONGOC_INSERT_NONE, doc, NULL, &error)) {
 				log_error(logger, error.message);
 			}
+			pthread_mutex_unlock(&mutex);
 			bson_destroy (doc);
 		}
 		break;
@@ -146,7 +144,7 @@ void *agregoNodoaMongo (void*arg){
 		BSON_APPEND_INT32(query, "ID Nodo", idNodito);
 		update = BCON_NEW ("$set", "{",
 				"Estado", BCON_UTF8 ("No Disponible"),
-				"Coneccion", BCON_UTF8 ("Conectado"),
+				"Conexion", BCON_UTF8 ("Conectado"),
 				"Socket", BCON_INT32 (socket),
 				"IP", BCON_UTF8 (IPNodito),
 				"}");
@@ -166,18 +164,35 @@ void crearDirectorio(){
 	char **comandoSeparado2; // Los uso para separar el \n del nombre del archivo
 	char *path;
 	int tamanio;
+	int a,desde,hasta,tamanioDirectorio;
+	char *directorioNuevo;
 
 	printf("Ingrese el directorio que desea crear\n");
 
 	fgets(bufferComando,MAXSIZE_COMANDO, stdin);
 	comandoSeparado=string_split(bufferComando, separator);
 	comandoSeparado2=string_split(comandoSeparado[0], separador2);
-	path = comandoSeparado[0];
+	path = comandoSeparado2[0];
 
 	tamanio = strlen(path);
-	printf("%i\n",tamanio);
-	printf("%c\n",path[0]);
-	//sprintf();
+
+	for(a=0;a<tamanio;a++){
+		if(path[a]=='/'){
+			desde = a;
+			a++;
+			while(path[a]!='/'){
+				a++;
+			}
+			hasta = a;
+			desde++;
+			tamanioDirectorio = hasta - desde;
+			directorioNuevo = malloc(tamanioDirectorio);
+			memcpy(directorioNuevo, path+desde ,tamanioDirectorio);
+			printf("%s\n",directorioNuevo);
+			liberarMensaje(&directorioNuevo);
+			a--;
+		}
+	}
 
 	bson_t *doc;
 	doc = bson_new ();
@@ -187,10 +202,11 @@ void crearDirectorio(){
 	pthread_mutex_unlock(&mutexParaIDDirectorio);
 	BSON_APPEND_UTF8(doc, "Directorio", "temporal");
 	BSON_APPEND_INT32(doc, "Padre", 0);
-
+	pthread_mutex_lock(&mutexParaIDDirectorio);
 	if (!mongoc_collection_insert (directorios, MONGOC_INSERT_NONE, doc, NULL, NULL)) {
 		log_error(logger, "Error al insertar nuevo directorio");
 	}
+	pthread_mutex_unlock(&mutexParaIDDirectorio);
 
 	bson_destroy (doc);
 	printf("Directorio creado correctamente");
@@ -211,6 +227,7 @@ void aplicarNodoGlobalYponerNodosNoDisponible(){
 	query = BCON_NEW("Es","Nodo");
 	update = BCON_NEW ("$set", "{",
 	                           "Estado", BCON_UTF8 ("No Disponible"),
+							   "Conexion", BCON_UTF8 ("No Conectado"),
 	                       "}");
 	cantidad = mongoc_collection_count(nodos, MONGOC_QUERY_NONE, query,0,0,NULL,NULL);
 	bson_destroy (query);
@@ -220,7 +237,7 @@ void aplicarNodoGlobalYponerNodosNoDisponible(){
 	for(a=0;a<=cantidad;a++){
 		mongoc_collection_update(nodos, MONGOC_UPDATE_NONE, query, update, NULL, NULL);
 	}
-	idNodoGlobal = cantidad + 1;
+	idNodoGlobal = cantidad;
 	bson_destroy (query);
 	bson_destroy (update);
 }
@@ -242,7 +259,7 @@ void agregarNodo(){
 
 	query = bson_new ();
 	BSON_APPEND_UTF8(query, "Estado", "No Disponible");
-	BSON_APPEND_UTF8 (query, "Coneccion", "Conectado");
+	BSON_APPEND_UTF8 (query, "Conexion", "Conectado");
 	BSON_APPEND_UTF8(query, "Es" , "Nodo");
 	cantidad = mongoc_collection_count(nodos, MONGOC_QUERY_NONE, query,0,0,NULL,NULL);
 	if(cantidad > 0){
@@ -283,11 +300,11 @@ void darDeBajaElNodo(int socket){
 	query = bson_new ();
 	update = bson_new ();
 	BSON_APPEND_INT32(query, "Socket", socket);
-	BSON_APPEND_UTF8 (query, "Coneccion", "Conectado");
+	BSON_APPEND_UTF8 (query, "Conexion", "Conectado");
 	BSON_APPEND_UTF8(query, "Es" , "Nodo");
 	update = BCON_NEW ("$set", "{",
 		                           "Estado", BCON_UTF8 ("No Disponible"),
-								   "Coneccion", BCON_UTF8 ("No Conectado"),
+								   "Conexion", BCON_UTF8 ("No Conectado"),
 								   "Socket", BCON_INT32 (0),
 		                       "}");
 	mongoc_collection_update(nodos, MONGOC_UPDATE_NONE, query, update, NULL, NULL);
@@ -299,7 +316,7 @@ void verificarEstadoFS(){
 	bson_t *query;
 	query = bson_new ();
 	BSON_APPEND_UTF8 (query, "Estado","Disponible");
-	BSON_APPEND_UTF8 (query, "Coneccion", "Conectado");
+	BSON_APPEND_UTF8 (query, "Conexion", "Conectado");
 	BSON_APPEND_UTF8(query, "Es" , "Nodo");
 	nodosActivos = mongoc_collection_count(nodos, MONGOC_QUERY_NONE, query,0,0,NULL,NULL);
 	bson_destroy (query);
@@ -327,7 +344,7 @@ int escribirBloqueEnNodo (int socket, estructuraSetBloque estructura){
 	return 90;
 }
 
-char *pedirContenidoBloqueA (int socket, int nroBloque){  // Devuelve 90 si esta bien o -1 si se callo el bloque
+char *pedirContenidoBloqueA (int socket, int nroBloque){
 	int entero;
 	int variableDelPaquetito = 64*1024;
 	int tamanioBloque;
@@ -338,18 +355,19 @@ char *pedirContenidoBloqueA (int socket, int nroBloque){  // Devuelve 90 si esta
 	int tamanioReal;
 
 	entero = 1;
-	send(socket, &entero, sizeof(int), 0);
+	send(socket, &entero, sizeof(int), 0);  // Envio codigo para get bloque
 	if(recv(socket, &entero, sizeof(int), 0)<0) return "error"; // Entero para que no se boludee
 
 	entero = nroBloque;
-	send(socket, &entero,sizeof(int), 0);
+	send(socket, &entero,sizeof(int), 0);  // envio numero del bloque
 
-	if(recv(socket,&tamanioBloque,sizeof(int),0)<0) return "error";
-	printf("El tamaño del buffer: %i\n",tamanioBloque);
+	if(recv(socket,&tamanioBloque,sizeof(int),0)<0) return "error";  // recibo tamanio del bloque
+	send(socket,&entero,sizeof(int),0); //Basura
 
 	bufferSet=malloc(tamanioBloque);
-	send(socket,&entero,sizeof(int),0); //Basura
+
 	offset = 0;
+
 	while(tamanioBloque != offset){
 		if((tamanioBloque-offset)<variableDelPaquetito){
 			tamanioDelPaquetito = tamanioBloque-offset;
@@ -357,12 +375,13 @@ char *pedirContenidoBloqueA (int socket, int nroBloque){  // Devuelve 90 si esta
 			tamanioDelPaquetito = variableDelPaquetito;
 		}
 		paquetito = malloc(tamanioDelPaquetito);
-		tamanioReal = recv(socket,paquetito,tamanioDelPaquetito,0);
+		tamanioReal = recv(socket,paquetito,tamanioDelPaquetito,0); // recibo los paquetes
 		memcpy(bufferSet + offset,paquetito,tamanioReal);
 		offset += tamanioReal;
 		liberarMensaje(&paquetito);
-		printf("offset: %i, tamanio Paquete: %i, tamanioReal: %i\n",offset, tamanioDelPaquetito, tamanioReal);
+		printf("offset: %i, tamanioBloque %i, tamanio Paquete: %i, diferencia %i, tamanioReal: %i\n",offset, tamanioBloque, tamanioDelPaquetito, tamanioBloque-offset, tamanioReal);
 	}
+	printf("%i\n",strlen(bufferSet));
 	return bufferSet;
 }
 
@@ -413,8 +432,6 @@ int insertarArchivoAMongoYAlMDFS (char* path){
 
 	doc = bson_new ();
 	doc2 = bson_new ();
-
-	cantidadBloques = 1;
 
 	for(contadorBloque=0;contadorBloque < cantidadBloques;contadorBloque++){
 

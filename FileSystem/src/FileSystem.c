@@ -94,11 +94,14 @@ int main()
 	    		if((recv(i, &entero, sizeof(int),0 )) <= 0)
 	    		{
 	    			if (i == martafd){
-	    				log_info(logger,"Se ha perdido la coneccion con Marta");
-	    				//se callo marta
+	    				log_info(logger,"Se ha perdido la conexion con Marta en el socket: %i\n",i);
+	    				printf("Se ha perdido la conexion con el proceso Marta en el socket: %i\n",i);
+	    				martafd = 0;
 	    			}
-	    			else{ // se callo un nodo y tengo que ponerlo como no disponible
+	    			else{
+	    				log_info(logger,"Se ha perdido la conexion con un Nodo en el socket: %i\n",i);
 	    				darDeBajaElNodo(i);
+	    				printf("Se ha perdido la conexion con un proceso Nodo en el socket: %i\n",i);
 	    			}
 	    			close(i); // Coneccion perdida
 	    			FD_CLR(i, &master);
@@ -107,16 +110,18 @@ int main()
 	    			switch(entero){
 	    				case 25: // Este es Marta
 	    					martafd = i;
+	    					printf("Se ha conectado un proceso Marta en el socket: %i\n",i);
 	    					pthread_create(&hiloMarta[contHM], NULL, atenderMarta, (void *)martafd);
-	    					log_info(logger,"Hilo Marta creado satisfactoriamente");
+	    					log_info(logger,"Se ha conectado un proceso Marta en el socket: %i\n",i);
 	    					contHM++;
 	    					break;
 	    				case 2: // Este es Nodo
 
 	    					socketNodoGlobal = i;
 
+	    					printf("Se ha conectado un proceso Nodo en el socket: %i\n",i);
 	    					pthread_create(&hiloNodo[contHN], NULL, agregoNodoaMongo, (void *)i);
-	    					log_info(logger,"Hilo Nodo creado satisfactoriamente");
+	    					log_info(logger,"Se ha conectado un proceso Nodo en el socket: %i\n",i);
 	    					contHN++;
 	    					break;
 	    				}

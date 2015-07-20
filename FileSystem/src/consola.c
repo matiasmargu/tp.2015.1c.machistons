@@ -65,6 +65,8 @@ void *atenderConsola(void*arg) {
 				case Mover_Directorio: // 8
 					break;
 				case Ver_Bloque_Arch: // 9
+					mensaje = pedirContenidoBloqueA(atoi(comandoSeparado[1]), 0);
+					printf("%s\n",mensaje);
 					break;
 				case Borrar_Bloque_Arch: // 10
 					break;
@@ -74,9 +76,7 @@ void *atenderConsola(void*arg) {
 					agregarNodo();
 					break;
 				case Eliminar_Nodo: // 13
-					i = socketNodoGlobal;
-					mensaje = pedirContenidoBloqueA(i, 0);
-					printf("%s\n",mensaje);
+
 					verificarEstadoFS();
 					break;
 				case Copiar_Arch_Al_MDFS: // 14
@@ -154,7 +154,7 @@ void formatear(){
 
 	doc = bson_new ();
 	if (!mongoc_collection_remove (nodos, MONGOC_DELETE_NONE, doc, NULL, &error)) {
-	        printf ("Delete failed: %s\n", error.message);
+        printf ("Delete failed: %s\n", error.message);
 	}
 	if (!mongoc_collection_remove (archivos, MONGOC_DELETE_NONE, doc, NULL, &error)) {
 		        printf ("Delete failed: %s\n", error.message);
