@@ -159,57 +159,86 @@ void *agregoNodoaMongo (void*arg){
 void crearDirectorio(){
 	char bufferComando[MAXSIZE_COMANDO];
 	char **comandoSeparado;
+	char **comandoSeparado2;
+	char *separador="\n";
 	char *separator=" ";
-	char *separador2="\n"; // Los uso para separar el \n del nombre del archivo
-	char **comandoSeparado2; // Los uso para separar el \n del nombre del archivo
 	char *path;
 	int tamanio;
 	int a,desde,hasta,tamanioDirectorio;
 	char *directorioNuevo;
+	int idSiguiente;
 
-	printf("Ingrese el directorio que desea crear\n");
+	int b;
+
+	printf("Ingrese el directorio que desea crear\n"
+			"Debe comenzar con '/'\n"
+			"Ejemplo: /user/juan/datos\n");
 
 	fgets(bufferComando,MAXSIZE_COMANDO, stdin);
 	comandoSeparado=string_split(bufferComando, separator);
-	comandoSeparado2=string_split(comandoSeparado[0], separador2);
+	comandoSeparado2=string_split(comandoSeparado[0], separador);
 	path = comandoSeparado2[0];
-
 	tamanio = strlen(path);
 
-	for(a=0;a<tamanio;a++){
+	if(path[0]!='/'){
+		printf("Direccion mal cargada\n"
+				"Por favor, escribir la '/' al inicio\n");
+		return ;
+	}
+
+	idSiguiente = 0;
+	fflush(stdin);
+	for(a=0;a<tamanio-1;a++){
 		if(path[a]=='/'){
 			desde = a;
 			a++;
-			while(path[a]!='/'){
-				a++;
+			b=0;
+			while(b!=1){
+				if(path[a]!='/'){
+					if(a == tamanio-1){
+						b++;
+					}
+					a++;
+				}else{
+					b++;
+				}
 			}
 			hasta = a;
 			desde++;
 			tamanioDirectorio = hasta - desde;
 			directorioNuevo = malloc(tamanioDirectorio);
+			memset(directorioNuevo,0,tamanioDirectorio);
 			memcpy(directorioNuevo, path+desde ,tamanioDirectorio);
-			printf("%s\n",directorioNuevo);
-			liberarMensaje(&directorioNuevo);
 			a--;
+			printf("%s\n",directorioNuevo);
+			idSiguiente = agregarDirectorioAMongo(directorioNuevo, idSiguiente);
+			if(idSiguiente == -1){
+				log_error(logger, "Error al insertar nuevo directorio");
+				printf("Error al insertar el directorio en la base de datos\n");
+				return;
+			}
 		}
 	}
+	printf("El directorio %s ha sido creado correctamente\n",path);
+	free(path);
+}
 
+int agregarDirectorioAMongo(char* directorio, int idSiguiente){
 	bson_t *doc;
 	doc = bson_new ();
 	pthread_mutex_lock(&mutexParaIDDirectorio);
 	BSON_APPEND_INT32 (doc, "Index", idDirectorioGlobal);
+	BSON_APPEND_UTF8(doc, "Directorio", directorio);
+	BSON_APPEND_INT32(doc, "Padre", idSiguiente);
+	idSiguiente = idDirectorioGlobal;
 	idDirectorioGlobal++;
-	pthread_mutex_unlock(&mutexParaIDDirectorio);
-	BSON_APPEND_UTF8(doc, "Directorio", "temporal");
-	BSON_APPEND_INT32(doc, "Padre", 0);
-	pthread_mutex_lock(&mutexParaIDDirectorio);
 	if (!mongoc_collection_insert (directorios, MONGOC_INSERT_NONE, doc, NULL, NULL)) {
-		log_error(logger, "Error al insertar nuevo directorio");
+		return -1;
 	}
 	pthread_mutex_unlock(&mutexParaIDDirectorio);
-
 	bson_destroy (doc);
-	printf("Directorio creado correctamente");
+	free(directorio);
+	return idSiguiente;
 }
 
 void eliminarDirectorio(){

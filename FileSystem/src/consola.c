@@ -49,6 +49,7 @@ void *atenderConsola(void*arg) {
 				case Crear_Directorio: // 5
 					if(nodosActivos >= nodosNecesarios){
 						crearDirectorio();
+						printf("Ingrese 0 para imprimir el menu\n");
 					}else{
 						mensajeEstadoInactivoFS();
 					}
@@ -162,5 +163,6 @@ void formatear(){
 	if (!mongoc_collection_remove (directorios, MONGOC_DELETE_NONE, doc, NULL, &error)) {
 			        printf ("Delete failed: %s\n", error.message);
 	}
+	idDirectorioGlobal = 0;
 	bson_destroy (doc);
 }

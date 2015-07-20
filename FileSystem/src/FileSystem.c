@@ -21,6 +21,7 @@ int main()
 	//
 	aplicarNodoGlobalYponerNodosNoDisponible();
 	nodosActivos = 0;
+	idDirectorioGlobal = 1;
 
 	fd_set master;
 	fd_set read_fds;

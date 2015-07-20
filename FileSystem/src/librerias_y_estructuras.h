@@ -124,5 +124,6 @@ void *atenderConsola(void*arg);
 void formatear();
 void eliminarDirectorio();
 void crearDirectorio();
+int agregarDirectorioAMongo(char* directorio, int idSiguiente);
 
 #endif /* LIBRERIAS_Y_ESTRUCTURAS_H_ */
