@@ -110,6 +110,8 @@ char* recive_y_deserialisa_SOLOIP_Nodo(int socket, uint32_t tamanioTotal);
 void *agregoNodoaMongo (void*arg);
 int insertarArchivoAMongoYAlMDFS (char* path);
 void agregarCopia (bson_t *documento, char* numeroCopia, int idNodo, int bloque);
+void elBloqueDelNodoSeOcupo(int socketNodo, int nroBloque);
+void elBloqueDelNodoSeLibero(int socketNodo, int nroBloque);
 
 // Funcion Interfaz Marta
 

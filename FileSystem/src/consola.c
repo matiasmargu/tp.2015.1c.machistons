@@ -13,16 +13,18 @@ void *atenderConsola(void*arg) {
 		Renombrar_Directorio, Mover_Directorio, Ver_Bloque_Arch, Borrar_Bloque_Arch, Copiar_Bloque_Arch, Agregar_Nodo, Eliminar_Nodo,
 		Copiar_Arch_Al_MDFS, Copiar_Arch_Al_FSLocal, Solicitar_MD5, Salir};
 
-	int i;
-
 	char bufferComando[MAXSIZE_COMANDO];
 	char **comandoSeparado;
 	char *separator=" ";
-	char *separador2="\n"; // Los uso para separar el \n del nombre del archivo
-	char *separador3="/";
-	char **comandoSeparado2; // Los uso para separar el \n del nombre del archivo
 
 	char *mensaje; // Para mandar mensajes serializados
+
+	bson_t *doc;
+	bson_t *doc2;
+	bson_t *doc3;
+	int cantidadBloques;
+	int a;
+
 
 	imprimirMenu();
 	while(1){
@@ -34,6 +36,7 @@ void *atenderConsola(void*arg) {
 					break;
 				case Formatear: // 1
 					formatear();
+					printf("Ingrese 0 para imprimir el menu\n");
 					break;
 				case Eliminar_Arch: // 2
 					if(nodosActivos >= nodosNecesarios){
@@ -70,8 +73,39 @@ void *atenderConsola(void*arg) {
 					printf("%s\n",mensaje);
 					break;
 				case Borrar_Bloque_Arch: // 10
+
 					break;
 				case Copiar_Bloque_Arch: // 11
+					doc = bson_new ();
+					BSON_APPEND_UTF8(doc, "Es", "Nodo");
+					pthread_mutex_lock(&mutex);
+					BSON_APPEND_INT32(doc, "ID Nodo", idNodoGlobal);
+					idNodoGlobal++;
+					pthread_mutex_unlock(&mutex);
+					BSON_APPEND_INT32(doc, "Socket", idNodoGlobal);
+					BSON_APPEND_UTF8 (doc, "IP", "12123123.123123.123123");
+					BSON_APPEND_UTF8(doc, "PUERTO" , "dasdasd");
+					cantidadBloques = 15;
+					BSON_APPEND_UTF8(doc, "Conexion", "Conectado");
+					BSON_APPEND_UTF8(doc, "Estado", "No Disponible");
+					BSON_APPEND_INT32(doc, "Cantidad de Bloques Total", cantidadBloques);
+
+					doc2 = bson_new ();
+					for(a=0;a<cantidadBloques;a++){
+						BSON_APPEND_INT32(doc2, string_itoa(a), 9);
+					}
+					BSON_APPEND_ARRAY(doc, "Bloques Libres", doc2);
+					bson_destroy (doc2);
+
+					doc2 = bson_new ();
+					BSON_APPEND_ARRAY(doc, "Bloques Ocupados", doc2);
+					bson_destroy (doc2);
+
+					pthread_mutex_lock(&mutex);
+					if (!mongoc_collection_insert(nodos, MONGOC_INSERT_NONE, doc, NULL, NULL)) {
+					}
+					pthread_mutex_unlock(&mutex);
+					bson_destroy (doc);
 					break;
 				case Agregar_Nodo: // 12
 					agregarNodo();
@@ -147,22 +181,73 @@ void mensajeEstadoInactivoFS(){
 
 void formatear(){
 	bson_t *doc;
+	bson_t *query;
+	int cantidad;
 	bson_error_t error;
 	int entero; //Para el handshake
-
+	int socketNodo;
+	bson_iter_t iter;
+	bson_iter_t iter2;
+	mongoc_cursor_t *cursor;
 	entero = 4;
-	send(socketNodoGlobal,&entero,sizeof(int),0);
+	int cantidadBloques;
+	int a;
+	int tamanioArray;
+	int bloque;
 
 	doc = bson_new ();
-	if (!mongoc_collection_remove (nodos, MONGOC_DELETE_NONE, doc, NULL, &error)) {
-        printf ("Delete failed: %s\n", error.message);
+   	query = bson_new ();
+	BSON_APPEND_UTF8 (query, "Conexion", "Conectado");
+	BSON_APPEND_UTF8(query, "Es" , "Nodo");
+	cantidad = mongoc_collection_count(nodos, MONGOC_QUERY_NONE, query,0,0,NULL,NULL);
+	if(cantidad > 0){
+		cursor = mongoc_collection_find (nodos, MONGOC_QUERY_NONE, 0, 0, 0, query, NULL, NULL);
+		while (mongoc_cursor_next (cursor, &doc)) {
+			if (bson_iter_init (&iter, doc)) {
+				if(bson_iter_find (&iter, "Socket"))socketNodo = bson_iter_int32(&iter);
+				if(bson_iter_find (&iter, "Cantidad de Bloques Total"))cantidadBloques = bson_iter_int32(&iter);
+				send(socketNodo,&entero,sizeof(int),0);
+				for(a=0;a<cantidadBloques;a++){
+					elBloqueDelNodoSeLibero(socketNodo,a);
+				}
+
+
+				a=1;
+				if(bson_iter_find(&iter, "Bloques Libres") && BSON_ITER_HOLDS_ARRAY(&iter)){
+
+					if(bson_iter_recurse(&iter,&iter2)){
+						tamanioArray=0;
+						a=1;
+						while(a!=2){
+							if(bson_iter_find (&iter2, string_itoa(tamanioArray))){
+								tamanioArray++;
+								bloque = bson_iter_int32(&iter2);
+								printf("%i\n",bloque);
+							}else{
+								a=2;
+							}
+						}
+						printf("tamanio :%i\n",tamanioArray);
+					}
+				}
+
+
+			}
+		}
+	}else{
+		printf("No hay nodos conectados para formatear \n");
 	}
+	bson_destroy (query);
+	doc = bson_new ();
+//	if (!mongoc_collection_remove (nodos, MONGOC_DELETE_NONE, doc, NULL, &error)) {
+//		printf ("Delete failed: %s\n", error.message);
+//	}
 	if (!mongoc_collection_remove (archivos, MONGOC_DELETE_NONE, doc, NULL, &error)) {
 		        printf ("Delete failed: %s\n", error.message);
 	}
 	if (!mongoc_collection_remove (directorios, MONGOC_DELETE_NONE, doc, NULL, &error)) {
 			        printf ("Delete failed: %s\n", error.message);
 	}
-	idDirectorioGlobal = 0;
 	bson_destroy (doc);
+	printf("El MDFS ha sido formateado correctamente \n");
 }

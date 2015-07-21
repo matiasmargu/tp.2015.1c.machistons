@@ -89,6 +89,7 @@ void *agregoNodoaMongo (void*arg){
 	int nodoNuevoOViejo;
 	bson_t *doc;
 	bson_t *doc2;
+	bson_t *doc3;
 	bson_t *query;
 	bson_t *update;
 	bson_error_t error;
@@ -110,6 +111,7 @@ void *agregoNodoaMongo (void*arg){
 		recv(socket, &tamanioTotalMensaje, sizeof(int), 0);
 		if(recive_y_deserialisa_IPyPUERTO_Nodo(&ipyPuertoNodo, socket, tamanioTotalMensaje)){
 			doc = bson_new ();
+			doc3 = bson_new ();
 			BSON_APPEND_UTF8(doc, "Es", "Nodo");
 			pthread_mutex_lock(&mutex);
 			BSON_APPEND_INT32(doc, "ID Nodo", idNodoGlobal);
@@ -124,12 +126,25 @@ void *agregoNodoaMongo (void*arg){
 			BSON_APPEND_UTF8(doc, "Conexion", "Conectado");
 			BSON_APPEND_UTF8(doc, "Estado", "No Disponible");
 			BSON_APPEND_INT32(doc, "Cantidad de Bloques Total", cantidadBloques);
+
+			doc2 = bson_new ();
+			for(a=0;a<cantidadBloques;a++){
+				BSON_APPEND_INT32(doc2, string_itoa(a), a);
+			}
+			BSON_APPEND_ARRAY(doc, "Bloques Libres", doc2);
+			bson_destroy (doc2);
+
+			doc2 = bson_new ();
+			BSON_APPEND_ARRAY(doc, "Bloques Ocupados", doc2);
+			bson_destroy (doc2);
+
 			pthread_mutex_lock(&mutex);
 			if (!mongoc_collection_insert (nodos, MONGOC_INSERT_NONE, doc, NULL, &error)) {
 				log_error(logger, error.message);
 			}
 			pthread_mutex_unlock(&mutex);
 			bson_destroy (doc);
+			bson_destroy (doc3);
 		}
 		break;
 	case 48: // Nodo Viejo
@@ -548,4 +563,83 @@ t_copia infoBloqueyCopia(int nroBloque, int nroCopia, bson_t *doc4){
 	free(resultado4);
 
 	return info;
+}
+
+void elBloqueDelNodoSeOcupo(int socketNodo, int nroBloque){
+
+	bson_t *doc2;
+	bson_t *doc3;
+	bson_t *query2;
+	bson_t *update;
+
+	query2 = bson_new ();
+	BSON_APPEND_UTF8 (query2, "Conexion", "Conectado");
+	BSON_APPEND_UTF8(query2, "Es" , "Nodo");
+	BSON_APPEND_INT32(query2, "Socket", socketNodo);
+
+	update = bson_new ();
+	doc2 = bson_new ();
+	doc3 = bson_new ();
+	update = BCON_NEW ("$addToSet", "{",
+			"Bloques Ocupados", BCON_INT32(nroBloque),
+			"}");
+	bson_destroy (doc2);
+	bson_destroy (doc3);
+
+	mongoc_collection_update(nodos,MONGOC_UPDATE_NONE, query2, update,NULL, NULL);
+	bson_destroy (update);
+
+	update = bson_new ();
+	doc2 = bson_new ();
+	doc3 = bson_new ();
+	update = BCON_NEW ("$pull", "{",
+			"Bloques Libres", BCON_INT32(nroBloque),
+			"}");
+	bson_destroy (doc2);
+	bson_destroy (doc3);
+
+	mongoc_collection_update(nodos,MONGOC_UPDATE_NONE, query2, update,NULL, NULL);
+	bson_destroy (update);
+
+	return;
+}
+
+
+void elBloqueDelNodoSeLibero(int socketNodo, int nroBloque){
+
+	bson_t *doc2;
+	bson_t *doc3;
+	bson_t *query2;
+	bson_t *update;
+
+	query2 = bson_new ();
+	BSON_APPEND_UTF8 (query2, "Conexion", "Conectado");
+	BSON_APPEND_UTF8(query2, "Es" , "Nodo");
+	BSON_APPEND_INT32(query2, "Socket", socketNodo);
+
+	update = bson_new ();
+	doc2 = bson_new ();
+	doc3 = bson_new ();
+	update = BCON_NEW ("$pull", "{",
+			"Bloques Ocupados", BCON_INT32(nroBloque),
+			"}");
+	bson_destroy (doc2);
+	bson_destroy (doc3);
+
+	mongoc_collection_update(nodos,MONGOC_UPDATE_NONE, query2, update,NULL, NULL);
+	bson_destroy (update);
+
+	update = bson_new ();
+	doc2 = bson_new ();
+	doc3 = bson_new ();
+	update = BCON_NEW ("$addToSet", "{",
+			"Bloques Libres", BCON_INT32(nroBloque),
+			"}");
+	bson_destroy (doc2);
+	bson_destroy (doc3);
+
+	mongoc_collection_update(nodos,MONGOC_UPDATE_NONE, query2, update,NULL, NULL);
+	bson_destroy (update);
+
+	return;
 }
