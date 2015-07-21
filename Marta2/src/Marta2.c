@@ -34,6 +34,7 @@ typedef struct {
 	int idNodo;
 	char* puertoNodo;
 	char * ipNodo;
+	int cantidadDeArchivosAReducir;
 	char* archivosAReducir;
     char* nombreArchivoResultado;
 }t_archivosAReducirPorNodo;
@@ -165,8 +166,8 @@ int main(void){
 
 
 		//
-	    int a,b,c,d,aux,variableParaResultadoReduce=0,tamanioListaJobTabla,tamanioListaTablaDeProcesosPorJob,tamanioListaArchivosAReducirPorNodo;
-		int tamanioListaDeNodos,variableDelRealloc=0;
+	    int a,b,c,d,aux=0,tamanioListaJobTabla,tamanioListaTablaDeProcesosPorJob,tamanioListaArchivosAReducirPorNodo;
+		int tamanioListaDeNodos,variableDelRealloc=0,aux2;
 	    t_lista_job2 *campoDeLaLista;
 	    campoDeLaLista = malloc(tamanio23*5);
 		t_tablaProcesos_porJob2 *campoDeLaListaTablaDeProcesos;
@@ -186,6 +187,46 @@ int main(void){
 		tamanioListaJobTabla=list_size(lista_job_tabla);
 		printf("tamanioListaJobTabla %i\n",tamanioListaJobTabla);
 
+		for(a=0;a<tamanioListaJobTabla;a++){
+			campoDeLaLista=list_get(lista_job_tabla,a);
+			tamanioListaTablaDeProcesosPorJob = list_size(campoDeLaLista->tabla_procesos);
+			for(b=0;b<tamanioListaTablaDeProcesosPorJob;b++){
+				campoDeLaListaTablaDeProcesos = list_get(campoDeLaLista->tabla_procesos,b);
+				if(aux==0){ // si es la primera vez hay que hacer un malloc para inicializar la lista que vamos a hacer nosotros, e inicializar la de archivos a reducir
+					lista_archivosAReducirPorNodoParcial = malloc(sizeof( t_archivosAReducirPorNodo));
+					lista_archivosAReducirPorNodoParcial[0].idNodo =campoDeLaListaTablaDeProcesos->id_nodo;
+					lista_archivosAReducirPorNodoParcial[0].archivosAReducir=malloc(sizeof(char));
+					lista_archivosAReducirPorNodoParcial[0].archivosAReducir[0]=campoDeLaListaTablaDeProcesos->nombre_archivo_resultado;
+					lista_archivosAReducirPorNodoParcial[0].cantidadDeArchivosAReducir=1;
+					asprintf(&lista_archivosAReducirPorNodoParcial[0].nombreArchivoResultado,"%s%i","archivo",aux);
+					tamanioListaDeNodos =list_size(lista_nodos_estado);
+					aux2=0;
+					for(d=0;d<tamanioListaDeNodos && aux2==0;d++){
+						campoDeListaDeNodo = list_get(lista_nodos_estado,d);
+						if(campoDeListaDeNodo->id_nodo==campoDeLaListaTablaDeProcesos->id_nodo){
+							lista_archivosAReducirPorNodoParcial[0].ipNodo=  campoDeListaDeNodo->ip_nodo;
+							lista_archivosAReducirPorNodoParcial[0].puertoNodo =  campoDeListaDeNodo->puerto_nodo;
+							aux2=1;
+						}
+					}
+				}
+				else{ // aca ya no es la primera, hay que ver si el id del nodo es el mismo o no a alguno, si es el mismo hay que hacer un realloc en los archivos a reducir
+					//si no es el mismo hay que hacer un realloc en la lista que hacemos nosotros y hay que inicializar(hacer un malloc) en la lista de archivos a reducir
+					aux2=0;
+					for(c=0;c<aux && aux2==0;c++){// aux va a contener cuantas posiciones del vector hay
+						if(lista_archivosAReducirPorNodoParcial[aux].idNodo==campoDeListaDeNodo->id_nodo){
+							// aca la va a recorrer y si encuentra un id que coincide ahi agrega el archivo a reducir
+							lista_archivosAReducirPorNodoParcial[aux].cantidadDeArchivosAReducir ++;
+							lista_archivosAReducirPorNodoParcial[aux].archivosAReducir=realloc(lista_archivosAReducirPorNodoParcial[aux].archivosAReducir, lista_archivosAReducirPorNodoParcial[0].cantidadDeArchivosAReducir* sizeof(char));
+							aux2=1;
+						}
+					}
+				}
+					}
+		}
+
+
+/*
 		for(a=0;a<tamanioListaJobTabla;a++){
 
 		    campoDeLaLista=list_get(lista_job_tabla,a);
@@ -276,7 +317,7 @@ int main(void){
 		free(campoDeListaDeNodo);
 
 
-
+*/
 
 
 
