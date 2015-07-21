@@ -184,6 +184,8 @@ int main(void){
 				//reducir
 				tamanioListaJobTabla=list_size(lista_job_tabla);// es 3
 
+				printf("\n\nLos campos de la lista que deberian estar son:\n");
+
 				for(a=0;a<tamanioListaJobTabla;a++){
 					campoDeLaLista=list_get(lista_job_tabla,a); // corrroborado que los saca bien
 					tamanioListaTablaDeProcesosPorJob = list_size(campoDeLaLista->tabla_procesos); // es dos
@@ -211,8 +213,9 @@ int main(void){
 				    		}// agrega el campo a la lista
 
 				    		list_add(lista_archivosAReducirPorNodo,campoAAgregarAListaReducirPorNodo);
+				    		campoAAgregarAListaReducirPorNodo = list_get(lista_archivosAReducirPorNodo,e);
+				    		printf("idnodo %i ipnodo %s puertonodo %s nombreDeArchivoResultado %s\n",campoAAgregarAListaReducirPorNodo->idNodo,campoAAgregarAListaReducirPorNodo->ipNodo,campoAAgregarAListaReducirPorNodo->puertoNodo,campoAAgregarAListaReducirPorNodo->nombreArchivoResultado);
 				    		e++;
-
 				    	}
 				    	else{
 				    	aux=0;
@@ -221,7 +224,6 @@ int main(void){
 				    			if(campoArchivosAReducirPorNodo->idNodo == campoDeLaListaTablaDeProcesos->id_nodo){
 				    				list_add(campoArchivosAReducirPorNodo->archivosAReducir,campoDeLaListaTablaDeProcesos->nombre_archivo_resultado);
 				    				aux =1;
-				    				printf("solo dos veces deberia entrar aca\n");
 				    			}
 				    		}
 				    			if(aux==0){//cuando no esta el id del nodo, entonces tiene que agregar todo directo
@@ -248,13 +250,6 @@ int main(void){
 				    				campoAAgregarAListaReducirPorNodo = list_get(lista_archivosAReducirPorNodo,e);
 				    				printf("idnodo %i ipnodo %s puertonodo %s nombreDeArchivoResultado %s\n",campoAAgregarAListaReducirPorNodo->idNodo,campoAAgregarAListaReducirPorNodo->ipNodo,campoAAgregarAListaReducirPorNodo->puertoNodo,campoAAgregarAListaReducirPorNodo->nombreArchivoResultado);
 				    				e++;
-				    				if(e==3){
-				    					for(d=0;d<e;d++){
-				    						campoAAgregarAListaReducirPorNodo = list_get(lista_archivosAReducirPorNodo,d);
-				    						printf("Lo que agrega a la lista es:\n idnodo %i ipnodo %s puertonodo %s nombreDeArchivoResultado %s\n",campoAAgregarAListaReducirPorNodo->idNodo,campoAAgregarAListaReducirPorNodo->ipNodo,campoAAgregarAListaReducirPorNodo->puertoNodo,campoAAgregarAListaReducirPorNodo->nombreArchivoResultado);
-				    					}
-				    				}
-
 
 				    			}
 				    	}
@@ -264,7 +259,8 @@ int main(void){
 
 
            tamanio = list_size(lista_archivosAReducirPorNodo);
-           printf("%i\n",tamanio);
+           printf("\n\nEl tamanio final de la lista es: %i\n",tamanio);
+           printf("Lo que imprime a fuera del for es:\n");
            for(e=0;e<tamanio;e++){
         	   campoAAgregarAListaReducirPorNodo = list_get(lista_archivosAReducirPorNodo,e);
         	   printf("idnodo %i ipnodo %s puertonodo %s nombreDeArchivoResultado %s\n",campoAAgregarAListaReducirPorNodo->idNodo,campoAAgregarAListaReducirPorNodo->ipNodo,campoAAgregarAListaReducirPorNodo->puertoNodo,campoAAgregarAListaReducirPorNodo->nombreArchivoResultado);
