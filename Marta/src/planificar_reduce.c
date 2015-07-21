@@ -197,4 +197,69 @@ void planificarReduce(){
 
 	}
 
+
+//sigo el reduce
+	t_archivosAReducirPorNodo campoDeUnNodo;
+	t_marta_job_reduce structAserializar;
+	int f, g,handshakeJob, enteroPrueba,tamanioAenviar,tamanioTotalVector, socketJob;
+	char* archivo1;
+	char* structAEnviarAJob;
+
+	handshakeJob = 34;
+	//tamanio es el tamanio del vector
+	//el socketJob tiene que venir como parametro
+	for(f=0; f< tamanio; f++){
+
+	//campoDeUnNodo =	lista_archivosAReducirPorNodo[f];
+	send(socketJob, &handshakeJob, sizeof(int),0);
+	recv(socketJob, &enteroPrueba, sizeof(int),0);
+	for(g=0; g< tamanio ; g++){
+	archivo1 =	list_get(campoDeUnNodo.archivosAReducir,g);
+	tamanioTotalVector += strlen(archivo1);
+	tamanioTotalVector += 1;
+	}
+	tamanioAenviar = (sizeof(int)*2)+ strlen(campoDeUnNodo.ipNodo)+1 +  strlen(campoDeUnNodo.puertoNodo)+1 +  strlen(campoDeUnNodo.nombreArchivoResultado)+1 + tamanioTotalVector;
+	send(socketJob, &tamanioAenviar, sizeof(int), 0);
+	recv(socketJob, &enteroPrueba, sizeof(int),0);
+	structAserializar.archivoResultadoReduce = campoDeUnNodo.nombreArchivoResultado;
+	structAserializar.cantidadArchivos = list_size(campoDeUnNodo.archivosAReducir);
+	structAserializar.idNodo = campoDeUnNodo.idNodo;
+	structAserializar.ipNodo = campoDeUnNodo.ipNodo;
+	structAserializar.puertoNodo = campoDeUnNodo.puertoNodo;
+	list_add_all(structAserializar.listaArchivosTemporales, campoDeUnNodo.archivosAReducir);
+//	structAEnviarAJob = serializar_marta_job_reduce(&structAserializar, tamanioAenviar); el serializar esta hecho en marta2
+	send(socketJob, structAEnviarAJob, tamanioAenviar, 0);
+
+
+
+
+
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
