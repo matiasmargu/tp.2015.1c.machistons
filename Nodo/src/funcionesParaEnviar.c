@@ -141,11 +141,12 @@ char* serializarIP_PUERTO(char* ip_fs,char* puerto_fs, int tamanioData){
 	fseek(fdAux, 0L, SEEK_SET);
 	fseek(fdAux, 0L, SEEK_END);
 
-	int tamanioDatos = ftell(fdAux);
+	tamanioArchivo_BIN = ftell(fdAux);
 
 	size_to_send = sizeof(int);
-	memcpy(serializedPackage + offset, &tamanioDatos, size_to_send);
-	munmap(archivo,strlen(archivo));
+	memcpy(serializedPackage + offset, &tamanioArchivo_BIN, size_to_send);
+	munmap(archivo,tamanioArchivo_BIN);
+
 
 	fclose(fdAux);
 	return serializedPackage;
