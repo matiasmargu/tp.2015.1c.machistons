@@ -49,9 +49,9 @@ t_tablaProcesos_porJob2 *campoDeTabla5;
 t_tablaProcesos_porJob2 *campoDeTabla6;
 t_list* lista_job_tabla;
 
+// HAY QUE VER DE DONDE SACAMOS EL SOCKET JOB
 
-
-void planificarReduce(){
+void planificarReduceConCombiner(){
 
 	t_lista_job2 *tabla;
 	t_lista_job2 *tabla2;
@@ -66,19 +66,20 @@ void planificarReduce(){
 
 
 		// para probar
-        int tamanio23;
-        char * lluo,temp;
-        lluo= "campoTabla1";
-        tamanio23=sizeof(int)* 5 + 4 * strlen(lluo) + 1 ;
-		tabla = malloc(tamanio23);
-		tabla2 = malloc(tamanio23);
-		tabla3 = malloc(tamanio23);
-        campoDeTabla = malloc(tamanio23);
-        campoDeTabla2 = malloc(tamanio23);
-        campoDeTabla3 = malloc(tamanio23);
-        campoDeTabla4 = malloc(tamanio23);
-        campoDeTabla5 = malloc(tamanio23);
-        campoDeTabla6 = malloc(tamanio23);
+        int tamanioTabla,tamanioCampoDeTabla,tamanioNodo;
+        tamanioTabla=sizeof(int);
+        tamanioCampoDeTabla= sizeof(int) * 3 + sizeof(char);
+        tamanioNodo = sizeof(char) * 3 + sizeof(int);
+
+        tabla = malloc(tamanioTabla);
+		tabla2 = malloc(tamanioTabla);
+		tabla3 = malloc(tamanioTabla);
+        campoDeTabla = malloc(tamanioCampoDeTabla);
+        campoDeTabla2 = malloc(tamanioCampoDeTabla);
+        campoDeTabla3 = malloc(tamanioCampoDeTabla);
+        campoDeTabla4 = malloc(tamanioCampoDeTabla);
+        campoDeTabla5 = malloc(tamanioCampoDeTabla);
+        campoDeTabla6 = malloc(tamanioCampoDeTabla);
         tabla->idJob=4;
 		tabla->tabla_procesos = list_create();
 
@@ -141,12 +142,12 @@ void planificarReduce(){
 		t_nodo2 *nodo5;
 		t_nodo2 *nodo6;
 
-		nodo1=malloc(tamanio23);
-		nodo2=malloc(tamanio23);
-		nodo3=malloc(tamanio23);
-		nodo4=malloc(tamanio23);
-		nodo5=malloc(tamanio23);
-		nodo6=malloc(tamanio23);
+		nodo1=malloc(tamanioNodo);
+		nodo2=malloc(tamanioNodo);
+		nodo3=malloc(tamanioNodo);
+		nodo4=malloc(tamanioNodo);
+		nodo5=malloc(tamanioNodo);
+		nodo6=malloc(tamanioNodo);
 
 
 		nodo1->id_nodo = 4;
@@ -176,19 +177,23 @@ void planificarReduce(){
 		list_add(lista_nodos_estado,nodo6);
 
 
-		  int a,b,c,d,e,aux,aux3,variableParaResultadoReduce,tamanioListaJobTabla,tamanioListaTablaDeProcesosPorJob,tamanioListaArchivosAReducirPorNodo;
-				int tamanioListaDeNodos,auxla=0,tamanio;
+		        int a,b,c,d,e,aux,variableParaResultadoReduce,tamanioListaJobTabla,tamanioListaTablaDeProcesosPorJob,tamanioListaArchivosAReducirPorNodo;
+				int tamanioListaDeNodos,tamanio,tamanioArchivosaReducir;
+				t_archivosAReducirPorNodo *campoDeUnNodo;
+				t_marta_job_reduce structAserializar;
+				int handshakeJob, enteroPrueba,tamanioAenviar,tamanioTotalVector, socketJob;
+				char* archivo1;
+				char* structAEnviarAJob;
 			    t_lista_job2 *campoDeLaLista;
-			    campoDeLaLista = malloc(tamanio23*10);
+			    campoDeLaLista = malloc(tamanioTabla);
 				t_tablaProcesos_porJob2 *campoDeLaListaTablaDeProcesos;
-		        campoDeLaListaTablaDeProcesos = malloc(tamanio23*10);
+		        campoDeLaListaTablaDeProcesos = malloc(tamanioCampoDeTabla);
 			    t_list * lista_archivosAReducirPorNodo;
 			    t_archivosAReducirPorNodo *campoArchivosAReducirPorNodo;
-		        campoArchivosAReducirPorNodo= malloc(tamanio23*10);
+		        campoArchivosAReducirPorNodo= malloc(tamanioCampoDeTabla);
 			    t_archivosAReducirPorNodo *campoAAgregarAListaReducirPorNodo;
-		    campoAAgregarAListaReducirPorNodo = malloc(tamanio23*10);
 			    t_nodo2 *campoDeListaDeNodo;
-			    campoDeListaDeNodo = malloc(tamanio23*10);
+			    campoDeListaDeNodo = malloc(tamanioNodo);
 				lista_archivosAReducirPorNodo = list_create();
 				list_clean(lista_archivosAReducirPorNodo);
 
@@ -206,7 +211,7 @@ void planificarReduce(){
 						campoDeLaListaTablaDeProcesos = list_get(campoDeLaLista->tabla_procesos,b);
 						tamanioListaArchivosAReducirPorNodo = list_size(lista_archivosAReducirPorNodo);
 				    	if(tamanioListaArchivosAReducirPorNodo == 0){
-				    		campoAAgregarAListaReducirPorNodo = malloc(tamanio23);
+				    		campoAAgregarAListaReducirPorNodo = malloc(tamanioCampoDeTabla);
 				    		campoAAgregarAListaReducirPorNodo->idNodo =  campoDeLaListaTablaDeProcesos->id_nodo;
 				    		campoAAgregarAListaReducirPorNodo->archivosAReducir = list_create();
 				    		list_add(campoAAgregarAListaReducirPorNodo->archivosAReducir,campoDeLaListaTablaDeProcesos->nombre_archivo_resultado);
@@ -241,7 +246,7 @@ void planificarReduce(){
 				    		}
 				    			if(aux==0){//cuando no esta el id del nodo, entonces tiene que agregar todo directo
 				    				printf("Aca deberia entrar 4 veces \n");
-				    				campoAAgregarAListaReducirPorNodo = malloc(tamanio23);
+				    				campoAAgregarAListaReducirPorNodo = malloc(tamanioCampoDeTabla);
 				    				campoAAgregarAListaReducirPorNodo->idNodo =  campoDeLaListaTablaDeProcesos->id_nodo;
 				    				campoAAgregarAListaReducirPorNodo->archivosAReducir = list_create();
 				    				list_add(campoAAgregarAListaReducirPorNodo->archivosAReducir,campoDeLaListaTablaDeProcesos->nombre_archivo_resultado);
@@ -285,60 +290,41 @@ void planificarReduce(){
         	   }
         	   }
 
-         free(campoDeLaLista);
-         free(campoDeLaListaTablaDeProcesos);
-         free(campoArchivosAReducirPorNodo);
-         free(campoDeListaDeNodo);
+
 //sigo el reduce
-	t_archivosAReducirPorNodo campoDeUnNodo;
-	t_marta_job_reduce structAserializar;
-	int f, g,handshakeJob, enteroPrueba,tamanioAenviar,tamanioTotalVector, socketJob;
-	char* archivo1;
-	char* structAEnviarAJob;
+
 
 	handshakeJob = 34;
 	//tamanio es el tamanio del vector
 	//el socketJob tiene que venir como parametro
-	for(f=0; f< tamanio; f++){
-
-	//campoDeUnNodo =	lista_archivosAReducirPorNodo[f];
+	for(a=0; a<tamanio; a++){
+	campoDeUnNodo=list_get(lista_archivosAReducirPorNodo,a);
 	send(socketJob, &handshakeJob, sizeof(int),0);
 	recv(socketJob, &enteroPrueba, sizeof(int),0);
-	for(g=0; g< tamanio ; g++){
-	archivo1 =	list_get(campoDeUnNodo.archivosAReducir,g);
+	tamanioArchivosaReducir = list_size(campoDeUnNodo->archivosAReducir);
+	for(b=0; b< tamanioArchivosaReducir; b++){ // aca no va tamanio, sino que va el tamanio de la lista de archivos a reducir
+	archivo1 =	list_get(campoDeUnNodo->archivosAReducir,b);
 	tamanioTotalVector += strlen(archivo1);
 	tamanioTotalVector += 1;
 	}
-	tamanioAenviar = (sizeof(int)*2)+ strlen(campoDeUnNodo.ipNodo)+1 +  strlen(campoDeUnNodo.puertoNodo)+1 +  strlen(campoDeUnNodo.nombreArchivoResultado)+1 + tamanioTotalVector;
+	tamanioAenviar = (sizeof(int)*2)+ strlen(campoDeUnNodo->ipNodo)+1 +  strlen(campoDeUnNodo->puertoNodo)+1 +  strlen(campoDeUnNodo->nombreArchivoResultado)+1 + tamanioTotalVector;
 	send(socketJob, &tamanioAenviar, sizeof(int), 0);
 	recv(socketJob, &enteroPrueba, sizeof(int),0);
-	structAserializar.archivoResultadoReduce = campoDeUnNodo.nombreArchivoResultado;
-	structAserializar.cantidadArchivos = list_size(campoDeUnNodo.archivosAReducir);
-	structAserializar.idNodo = campoDeUnNodo.idNodo;
-	structAserializar.ipNodo = campoDeUnNodo.ipNodo;
-	structAserializar.puertoNodo = campoDeUnNodo.puertoNodo;
-	list_add_all(structAserializar.listaArchivosTemporales, campoDeUnNodo.archivosAReducir);
+	structAserializar.archivoResultadoReduce = campoDeUnNodo->nombreArchivoResultado;
+	structAserializar.cantidadArchivos = list_size(campoDeUnNodo->archivosAReducir);
+	structAserializar.idNodo = campoDeUnNodo->idNodo;
+	structAserializar.ipNodo = campoDeUnNodo->ipNodo;
+	structAserializar.puertoNodo = campoDeUnNodo->puertoNodo;
+	list_add_all(structAserializar.listaArchivosTemporales, campoDeUnNodo->archivosAReducir);
 //	structAEnviarAJob = serializar_marta_job_reduce(&structAserializar, tamanioAenviar); el serializar esta hecho en marta2
 	send(socketJob, structAEnviarAJob, tamanioAenviar, 0);
 
-
-
-
-
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
+	free(campoDeLaLista);
+	free(campoDeLaListaTablaDeProcesos);
+	free(campoArchivosAReducirPorNodo);
+	free(campoDeListaDeNodo);
+	free(campoAAgregarAListaReducirPorNodo);
 }
 
 
