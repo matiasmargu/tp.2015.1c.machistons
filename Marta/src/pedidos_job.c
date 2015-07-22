@@ -24,7 +24,6 @@ void *atenderJob(void *arg){
 	send(socketJob, &enteroPrueba, sizeof(int),0);
 	recv(socketJob, combiner, tamanio,0);
 	printf("el combiner es %s\n",combiner);
-
 	if(string_equals_ignore_case(combiner ,"SI")) job.combiner = 1;
 	else job.combiner = 0;
 	printf("%i\n",job.combiner);
@@ -86,12 +85,12 @@ void *atenderJob(void *arg){
 	send(socketFS,&handshakeFS,sizeof(int),0);
 
 	printf("tamamnio total: %i\n", tamanio_total);
-
 	t_archivo *archivo_prueba = malloc(sizeof(t_archivo));
 	archivo_prueba->bloques = list_create();
 	printf("entro al recive\n\n");
 	recive_y_guarda_estructura(archivo_prueba,socketFS,tamanio_total);
 	printf("\n");
+	list_add(lista_archivos,archivo_prueba);
 
 	//t_bloque *bloque = list_get(archivo_prueba.bloques,1);
 	//printf("numero de bloque final: %i\n\n\n",bloque->NumeroBloque);
@@ -99,10 +98,10 @@ void *atenderJob(void *arg){
 
 	printf("Tamaño de la lista: %i\n\n", list_size(archivo_prueba->bloques));
 
-	t_bloque *bloque = list_get(archivo_prueba->bloques,2);
-	printf("numero de bloque final posta: %i\n\n", bloque->NumeroBloque);
+	//t_bloque *bloque = list_get(archivo_prueba->bloques,0);
+	//printf("numero de bloque final posta: %i\n\n", bloque->NumeroBloque);
 
-	printf("NODOS: \n");
+	printf("\n\n-------------------NODOS--------------------- \n");
 
 	//pido lista de nodos
 
@@ -113,10 +112,9 @@ void *atenderJob(void *arg){
 
 	recv(socketFS,&tamanio_total,sizeof(int),0);
 	send(socketFS,&handshakeFS,sizeof(int),0);
-
 	recive_y_guarda_infoNodo(tamanio_total, socketFS, lista_nodos_estado);
 
-	printf("gaston traga penes\n");
+	planificarMap();
 
 	return NULL;
 }

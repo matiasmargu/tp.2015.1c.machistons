@@ -36,6 +36,7 @@
 
 FILE* nuevoArchivo;
 
+int tamanioArchivo_BIN;
 
 char *ip_nodo;
 int puerto_nodo;
@@ -53,7 +54,7 @@ t_config* archivoConfiguracion;
 
 //Funciones de mapper y reducer
 void mapper(void* arg);
-void *reducer(void* arg);
+void reducer(void* arg);
 
 //Funciones de memoria
 char* mapearAMemoriaVirtual(char* archivo_bin);
@@ -61,6 +62,7 @@ int tamanioEspecifico(char* pmap,int nroDelBloque);
 void formateoElRegistro(FILE* fdf);
 char* mapearDeFD_charp(int fd);
 void liberar(char **paquete);
+int tamanioEspecificoInversa(char* pmap, int nroDelBloque);
 
 //Funciones de serializacion y deserializacion
 int recive_y_deserialisa_CHARp(char *script, int socket, uint32_t tamanioTotal);
@@ -89,6 +91,7 @@ void leerID_NODO();
 //Funciones para la depuracion
 void eliminarEnters(char* buffer, int tamanio);
 void formatearArchivo(char* pmap);
+void formatearBloque(char* pmap,int nroDeBloque);
 
 //Funciones esenciales
 int getBloque(int nroDeBloque, char* bloque);

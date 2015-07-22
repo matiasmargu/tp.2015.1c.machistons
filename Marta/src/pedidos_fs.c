@@ -8,7 +8,8 @@
 #include "librerias_y_estructuras.h"
 
 void inicializar_pedido_FS(){
-		char *nombre_archivo = "201303hourly.txt";
+		char *nombre_archivo = malloc(strlen("201303hourly.txt"));
+		nombre_archivo = "201303hourly.txt";
 		int tam = strlen(nombre_archivo);
 		int handshakeFS = 72; // pido info de archivos
 	   	send(socketFS,&handshakeFS, sizeof(int), 0);
@@ -20,6 +21,11 @@ void inicializar_pedido_FS(){
 	   	printf("tamanio antes del send: %i\n",tam);
 	   	tam = send(socketFS,nombre_archivo, tam, 0);
 	   	printf("tamanio despues del send: %i\n",tam);
+}
+
+int comparar(t_nodo *infoNodo){
+	if (infoNodo->id_nodo == 1) return true;
+	else return false;
 }
 
 void recive_y_guarda_infoNodo(int tamanio, int socket, void *lista_nodos){
@@ -52,9 +58,12 @@ void recive_y_guarda_infoNodo(int tamanio, int socket, void *lista_nodos){
 
 
 		printf("idNodo: %i\n ipNodo: %s\n puertoNodo: %s\n\n",infoNodo->id_nodo, infoNodo->ip_nodo, infoNodo->puerto_nodo);
-		list_add_in_index(lista_nodos,infoNodo->id_nodo,infoNodo);
+		list_add(lista_nodos,infoNodo);
 		printf("tamaño de la lista dentro de la funcion: %i\n",list_size(lista_nodos));
+
 	}
+	//infoNodo = list_find(lista_nodos, (void*) comparar);
+	//printf("ID del que probamos: %i\n", infoNodo->id_nodo);
 }
 
 int recive_y_guarda_estructura(t_archivo *arch, int socket, uint32_t tamanioTotal){

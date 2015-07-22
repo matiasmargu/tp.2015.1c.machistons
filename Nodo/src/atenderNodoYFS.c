@@ -14,13 +14,11 @@ void *atenderNFS(void*arg){
 	char *bufferSet;
 	char* paquetito;
 
-	int i,offset,tamanioDelPaquetito;
+	int offset,tamanioDelPaquetito;
 	int socket= (int)arg;
 	int entero; // handshake para saber quien es: FS(23)
 	int nroDelBloque;
 	int tamanioBloque;
-	int n;
-	int cantidadDePaquetitos;
 
 	int variableDelPaquetito = 64*1024;
 	int tamanioReal;
@@ -47,7 +45,8 @@ void *atenderNFS(void*arg){
 
 			tamanioBloque=tamanioEspecifico(pmap,nroDelBloque);
 
-			printf("Este es el tamaño del bloque: %i\n",tamanioBloque);
+			printf("Este es el tamaño del bloque por tamanioESP es: %i\n",tamanioBloque);
+
 			char* bloque=malloc(tamanioBloque);
 
 			int tamanioBloqueExacto = nroDelBloque * 1024 * 1024* 20;
@@ -100,9 +99,9 @@ void *atenderNFS(void*arg){
 
 			printf("Este es el tamaño del buffer set DESPUES: %i\n",strlen(bufferSet));
 
-			memcpy(pmap+(1024*1024*20*(nroDelBloque)),bufferSet,strlen(bufferSet)+sizeof('/'));
+			memcpy(pmap+(1024*1024*20*(nroDelBloque)),bufferSet,tamanioBloque);
 
-			msync(pmap,strlen(pmap),0);
+			msync(pmap,tamanioArchivo_BIN,0);
 			printf("se seteo correctamente\n");
 			liberar(&bufferSet);
 			//ok = 20;
@@ -138,12 +137,17 @@ void *atenderNFS(void*arg){
 		break;
 		case 4:
 		//FORMATEO
-			n = strlen(pmap);
-			for(i=0;i<n;i++){
-				pmap[i]='/';
-			}
-			msync(pmap,strlen(pmap),0);
-			printf("se formateo el archivo binario\n");
+			formatearArchivo(pmap);
+		break;
+		case 5:
+		//FORMATEO DE BLOQUE
+			send(socket,&entero,sizeof(int),0);
+			recv(socket,&nroDelBloque,sizeof(int),0);
+
+			printf("Se esta formateando el bloque...\n");
+			formatearBloque(pmap,nroDelBloque);
+			printf("Formateo del bloque %i completado\n",nroDelBloque);
+
 		break;
 
 		free(bloque);
@@ -151,6 +155,6 @@ void *atenderNFS(void*arg){
 }
 }
 
-	munmap(pmap,strlen(pmap));
+	munmap(pmap,tamanioArchivo_BIN);
 	return NULL;
 }

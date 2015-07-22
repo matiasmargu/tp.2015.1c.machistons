@@ -56,22 +56,44 @@ char* mapearDeFD_charp(int fd){
 int tamanioEspecifico(char* pmap,int nroDelBloque){
 	int i,contador=0,b=0;
 
-	for(i=pmap[nroDelBloque*20*1024*1024];b==0;i++){
+	for(i=nroDelBloque*20*1024*1024;b==0;i++){
 
 		contador++;
 		if(pmap[i]=='/'){
 			b=1;
 		}
 
+		if(contador >= 20*1024*1024){
+			b=1;
+		}
+	}
+	return (contador-1);
+}
+
+int tamanioEspecificoInversa(char* pmap, int nroDelBloque){
+	int contador,i,b;
+
+	contador = 0;
+	b=0;
+	for(i=(((nroDelBloque+1)*20*1024*1024)-1);b==0;i--){
+		contador ++;
+		if(pmap[i]!='/'){
+			b=1;
+		}
 		if(contador == 20*1024*1024){
 			b=1;
 		}
-
-		//printf("Impirimir: %c\n",pmap[i])
 	}
-	//printf("todo bien \n");
-	return (contador-1);
+
+	contador--;
+	if(contador >= 20*1024*1024){
+		contador = 20*1024*1024;
+	}else{
+		contador = (20*1024*1024) - contador;
+	}
+	return contador;
 }
+
 
 
 
@@ -116,11 +138,23 @@ int getBloque(int nroDeBloque, char* bloque){
 void formatearArchivo(char* pmap){
 	int n,i;
 
-	n = strlen(pmap);
-		for(i=0;i<n;i++){
-	pmap[i]='/';
+	n = tamanioArchivo_BIN;
+	for(i=0;i<n;i++){
+		pmap[i]='/';
 	}
-	msync(pmap,strlen(pmap),0);
+	msync(pmap,n,0);
 }
 
+void formatearBloque(char* pmap,int nroDeBloque){
+	int n,m,i;
+	n = tamanioArchivo_BIN;
+	m = tamanioEspecifico(pmap,nroDeBloque);
+
+	for(i=0;i<m;i++){
+		pmap[i+(nroDeBloque*20*1024*1024)]='/';
+		printf("%i\n",i);
+	}
+
+	msync(pmap,n,0);
+}
 
