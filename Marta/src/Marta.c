@@ -58,6 +58,8 @@ int main(void) {
 
 		fdmax = listener;
 
+		lista_archivos = list_create();
+
 
 	   	/*
 	   	t_archivo archivo_prueba;

@@ -53,10 +53,15 @@ t_cargaBitarray_aux *armarVectorDeBitarray(t_cargaBitarray_aux *vectorDeBitArray
 	//seteo los bitarrays
 	int j,h, k;
 	(*sub_indice) = 0;
+	printf("nodos control 2\n");
+	printf("CANTIDAD DE ARCHIVOS: %i\n",list_size(lista_archivos));
 	for(j=0 ; j< list_size(lista_archivos);j++){
+		printf("nodos control 3\n");
 		un_archivo = list_get(lista_archivos,j);
+		printf("nodos control 4\n");
 		for(h=0;h < un_archivo->cantidadDeBloques;h++){
 			t_bloque* bloque = list_get(un_archivo->bloques,h);
+			printf("ID DEL BLOQUE DENTRO DEL BITARRAY: %i\n",bloque->NumeroBloque);
 			vectorDeBitArrays = realloc(vectorDeBitArrays,sizeof(t_cargaBitarray_aux)*((*sub_indice)+1));
 			vectorDeBitArrays[(*sub_indice)].nombre_arch = un_archivo->nombre;
 			vectorDeBitArrays[(*sub_indice)].bloque_arch = bloque->NumeroBloque;
@@ -70,6 +75,7 @@ t_cargaBitarray_aux *armarVectorDeBitarray(t_cargaBitarray_aux *vectorDeBitArray
 		}
 	}
 	free(un_nombre);
+	printf("nodos control 5\n");
 	return vectorDeBitArrays; //LIBERAR ESTA MEMORIA DESP Y ELIMINAR CADA BITARRAY TMB
 }
 
@@ -104,57 +110,72 @@ int buscarVictimasPorContadores(t_cargaBitarray_aux bitmap, int *vector_contador
 	return nodo;
 }
 
+void cargar_nodos_en_array(int *nodos){
+	int i;
+	t_nodo *nodo = malloc(sizeof(t_nodo));
+	for(i=0;i < list_size(lista_nodos_estado);i++){
+		nodo = list_get(lista_nodos_estado,i);
+		nodos[i] = nodo->id_nodo;
+	}
+}
+
 void planificarMap(){
 	// PARA PLANIFICAR NECESITO SABER LOS NODOS ACTIVOS. PARA ESO SE LO PIDO AL FS
-	int cantidad_nodos_activos = 4;	// ESTO ME LO MANDA EL FS, JUNTO CON LOS NODOS_ACTIVOS
-	int nodos_activos[cantidad_nodos_activos]; //LOS ID DE LOS NODOS ACTIVOS NECESITO QUE ME LOS MANDES ASI GASTON: [1,14,22,31] ORDENADOS DE MENOR A MAYOR
+	int cantidad_nodos_activos = list_size(lista_nodos_estado);	// ESTO ME LO MANDA EL FS, JUNTO CON LOS NODOS_ACTIVOS
+	int *nodos_activos = malloc(sizeof(int)*cantidad_nodos_activos);
+	cargar_nodos_en_array(nodos_activos);//LOS ID DE LOS NODOS ACTIVOS NECESITO QUE ME LOS MANDES ASI GASTON: [1,14,22,31] ORDENADOS DE MENOR A MAYOR
 	t_cargaBitarray_aux bitmapAuxiliar[cantidad_nodos_activos];
-    int victim_pos;
-	if(list_is_empty(lista_nodos_estado)){
-		pthread_mutex_lock(&mutex_nodos);
-		lista_nodos_estado = list_create();
-		pthread_mutex_unlock(&mutex_nodos);
-		int *tamanio = malloc(sizeof(int));
-		t_cargaBitarray_aux *bitmap = malloc(sizeof(t_cargaBitarray_aux));
-		armarVectorDeBitarray(bitmap, cantidad_nodos_activos, nodos_activos, tamanio);
-		int division = (*tamanio)/cantidad_nodos_activos;
-		int resto_division = (*tamanio)%cantidad_nodos_activos;
-		if(resto_division == 0) division--;
-		// vector_contador = vector de contadores para planificar (esto no cambia hasta que termina el planificarMap)
-		int *vector_contador = malloc(sizeof(int)*cantidad_nodos_activos);
-		int j, bloqueArch_pos,bloque,nodo;
-		// inicializo vector_contador
-		for(j=0;j<cantidad_nodos_activos;j++) vector_contador[j] = 0;
-		//
-		for(j=0;j <= division;j++){
-			int k = 0;
-			int tamanio_bitmapAux = division;
-			if((resto_division != 0) && (j == division)) tamanio_bitmapAux = resto_division-1;
-			// tengo que cargar el auxiliar con los bloques que va a planificar el algoritmo de map
-			// ej: si es la primera pasada, auxiliar va a tener la cantidad de bloques
-			// si es la 2da pasada, auxiliar va a tener la cantidad de bloques menos el que ya se eligio antes
-			//cargarBitmapAuxiliar(bitmapAuxiliar, bitmap, tamanio_bitmapAux);
-			while(k <= tamanio_bitmapAux){
-				/*
+	int i;
+	for(i=0;i<cantidad_nodos_activos;i++) printf("IDs DEL NODO: %i\n",nodos_activos[i]);
+	//int victim_pos;
+    //pthread_mutex_lock(&mutex_nodos);
+    //lista_nodos_estado = list_create();
+    //pthread_mutex_unlock(&mutex_nodos);
+
+
+    int *tamanio = malloc(sizeof(int));
+    t_cargaBitarray_aux *bitmap = malloc(sizeof(t_cargaBitarray_aux));
+    armarVectorDeBitarray(bitmap, cantidad_nodos_activos, nodos_activos, tamanio);
+    /*
+    int division = (*tamanio)/cantidad_nodos_activos;
+    int resto_division = (*tamanio)%cantidad_nodos_activos;
+    if(resto_division == 0) division--;
+    // vector_contador = vector de contadores para planificar (esto no cambia hasta que termina el planificarMap)
+    int *vector_contador = malloc(sizeof(int)*cantidad_nodos_activos);
+    int j, bloqueArch_pos,bloque,nodo;
+    // inicializo vector_contador
+    for(j=0;j<cantidad_nodos_activos;j++) vector_contador[j] = 0;
+    //
+    for(j=0;j <= division;j++){
+    	int k = 0;
+    	int tamanio_bitmapAux = division;
+    	if((resto_division != 0) && (j == division)) tamanio_bitmapAux = resto_division-1;
+    	// tengo que cargar el auxiliar con los bloques que va a planificar el algoritmo de map
+    	// ej: si es la primera pasada, auxiliar va a tener la cantidad de bloques
+    	// si es la 2da pasada, auxiliar va a tener la cantidad de bloques menos el que ya se eligio antes
+    	//cargarBitmapAuxiliar(bitmapAuxiliar, bitmap, tamanio_bitmapAux);
+    	while(k <= tamanio_bitmapAux){
+    		/*
 				char *vectorVictimas_str = malloc(sizeof(char) * cantidad_nodos_activos);
 				t_cargaBitarray_aux *vectorVictimas = malloc(sizeof(t_cargaBitarray_aux));
 				vectorVictimas->bitmap = bitarray_create(vectorVictimas_str, cantidad_nodos_activos);
 				inicializarBitarray(vectorVictimas->bitmap, cantidad_nodos_activos);
 				*/
-				buscarVictimasPorBloque(bitmapAuxiliar, tamanio_bitmapAux, vector_contador, cantidad_nodos_activos, bloqueArch_pos, nodo);
-				bloque = bitmapAuxiliar[bloqueArch_pos].bloque_arch;
-				//eliminarBloque(bitmapAuxiliar, bloqueArch_pos, tamanio_bitmapAux);
+	/*
+    		buscarVictimasPorBloque(bitmapAuxiliar, tamanio_bitmapAux, vector_contador, cantidad_nodos_activos, bloqueArch_pos, nodo);
+    		bloque = bitmapAuxiliar[bloqueArch_pos].bloque_arch;
+    		//eliminarBloque(bitmapAuxiliar, bloqueArch_pos, tamanio_bitmapAux);
 
-				if (j == 0){
-					//si j==0 quiere decir que la alineacion de vectorVictimas es pura
-					//si j > 0 quiere decir que la alineacion de vectorVictimas es k*cantidad_nodos_activos
-					// alineacion = posicion del bloque dentro del bitmap grande
-				}
-				k++;
+    		if (j == 0){
+    			//si j==0 quiere decir que la alineacion de vectorVictimas es pura
+    			//si j > 0 quiere decir que la alineacion de vectorVictimas es k*cantidad_nodos_activos
+    			// alineacion = posicion del bloque dentro del bitmap grande
+					}
+    		k++;
 			}
 		}
-		free(vector_contador);
-	}
+    free(vector_contador);
+    */
 
 }
 

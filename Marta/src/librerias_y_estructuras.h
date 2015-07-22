@@ -149,6 +149,7 @@ void  *conectarseAlJob(void*arg);
 void aplicarReduce(t_aplicarReduce structRecibido);
 void *atenderJob(void *arg);
 void inicializar_pedido_FS();
+void planificarMap();
 
 
 #endif /* LIBRERIAS_Y_ESTRUCTURAS_H_ */
