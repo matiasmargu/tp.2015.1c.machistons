@@ -55,7 +55,7 @@ int main(void){
 
 		// para probar
         int tamanio23;
-        char * lluo;
+        char * lluo,temp;
         lluo= "campoTabla1";
         tamanio23=sizeof(int)* 5 + 4 * strlen(lluo) + 1 ;
 		tabla = malloc(tamanio23);
@@ -194,6 +194,7 @@ int main(void){
 						campoDeLaListaTablaDeProcesos = list_get(campoDeLaLista->tabla_procesos,b);
 						tamanioListaArchivosAReducirPorNodo = list_size(lista_archivosAReducirPorNodo);
 				    	if(tamanioListaArchivosAReducirPorNodo == 0){
+				    		campoAAgregarAListaReducirPorNodo = malloc(tamanio23);
 				    		campoAAgregarAListaReducirPorNodo->idNodo =  campoDeLaListaTablaDeProcesos->id_nodo;
 				    		campoAAgregarAListaReducirPorNodo->archivosAReducir = list_create();
 				    		list_add(campoAAgregarAListaReducirPorNodo->archivosAReducir,campoDeLaListaTablaDeProcesos->nombre_archivo_resultado);
@@ -228,6 +229,7 @@ int main(void){
 				    		}
 				    			if(aux==0){//cuando no esta el id del nodo, entonces tiene que agregar todo directo
 				    				printf("Aca deberia entrar 4 veces \n");
+				    				campoAAgregarAListaReducirPorNodo = malloc(tamanio23);
 				    				campoAAgregarAListaReducirPorNodo->idNodo =  campoDeLaListaTablaDeProcesos->id_nodo;
 				    				campoAAgregarAListaReducirPorNodo->archivosAReducir = list_create();
 				    				list_add(campoAAgregarAListaReducirPorNodo->archivosAReducir,campoDeLaListaTablaDeProcesos->nombre_archivo_resultado);
@@ -264,7 +266,13 @@ int main(void){
            for(e=0;e<tamanio;e++){
         	   campoAAgregarAListaReducirPorNodo = list_get(lista_archivosAReducirPorNodo,e);
         	   printf("idnodo %i ipnodo %s puertonodo %s nombreDeArchivoResultado %s\n",campoAAgregarAListaReducirPorNodo->idNodo,campoAAgregarAListaReducirPorNodo->ipNodo,campoAAgregarAListaReducirPorNodo->puertoNodo,campoAAgregarAListaReducirPorNodo->nombreArchivoResultado);
-           }
+        	   a=list_size(campoAAgregarAListaReducirPorNodo->archivosAReducir);
+        	   printf("%i\n",a);
+          	   for(b=0;b<a;b++){
+        		   printf("Los campos de la lista de archivos a reducir son: %s \n",list_get(campoAAgregarAListaReducirPorNodo->archivosAReducir,b));
+        	   }
+        	   }
+
          free(campoDeLaLista);
          free(campoDeLaListaTablaDeProcesos);
          free(campoArchivosAReducirPorNodo);
