@@ -15,16 +15,11 @@ void *atenderConsola(void*arg) {
 
 	char bufferComando[MAXSIZE_COMANDO];
 	char **comandoSeparado;
+	char **comandoSeparado2;
+	char *separador2="\n";
 	char *separator=" ";
 
 	char *mensaje; // Para mandar mensajes serializados
-
-	bson_t *doc;
-	bson_t *doc2;
-	bson_t *doc3;
-	int cantidadBloques;
-	int a;
-
 
 	imprimirMenu();
 	while(1){
@@ -67,59 +62,25 @@ void *atenderConsola(void*arg) {
 				case Renombrar_Directorio: // 7
 					break;
 				case Mover_Directorio: // 8
+					printf("%i\n",formatearBloque(atoi(comandoSeparado[1]),atoi(comandoSeparado[2])));
 					break;
 				case Ver_Bloque_Arch: // 9
 					mensaje = pedirContenidoBloqueA(atoi(comandoSeparado[1]), 0);
 					printf("%s\n",mensaje);
 					break;
 				case Borrar_Bloque_Arch: // 10
-
 					break;
 				case Copiar_Bloque_Arch: // 11
-					doc = bson_new ();
-					BSON_APPEND_UTF8(doc, "Es", "Nodo");
-					pthread_mutex_lock(&mutex);
-					BSON_APPEND_INT32(doc, "ID Nodo", idNodoGlobal);
-					idNodoGlobal++;
-					pthread_mutex_unlock(&mutex);
-					BSON_APPEND_INT32(doc, "Socket", idNodoGlobal);
-					BSON_APPEND_UTF8 (doc, "IP", "12123123.123123.123123");
-					BSON_APPEND_UTF8(doc, "PUERTO" , "dasdasd");
-					cantidadBloques = 15;
-					BSON_APPEND_UTF8(doc, "Conexion", "Conectado");
-					BSON_APPEND_UTF8(doc, "Estado", "No Disponible");
-					BSON_APPEND_INT32(doc, "Cantidad de Bloques Total", cantidadBloques);
-
-					doc2 = bson_new ();
-					for(a=0;a<cantidadBloques;a++){
-						BSON_APPEND_INT32(doc2, string_itoa(a), 9);
-					}
-					BSON_APPEND_ARRAY(doc, "Bloques Libres", doc2);
-					bson_destroy (doc2);
-
-					doc2 = bson_new ();
-					BSON_APPEND_ARRAY(doc, "Bloques Ocupados", doc2);
-					bson_destroy (doc2);
-
-					pthread_mutex_lock(&mutex);
-					if (!mongoc_collection_insert(nodos, MONGOC_INSERT_NONE, doc, NULL, NULL)) {
-					}
-					pthread_mutex_unlock(&mutex);
-					bson_destroy (doc);
 					break;
 				case Agregar_Nodo: // 12
 					agregarNodo();
 					break;
 				case Eliminar_Nodo: // 13
-
 					verificarEstadoFS();
 					break;
 				case Copiar_Arch_Al_MDFS: // 14
-					//comandoSeparado2=string_split(comandoSeparado[1], separador2);
-					// comandoSeparado2[0]
-					// verificar si hay espacio para este archivo
-					//insertarArchivoAMongoYAlMDFS("/home/utnso/Escritorio/201303hourly.txt");
-					if(insertarArchivoAMongoYAlMDFS("/home/utnso/Escritorio/201303hourly.txt")== 20){
+					comandoSeparado2=string_split(comandoSeparado[1], separador2);
+					if(insertarArchivoAMongoYAlMDFS(comandoSeparado2[0])== 20){
 						printf("Se agrego correctamente el archivo al MDFS\n"
 								"Ingrese 0 para imprimir el menu\n");
 					}else{
@@ -187,13 +148,10 @@ void formatear(){
 	int entero; //Para el handshake
 	int socketNodo;
 	bson_iter_t iter;
-	bson_iter_t iter2;
 	mongoc_cursor_t *cursor;
 	entero = 4;
 	int cantidadBloques;
 	int a;
-	int tamanioArray;
-	int bloque;
 
 	doc = bson_new ();
    	query = bson_new ();
@@ -210,28 +168,6 @@ void formatear(){
 				for(a=0;a<cantidadBloques;a++){
 					elBloqueDelNodoSeLibero(socketNodo,a);
 				}
-
-
-				a=1;
-				if(bson_iter_find(&iter, "Bloques Libres") && BSON_ITER_HOLDS_ARRAY(&iter)){
-
-					if(bson_iter_recurse(&iter,&iter2)){
-						tamanioArray=0;
-						a=1;
-						while(a!=2){
-							if(bson_iter_find (&iter2, string_itoa(tamanioArray))){
-								tamanioArray++;
-								bloque = bson_iter_int32(&iter2);
-								printf("%i\n",bloque);
-							}else{
-								a=2;
-							}
-						}
-						printf("tamanio :%i\n",tamanioArray);
-					}
-				}
-
-
 			}
 		}
 	}else{
@@ -248,6 +184,7 @@ void formatear(){
 	if (!mongoc_collection_remove (directorios, MONGOC_DELETE_NONE, doc, NULL, &error)) {
 			        printf ("Delete failed: %s\n", error.message);
 	}
+	idDirectorioGlobal = 1;
 	bson_destroy (doc);
 	printf("El MDFS ha sido formateado correctamente \n");
 }

@@ -52,14 +52,18 @@ void *atenderMarta(void*arg){
 
 				nombrePrueba = malloc(tamanioNombreArchivo);
 				if(recv(socketMarta, nombrePrueba, tamanioNombreArchivo, 0)< 0) return NULL;
-				nombreArchivo = malloc(tamanioNombreArchivo);
+				nombreArchivo = malloc(tamanioNombreArchivo + 1);
 				memcpy(nombreArchivo,nombrePrueba,tamanioNombreArchivo);
+				*(nombreArchivo + tamanioNombreArchivo) = '\0';
 				printf("%s\n",nombreArchivo);
+
+				// Aca voy a tener el path del archivo a buscar asique tengo que separar los directorios.
+				// Buscar en la coleccion directorios el index del ultimo directorio y buscarlo junto con el nombre del archivo
 
 				query = bson_new ();
 				offset = 0;
 
-				query = BCON_NEW("Nombre",nombreArchivo);
+				BSON_APPEND_UTF8(query, "Nombre" , nombreArchivo);
 				cursor = mongoc_collection_find (archivos, MONGOC_QUERY_NONE, 0, 0, 0, query, NULL, NULL);
 
 				while (mongoc_cursor_next (cursor, &doc)) {

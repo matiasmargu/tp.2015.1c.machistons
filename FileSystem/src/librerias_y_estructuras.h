@@ -86,6 +86,7 @@ mongoc_client_t *client;
 mongoc_collection_t *directorios;
 mongoc_collection_t *archivos;
 mongoc_collection_t *nodos;
+//
 
 void aplicarNodoGlobalYponerNodosNoDisponible();
 void verificarEstadoFS();
@@ -104,6 +105,7 @@ char *pedirContenidoBloqueA (int socket, int nroBloque);
 char* serializarParaGetBloque(estructuraSetBloque *bloque);
 int recive_y_deserialisa_IPyPUERTO_Nodo(estructuraIPyNodo *bloque, int socket, uint32_t tamanioTotal);
 char* recive_y_deserialisa_SOLOIP_Nodo(int socket, uint32_t tamanioTotal);
+int formatearBloque(int socket, int nroBloque);
 
 // Funciones para Agregar Datos a Mongo
 
@@ -112,6 +114,8 @@ int insertarArchivoAMongoYAlMDFS (char* path);
 void agregarCopia (bson_t *documento, char* numeroCopia, int idNodo, int bloque);
 void elBloqueDelNodoSeOcupo(int socketNodo, int nroBloque);
 void elBloqueDelNodoSeLibero(int socketNodo, int nroBloque);
+int cantidadBloquesLibres(int idNodo);
+int cantidadNodosConectados();
 
 // Funcion Interfaz Marta
 
