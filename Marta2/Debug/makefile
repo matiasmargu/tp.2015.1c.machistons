@@ -26,13 +26,13 @@ endif
 all: Marta2
 
 dependents:
-	-cd /home/utnso/tp-2015-1c-machistons/funciones/Debug && $(MAKE) all
+	-cd /home/utnso/git/tp-2015-1c-machistons/funciones/Debug && $(MAKE) all
 
 # Tool invocations
-Marta2: $(OBJS) $(USER_OBJS) /home/utnso/tp-2015-1c-machistons/funciones/Debug/libfunciones.so
+Marta2: $(OBJS) $(USER_OBJS) /home/utnso/git/tp-2015-1c-machistons/funciones/Debug/libfunciones.so
 	@echo 'Building target: $@'
 	@echo 'Invoking: GCC C Linker'
-	gcc -L"/home/utnso/tp-2015-1c-machistons/funciones/Debug" -o "Marta2" $(OBJS) $(USER_OBJS) $(LIBS)
+	gcc -L"/home/utnso/git/tp-2015-1c-machistons/funciones/Debug" -o "Marta2" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -43,6 +43,6 @@ clean:
 
 .PHONY: all clean dependents
 .SECONDARY:
-/home/utnso/tp-2015-1c-machistons/funciones/Debug/libfunciones.so:
+/home/utnso/git/tp-2015-1c-machistons/funciones/Debug/libfunciones.so:
 
 -include ../makefile.targets

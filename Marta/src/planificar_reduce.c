@@ -49,7 +49,89 @@ t_tablaProcesos_porJob2 *campoDeTabla5;
 t_tablaProcesos_porJob2 *campoDeTabla6;
 t_list* lista_job_tabla;
 
+
+
+
+//AGREGO LA SERIALIZACION , ESTA IGUAL QUE COMO SE DESERIALIZA EN JOB
+
+char* serializar_marta_job_reduce(t_marta_job_reduce *bloque, int tamanioTotal){
+			char *serializedPackage = malloc(tamanioTotal);
+
+			int offset = 0;
+			int size_to_send;
+
+			size_to_send =  sizeof(bloque->cantidadArchivos);
+			memcpy(serializedPackage + offset, &(bloque->cantidadArchivos), size_to_send);
+			offset += size_to_send;
+
+			int tamanioNombre = strlen(bloque->ipNodo) + 1;
+			size_to_send = sizeof(int);
+			memcpy(serializedPackage + offset, &tamanioNombre, size_to_send);
+			offset += size_to_send;
+
+			size_to_send =  strlen(bloque->ipNodo) + 1;
+			memcpy(serializedPackage + offset, bloque->ipNodo, size_to_send);
+			offset += size_to_send;
+
+			tamanioNombre = strlen(bloque->puertoNodo) + 1;
+			size_to_send = sizeof(int);
+			memcpy(serializedPackage + offset, &tamanioNombre, size_to_send);
+			offset += size_to_send;
+
+			size_to_send =  strlen(bloque->puertoNodo) + 1;
+			memcpy(serializedPackage + offset, bloque->puertoNodo, size_to_send);
+			offset += size_to_send;
+
+
+			size_to_send =  sizeof(bloque->idNodo);
+			memcpy(serializedPackage + offset, &(bloque->idNodo), size_to_send);
+			offset += size_to_send;
+
+			tamanioNombre = strlen(bloque->archivoResultadoReduce) + 1;
+			size_to_send = sizeof(int);
+			memcpy(serializedPackage + offset, &tamanioNombre, size_to_send);
+			offset += size_to_send;
+
+			size_to_send =  strlen(bloque->archivoResultadoReduce) + 1;
+			memcpy(serializedPackage + offset, bloque->archivoResultadoReduce, size_to_send);
+			offset += size_to_send;
+
+			//SERIALIZACION DE LA LISTA DE ARCHIVOS
+			int tamanioLista = list_size(bloque->listaArchivosTemporales);
+			int a;
+			char* archivo;
+
+			for(a=0;a< tamanioLista; a++){
+			archivo = list_get(bloque->listaArchivosTemporales, a);
+			tamanioNombre = strlen(archivo) + 1;
+			size_to_send = sizeof(int);
+			memcpy(serializedPackage + offset, &tamanioNombre, size_to_send);
+			offset += size_to_send;
+
+			size_to_send =  strlen(archivo) + 1;
+			memcpy(serializedPackage + offset, archivo, size_to_send);
+			offset += size_to_send;
+					}
+
+
+
+
+			return serializedPackage;
+		}
+
+
+
+
+
+
+
+
+
+
+
 // HAY QUE VER DE DONDE SACAMOS EL SOCKET JOB
+      //Para mi tiene que venir como parametro cuando llaman a la funcion , ya que marta y job ya
+	  // se van a estar comunicando por el mismo socket cuando le pasa la lista inicial el combiner y demas
 
 void planificarReduceConCombiner(){
 
@@ -295,14 +377,14 @@ void planificarReduceConCombiner(){
 
 
 	handshakeJob = 34;
-	//tamanio es el tamanio del vector
+	//tamanio es el tamanio de la lista
 	//el socketJob tiene que venir como parametro
 	for(a=0; a<tamanio; a++){
 	campoDeUnNodo=list_get(lista_archivosAReducirPorNodo,a);
 	send(socketJob, &handshakeJob, sizeof(int),0);
 	recv(socketJob, &enteroPrueba, sizeof(int),0);
 	tamanioArchivosaReducir = list_size(campoDeUnNodo->archivosAReducir);
-	for(b=0; b< tamanioArchivosaReducir; b++){ // aca no va tamanio, sino que va el tamanio de la lista de archivos a reducir
+	for(b=0; b< tamanioArchivosaReducir; b++){
 	archivo1 =	list_get(campoDeUnNodo->archivosAReducir,b);
 	tamanioTotalVector += strlen(archivo1);
 	tamanioTotalVector += 1;
@@ -316,7 +398,7 @@ void planificarReduceConCombiner(){
 	structAserializar.ipNodo = campoDeUnNodo->ipNodo;
 	structAserializar.puertoNodo = campoDeUnNodo->puertoNodo;
 	list_add_all(structAserializar.listaArchivosTemporales, campoDeUnNodo->archivosAReducir);
-//	structAEnviarAJob = serializar_marta_job_reduce(&structAserializar, tamanioAenviar); el serializar esta hecho en marta2
+	structAEnviarAJob = serializar_marta_job_reduce(&structAserializar, tamanioAenviar);
 	send(socketJob, structAEnviarAJob, tamanioAenviar, 0);
 
 	}
@@ -326,6 +408,9 @@ void planificarReduceConCombiner(){
 	free(campoDeListaDeNodo);
 	free(campoAAgregarAListaReducirPorNodo);
 }
+
+
+
 
 
 
