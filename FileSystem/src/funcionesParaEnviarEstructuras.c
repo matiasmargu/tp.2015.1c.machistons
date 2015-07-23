@@ -81,9 +81,6 @@ char* recive_y_deserialisa_SOLOIP_Nodo(int socket, uint32_t tamanioTotal){
 	return IP;
 }
 
-
-// Funciones de Nodos
-
 void *agregoNodoaMongo (void*arg){
 	int socket = (int)arg;
 	int nodoNuevoOViejo;
@@ -202,7 +199,6 @@ void crearDirectorio(){
 	}
 
 	idSiguiente = 0;
-	fflush(stdin);
 	for(a=0;a<tamanio-1;a++){
 		if(path[a]=='/'){
 			desde = a;
@@ -221,11 +217,10 @@ void crearDirectorio(){
 			hasta = a;
 			desde++;
 			tamanioDirectorio = hasta - desde;
-			directorioNuevo = malloc(tamanioDirectorio);
-			memset(directorioNuevo,0,tamanioDirectorio);
+			directorioNuevo = malloc(tamanioDirectorio + 1);
 			memcpy(directorioNuevo, path+desde ,tamanioDirectorio);
 			a--;
-			printf("%s\n",directorioNuevo);
+			*(directorioNuevo + tamanioDirectorio) = '\0';
 			idSiguiente = agregarDirectorioAMongo(directorioNuevo, idSiguiente);
 			if(idSiguiente == -1){
 				log_error(logger, "Error al insertar nuevo directorio");
@@ -240,20 +235,100 @@ void crearDirectorio(){
 
 int agregarDirectorioAMongo(char* directorio, int idSiguiente){
 	bson_t *doc;
+	bson_t *query;
+	int cantidad;
+	bson_iter_t iter;
+	mongoc_cursor_t *cursor;
+
 	doc = bson_new ();
-	pthread_mutex_lock(&mutexParaIDDirectorio);
-	BSON_APPEND_INT32 (doc, "Index", idDirectorioGlobal);
-	BSON_APPEND_UTF8(doc, "Directorio", directorio);
-	BSON_APPEND_INT32(doc, "Padre", idSiguiente);
-	idSiguiente = idDirectorioGlobal;
-	idDirectorioGlobal++;
-	if (!mongoc_collection_insert (directorios, MONGOC_INSERT_NONE, doc, NULL, NULL)) {
-		return -1;
+	printf("%i\n",idSiguiente);
+	if(idSiguiente != 0){
+		pthread_mutex_lock(&mutexParaIDDirectorio);
+		BSON_APPEND_INT32 (doc, "Index", idDirectorioGlobal);
+		BSON_APPEND_UTF8(doc, "Directorio", directorio);
+		BSON_APPEND_INT32(doc, "Padre", idSiguiente);
+		idSiguiente = idDirectorioGlobal;
+		idDirectorioGlobal++;
+		if (!mongoc_collection_insert (directorios, MONGOC_INSERT_NONE, doc, NULL, NULL)) {
+			return -1;
+		}
+		pthread_mutex_unlock(&mutexParaIDDirectorio);
+		bson_destroy (doc);
+		return idSiguiente;
+	}else{
+		query = bson_new ();
+		BSON_APPEND_UTF8(query, "Directorio", directorio);
+		cantidad = mongoc_collection_count(directorios, MONGOC_QUERY_NONE, query,0,0,NULL,NULL);
+		printf("cantidad: %i\n",cantidad);
+		if(cantidad > 0){
+			cursor = mongoc_collection_find (directorios, MONGOC_QUERY_NONE, 0, 0, 0, query, NULL, NULL);
+			while (mongoc_cursor_next (cursor, &doc)) {
+				if (bson_iter_init (&iter, doc)) {
+					if(bson_iter_find (&iter, "Index"))idSiguiente = bson_iter_int32(&iter);
+				}
+			}
+			bson_destroy (query);
+		}else{
+			pthread_mutex_lock(&mutexParaIDDirectorio);
+			BSON_APPEND_INT32 (doc, "Index", idDirectorioGlobal);
+			BSON_APPEND_UTF8(doc, "Directorio", directorio);
+			BSON_APPEND_INT32(doc, "Padre", idSiguiente);
+			idSiguiente = idDirectorioGlobal;
+			idDirectorioGlobal++;
+			if (!mongoc_collection_insert (directorios, MONGOC_INSERT_NONE, doc, NULL, NULL)) {
+				return -1;
+			}
+			pthread_mutex_unlock(&mutexParaIDDirectorio);
+			bson_destroy (doc);
+		}
+		return idSiguiente;
 	}
-	pthread_mutex_unlock(&mutexParaIDDirectorio);
-	bson_destroy (doc);
-	free(directorio);
-	return idSiguiente;
+
+}
+
+int elegirDirectorioParaArchivo(){
+
+	char bufferComando[MAXSIZE_COMANDO];
+	char **comandoSeparado;
+	char *separator=" ";
+	bson_t *doc;
+	bson_t *query;
+	bson_t *update;
+	int cantidad;
+	int idNodo;
+	const char* IPNodo;
+	const char* PUERTONodo;
+	bson_iter_t iter;
+	mongoc_cursor_t *cursor;
+	int directorio;
+
+	query = bson_new ();
+	BSON_APPEND_UTF8(query, "Estado", "No Disponible");
+	BSON_APPEND_UTF8 (query, "Conexion", "Conectado");
+	BSON_APPEND_UTF8(query, "Es" , "Nodo");
+	cantidad = mongoc_collection_count(directorios, MONGOC_QUERY_NONE, query,0,0,NULL,NULL);
+	if(cantidad > 0){
+		cursor = mongoc_collection_find (directorios, MONGOC_QUERY_NONE, 0, 0, 0, query, NULL, NULL);
+		printf("Los directorios que se encuentran disponibles son los siguientes:\n");
+		while (mongoc_cursor_next (cursor, &doc)) {
+			if (bson_iter_init (&iter, doc)) {
+				if(bson_iter_find (&iter, "ID Nodo"))idNodo = bson_iter_int32(&iter);
+				if(bson_iter_find (&iter, "IP"))IPNodo = bson_iter_utf8(&iter,NULL);
+				if(bson_iter_find (&iter, "PUERTO"))PUERTONodo = bson_iter_utf8(&iter,NULL);
+				printf(">> ID Nodo: %i, IP: %s, Puerto: %s\n",idNodo,IPNodo,PUERTONodo);
+			}
+		}
+		bson_destroy (query);
+		query = bson_new ();
+		printf("Ingrese el ID del nodo que desee agregar\n");
+		fgets(bufferComando,MAXSIZE_COMANDO, stdin);
+		comandoSeparado=string_split(bufferComando, separator);
+		BSON_APPEND_INT32(query, "ID Nodo" , atoi(comandoSeparado[0]));
+	}else{
+		printf("No hay directorios creados\n"
+				"Ingrese 0 para imprimir el menu\n");
+	}
+	return directorio;
 }
 
 void eliminarDirectorio(){
@@ -281,7 +356,7 @@ void aplicarNodoGlobalYponerNodosNoDisponible(){
 	for(a=0;a<=cantidad;a++){
 		mongoc_collection_update(nodos, MONGOC_UPDATE_NONE, query, update, NULL, NULL);
 	}
-	idNodoGlobal = cantidad;
+	idNodoGlobal = cantidad + 1;
 	bson_destroy (query);
 	bson_destroy (update);
 }
@@ -388,6 +463,17 @@ int escribirBloqueEnNodo (int socket, estructuraSetBloque estructura){
 	return 90;
 }
 
+int formatearBloque(int socket, int nroBloque){ // Devuelve -1 si hay error
+	int entero;
+	entero = 5;
+	send(socket, &entero, sizeof(int), 0);
+	if(recv(socket, &entero, sizeof(int), 0)<0){ // basura
+		return -1;
+	}
+	send(socket, &nroBloque, sizeof(int),0);
+	return 10;
+}
+
 char *pedirContenidoBloqueA (int socket, int nroBloque){
 	int entero;
 	int variableDelPaquetito = 64*1024;
@@ -428,9 +514,6 @@ char *pedirContenidoBloqueA (int socket, int nroBloque){
 	printf("%i\n",strlen(bufferSet));
 	return bufferSet;
 }
-
-
-// Funciones de Archivos
 
 void agregarCopia (bson_t *documento, char* numeroCopia, int idNodo, int bloque){
 	bson_t *doc4;
@@ -476,6 +559,9 @@ int insertarArchivoAMongoYAlMDFS (char* path){
 
 	doc = bson_new ();
 	doc2 = bson_new ();
+
+	//cantidadBloques = 1;
+	// aca va la funcion para calcular combinaciones
 
 	for(contadorBloque=0;contadorBloque < cantidadBloques;contadorBloque++){
 
@@ -604,7 +690,6 @@ void elBloqueDelNodoSeOcupo(int socketNodo, int nroBloque){
 	return;
 }
 
-
 void elBloqueDelNodoSeLibero(int socketNodo, int nroBloque){
 
 	bson_t *doc2;
@@ -643,3 +728,144 @@ void elBloqueDelNodoSeLibero(int socketNodo, int nroBloque){
 
 	return;
 }
+
+int cantidadBloquesLibres(int idNodo){ // Devuelve -1 si no existe el nodo
+	bson_t *doc;
+	bson_t *query;
+	int cantidad;
+	int entero; //Para el handshake
+	int socketNodo;
+	bson_iter_t iter;
+	bson_iter_t iter2;
+	mongoc_cursor_t *cursor;
+	entero = 4;
+	int cantidadBloques;
+	int a;
+	int tamanioArray;
+	int flag;
+
+	doc = bson_new ();
+	query = bson_new ();
+	BSON_APPEND_UTF8 (query, "Conexion", "Conectado");
+	BSON_APPEND_UTF8(query, "Es" , "Nodo");
+	BSON_APPEND_UTF8(query, "Estado", "Disponible");
+	BSON_APPEND_INT32(query, "ID Nodo", idNodo);
+	cantidad = mongoc_collection_count(nodos, MONGOC_QUERY_NONE, query,0,0,NULL,NULL);
+	if(cantidad > 0){
+		cursor = mongoc_collection_find (nodos, MONGOC_QUERY_NONE, 0, 0, 0, query, NULL, NULL);
+		while (mongoc_cursor_next (cursor, &doc)) {
+			if (bson_iter_init (&iter, doc)) {
+				if(bson_iter_find(&iter, "Bloques Libres") && BSON_ITER_HOLDS_ARRAY(&iter)){
+					if(bson_iter_recurse(&iter,&iter2)){
+						tamanioArray=0;
+						flag=1;
+						while(flag!=2){
+							if(bson_iter_find (&iter2, string_itoa(tamanioArray))){
+								tamanioArray++;
+							}else{
+								flag=2;
+							}
+						}
+					}
+				}
+			}
+		}
+	}else{
+			return -1;
+		}
+	bson_destroy (query);
+	return tamanioArray;
+}
+
+char *calcularCombinacionesDeAsignacion(int cantidadBloquesArch){
+	bson_t *doc;
+	bson_t *query;
+	int cantidad;
+	bson_iter_t iter;
+	mongoc_cursor_t *cursor;
+	int contNodos;
+	int mayor,a,z,nodoARestar;
+
+	doc = bson_new ();
+	query = bson_new ();
+	BSON_APPEND_UTF8 (query, "Conexion", "Conectado");
+	BSON_APPEND_UTF8(query, "Es" , "Nodo");
+	BSON_APPEND_UTF8(query, "Estado", "Disponible");
+	cantidad = mongoc_collection_count(nodos, MONGOC_QUERY_NONE, query,0,0,NULL,NULL);
+
+	int matrizDeAsignacion[cantidadBloquesArch-1][2];
+
+	t_nodoVector vectorBloquesNodos[cantidad-1];
+	contNodos = 0;
+
+	if(cantidad > 0){
+		cursor = mongoc_collection_find (nodos, MONGOC_QUERY_NONE, 0, 0, 0, query, NULL, NULL);
+		while (mongoc_cursor_next (cursor, &doc)) {
+			if (bson_iter_init (&iter, doc)) {
+				if(bson_iter_find (&iter, "ID Nodo")) vectorBloquesNodos[contNodos].idNodo = bson_iter_int32(&iter);
+				vectorBloquesNodos[contNodos].bloquesLibres = cantidadBloquesLibres(vectorBloquesNodos[contNodos].idNodo);
+				contNodos++;
+			}
+		}
+	}else{
+		return "error";
+	}
+
+	for(a=0; a<cantidadBloquesArch ; a++){
+
+		// Asigno el ID de la primer Copia
+		mayor = 0;
+		for(z=0; z<cantidad; z++){
+			if(vectorBloquesNodos[z].bloquesLibres > mayor){
+				mayor = vectorBloquesNodos[z].bloquesLibres;
+				matrizDeAsignacion[a][0] = vectorBloquesNodos[z].idNodo;
+				nodoARestar = z;
+			}
+		}
+		vectorBloquesNodos[nodoARestar].bloquesLibres--;
+
+		// Asigno el ID de la segunda Copia
+		mayor= 0;
+		for(z=0; z<cantidad; z++){
+			if(vectorBloquesNodos[z].bloquesLibres > mayor){
+				if(vectorBloquesNodos[z].idNodo != matrizDeAsignacion[a][0]){
+					mayor = vectorBloquesNodos[z].bloquesLibres;
+					matrizDeAsignacion[a][1] = vectorBloquesNodos[z].idNodo;
+					nodoARestar = z;
+				}
+			}
+		}
+		vectorBloquesNodos[nodoARestar].bloquesLibres--;
+
+		// Asigno el ID de la tercer Copia
+		mayor= 0;
+		for(z=0; z<cantidad; z++){
+			if(vectorBloquesNodos[z].bloquesLibres > mayor){
+				if(vectorBloquesNodos[z].idNodo != matrizDeAsignacion[a][0]){
+					if(vectorBloquesNodos[z].idNodo != matrizDeAsignacion[a][1]){
+						mayor = vectorBloquesNodos[z].bloquesLibres;
+						matrizDeAsignacion[a][2] = vectorBloquesNodos[z].idNodo;
+						nodoARestar = z;
+					}
+				}
+			}
+		}
+		vectorBloquesNodos[nodoARestar].bloquesLibres--;
+	}
+
+	printf("Nro Bloque | Copia 1 | Copia 2 | Copia 3 |\n");
+	for(z=0; z<cantidadBloquesArch; z++){
+		printf("    %i      |    %i    |    %i    |    %i    |\n",z,matrizDeAsignacion[z][0],matrizDeAsignacion[z][1],matrizDeAsignacion[z][2]);
+	}
+
+	for(z=0; z<cantidad;z++){
+		printf("%i\n",vectorBloquesNodos[z].bloquesLibres);
+		if(vectorBloquesNodos[z].bloquesLibres < 0){
+			printf("No hay espacio suficiente para almacenar el archivo\n");
+			return "error";
+		}
+	}
+	return "hola";
+}
+
+
