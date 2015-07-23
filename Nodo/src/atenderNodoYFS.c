@@ -13,12 +13,15 @@ void *atenderNFS(void*arg){
 	char *direccion;
 	char *bufferSet;
 	char* paquetito;
+	char* bloqueGet;
 
 	int offset,tamanioDelPaquetito;
 	int socket= (int)arg;
 	int entero; // handshake para saber quien es: FS(23)
 	int nroDelBloque;
 	int tamanioBloque;
+	int tamanioBloqueExacto;
+	int loQueMande;
 
 	int variableDelPaquetito = 64*1024;
 	int tamanioReal;
@@ -28,6 +31,9 @@ void *atenderNFS(void*arg){
 	if(string_equals_ignore_case(nodo_nuevo,"SI")){
 		formatearArchivo(pmap);
 	}
+
+
+	tamanioArchivo_BIN= tamanioDelArchivoBIN();
 
 	printf("Este es el socket: %i\n",socket);
 
@@ -47,21 +53,19 @@ void *atenderNFS(void*arg){
 
 			printf("Este es el tamaño del bloque por tamanioESP es: %i\n",tamanioBloque);
 
-			char* bloque=malloc(tamanioBloque);
+			bloqueGet=malloc(tamanioBloque);
 
-			int tamanioBloqueExacto = nroDelBloque * 1024 * 1024* 20;
-			memcpy(bloque,pmap + tamanioBloqueExacto,tamanioBloque);
+			tamanioBloqueExacto = nroDelBloque * 1024 * 1024* 20;
+			memcpy(bloqueGet,pmap + tamanioBloqueExacto,tamanioBloque);
 
-			printf("Este es el posta: %i\n",strlen(bloque));
+			printf("Este es el posta: %i\n",strlen(bloqueGet));
 
 			send(socket,&tamanioBloque,sizeof(int),0);
 			recv(socket,&entero,sizeof(int),0);
 
-			int loQueMande = send(socket,bloque,tamanioBloque,0);
+			loQueMande = send(socket,bloqueGet,tamanioBloque,0);
 			printf("Lo envie y esto fue el tamaño que envie: %i\n",loQueMande);
 
-			//free(mensaje);
-			//free(bloque);
 		//ok = 20;
 		//send(socket,&ok, sizeof(int),0);
 		break;
@@ -151,11 +155,14 @@ void *atenderNFS(void*arg){
 			printf("Formateo del bloque %i completado\n",nroDelBloque);
 
 		break;
-
-		free(bloque);
 	}
 }
 }
+	liberar(&mensaje);
+	liberar(&direccion);
+	liberar(&bufferSet);
+	liberar(&paquetito);
+	liberar(&bloqueGet);
 
 	munmap(pmap,tamanioArchivo_BIN);
 	return NULL;

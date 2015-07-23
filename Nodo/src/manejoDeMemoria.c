@@ -139,6 +139,7 @@ void formatearArchivo(char* pmap){
 	int n,i;
 
 	n = tamanioArchivo_BIN;
+	printf("tamanioDelArchivo: %i\n",n);
 	for(i=0;i<n;i++){
 		pmap[i]='/';
 	}
@@ -150,11 +151,22 @@ void formatearBloque(char* pmap,int nroDeBloque){
 	n = tamanioArchivo_BIN;
 	m = tamanioEspecifico(pmap,nroDeBloque);
 
+	printf("%i\n",m);
+
 	for(i=0;i<m;i++){
 		pmap[i+(nroDeBloque*20*1024*1024)]='/';
-		printf("%i\n",i);
 	}
 
 	msync(pmap,n,0);
+}
+
+int tamanioDelArchivoBIN(){
+int tamanioArchivo_BIN;
+FILE* fdAux = fopen(archivo_bin,"r");
+fseek(fdAux, 0L, SEEK_SET);
+fseek(fdAux, 0L, SEEK_END);
+
+tamanioArchivo_BIN = ftell(fdAux);
+return tamanioArchivo_BIN;
 }
 

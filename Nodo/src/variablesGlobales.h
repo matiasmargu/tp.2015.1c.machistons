@@ -63,6 +63,7 @@ void formateoElRegistro(FILE* fdf);
 char* mapearDeFD_charp(int fd);
 void liberar(char **paquete);
 int tamanioEspecificoInversa(char* pmap, int nroDelBloque);
+int tamanioDelArchivoBIN();
 
 //Funciones de serializacion y deserializacion
 int recive_y_deserialisa_CHARp(char *script, int socket, uint32_t tamanioTotal);
