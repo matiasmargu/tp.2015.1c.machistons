@@ -121,8 +121,34 @@ char* serializar_marta_job_reduce(t_marta_job_reduce *bloque, int tamanioTotal){
 		}
 
 
+int recive_y_deserializa_job_marta(t_job_marta_reduce *bloque, int socket, uint32_t tamanioTotal){
+		int status;
+		char *buffer = malloc(tamanioTotal);
+		int offset=0;
 
+		recv(socket, buffer, tamanioTotal, 0);
 
+		memcpy(&(bloque->rutina), buffer + offset, sizeof(bloque->rutina));
+		offset += sizeof(bloque->rutina);
+
+		memcpy(&(bloque->idNodo), buffer + offset, sizeof(bloque->idNodo));
+		offset += sizeof(bloque->idNodo);
+
+		memcpy(&(bloque->resultado), buffer + offset, sizeof(bloque->resultado));
+		offset += sizeof(bloque->resultado);
+
+		int tamanioDinamico;
+		memcpy(&tamanioDinamico, buffer + offset, sizeof(int));
+		offset += sizeof(int);
+
+		bloque->nombreArchivo = malloc(tamanioDinamico);
+		memcpy(bloque->nombreArchivo, buffer + offset, tamanioDinamico);
+		offset += tamanioDinamico;
+
+		free(buffer);
+		return status;
+
+	}
 
 
 
@@ -146,6 +172,17 @@ void planificarReduceConCombiner(){
 	t_tablaProcesos_porJob2 *campoDeTabla5;
 	t_tablaProcesos_porJob2 *campoDeTabla6;
 	t_list* lista_job_tabla;
+	//REDUCE FINAL
+	t_job_marta_reduce job_marta;
+	int contador2,r,l,tamanioArecibir,p,tamanioStruct, tamanioListaFinal,m;
+	t_archivosAReducirPorNodo *campoDeListaArchivosAReducirPorNodo;
+	t_archivosAReducirPorNodo *campoDeListaArchivosAReducirPorNodo2;
+	t_archivosAReducirPorNodo * campoDeListaArchivosAReducirPorNodo3;
+	t_list* listaFinalDeArchivosAReducir;
+	t_marta_job_reduce antesDeSerializar;
+	char* structParaJob;
+	char* archivoA;
+	contador2 = 0;
 
 
 		// para probar
@@ -405,24 +442,14 @@ void planificarReduceConCombiner(){
 	contador += 1;
 	}
 
-	//REDUCE FINAL
-	t_job_marta_reduce job_marta;
-	int contador2,r,l,tamanioArecibir,p,tamanioStruct, tamanioListaFinal,m;
-	 t_archivosAReducirPorNodo *campoDeListaArchivosAReducirPorNodo;
-	 t_archivosAReducirPorNodo *campoDeListaArchivosAReducirPorNodo2;
-	 t_archivosAReducirPorNodo * campoDeListaArchivosAReducirPorNodo3;
-	 t_list* listaFinalDeArchivosAReducir;
-	 t_marta_job_reduce antesDeSerializar;
-	 char* structParaJob;
-	 char* archivoA;
-	 contador2 = 0;
+
 	 listaFinalDeArchivosAReducir = list_create();
 	for(a=0;a< contador ; a++){
 
 		recv(socketJob, &tamanioArecibir, sizeof(int),0);
 		send(socketJob, &enteroPrueba, sizeof(int),0);
 		int estado = 1;
-		estado = recive_y_deserializa_job_marta(&job_marta, socketJob, tamanioArecibir);//HACER LA FUNCION
+		estado = recive_y_deserializa_job_marta(&job_marta, socketJob, tamanioArecibir);//LO HICE ARRIBA
 		//AGREGO EL ESTADO A LA LISTA
 		if(estado){
 			for(r=0; r< list_size(lista_archivosAReducirPorNodo);r++){
@@ -448,11 +475,11 @@ void planificarReduceConCombiner(){
 						send(socketJob, &handshakeJob, sizeof(int),0);
 						recv(socketJob, &enteroPrueba, sizeof(int),0);
 
-						antesDeSerializar.archivoResultadoReduce =  //aca va el qe pasa job al principio
+					//	antesDeSerializar.archivoResultadoReduce =  aca va el qe pasa job al principio hay que ver si viene como parametro o lo tenemos como global
 						antesDeSerializar.cantidadArchivos = list_size(listaFinalDeArchivosAReducir);
-						antesDeSerializar.idNodo = //ver
-						antesDeSerializar.ipNodo //ver
-						antesDeSerializar.puertoNodo // ver
+						//antesDeSerializar.idNodo =  VER EN QUE NODO SE HACE EL FINAL
+						//antesDeSerializar.ipNodo ver
+						//antesDeSerializar.puertoNodo  ver
 						list_add_all(antesDeSerializar.listaArchivosTemporales, listaFinalDeArchivosAReducir);
 
 						for(m=0; m< tamanioArchivosaReducir; m++){
@@ -465,7 +492,6 @@ void planificarReduceConCombiner(){
 						send(socketJob, &tamanioStruct , sizeof(int),0);
 						recv(socketJob, &enteroPrueba, sizeof(int),0);
 						structParaJob = serializar_marta_job_reduce(&antesDeSerializar, tamanioStruct);
-
 						send(socketJob, structParaJob, tamanioStruct, 0);
 					}
 				}
@@ -484,6 +510,11 @@ void planificarReduceConCombiner(){
 	free(campoArchivosAReducirPorNodo);
 	free(campoDeListaDeNodo);
 	free(campoAAgregarAListaReducirPorNodo);
+
+	free(campoDeListaArchivosAReducirPorNodo);
+	free(campoDeListaArchivosAReducirPorNodo2);
+	free(campoDeListaArchivosAReducirPorNodo3);
+	free(listaFinalDeArchivosAReducir);
 }
 
 
