@@ -442,10 +442,10 @@ void planificarReduceConCombiner(){
 	contador += 1;
 	}
 
+	//ACA EMPIEZA REDUCE FINAL CON COMBINER
 
 	 listaFinalDeArchivosAReducir = list_create();
-	for(a=0;a< contador ; a++){
-
+	 for(a=0;a< contador ; a++){
 		recv(socketJob, &tamanioArecibir, sizeof(int),0);
 		send(socketJob, &enteroPrueba, sizeof(int),0);
 		int estado = 1;
