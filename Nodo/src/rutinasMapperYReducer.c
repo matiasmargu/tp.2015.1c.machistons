@@ -10,23 +10,36 @@
 
 void mapper(void* arg){
 
-#define SIZE 512
 
+#define SIZE 1024
+
+	char* buffer=malloc(SIZE);
 	char* bloque;
-	char* nombreDelArchivo;
+
+
 
 	int comando =1;
 	int socket = (int) arg;
+	int tamanioDelArchivoResultado;
 
 	pid_t pid;
 
 //***************************************************
 
 	send(socket, &comando,sizeof(int),0);
+	recv(socket, &tamanioDelArchivoResultado,sizeof(int),0);
+	send(socket, &comando,sizeof(int),0);
+
+	char* nombreDelArchivoResultado= malloc(tamanioDelArchivoResultado);
+
+	recv(socket, nombreDelArchivoResultado,tamanioDelArchivoResultado,0);
+
 
 	//Deveria recivir el nro del bloque
 	int nroDeBloque=0;
 	int tamanioDelBloque=getBloque(nroDeBloque, bloque);
+
+	eliminarEnters(bloque,tamanioDelBloque);
 
 	int pipe_padreAHijo[2];
 	int pipe_hijoAPadre[2];
@@ -45,6 +58,9 @@ void mapper(void* arg){
 	 if ( (pid=fork()) == 0 )
 	  { // hijo
 
+		close( pipe_padreAHijo[1] ); /* cerramos el lado de escritura del pipe */
+		close( pipe_hijoAPadre[0] ); /* cerramos el lado de lectura del pipe */
+
 
 		dup2(pipe_padreAHijo[0],STDIN_FILENO);
 		dup2(pipe_hijoAPadre[1],STDOUT_FILENO);
@@ -62,10 +78,20 @@ void mapper(void* arg){
 	    close( pipe_padreAHijo[1]);
 
 	    //Aca leo del hijo
-	    //while( (readbytes=read( pipe_hijoAPadre[0], buffer, SIZE )) > 0)
-	    //close( pipe_hijoAPadre[0]);
+	    read( pipe_hijoAPadre[0], buffer, SIZE );
+
+	    FILE* fdMapeo = fopen("/tmp/resultadoDelMapPorOrdenar","w");
+	    fputs(buffer,fdMapeo);
+	    fclose(fdMapeo);
+
+	    char* archivoResultado=mapearAMemoriaVirtual(nombreDelArchivoResultado);
+	    ordernarAlfabeticamente(nombreDelArchivoResultado,fdMapeo,sizeof(archivoResultado));
+
+	    close( pipe_hijoAPadre[0]);
 	  }
 	  waitpid( pid, NULL, 0 );
+	  free(buffer);
+	  free(bloque);
 }
 
 void reducer(void* arg){
@@ -107,6 +133,8 @@ void reducer(void* arg){
 	    //close( pipe_hijoAPadre[0]);
 	  }
 	  waitpid( pid, NULL, 0 );
+	//  free(buffer);
+	//  free(bloque);
 }
 
 

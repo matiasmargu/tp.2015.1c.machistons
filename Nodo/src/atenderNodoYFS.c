@@ -137,7 +137,9 @@ void *atenderNFS(void*arg){
 		break;
 		case 4:
 		//FORMATEO
+			printf("Me mando a formatear el archivo\n");
 			formatearArchivo(pmap);
+			printf("Se formateo correctamente\n");
 		break;
 		case 5:
 		//FORMATEO DE BLOQUE

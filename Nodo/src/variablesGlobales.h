@@ -92,6 +92,7 @@ void leerID_NODO();
 void eliminarEnters(char* buffer, int tamanio);
 void formatearArchivo(char* pmap);
 void formatearBloque(char* pmap,int nroDeBloque);
+void ordernarAlfabeticamente(char* nombreDelArchivoResultado,FILE *fdMape,int tamanioArchivo);
 
 //Funciones esenciales
 int getBloque(int nroDeBloque, char* bloque);
