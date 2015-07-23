@@ -61,6 +61,11 @@ typedef struct{
 	char* datos;
 }t_getBloque;
 
+typedef struct{
+	int idNodo;
+	int bloquesLibres;
+}t_nodoVector;
+
 //Varibables globales
 
 t_log* logger; // Log Global
@@ -115,7 +120,8 @@ void agregarCopia (bson_t *documento, char* numeroCopia, int idNodo, int bloque)
 void elBloqueDelNodoSeOcupo(int socketNodo, int nroBloque);
 void elBloqueDelNodoSeLibero(int socketNodo, int nroBloque);
 int cantidadBloquesLibres(int idNodo);
-int cantidadNodosConectados();
+char *calcularCombinacionesDeAsignacion(int cantidadBloquesArch);
+int elegirDirectorioParaArchivo();
 
 // Funcion Interfaz Marta
 

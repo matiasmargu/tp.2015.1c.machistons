@@ -19,6 +19,13 @@ void *atenderConsola(void*arg) {
 	char *separador2="\n";
 	char *separator=" ";
 
+	int a;
+	bson_t *doc;
+	bson_t *doc2;
+	bson_t *doc3;
+
+	int *prueba;
+
 	char *mensaje; // Para mandar mensajes serializados
 
 	imprimirMenu();
@@ -41,6 +48,41 @@ void *atenderConsola(void*arg) {
 					}
 					break;
 				case Renombrar_Arch: // 3
+					doc = bson_new ();
+					doc3 = bson_new ();
+					BSON_APPEND_UTF8(doc, "Es", "Nodo");
+					pthread_mutex_lock(&mutex);
+					BSON_APPEND_INT32(doc, "ID Nodo", idNodoGlobal);
+					idNodoGlobal++;
+					pthread_mutex_unlock(&mutex);
+					BSON_APPEND_INT32(doc, "Socket", 7);
+					BSON_APPEND_UTF8 (doc, "IP", "1212312312");
+					BSON_APPEND_UTF8(doc, "PUERTO" , "666");
+					BSON_APPEND_UTF8(doc, "Conexion", "Conectado");
+					BSON_APPEND_UTF8(doc, "Estado", "Disponible");
+					BSON_APPEND_INT32(doc, "Cantidad de Bloques Total", 70);
+
+					doc2 = bson_new ();
+					for(a=0;a<70;a++){
+						BSON_APPEND_INT32(doc2, string_itoa(a), a);
+					}
+					BSON_APPEND_ARRAY(doc, "Bloques Libres", doc2);
+					bson_destroy (doc2);
+
+					doc2 = bson_new ();
+					BSON_APPEND_ARRAY(doc, "Bloques Ocupados", doc2);
+					bson_destroy (doc2);
+
+					pthread_mutex_lock(&mutex);
+					if (!mongoc_collection_insert (nodos, MONGOC_INSERT_NONE, doc, NULL, NULL)) {
+
+					}
+					pthread_mutex_unlock(&mutex);
+					bson_destroy (doc);
+					bson_destroy (doc3);
+
+
+
 					break;
 				case Mover_Arch: // 4
 					break;
@@ -60,6 +102,7 @@ void *atenderConsola(void*arg) {
 					}
 					break;
 				case Renombrar_Directorio: // 7
+					mensaje = calcularCombinacionesDeAsignacion(81);
 					break;
 				case Mover_Directorio: // 8
 					printf("%i\n",formatearBloque(atoi(comandoSeparado[1]),atoi(comandoSeparado[2])));
@@ -71,6 +114,7 @@ void *atenderConsola(void*arg) {
 				case Borrar_Bloque_Arch: // 10
 					break;
 				case Copiar_Bloque_Arch: // 11
+
 					break;
 				case Agregar_Nodo: // 12
 					agregarNodo();

@@ -57,6 +57,8 @@ void *atenderMarta(void*arg){
 				*(nombreArchivo + tamanioNombreArchivo) = '\0';
 				printf("%s\n",nombreArchivo);
 
+
+
 				// Aca voy a tener el path del archivo a buscar asique tengo que separar los directorios.
 				// Buscar en la coleccion directorios el index del ultimo directorio y buscarlo junto con el nombre del archivo
 
