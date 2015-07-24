@@ -7,19 +7,17 @@
 
 #include "librerias_y_estructuras.h"
 
-void inicializar_pedido_FS(){
-		char *nombre_archivo = malloc(strlen("201303hourly.txt"));
-		nombre_archivo = "201303hourly.txt";
-		int tam = strlen(nombre_archivo);
+void inicializar_pedido_FS(char *nombreArch){
+		int tam = strlen(nombreArch);
 		int handshakeFS = 72; // pido info de archivos
 	   	send(socketFS,&handshakeFS, sizeof(int), 0);
 	   	recv(socketFS,&handshakeFS, sizeof(int),0);
 
 	   	send(socketFS,&tam, sizeof(int), 0);
 	   	recv(socketFS,&handshakeFS, sizeof(int),0);
-	   	printf("Nombre_archivo: %s\n",nombre_archivo);
+	   	printf("Nombre_archivo: %s\n",nombreArch);
 	   	printf("tamanio antes del send: %i\n",tam);
-	   	tam = send(socketFS,nombre_archivo, tam, 0);
+	   	tam = send(socketFS,nombreArch, tam, 0);
 	   	printf("tamanio despues del send: %i\n",tam);
 }
 
@@ -36,8 +34,11 @@ void recive_y_guarda_infoNodo(int tamanio, int socket, void *lista_nodos){
 	t_nodo *infoNodo;
 	void *buffer = malloc(tamanio);
 	recv(socket,buffer,tamanio,0);
-	memcpy(&cant_nodos,buffer + offset,sizeof(int));
+	pthread_mutex_lock(&mutex_cant_nodos);
+		memcpy(&cant_nodos,buffer + offset,sizeof(int));
+	pthread_mutex_unlock(&mutex_cant_nodos);
 	offset += sizeof(int);
+	contadores_nodos = malloc(sizeof(int)*cant_nodos);
 	int i;
 	for(i=0;i<cant_nodos;i++){
 		infoNodo = malloc(sizeof(t_nodo));
@@ -61,9 +62,12 @@ void recive_y_guarda_infoNodo(int tamanio, int socket, void *lista_nodos){
 		list_add(lista_nodos,infoNodo);
 		printf("tamaño de la lista dentro de la funcion: %i\n",list_size(lista_nodos));
 
+		//inicializo los contadores para planificar en 0
+		contadores_nodos[i] = 0;
 	}
 	//infoNodo = list_find(lista_nodos, (void*) comparar);
 	//printf("ID del que probamos: %i\n", infoNodo->id_nodo);
+
 }
 
 int recive_y_guarda_estructura(t_archivo *arch, int socket, uint32_t tamanioTotal){
@@ -77,7 +81,7 @@ int recive_y_guarda_estructura(t_archivo *arch, int socket, uint32_t tamanioTota
 	printf("aaaaaaaaaaaaaa\n");
 	offset += sizeof(int);
 	// COPIO LOS BLOQUES QUE CONTIENE EL ARCHIVO A UN ESTRUCTURA DE LISTA
-	int i;
+	int i,j;
 	t_bloque *bloque;
 	//t_bloque *bloque2 = malloc(sizeof(t_bloque));
 	//t_copia **copia = malloc(3*sizeof(t_copia));
@@ -88,8 +92,18 @@ int recive_y_guarda_estructura(t_archivo *arch, int socket, uint32_t tamanioTota
 		memcpy(&(bloque->NumeroBloque), buffer+offset, sizeof(int));
 		offset += sizeof(int);
 		printf("numero de bloque: %i\n",bloque->NumeroBloque);
+		bloque->copias = malloc(sizeof(t_copia)*3);
 
-
+		for(j=0;j<3;j++){
+			memcpy(&(copia_aux.idNodo), buffer+offset, sizeof(int));
+			bloque->copias[j].idNodo = copia_aux.idNodo;
+			offset += sizeof(int);
+			memcpy(&(copia_aux.Numerobloque), buffer+offset, sizeof(int));
+			bloque->copias[j].Numerobloque = copia_aux.Numerobloque;
+			offset += sizeof(int);
+			printf("idnodo: %i, numbloque: %i\n", bloque->copias[j].idNodo, bloque->copias[j].Numerobloque);
+		}
+		/*
 		memcpy(&(copia_aux.idNodo), buffer+offset, sizeof(int));
 		bloque->copia1_idnodo = copia_aux.idNodo;
 		offset += sizeof(int);
@@ -114,7 +128,7 @@ int recive_y_guarda_estructura(t_archivo *arch, int socket, uint32_t tamanioTota
 		offset += sizeof(int);
 		printf("idnodo: %i, numbloque: %i\n", bloque->copia3_idnodo, bloque->copia3_numbloque);
 		printf("numero de bloque prueba: %i\n\n",bloque->NumeroBloque);
-
+		*/
 		list_add_in_index(arch->bloques, bloque->NumeroBloque, bloque);
 		//t_bloque *bloquePrueba = list_get(arch.bloques, bloque.NumeroBloque);
 		//printf("numero de bloque desp de guardarlo: %i\n",bloquePrueba->NumeroBloque);
