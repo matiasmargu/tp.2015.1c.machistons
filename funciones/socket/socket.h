@@ -97,6 +97,12 @@ typedef struct{
 
 
 
+typedef struct{
+ 	char* ip;
+ 	char* puerto;
+ 	char* archivo;
+ }t_para_nodo;
+
 // FileSystem a Nodo
 
 typedef struct{

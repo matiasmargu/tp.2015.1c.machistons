@@ -64,9 +64,12 @@ int recive_y_deserialisa_marta_job_mapper(t_marta_job_map *bloque, int socket, u
 void* mapearBloque(t_hilo_map *structRecibido);
 char* serializar_job_marta(t_job_marta_map *job_marta, int tamanioTotal);
 void* reducirArchivos(t_hilo_reduce *structRecibido);
+void* reducirArchivosFinal(t_hilo_reduce *structRecibido);
 int recive_y_deserialisa_marta_job_reduce(t_marta_job_reduce *bloque, int socket, uint32_t tamanioTotal);
 char* mapearAMemoriaVirtual(char* archivo);
 char *serializar_job_marta_reduce(t_job_marta_reduce *job_marta,int tamanioTotal);
+int recive_y_deserialisa_marta_job_reduce_final(t_marta_job_reduce *bloque, int socket, uint32_t tamanioTotal);
+char* serializar_job_nodo_reduce_final(t_job_nodo_reduce *Job_Nodo, int tamanio);
 
 
 #endif /* JOB_SRC_FUNCIONESJOB2_H_ */

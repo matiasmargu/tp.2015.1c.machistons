@@ -24,7 +24,7 @@ int main(void) {
 	char *lista_archivos;
 	char *archivo_resultado;
 	char* archivo_resultado_final;
-	int entero, entero2, p, tamanioCombiner,y,tamanio_archivo_resultado;
+	int entero, entero2, p, tamanioCombiner,y,tamanio_archivo_resultado, tipoOperacion2;
 	int tamanioTotal, tamanioTotalMapper , numeroRutina;
 	int handshake, handshakeNodo, numero, socketNodo;
 	t_marta_job_map Marta_Job_Map;
@@ -32,6 +32,7 @@ int main(void) {
 	char* rutinaMapperTraducida;
 	char* rutinaReduceTraducida;
 	t_marta_job_reduce Marta_Job_Reduce;
+	t_marta_job_reduce Marta_Job_Reduce_Final;
 	int enteroPrueba, tipoOperacion, tamanioStruct,x;
 	pthread_t hilomap;
 	pthread_t hiloreduce;
@@ -141,7 +142,11 @@ int main(void) {
 		}
 			break;
 		case 34: // REALIZAR REDUCE
+			send(socketMarta, &enteroPrueba, sizeof(int),0);
+			recv(socketMarta, &tipoOperacion2, sizeof(int),0);
+			switch(tipoOperacion2){
 
+			case 20: //REDUCE NORMAL
 			send(socketMarta, &enteroPrueba, sizeof(int),0);
 			recv(socketMarta, &tamanioStruct, sizeof(int),0);
 			send(socketMarta, &enteroPrueba, sizeof(int),0);
@@ -171,9 +176,44 @@ int main(void) {
 			datosParaLaReduccion.nombreArchivoResultado = Marta_Job_Reduce.archivoResultadoReduce;
 			datosParaLaReduccion.archivos = list_create();
 			list_add_all(datosParaLaReduccion.archivos, Marta_Job_Reduce.listaArchivosTemporales) ; //COPIA UNA LISTA A LA OTRA
-			pthread_create(&hiloreduce,NULL, reducirArchivos,(void *)&datosParaLaReduccion);
+			pthread_create(&hiloreduce,NULL, reducirArchivos,(void *)&datosParaLaReduccion);break;
+
+			case 22: //REDUCE FINAL FALTA HACER
+				send(socketMarta, &enteroPrueba, sizeof(int),0);
+							recv(socketMarta, &tamanioStruct, sizeof(int),0);
+							send(socketMarta, &enteroPrueba, sizeof(int),0);
+							int estado = 1; // Estructura que manjea el status de los recieve.
+							estado = recive_y_deserialisa_marta_job_reduce_final(&Marta_Job_Reduce_Final, socketMarta, tamanioStruct);
+
+							if(estado){
+								//HANDSHAKE NODO //AGREGAR EL 22 VER CON NICO
+							socketNodo = crearCliente (Marta_Job_Reduce_Final.ipNodo, Marta_Job_Reduce_Final.puertoNodo);
+							handshakeNodo = 8;
+							send(socketNodo,&handshakeNodo,sizeof(int),0);
+							recv(socketNodo, &enteroPrueba, sizeof(int),0);
+							//ACA LE MANDA LA RUTINA REDUCE AL NODO
+							numeroRutina = 2; //Le avisa que manda reduce
+							send(socketNodo,&numeroRutina,sizeof(int),0);
+							recv(socketNodo, &enteroPrueba, sizeof(int),0);
+							int tamanioTotalReduce =  strlen(rutinaReduceTraducida)+1;
+							send(socketNodo, &tamanioTotalReduce, sizeof(int),0);
+							recv(socketNodo, &enteroPrueba, sizeof(int),0);
+							send(socketNodo,rutinaReduceTraducida,tamanioTotal,0);
+							recv(socketNodo, &enteroPrueba, sizeof(int),0);
+
+							//ACA LEVANTA UN HILO PARA APLICAR EL REDUCE
+							datosParaLaReduccion.socketNodo = socketNodo;
+							datosParaLaReduccion.nombreArchivoResultado = Marta_Job_Reduce_Final.archivoResultadoReduce;
+							datosParaLaReduccion.archivos = list_create();
+							list_add_all(datosParaLaReduccion.archivos, Marta_Job_Reduce_Final.listaArchivosTemporales) ; //COPIA UNA LISTA A LA OTRA
+							pthread_create(&hiloreduce,NULL, reducirArchivosFinal,(void *)&datosParaLaReduccion);break;
+
+
 
 			break;
+			}
+			break;
+
 		case 5: // NO HAY MAS OPERACIONES
 			x= 1 ;
 			break;
@@ -184,8 +224,10 @@ int main(void) {
 
 
 }
+	}
 
 	log_info(logger,"Se ha desconectado con Marta, su ip es %s y su puerto %s",ip_marta,puerto_marta);
 	printf("Se ha desconectado con Marta, su ip es %s y su puerto %s  \n",ip_marta,puerto_marta);
 	return EXIT_SUCCESS;
+
 }
