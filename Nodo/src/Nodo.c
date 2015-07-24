@@ -14,8 +14,9 @@
 int main(void) {
 
 	pthread_t hiloJob[1000];
+	pthread_t hiloNodo[1000];
 
-	int contJ=0;
+	int contJ=0,contN=0;
 
 	logger = log_create("LOG_Nodo", "log_nodo" ,false, LOG_LEVEL_INFO);
 	int entero;
@@ -107,7 +108,9 @@ int main(void) {
 		    				contJ++;
 		    				break;
 		    			case 7: // Este es otro Nodo
-
+		    				printf("Se hha conectado un Nodo\n");
+		    				pthread_create(&hiloNodo[contN],NULL, &atenderNFS, (void*)i);
+		    				contN++;
 		    				break;
 		    			}
 		    		}

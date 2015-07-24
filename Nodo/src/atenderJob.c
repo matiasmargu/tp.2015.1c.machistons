@@ -67,10 +67,9 @@ void* atenderJob(void* arg){
 				escribirScript(script_reducer,2);
 				send(socket, &comando,sizeof(int),0);
 
-				strcpy(direccionAuxiliar,dir_temp);
-				strcat(direccionAuxiliar,"/reducer");
 
 				chmod(direccionAuxiliar,modo);
+
 
 			//	pthread_create(&hiloReducer, NULL,reducer,(void*) socket);
 				break;

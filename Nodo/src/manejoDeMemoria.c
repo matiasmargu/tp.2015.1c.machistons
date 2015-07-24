@@ -161,12 +161,13 @@ void formatearBloque(char* pmap,int nroDeBloque){
 }
 
 int tamanioDelArchivoBIN(){
-int tamanioArchivo_BIN;
-FILE* fdAux = fopen(archivo_bin,"r");
-fseek(fdAux, 0L, SEEK_SET);
-fseek(fdAux, 0L, SEEK_END);
+	int tamanioArchivo_BIN;
+	FILE* fdAux = fopen(archivo_bin,"r");
+	fseek(fdAux, 0L, SEEK_SET);
+	fseek(fdAux, 0L, SEEK_END);
 
-tamanioArchivo_BIN = ftell(fdAux);
+	tamanioArchivo_BIN = ftell(fdAux);
 return tamanioArchivo_BIN;
 }
+
 

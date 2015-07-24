@@ -94,6 +94,8 @@ void mapper(void* arg){
 	  free(bloque);
 }
 
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
 void reducer(void* arg){
 	pid_t pid;
 	int pipe_padreAHijo[2];
@@ -102,7 +104,29 @@ void reducer(void* arg){
 	pipe(pipe_padreAHijo);
 	pipe(pipe_hijoAPadre);
 
-	//*******************************************
+	int comando,tamanioDeLaEstructura;
+	t_job_nodo_reduce red;
+
+	recv(socket,&tamanioDeLaEstructura,sizeof(int),0);
+	send(socket, &comando,sizeof(int),0);
+	recive_y_deserializa_EST_REDUCE(&red,socket,tamanioDeLaEstructura);
+
+	int indice = 0;
+	char* bufferProv;
+	char* buffer;
+
+	while(!list_is_empty(red.archivosAreducir)){
+		char* nombre=list_remove(red.archivosAreducir,indice);
+		bufferProv = mapearAMemoriaVirtual(nombre);
+		if(indice == 0){
+			buffer = bufferProv;
+		}else{
+			string_append(buffer,bufferProv);
+		}
+		indice++;
+
+	}
+
 
 	if((pid = fork()) == -1){
 		printf("Error en el fork");
@@ -114,27 +138,34 @@ void reducer(void* arg){
 	  { // hijo
 	    close( pipe_padreAHijo[1] ); /* cerramos el lado de escritura del pipe */
 	    close( pipe_hijoAPadre[0] ); /* cerramos el lado de lectura del pipe */
-		    //Aca leo del padre
-	    //while( (readbytes=read( a[0], buffer, SIZE ) ) > 0)
-	    close( pipe_padreAHijo[0] );
-		    //Aca escribo en el padre
-	 //   write( pipe_hijoAPadre[1], buffer, strlen( buffer ) );
-	    close( pipe_hijoAPadre[1] );
+
+	    dup2(pipe_padreAHijo[0],STDIN_FILENO);
+	    dup2(pipe_hijoAPadre[1],STDOUT_FILENO);
+
+	    execv("/tmp/reduce",NULL);
 	  }
 	  else
 	  { // padre
 	    close( pipe_padreAHijo[0] ); /* cerramos el lado de lectura del pipe */
 	    close( pipe_hijoAPadre[1] ); /* cerramos el lado de escritura del pipe */
+
 		    //Aca escribe en hijo
-	    //write( pipe_padreAHijo[1], buffer, strlen( buffer ) );
+	    write( pipe_padreAHijo[1], buffer, strlen( buffer ) );
 	    close( pipe_padreAHijo[1]);
 		    //Aca leo del hijo
-	   // while( (readbytes=read( pipe_hijoAPadre[0], buffer, SIZE )) > 0)
+	   read( pipe_hijoAPadre[0], buffer, SIZE );
+
+	   char* tmp = "/tmp/";
+	   string_append(&tmp,red.nombreArchivoResultado);
+	   FILE* fdRed = fopen(tmp,"w");
+	   fputs(buffer,fdRed);
+	   fclose(fdRed);
+	   free(tmp);
+
 	    //close( pipe_hijoAPadre[0]);
 	  }
 	  waitpid( pid, NULL, 0 );
 	//  free(buffer);
 	//  free(bloque);
 }
-
 
