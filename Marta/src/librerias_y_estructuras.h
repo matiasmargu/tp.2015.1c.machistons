@@ -39,13 +39,18 @@ int contador_cant_job;
 char *ip_fs;
 char *puerto_fs;
 int idJobGlobal;
-t_list *lista_archivos; // guarda t_archivo
-t_list *lista_jobs;
 int cant_nodos;
+int *contadores_nodos;
+t_list *lista_archivos; // guarda t_archivo
+t_list *lista_jobs; //t_infoJob
 t_list *lista_nodos_estado;
+t_list *lista_tabla_procesos;
 pthread_mutex_t mutex ;//= PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutex_nodos;// = PTHREAD_MUTEX_INITIALIZER;
+pthread_mutex_t mutex_cant_nodos;
 pthread_mutex_t mutex_contador_job;
+pthread_mutex_t mutex_lista_jobs;
+pthread_mutex_t mutex_lista_procesos;
 
 typedef struct{
 	t_list *lista;
@@ -65,12 +70,7 @@ typedef struct {
 typedef struct{
 	int NumeroBloque;
 	int estado;
-	int copia1_idnodo;
-	int copia2_idnodo;
-	int copia3_idnodo;
-	int copia1_numbloque;
-	int copia2_numbloque;
-	int copia3_numbloque;
+	t_copia *copias;
 }t_bloque;
 
 typedef struct{
@@ -85,11 +85,6 @@ typedef struct{
 	char *ip_nodo;
 	char *puerto_nodo;
 }t_nodo;
-
-typedef struct{
-	char* nombre;
-	t_list *datos;
-}t_nombre_archivo;
 
 typedef struct{
 	char* nombre_arch;
@@ -130,13 +125,14 @@ typedef struct{
 typedef struct{
 	int idJob;
 	t_list *tabla_procesos;
-}t_lista_job;
+}t_job_procesos;
 
 typedef struct{
 	int estado; // 0 = todavia no se mando a ejecutar; 1 = en ejecucion; 2 = Fin; 3 = Error
 	int bloque_archivo;
+	char *nombre_archivo;
 	char *nombre_archivo_resultado; // del mapeo
-	int id_nodo;
+	int id_nodo; //de aca saco ip y puerto
 }t_tablaProcesos_porJob;
 
 
@@ -149,7 +145,7 @@ void  *conectarseAlJob(void*arg);
 void aplicarReduce(t_aplicarReduce structRecibido);
 void *atenderJob(void *arg);
 void inicializar_pedido_FS();
-void planificarMap();
+void planificarMap(int a);
 
 
 #endif /* LIBRERIAS_Y_ESTRUCTURAS_H_ */
