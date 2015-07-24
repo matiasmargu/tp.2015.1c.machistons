@@ -888,10 +888,15 @@ void planificarSincombiner(){
 
 			 int tamanioSerializacionMover;
 			 tamanioSerializacionMover = malloc(sizeof(char) * 3 );
-			 handshakeJob = 22;
+			 handshakeJob = 34;
+			 send(socketJob, &handshakeJob, sizeof(int),0);
+			 recv(socketJob, &enteroPrueba, sizeof(int),0);
+			 handshakeJob = 33;
 			 send(socketJob, &handshakeJob, sizeof(int),0);
 			 recv(socketJob, &enteroPrueba, sizeof(int),0);
 			 tamanio = list_size(moverArchivos->archivosAMover);
+			 send(socketJob, &tamanio, sizeof(int),0);
+			 recv(socketJob, &enteroPrueba, sizeof(int),0);
 			 for(a=0;a < tamanio;a++){
 				 archivoAMover->ipNodo =moverArchivos->ipNodo;
 				 archivoAMover->puertoNodo = moverArchivos->puertoNodo;

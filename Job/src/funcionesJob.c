@@ -592,3 +592,40 @@ void* reducirArchivosFinal(t_hilo_reduce *structRecibido){
 				return NULL;
 }
 
+char* serializar_archivoAMover(t_archivoParaMover * archivoAMover,int tamanioSerializacionMover){
+	char *serializedPackage = malloc(tamanioSerializacionMover);
+	int offset = 0;
+	int size_to_send;
+
+	int tamanioNombre;
+	tamanioNombre = strlen(archivoAMover->puertoNodo) + 1;
+	size_to_send = sizeof(int);
+	memcpy(serializedPackage + offset, &tamanioNombre, size_to_send);
+	offset += size_to_send;
+
+	size_to_send =  strlen(archivoAMover->puertoNodo) + 1;
+	memcpy(serializedPackage + offset, archivoAMover->puertoNodo, size_to_send);
+	offset += size_to_send;
+
+	tamanioNombre = strlen(archivoAMover->ipNodo) + 1;
+	size_to_send = sizeof(int);
+	memcpy(serializedPackage + offset, &tamanioNombre, size_to_send);
+	offset += size_to_send;
+
+	size_to_send =  strlen(archivoAMover->ipNodo) + 1;
+	memcpy(serializedPackage + offset, archivoAMover->ipNodo, size_to_send);
+	offset += size_to_send;
+
+	tamanioNombre = strlen(archivoAMover->archivoAMover) + 1;
+	size_to_send = sizeof(int);
+	memcpy(serializedPackage + offset, &tamanioNombre, size_to_send);
+	offset += size_to_send;
+
+	size_to_send =  strlen(archivoAMover->archivoAMover) + 1;
+	memcpy(serializedPackage + offset, archivoAMover->archivoAMover, size_to_send);
+	offset += size_to_send;
+
+	return serializedPackage;
+}
+
+

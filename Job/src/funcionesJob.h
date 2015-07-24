@@ -60,6 +60,13 @@ typedef struct{
 	int idNodo;
 }t_hilo_reduce;
 
+typedef struct {
+	char *puertoNodo;
+	char *ipNodo;
+	char * archivoAMover;
+}t_archivoParaMover;
+
+
 int recive_y_deserialisa_marta_job_mapper(t_marta_job_map *bloque, int socket, uint32_t tamanioTotal);
 void* mapearBloque(t_hilo_map *structRecibido);
 char* serializar_job_marta(t_job_marta_map *job_marta, int tamanioTotal);
@@ -70,6 +77,6 @@ char* mapearAMemoriaVirtual(char* archivo);
 char *serializar_job_marta_reduce(t_job_marta_reduce *job_marta,int tamanioTotal);
 int recive_y_deserialisa_marta_job_reduce_final(t_marta_job_reduce *bloque, int socket, uint32_t tamanioTotal);
 char* serializar_job_nodo_reduce_final(t_job_nodo_reduce *Job_Nodo, int tamanio);
-
+char* serializar_archivoAMover(t_archivoParaMover * archivoAMover,int tamanioSerializacionMover);
 
 #endif /* JOB_SRC_FUNCIONESJOB2_H_ */
