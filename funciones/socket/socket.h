@@ -95,7 +95,11 @@ typedef struct{
 	int cantidadArchivos;
 }t_job_nodo_reduce;
 
-
+typedef struct{
+ 	char* ip;
+ 	char* puerto;
+ 	char* archivo;
+ }t_para_nodo;
 
 // FileSystem a Nodo
 
