@@ -66,6 +66,11 @@ typedef struct{
 	int bloquesLibres;
 }t_nodoVector;
 
+typedef struct{
+	int tamanio;
+	char* datosDeMatrix;
+}t_matrix;
+
 //Varibables globales
 
 t_log* logger; // Log Global
@@ -120,8 +125,10 @@ void agregarCopia (bson_t *documento, char* numeroCopia, int idNodo, int bloque)
 void elBloqueDelNodoSeOcupo(int socketNodo, int nroBloque);
 void elBloqueDelNodoSeLibero(int socketNodo, int nroBloque);
 int cantidadBloquesLibres(int idNodo);
-char *calcularCombinacionesDeAsignacion(int cantidadBloquesArch);
+t_matrix calcularCombinacionesDeAsignacion(int cantidadBloquesArch);
 int elegirDirectorioParaArchivo();
+int primerBloqueLibre(int idNodo);
+int socketNodo(int idNodo);
 
 // Funcion Interfaz Marta
 
@@ -136,6 +143,5 @@ void *atenderConsola(void*arg);
 void formatear();
 void eliminarDirectorio();
 void crearDirectorio();
-int agregarDirectorioAMongo(char* directorio, int idSiguiente);
 
 #endif /* LIBRERIAS_Y_ESTRUCTURAS_H_ */
