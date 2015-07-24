@@ -24,7 +24,7 @@ int main(void) {
 	char *lista_archivos;
 	char *archivo_resultado;
 	char* archivo_resultado_final;
-	int entero, entero2, p, tamanioCombiner,y,tamanio_archivo_resultado;
+	int entero, entero2, p, tamanioCombiner,y,tamanio_archivo_resultado, tipoOperacion2;
 	int tamanioTotal, tamanioTotalMapper , numeroRutina;
 	int handshake, handshakeNodo, numero, socketNodo;
 	t_marta_job_map Marta_Job_Map;
@@ -141,7 +141,11 @@ int main(void) {
 		}
 			break;
 		case 34: // REALIZAR REDUCE
+			send(socketMarta, &enteroPrueba, sizeof(int),0);
+			recv(socketMarta, &tipoOperacion2, sizeof(int),0);
+			switch(tipoOperacion2){
 
+			case 20: //REDUCE NORMAL
 			send(socketMarta, &enteroPrueba, sizeof(int),0);
 			recv(socketMarta, &tamanioStruct, sizeof(int),0);
 			send(socketMarta, &enteroPrueba, sizeof(int),0);
@@ -171,9 +175,15 @@ int main(void) {
 			datosParaLaReduccion.nombreArchivoResultado = Marta_Job_Reduce.archivoResultadoReduce;
 			datosParaLaReduccion.archivos = list_create();
 			list_add_all(datosParaLaReduccion.archivos, Marta_Job_Reduce.listaArchivosTemporales) ; //COPIA UNA LISTA A LA OTRA
-			pthread_create(&hiloreduce,NULL, reducirArchivos,(void *)&datosParaLaReduccion);
+			pthread_create(&hiloreduce,NULL, reducirArchivos,(void *)&datosParaLaReduccion);break;
+
+			case 22: //REDUCE FINAL FALTA HACER( deserializar igual que esta hecho en planificarreduce de marta)
+				send(socketNodo, &enteroPrueba, sizeof(int),0);
 
 			break;
+			}
+			break;
+
 		case 5: // NO HAY MAS OPERACIONES
 			x= 1 ;
 			break;
