@@ -299,6 +299,7 @@ void aplicarNodoGlobalYponerNodosNoDisponible(){
 	update = BCON_NEW ("$set", "{",
 	                           "Estado", BCON_UTF8 ("No Disponible"),
 							   "Conexion", BCON_UTF8 ("No Conectado"),
+							   "Socket", BCON_INT32 (0),
 	                       "}");
 	cantidad = mongoc_collection_count(nodos, MONGOC_QUERY_NONE, query,0,0,NULL,NULL);
 	bson_destroy (query);
@@ -393,26 +394,26 @@ void verificarEstadoFS(){
 	bson_destroy (query);
 }
 
-int escribirBloqueEnNodo (int socket, estructuraSetBloque estructura){
+void *escribirBloqueEnNodo (t_escribirBloque *estructura){
 
 	int entero; //Para el handshake
 
 	entero = 2;
-	send(socket, &entero, sizeof(int), 0);
-	if(recv(socket, &entero, sizeof(int), 0)<0) return -1; // Entero para que no se boludee
+	send(estructura->socket, &entero, sizeof(int), 0);
+	if(recv(estructura->socket, &entero, sizeof(int), 0)<0) return NULL; // Entero para que no se boludee
 
 	entero = 65;
-	estructura.tamanioData = strlen(estructura.data);
+	estructura->tamanioData = strlen(estructura->data);
 
-	send(socket, &estructura.bloque, sizeof(int), 0); // Envio el numero de bloque a escribir
-	if(recv(socket, &entero, sizeof(int), 0)<0) return -1; // Entero para que no se boludee
+	send(estructura->socket, &estructura->bloque, sizeof(int), 0); // Envio el numero de bloque a escribir
+	if(recv(estructura->socket, &entero, sizeof(int), 0)<0) return NULL; // Entero para que no se boludee
 
-	send(socket, &estructura.tamanioData, sizeof(int), 0);
-	if(recv(socket, &entero, sizeof(int), 0)<0) return -1; // Entero para que no se boludee
+	send(estructura->socket, &estructura->tamanioData, sizeof(int), 0);
+	if(recv(estructura->socket, &entero, sizeof(int), 0)<0) return NULL; // Entero para que no se boludee
 
-	send(socket, estructura.data, estructura.tamanioData,0);
+	send(estructura->socket, estructura->data, estructura->tamanioData,0);
 
-	return 90;
+	return NULL;
 }
 
 int formatearBloque(int socket, int nroBloque){ // Devuelve -1 si hay error
@@ -485,9 +486,16 @@ int insertarArchivoAMongoYAlMDFS (char* path){
 	struct stat mystat;
 	int cantidadBloques;
 	div_t restoDivision;
-	int i,a,b,z,offset;
-	estructuraSetBloque escribirBloque;
+	int a,b,z,offset;
+	t_escribirBloque escribirBloque;
 	t_matrix datosMatrisAsignacion;
+
+	int socketNodoCopia1, socketNodoCopia2, socketNodoCopia3;
+	int bloqueNodoCopia1, bloqueNodoCopia2, bloqueNodoCopia3;
+	int contC1,contC2,contC3;
+	pthread_t hiloNodoCopia1[1000];
+	pthread_t hiloNodoCopia2[1000];
+	pthread_t hiloNodoCopia3[1000];
 
 	char *pmap;
 
@@ -539,6 +547,7 @@ int insertarArchivoAMongoYAlMDFS (char* path){
 	directorio = elegirDirectorioParaArchivo();
 	if(directorio == -1) return -1;
 
+	//
 	for(contadorBloque=0;contadorBloque < cantidadBloques;contadorBloque++){
 
 		if(tamanioRestanteDelArchivo >= tamanioBloque){
@@ -557,19 +566,46 @@ int insertarArchivoAMongoYAlMDFS (char* path){
 
 		escribirBloque.data = contenidoBloque;
 
-		doc3 = bson_new ();
-		//i = socketNodoGlobal;
-		//escribirBloque.bloque = 0;
-		//escribirBloqueEnNodo(i,escribirBloque);
+		socketNodoCopia1 = socketNodo(matris[contadorBloque][0]);
+		socketNodoCopia2 = socketNodo(matris[contadorBloque][1]);
+		socketNodoCopia3 = socketNodo(matris[contadorBloque][2]);
 
-		agregarCopia(doc3, "1", matris[contadorBloque][0], 30);
-		agregarCopia(doc3, "2", matris[contadorBloque][1], 10);
-		agregarCopia(doc3, "3", matris[contadorBloque][2], 40);
+		bloqueNodoCopia1 = primerBloqueLibre(matris[contadorBloque][0]);
+		bloqueNodoCopia2 = primerBloqueLibre(matris[contadorBloque][1]);
+		bloqueNodoCopia3 = primerBloqueLibre(matris[contadorBloque][2]);
+
+		elBloqueDelNodoSeOcupo(socketNodoCopia1,bloqueNodoCopia1);
+		elBloqueDelNodoSeOcupo(socketNodoCopia2,bloqueNodoCopia2);
+		elBloqueDelNodoSeOcupo(socketNodoCopia3,bloqueNodoCopia3);
+
+		escribirBloque.socket = socketNodoCopia1;
+		escribirBloque.bloque = bloqueNodoCopia1;
+		pthread_create(&hiloNodoCopia1[contC1], NULL, escribirBloqueEnNodo, (void *)&escribirBloque);
+		escribirBloque.socket = socketNodoCopia2;
+		escribirBloque.bloque = bloqueNodoCopia2;
+		pthread_create(&hiloNodoCopia2[contC2], NULL, escribirBloqueEnNodo, (void *)&escribirBloque);
+		escribirBloque.socket = socketNodoCopia3;
+		escribirBloque.bloque = bloqueNodoCopia3;
+		pthread_create(&hiloNodoCopia3[contC3], NULL, escribirBloqueEnNodo, (void *)&escribirBloque);
+
+		pthread_join(hiloNodoCopia1[contC1],NULL);
+		pthread_join(hiloNodoCopia2[contC2],NULL);
+		pthread_join(hiloNodoCopia3[contC3],NULL);
+
+		contC1++;
+		contC2++;
+		contC3++;
+
+		doc3 = bson_new ();
+		agregarCopia(doc3, "1", matris[contadorBloque][0], bloqueNodoCopia1);
+		agregarCopia(doc3, "2", matris[contadorBloque][1], bloqueNodoCopia2);
+		agregarCopia(doc3, "3", matris[contadorBloque][2], bloqueNodoCopia3);
 
 		BSON_APPEND_DOCUMENT(doc2, string_itoa(contadorBloque), doc3);
 		bson_destroy (doc3);
 		free(contenidoBloque);
 	}
+	//
 
 	BSON_APPEND_UTF8(doc, "Nombre", strrchr(path, '/')+1);
 	BSON_APPEND_INT32 (doc, "Tamanio", mystat.st_size);
@@ -600,7 +636,7 @@ int socketNodo(int idNodo){
 	query = bson_new ();
 	BSON_APPEND_UTF8(query, "Estado", "Disponible");
 	BSON_APPEND_UTF8 (query, "Conexion", "Conectado");
-	BSON_APPEND_UTF8 (query, "ID Nodo", idNodo);
+	BSON_APPEND_INT32 (query, "ID Nodo", idNodo);
 	BSON_APPEND_UTF8(query, "Es" , "Nodo");
 	cantidad = mongoc_collection_count(nodos, MONGOC_QUERY_NONE, query,0,0,NULL,NULL);
 	if(cantidad > 0){
@@ -610,6 +646,9 @@ int socketNodo(int idNodo){
 				if(bson_iter_find (&iter, "Socket"))socketNodo = bson_iter_int32(&iter);
 			}
 		}
+	}else{
+		printf("No encontro el nodo\n");
+		return -1;
 	}
 	return socketNodo;
 }
@@ -618,14 +657,9 @@ int primerBloqueLibre(int idNodo){
 	bson_t *doc;
 	bson_t *query;
 	int cantidad;
-	int entero; //Para el handshake
-	int socketNodo;
 	bson_iter_t iter;
 	bson_iter_t iter2;
 	mongoc_cursor_t *cursor;
-	entero = 4;
-	int cantidadBloques;
-	int a;
 	int tamanioArray;
 	int flag;
 	int bloque;
@@ -637,22 +671,19 @@ int primerBloqueLibre(int idNodo){
 	BSON_APPEND_UTF8(query, "Estado", "Disponible");
 	BSON_APPEND_INT32(query, "ID Nodo", idNodo);
 	cantidad = mongoc_collection_count(nodos, MONGOC_QUERY_NONE, query,0,0,NULL,NULL);
+	tamanioArray=0;
+	flag=1;
 	if(cantidad > 0){
 		cursor = mongoc_collection_find (nodos, MONGOC_QUERY_NONE, 0, 0, 0, query, NULL, NULL);
 		while (mongoc_cursor_next (cursor, &doc)) {
 			if (bson_iter_init (&iter, doc)) {
 				if(bson_iter_find(&iter, "Bloques Libres") && BSON_ITER_HOLDS_ARRAY(&iter)){
 					if(bson_iter_recurse(&iter,&iter2)){
-						tamanioArray=0;
-						flag=1;
-						while(flag!=2){
-							if(bson_iter_find (&iter2, string_itoa(tamanioArray))){
-								bloque = bson_iter_int32(&iter);
-								tamanioArray++;
-								flag=2;
-							}else{
-								flag=2;
-							}
+						if(bson_iter_find (&iter2, string_itoa(tamanioArray))){
+							bloque = bson_iter_int32(&iter2);
+							tamanioArray++;
+						}else{
+							flag=2;
 						}
 					}
 				}
