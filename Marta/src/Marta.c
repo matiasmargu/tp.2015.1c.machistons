@@ -32,36 +32,35 @@ int main(void) {
 	// Configuracion Select
 
 	fd_set master;
-		fd_set read_fds;
+	fd_set read_fds;
 
-		pthread_t hiloConsola;
-		pthread_t hiloMarta;
+	pthread_t hiloConsola;
+	pthread_t hiloMarta;
 
-		struct sockaddr_in serveraddr;
-		struct sockaddr_in clientaddr;
+	struct sockaddr_in serveraddr;
+	struct sockaddr_in clientaddr;
 
-		int fdmax, listener, newfd, yes = 1, addrlen, i;
+	int fdmax, listener, newfd, yes = 1, addrlen, i;
 
-		FD_ZERO(&master);
-		FD_ZERO(&read_fds);
+	FD_ZERO(&master);
+	FD_ZERO(&read_fds);
 
-		listener = socket(AF_INET, SOCK_STREAM, 0);
-		setsockopt(listener, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int));
+	listener = socket(AF_INET, SOCK_STREAM, 0);
+	setsockopt(listener, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int));
 
-		serveraddr.sin_family = AF_INET;
-		serveraddr.sin_addr.s_addr = INADDR_ANY;
-		serveraddr.sin_port = htons(puerto_job);
-		memset(&(serveraddr.sin_zero), '\0', 8);
-		bind(listener, (struct sockaddr *)&serveraddr, sizeof(serveraddr));
-		listen(listener, 10);
-		FD_SET(listener, &master);
+	serveraddr.sin_family = AF_INET;
+	serveraddr.sin_addr.s_addr = INADDR_ANY;
+	serveraddr.sin_port = htons(puerto_job);
+	memset(&(serveraddr.sin_zero), '\0', 8);
+	bind(listener, (struct sockaddr *)&serveraddr, sizeof(serveraddr));
+	listen(listener, 10);
+	FD_SET(listener, &master);
 
-		fdmax = listener;
-
-		lista_archivos = list_create();
+	fdmax = listener;
 
 
-	   	/*
+
+	/*
 	   	t_archivo archivo_prueba;
 	   	archivo_prueba.bloques = list_create();
 
@@ -84,7 +83,7 @@ int main(void) {
 
 
    	// Empieza el select
-
+	lista_tabla_procesos = list_create();
 
    	for (;;){
    		read_fds = master;
@@ -156,16 +155,3 @@ int main(void) {
 
 	return EXIT_SUCCESS;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
