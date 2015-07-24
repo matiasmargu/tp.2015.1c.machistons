@@ -21,6 +21,7 @@ void *atenderConsola(void*arg) {
 
 	t_matrix datosMatrisAsignacion;
 	int offset,a,b,z;
+	int socketNodito,bloqueNodito;
 
 	char *mensaje; // Para mandar mensajes serializados
 
@@ -73,8 +74,6 @@ void *atenderConsola(void*arg) {
 					break;
 				case Borrar_Bloque_Arch: // 10
 
-					printf("socket: %i\n",socketNodo(2));
-					printf("bloque libre: %i\n",primerBloqueLibre(2));
 					break;
 				case Copiar_Bloque_Arch: // 11
 					break;

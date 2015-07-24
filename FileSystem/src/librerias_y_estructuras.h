@@ -62,6 +62,13 @@ typedef struct{
 }t_getBloque;
 
 typedef struct{
+	int socket;
+	int bloque;
+	char *data;
+	int tamanioData;
+}t_escribirBloque;
+
+typedef struct{
 	int idNodo;
 	int bloquesLibres;
 }t_nodoVector;
@@ -109,7 +116,7 @@ void liberarMensaje(char **package);
 
 // Funciones Interfaz Nodo
 
-int escribirBloqueEnNodo (int socket, estructuraSetBloque escribirBloque);
+void *escribirBloqueEnNodo (t_escribirBloque *estructura);
 int recive_y_deserializa_Contenido_Bloque(t_getBloque *bloque, int socket, uint32_t tamanioTotal);
 char *pedirContenidoBloqueA (int socket, int nroBloque);
 char* serializarParaGetBloque(estructuraSetBloque *bloque);
