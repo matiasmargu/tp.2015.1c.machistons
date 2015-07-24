@@ -43,6 +43,17 @@ typedef struct {
 	int idNodo;
 }t_contadorNodo;
 
+typedef struct {
+	char *puertoNodo;
+	char *ipNodo;
+	t_list * archivosAMover;
+}t_moverArchivos;
+
+typedef struct {
+	char *puertoNodo;
+	char *ipNodo;
+	char * archivoAMover;
+}t_serializarUnArchivoParaMover;
 
 void planificarSincombiner(){
 
@@ -66,6 +77,7 @@ void planificarSincombiner(){
 	t_marta_job_reduce antesDeSerializar;
 	char* structParaJob;
 	char* archivoA;
+	char* archivo;
 	contador2 = 0;
 
 
@@ -188,6 +200,8 @@ void planificarSincombiner(){
 	int handshakeJob, enteroPrueba,tamanioAenviar,tamanioTotalVector, socketJob;
 	char* archivo1;
 	char* structAEnviarAJob;
+	char* archivosAMoverSerializados;
+	char * archivoASerializar;
 	t_lista_job2 *campoDeLaLista;
 	campoDeLaLista = malloc(tamanioTabla);
 	t_tablaProcesos_porJob2 *campoDeLaListaTablaDeProcesos;
@@ -204,6 +218,13 @@ void planificarSincombiner(){
 	campoDeListaDeNodo = malloc(tamanioNodo);
 	lista_archivosAReducirPorNodo = list_create();
 	list_clean(lista_archivosAReducirPorNodo);
+	t_moverArchivos * moverArchivos;
+	moverArchivos = malloc(sizeof(char));
+	moverArchivos->archivosAMover = list_create();
+	t_serializarUnArchivoParaMover * archivoAMover;
+	archivoAMover = malloc(sizeof(char) * 3);
+
+	tamanioListaJobTabla = list_size(lista_job_tabla);
 
 	for(a=0;a<tamanioListaJobTabla;a++){
 		campoDeLaLista=list_get(lista_job_tabla,a);
@@ -211,7 +232,7 @@ void planificarSincombiner(){
 
 		for(b=0;b<tamanioListaTablaDeProcesosPorJob;b++){
 			campoDeLaListaTablaDeProcesos = list_get(campoDeLaLista->tabla_procesos,b);
-			tamanioListaContadoresNodo = list_size(listaDeContadoresNodo);
+			tamanioListaArchivosAReducirPorNodo = list_size(lista_archivosAReducirPorNodo);
 			if(tamanioListaArchivosAReducirPorNodo == 0){
 				campoAAgregarAListaReducirPorNodo = malloc(tamanioCampoDeTabla);
 				campoAAgregarAListaReducirPorNodo->idNodo =  campoDeLaListaTablaDeProcesos->id_nodo;
@@ -277,26 +298,85 @@ void planificarSincombiner(){
 		}
 	}
 
-	 tamanio = list_size(lista_archivosAReducirPorNodo);
-	 contadorNodo = malloc(sizeof(int) * 2 );
-	 contadorNodo->contador = 0;
-	 for(e=0;e<tamanio;e++){
-		 campoParaAumentarContadores = list_get(lista_archivosAReducirPorNodo,e);
-		 a=list_size(campoParaAumentarContadores->archivosAReducir);
+	     tamanio = list_size(lista_archivosAReducirPorNodo);
+		 contadorNodo = malloc(sizeof(int) * 2 );
+		 contadorNodo->contador = 0;
+		 for(e=0;e<tamanio;e++){
+			 campoParaAumentarContadores = list_get(lista_archivosAReducirPorNodo,e);
+			 a=list_size(campoParaAumentarContadores->archivosAReducir);
+			 // va agregando los archivos a mover
+			 for(b=0;b<a;b++){
+				 archivo = list_get(campoParaAumentarContadores->archivosAReducir,b);
+				 list_add(moverArchivos->archivosAMover,archivo);
+			 }
 
-		 if (a > contadorNodo->contador) {
-			 contadorNodo->idNodo = campoParaAumentarContadores->idNodo;
+		     // la finalidad de este if que quede en el id el nodo con mas archivos a reducir
+			 if (a > contadorNodo->contador) {
+				 contadorNodo->idNodo = campoParaAumentarContadores->idNodo;
+			 }
+
 		 }
 
-	 }
+		 printf("\n%i\n",contadorNodo->contador);
 
-	 printf("\n%i\n",contadorNodo->contador);
+		 // con este for ya vamos a tener el puerto el ip y la lista de archivos a mover
+		 aux=0;
+		 for(d=0;d<tamanioListaDeNodos && aux==0;d++){
+			 campoDeListaDeNodo = list_get(lista_nodos_estado,d);
+			 if(contadorNodo->idNodo==campoDeListaDeNodo->id_nodo){
+				 moverArchivos->ipNodo =  campoDeListaDeNodo->ip_nodo;
+				 moverArchivos->puertoNodo = campoDeListaDeNodo->puerto_nodo;
+				 aux=1;
+
+			 	 }
+		 }
+
+		 // ahora hay que decirle al nodo que los mueva
+
+		 int tamanioSerializacionMover;
+		 tamanioSerializacionMover = malloc(sizeof(char) * 3 );
+		 handshakeJob = 22;
+		 send(socketJob, &handshakeJob, sizeof(int),0);
+		 recv(socketJob, &enteroPrueba, sizeof(int),0);
+		 tamanio = list_size(moverArchivos->archivosAMover);
+		 for(a=0;a < tamanio;a++){
+			 archivoAMover->ipNodo =moverArchivos->ipNodo;
+			 archivoAMover->puertoNodo = moverArchivos->puertoNodo;
+			 archivo = list_get(moverArchivos->archivosAMover, a);
+			 archivoAMover->archivoAMover = archivo;
+			 archivoASerializar = serializar_archivoAMover(&archivoAMover,tamanioSerializacionMover);
+			 send(socketJob, &tamanioSerializacionMover, sizeof(int),0);
+			 recv(socketJob, &enteroPrueba, sizeof(int),0);
+			 send(socketJob,archivoASerializar,tamanioSerializacionMover,0);
+			 recv(socketJob,&enteroPrueba,sizeof(int),0);
+		 }
 
 
+		 // ahora hay que decirle al nodo que haga el reduce final sobre los archivos mapeados
 
+		 handshakeJob = 34;
 
+		 send(socketJob, &handshakeJob, sizeof(int),0);
+		 recv(socketJob, &enteroPrueba, sizeof(int),0);
 
+		 //	antesDeSerializar.archivoResultadoReduce =  aca va el qe pasa job al principio hay que ver si viene como parametro o lo tenemos como global
+		 antesDeSerializar.cantidadArchivos = list_size(moverArchivos->archivosAMover);
+		 antesDeSerializar.idNodo = contadorNodo->idNodo;
+		 antesDeSerializar.ipNodo = moverArchivos->ipNodo;
+		 antesDeSerializar.puertoNodo = moverArchivos->puertoNodo;
+		 list_add_all(antesDeSerializar.listaArchivosTemporales, moverArchivos->archivosAMover);
 
+		 for(m=0; m< tamanioArchivosaReducir; m++){
+			 archivoA =	list_get( listaFinalDeArchivosAReducir,m);
+			 tamanioListaFinal += strlen(archivoA);
+			 tamanioListaFinal += 1;
+		 }
+
+		 tamanioStruct = (sizeof(int)*2)+strlen(antesDeSerializar.archivoResultadoReduce)+1 + strlen(antesDeSerializar.puertoNodo)+1 + strlen(antesDeSerializar.ipNodo) +1 + tamanioListaFinal;
+		 send(socketJob, &tamanioStruct , sizeof(int),0);
+		 recv(socketJob, &enteroPrueba, sizeof(int),0);
+		 structParaJob = serializar_marta_job_reduce(&antesDeSerializar, tamanioStruct);
+		 send(socketJob, structParaJob, tamanioStruct, 0);
 
 
 /*
@@ -546,6 +626,41 @@ return EXIT_SUCCESS;
 }
 
 
+char* serializar_archivoAMover(t_serializarUnArchivoParaMover * archivoAMover,int tamanioSerializacionMover){
+	char *serializedPackage = malloc(tamanioSerializacionMover);
+	int offset = 0;
+	int size_to_send;
+
+	int tamanioNombre;
+	tamanioNombre = strlen(archivoAMover->puertoNodo) + 1;
+	size_to_send = sizeof(int);
+	memcpy(serializedPackage + offset, &tamanioNombre, size_to_send);
+	offset += size_to_send;
+
+	size_to_send =  strlen(archivoAMover->puertoNodo) + 1;
+	memcpy(serializedPackage + offset, archivoAMover->puertoNodo, size_to_send);
+	offset += size_to_send;
+
+	tamanioNombre = strlen(archivoAMover->ipNodo) + 1;
+	size_to_send = sizeof(int);
+	memcpy(serializedPackage + offset, &tamanioNombre, size_to_send);
+	offset += size_to_send;
+
+	size_to_send =  strlen(archivoAMover->ipNodo) + 1;
+	memcpy(serializedPackage + offset, archivoAMover->ipNodo, size_to_send);
+	offset += size_to_send;
+
+	tamanioNombre = strlen(archivoAMover->archivoAMover) + 1;
+	size_to_send = sizeof(int);
+	memcpy(serializedPackage + offset, &tamanioNombre, size_to_send);
+	offset += size_to_send;
+
+	size_to_send =  strlen(archivoAMover->archivoAMover) + 1;
+	memcpy(serializedPackage + offset, archivoAMover->archivoAMover, size_to_send);
+	offset += size_to_send;
+
+	return serializedPackage;
+}
 
 
 

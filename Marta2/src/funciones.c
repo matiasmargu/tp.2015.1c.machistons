@@ -231,8 +231,6 @@ void * recibirListaDeArchivos(void*arg){
 	char* rutaArchivoConfiguracion;
 	char* nombreArchivoResultadoFinal;
 	t_config* archivoConfiguracion;
-	char* archivoAEnviar;
-	char* structASerializar;
 
 	t_job job;
 	int enteroPrueba;
