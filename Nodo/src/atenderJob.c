@@ -90,6 +90,9 @@ void* atenderJob(void* arg){
 
 				int socket_nodo = crearCliente(comb.ip,comb.puerto);
 
+				comando=3;
+
+				send(socket_nodo,&comando,sizeof(int),0);
 				pedirContenidoDeUnArchivo(comb.archivo,socket_nodo);
 				break;
 				}

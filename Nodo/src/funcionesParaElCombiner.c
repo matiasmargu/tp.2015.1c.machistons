@@ -15,6 +15,8 @@ void getFileContent(int socket){
 	char* fileGetContent;
 	char* mensaje;
 
+	send(socket,&tamanioDelNombre,sizeof(int),0);//Para que no se boludee
+
 	recv(socket,&tamanioDelNombre,sizeof(int),0);
 	send(socket,&tamanioDelNombre,sizeof(int),0);
 	nombreAguardar = malloc(tamanioDelNombre);
@@ -47,6 +49,8 @@ void pedirContenidoDeUnArchivo(char* nombre,int socket){
 
 	char* dataDelFile;
 	char* copiaDir;
+
+	recv(socket,&tamanioData,sizeof(int),0);//Para que no se boludee
 
 	send(socket,&tamanioDelNombre,sizeof(int),0);
 	recv(socket,&tamanioDelNombre,sizeof(int),0);
