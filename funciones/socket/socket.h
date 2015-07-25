@@ -25,8 +25,6 @@
 	char* nombre_archivo_resultado; //donde va a devolverle el resultado
 	int idNodo;
 	int cantidadBloques;
-
-
 }t_marta_job_map;
 
 
@@ -46,7 +44,6 @@ typedef struct{
 	char* archivoAmover;
 	char* puertoAconectarse;
 	char* ipAConectarse;
-	int idNodoAconectarse;
 }t_para_job;
 
 
