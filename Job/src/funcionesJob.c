@@ -180,7 +180,6 @@ int recive_y_deserialisa_marta_job_mapper(t_marta_job_map *bloque, int socket, u
 
 
 
-
 		free(buffer);
 		return status;
 

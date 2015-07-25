@@ -63,7 +63,7 @@ int main(void) {
 
 	rutinaMapperTraducida = mapearAMemoriaVirtual(mapper);
 	rutinaReduceTraducida = mapearAMemoriaVirtual(reduce);
-	//printf("rutinaMappper TRADUCIDA  %s\n",rutinaMapperTraducida);
+	printf("rutinaMappper TRADUCIDA  %s\n",rutinaMapperTraducida);
 
 	///MANDAMOS LA LISTA DE ARCHIVOS A MARTA Y EL COMBINER
 
@@ -111,6 +111,10 @@ int main(void) {
 			send(socketMarta, &enteroPrueba, sizeof(int),0);
 			int status = 1; // Estructura que manjea el status de los recieve.
 			status = recive_y_deserialisa_marta_job_mapper(&Marta_Job_Map, socketMarta, tamanioStruct);
+			printf(" id %i\n",Marta_Job_Map.idNodo);
+			printf(" ip %s\n",Marta_Job_Map.ip_nodo);
+			printf(" bloque %i\n",Marta_Job_Map.numeroBloque);
+			printf(" puerto %s\n",Marta_Job_Map.puerto);
 			printf("llego el archivo %s\n",Marta_Job_Map.nombre_archivo_resultado);
 
 

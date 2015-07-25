@@ -1778,3 +1778,19 @@
 [INFO] 22:06:42:264 log_job/(4920:4920): Se ha establecido la conexion con Marta, su ip es 192.168.1.112 y su puerto 3000
 [INFO] 22:09:01:358 log_job/(4961:4961): Se ha establecido la conexion con Marta, su ip es 192.168.1.112 y su puerto 3000
 [INFO] 22:12:08:118 log_job/(4974:4974): Se ha establecido la conexion con Marta, su ip es 192.168.1.112 y su puerto 3000
+[INFO] 19:51:17:426 log_job/(25468:25468): Se ha establecido la conexion con Marta, su ip es 192.168.1.121 y su puerto 3000
+[INFO] 19:58:09:645 log_job/(25663:25663): Se ha establecido la conexion con Marta, su ip es 192.168.1.114 y su puerto 3000
+[INFO] 19:58:36:813 log_job/(25666:25666): Se ha establecido la conexion con Marta, su ip es 192.168.1.114 y su puerto 3000
+[INFO] 20:01:07:309 log_job/(25812:25812): Se ha establecido la conexion con Marta, su ip es 192.168.1.114 y su puerto 3000
+[INFO] 20:03:10:631 log_job/(25982:25982): Se ha establecido la conexion con Marta, su ip es 192.168.1.114 y su puerto 3000
+[INFO] 20:10:43:348 log_job/(26373:26373): Se ha establecido la conexion con Marta, su ip es 192.168.1.114 y su puerto 3000
+[INFO] 20:15:52:591 log_job/(26524:26524): Se ha establecido la conexion con Marta, su ip es 192.168.1.114 y su puerto 3000
+[INFO] 20:17:01:605 log_job/(26561:26561): Se ha establecido la conexion con Marta, su ip es 192.168.1.114 y su puerto 3000
+[INFO] 20:18:20:660 log_job/(26568:26568): Se ha establecido la conexion con Marta, su ip es 192.168.1.114 y su puerto 3000
+[INFO] 20:18:31:284 log_job/(26569:26569): Se ha establecido la conexion con Marta, su ip es 192.168.1.114 y su puerto 3000
+[INFO] 20:18:54:672 log_job/(26571:26571): Se ha establecido la conexion con Marta, su ip es 192.168.1.114 y su puerto 3000
+[INFO] 20:19:42:935 log_job/(26574:26574): Se ha establecido la conexion con Marta, su ip es 192.168.1.114 y su puerto 3000
+[INFO] 20:23:06:843 log_job/(26689:26689): Se ha establecido la conexion con Marta, su ip es 192.168.1.114 y su puerto 3000
+[INFO] 20:25:28:932 log_job/(26754:26754): Se ha establecido la conexion con Marta, su ip es 192.168.1.114 y su puerto 3000
+[INFO] 20:25:29:63 log_job/(26754:26755): Se levanto un hilo para enviar los datos de cada bloque a mapear,los parametros recibidos son: numero bloque:5, socketNodo:7, nombre del archivo de resultado: 0, socketMarta 4, id del Nodo 1
+
