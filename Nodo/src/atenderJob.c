@@ -15,13 +15,19 @@ void* atenderJob(void* arg){
 	char* script_mapper;
 	char* script_reducer;
 	int i;
+	int tamanioTotalIP_P;
+
+	t_para_nodo comb;
 
 	pthread_t hiloMapper[1000];
-	pthread_t hiloReducer;
+	pthread_t hiloReducer[1000];
 
 	send(socket, &comando,sizeof(int),0);
 
-	int cont1;
+	int cont1=0;
+	int cont2=0;
+
+	char* puertoN_aConectar;
 
 	while(1){
 
@@ -50,12 +56,12 @@ void* atenderJob(void* arg){
 
 				printf("se asignaron los permisos\n");
 
-				//pthread_create(&hiloMapper[cont1], NULL, (void*) mapper,(void*) socket);
+				pthread_create(&hiloMapper[cont1], NULL, (void*) mapper,(void*) socket);
 				cont1++;
 				break;
 
 			case 2: //Este va a ser el reduce
-				printf("Se levanto un hilo reducer.sh\n");
+				printf("Se levanto un hilo reduce\n");
 
 				send(socket, &comando,sizeof(int),0);
 
@@ -71,7 +77,20 @@ void* atenderJob(void* arg){
 				chmod(direccionAuxiliar,modo);
 
 
-			//	pthread_create(&hiloReducer, NULL,reducer,(void*) socket);
+				pthread_create(&hiloReducer[cont2], NULL,(void*)reducer,(void*) socket);
+				cont2++;
+				break;
+			case 3:
+				printf("Se levanto un movimiento de archivos\n");
+
+				send(socket, &comando,sizeof(int),0);
+
+				recv(socket,&tamanioTotalIP_P,sizeof(int),0);
+				recive_y_deserializa_NODO_C(&comb,socket,tamanioTotalIP_P);
+
+				int socket_nodo = crearCliente(comb.ip,comb.puerto);
+
+				pedirContenidoDeUnArchivo(comb.archivo,socket_nodo);
 				break;
 				}
 		}

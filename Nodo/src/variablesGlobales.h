@@ -69,6 +69,7 @@ int tamanioDelArchivoBIN();
 int recive_y_deserialisa_CHARp(char *script, int socket, uint32_t tamanioTotal);
 int recive_y_deserialisa_SET_BLOQUE(estructuraSetBloque *bloque, int socket, uint32_t tamanioTotal);
 int recive_y_deserializa_EST_REDUCE(t_job_nodo_reduce *bloque, int socket, uint32_t tamanioTotal);
+int recive_y_deserializa_NODO_C(t_para_nodo *bloque, int socket, uint32_t tamanioTotal);
 char* serializarIP_PUERTO(char* ip_fs,char* puerto_fs, int tamanioData);
 char* serializarCHARp(char* Aserializar, int tamanioData);
 char* serializarBloqueDeDatos(char* bloque, int tamanioData);
@@ -97,5 +98,7 @@ void ordernarAlfabeticamente(char* nombreDelArchivoResultado,FILE *fdMape,int ta
 
 //Funciones esenciales
 int getBloque(int nroDeBloque, char* bloque);
+void getFileContent(int socket);
+void pedirContenidoDeUnArchivo(char* nombre,int socket);
 
 #endif /* VARIABLESGLOBALES_H_ */
