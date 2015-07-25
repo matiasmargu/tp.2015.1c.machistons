@@ -78,5 +78,6 @@ char *serializar_job_marta_reduce(t_job_marta_reduce *job_marta,int tamanioTotal
 int recive_y_deserialisa_marta_job_reduce_final(t_marta_job_reduce *bloque, int socket, uint32_t tamanioTotal);
 char* serializar_job_nodo_reduce_final(t_job_nodo_reduce *Job_Nodo, int tamanio);
 char* serializar_archivoAMover(t_archivoParaMover * archivoAMover,int tamanioSerializacionMover);
-
+char* serializar_nodo_mover(t_para_nodo * bloque,int tamanio);
+int recive_y_deserialisa_marta_job_reduce_moverArchivosFinal(t_para_job *bloque, int socket, uint32_t tamanioTotal);
 #endif /* JOB_SRC_FUNCIONESJOB2_H_ */

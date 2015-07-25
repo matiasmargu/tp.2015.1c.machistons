@@ -24,7 +24,7 @@ int main(void) {
 	char* archivo_resultado_final;
 	int p,a, tamanioCombiner,tamanio_archivo_resultado, tipoOperacion2;
 	int tamanioTotal, tamanioTotalMapper , numeroRutina,CantidadAMover;
-	int handshake, handshakeNodo,  socketNodo,tamanioArchivoAMover,caca2;
+	int handshake, handshakeNodo,  socketNodo,tamanioArchivoAMover,caca2,tamanioAEnviarMover,tamanioRecibido,estado2;
 	t_marta_job_map Marta_Job_Map;
 	char* rutinaMapperTraducida;
 	char* rutinaReduceTraducida;
@@ -32,10 +32,13 @@ int main(void) {
 	t_marta_job_reduce Marta_Job_Reduce_Final;
 	int enteroPrueba, tipoOperacion, tamanioStruct,x;
 	pthread_t hilomap;
+	t_para_nodo* paraNodo;
 	pthread_t hiloreduce;
 	t_hilo_map map;
+	t_para_job Marta_Job_Archivo_A_Mover;
 	t_hilo_reduce datosParaLaReduccion;
 	char* archivoAMoverAEnviarNodo;
+	char* structParaNodoMover;
 	t_archivoParaMover * archivoAMover;
 	tamanioArchivoAMover = malloc(sizeof(char) * 3);
 	archivoAMover = tamanioArchivoAMover;
@@ -179,34 +182,58 @@ int main(void) {
 			pthread_create(&hiloreduce,NULL, reducirArchivos,(void *)&datosParaLaReduccion);
 			break;
 			case 22: //REDUCE FINAL FALTA HACER
-				send(socketMarta, &enteroPrueba, sizeof(int),0);
+							send(socketMarta, &enteroPrueba, sizeof(int),0);
 							recv(socketMarta, &tamanioStruct, sizeof(int),0);
 							send(socketMarta, &enteroPrueba, sizeof(int),0);
-							estado = 1; // Estructura que manjea el status de los recieve.
-							estado = recive_y_deserialisa_marta_job_reduce_final(&Marta_Job_Reduce_Final, socketMarta, tamanioStruct);
 
+							estado = 1; // Estructura que manjea el status de los recieve.
+							estado = recive_y_deserialisa_marta_job_reduce_moverArchivosFinal(&Marta_Job_Archivo_A_Mover, socketMarta, tamanioStruct);
 							if(estado){
 								//HANDSHAKE NODO //AGREGAR EL 22 VER CON NICO
-							socketNodo = crearCliente (Marta_Job_Reduce_Final.ipNodo, Marta_Job_Reduce_Final.puertoNodo);
-							handshakeNodo = 8;
-							send(socketNodo,&handshakeNodo,sizeof(int),0);
-							recv(socketNodo, &enteroPrueba, sizeof(int),0);
-							//ACA LE MANDA LA RUTINA REDUCE AL NODO
-							numeroRutina = 2; //Le avisa que manda reduce
-							send(socketNodo,&numeroRutina,sizeof(int),0);
-							recv(socketNodo, &enteroPrueba, sizeof(int),0);
-							int tamanioTotalReduce =  strlen(rutinaReduceTraducida)+1;
-							send(socketNodo, &tamanioTotalReduce, sizeof(int),0);
-							recv(socketNodo, &enteroPrueba, sizeof(int),0);
-							send(socketNodo,rutinaReduceTraducida,tamanioTotal,0);
-							recv(socketNodo, &enteroPrueba, sizeof(int),0);
+								socketNodo = crearCliente (Marta_Job_Archivo_A_Mover.ipAConectarse, Marta_Job_Archivo_A_Mover.puertoAconectarse);
+								handshakeNodo = 8;
+								send(socketNodo,&handshakeNodo,sizeof(int),0);
+								recv(socketNodo, &enteroPrueba, sizeof(int),0);
+								tamanioAEnviarMover = strlen(Marta_Job_Archivo_A_Mover.archivoAmover) +1 + strlen(Marta_Job_Archivo_A_Mover.ipAmover)+1 + strlen(Marta_Job_Archivo_A_Mover.puertoAmover)+1;
+								send(socketNodo, &tamanioAEnviarMover, sizeof(int),0);
+								recv(socketNodo, &enteroPrueba, sizeof(int),0);
+								paraNodo->archivo = Marta_Job_Archivo_A_Mover.archivoAmover;
+								paraNodo->ip = Marta_Job_Archivo_A_Mover.ipAmover;
+								paraNodo->puerto = Marta_Job_Archivo_A_Mover.puertoAmover;
+								structParaNodoMover = serializar_nodo_mover(&paraNodo,tamanioAEnviarMover);
+								send(socketNodo,structParaNodoMover, tamanioAEnviarMover,0);
+								recv(socketNodo, &enteroPrueba, sizeof(int),0);
+								send(socketMarta, &enteroPrueba, sizeof(int),0);
+								recv(socketMarta, &tamanioRecibido, sizeof(int),0);
+								estado2 = 1; // Estructura que manjea el status de los recieve.
+								estado2 = recive_y_deserialisa_marta_job_reduce(&Marta_Job_Reduce, socketMarta, tamanioRecibido);
 
-							//ACA LEVANTA UN HILO PARA APLICAR EL REDUCE
-							datosParaLaReduccion.socketNodo = socketNodo;
-							datosParaLaReduccion.nombreArchivoResultado = Marta_Job_Reduce_Final.archivoResultadoReduce;
-							datosParaLaReduccion.archivos = list_create();
-							list_add_all(datosParaLaReduccion.archivos, Marta_Job_Reduce_Final.listaArchivosTemporales) ; //COPIA UNA LISTA A LA OTRA
-							pthread_create(&hiloreduce,NULL, reducirArchivosFinal,(void *)&datosParaLaReduccion);break;
+
+							if(estado2){
+								//HANDSHAKE NODO
+										socketNodo = crearCliente (Marta_Job_Reduce.ipNodo, Marta_Job_Reduce.puertoNodo);
+										handshakeNodo = 8;
+										send(socketNodo,&handshakeNodo,sizeof(int),0);
+										recv(socketNodo, &enteroPrueba, sizeof(int),0);
+										//ACA LE MANDA LA RUTINA REDUCE AL NODO
+										numeroRutina = 2; //Le avisa que manda reduce
+										send(socketNodo,&numeroRutina,sizeof(int),0);
+										recv(socketNodo, &enteroPrueba, sizeof(int),0);
+										int tamanioTotalReduce =  strlen(rutinaReduceTraducida)+1;
+										send(socketNodo, &tamanioTotalReduce, sizeof(int),0);
+										recv(socketNodo, &enteroPrueba, sizeof(int),0);
+										send(socketNodo,rutinaReduceTraducida,tamanioTotal,0);
+										recv(socketNodo, &enteroPrueba, sizeof(int),0);
+
+										//ACA LEVANTA UN HILO PARA APLICAR EL REDUCE
+										datosParaLaReduccion.socketNodo = socketNodo;
+										datosParaLaReduccion.nombreArchivoResultado = Marta_Job_Reduce.archivoResultadoReduce;
+										datosParaLaReduccion.archivos = list_create();
+										list_add_all(datosParaLaReduccion.archivos, Marta_Job_Reduce.listaArchivosTemporales) ; //COPIA UNA LISTA A LA OTRA
+										pthread_create(&hiloreduce,NULL, reducirArchivos,(void *)&datosParaLaReduccion);
+										break;
+							}
+
 			break;
 			case 33:
 				recv(socketMarta, &CantidadAMover, sizeof(int),0);
@@ -215,7 +242,7 @@ int main(void) {
 					recv(socketMarta, &tamanioStruct, sizeof(int),0);
 					send(socketMarta, &enteroPrueba, sizeof(int),0);
 					estado = 1;
-					estado = recive_y_deserialisa_ArchivoAMover(&archivoAMover, socketMarta, tamanioStruct);
+				//	estado = recive_y_deserialisa_ArchivoAMover(&archivoAMover, socketMarta, tamanioStruct);
 					// falta hacer la funcion
 					if(estado){ // es necesario serializarlo para hacer el if estado
 						socketNodo = crearCliente (archivoAMover->ipNodo, archivoAMover->puertoNodo);

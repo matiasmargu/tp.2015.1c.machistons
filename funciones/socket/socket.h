@@ -40,6 +40,16 @@ typedef struct{
 
 }t_marta_job_reduce;
 
+typedef struct{
+	char* ipAmover;
+	char* puertoAmover;
+	char* archivoAmover;
+	char* puertoAconectarse;
+	char* ipAConectarse;
+	int idNodoAconectarse;
+}t_para_job;
+
+
 //JOB -> MARTA
 typedef struct{
 	int numeroBloque;
