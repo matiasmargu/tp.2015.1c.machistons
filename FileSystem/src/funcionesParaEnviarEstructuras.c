@@ -39,7 +39,7 @@ int recive_y_deserialisa_IPyPUERTO_Nodo(estructuraIPyNodo *bloque, int socket, u
 	char *buffer = malloc(tamanioTotal);
 	int offset=0;
 
-	recv(socket, buffer, tamanioTotal, 0);
+	if(recv(socket, buffer, tamanioTotal, 0)<0) return -1;
 
 	int tamanioDinamico;
 
@@ -67,7 +67,7 @@ char* recive_y_deserialisa_SOLOIP_Nodo(int socket, uint32_t tamanioTotal){
 	char *buffer = malloc(tamanioTotal);
 	int offset=0;
 
-	recv(socket, buffer, tamanioTotal, 0);
+	if(recv(socket, buffer, tamanioTotal, 0)<0) return "error";
 
 	int tamanioDinamico;
 
@@ -100,12 +100,12 @@ void *agregoNodoaMongo (void*arg){
 	int IPNodito;
 	a= 60;
 	send(socket, &a, sizeof(int),0);
-	recv(socket, &nodoNuevoOViejo, sizeof(int),0);
+	if(recv(socket, &nodoNuevoOViejo, sizeof(int),0)<0) return NULL;
 
 	switch(nodoNuevoOViejo){
 	case 32: //Nodo Nuevo
 		send(socket, &a, sizeof(int),0);
-		recv(socket, &tamanioTotalMensaje, sizeof(int), 0);
+		if(recv(socket, &tamanioTotalMensaje, sizeof(int), 0)<0) return NULL;
 		if(recive_y_deserialisa_IPyPUERTO_Nodo(&ipyPuertoNodo, socket, tamanioTotalMensaje)){
 			doc = bson_new ();
 			doc3 = bson_new ();
@@ -146,9 +146,9 @@ void *agregoNodoaMongo (void*arg){
 		break;
 	case 48: // Nodo Viejo
 		send(socket, &a, sizeof(int),0);
-		recv(socket, &idNodito, sizeof(int),0); // recibo el id Nodo
+		if(recv(socket, &idNodito, sizeof(int),0)<0) return NULL; // recibo el id Nodo
 		send(socket, &a, sizeof(int),0);
-		recv(socket, &tamanioTotalMensaje, sizeof(int), 0);
+		if(recv(socket, &tamanioTotalMensaje, sizeof(int), 0)<0) return NULL;
 		send(socket, &a, sizeof(int),0);
 		IPNodito = recive_y_deserialisa_SOLOIP_Nodo(socket, tamanioTotalMensaje);
 		query = bson_new ();
@@ -403,7 +403,6 @@ void *escribirBloqueEnNodo (t_escribirBloque *estructura){
 	if(recv(estructura->socket, &entero, sizeof(int), 0)<0) return NULL; // Entero para que no se boludee
 
 	entero = 65;
-	estructura->tamanioData = strlen(estructura->data);
 
 	send(estructura->socket, &estructura->bloque, sizeof(int), 0); // Envio el numero de bloque a escribir
 	if(recv(estructura->socket, &entero, sizeof(int), 0)<0) return NULL; // Entero para que no se boludee
@@ -412,6 +411,8 @@ void *escribirBloqueEnNodo (t_escribirBloque *estructura){
 	if(recv(estructura->socket, &entero, sizeof(int), 0)<0) return NULL; // Entero para que no se boludee
 
 	send(estructura->socket, estructura->data, estructura->tamanioData,0);
+
+	free(estructura);
 
 	return NULL;
 }
@@ -450,7 +451,7 @@ char *pedirContenidoBloqueA (int socket, int nroBloque){
 	bufferSet=malloc(tamanioBloque);
 
 	offset = 0;
-
+/*
 	while(tamanioBloque != offset){
 		if((tamanioBloque-offset)<variableDelPaquetito){
 			tamanioDelPaquetito = tamanioBloque-offset;
@@ -464,6 +465,18 @@ char *pedirContenidoBloqueA (int socket, int nroBloque){
 		free(paquetito);
 		printf("offset: %i, tamanioBloque %i, diferencia %i, tamanioReal: %i\n",offset, tamanioBloque, tamanioBloque-offset, tamanioReal);
 	}
+	*/
+
+	///
+	printf("%d", tamanioBloque);
+	paquetito = malloc(variableDelPaquetito);
+	while(tamanioBloque != offset){
+		tamanioReal = recv(socket, paquetito, variableDelPaquetito, 0); // recibo los paquetes
+		memcpy(bufferSet + offset, paquetito, tamanioReal);
+		offset += tamanioReal;
+		printf("offset: %i, tamanioBloque %i, diferencia %i, tamanioReal: %i\n",offset, tamanioBloque, tamanioBloque-offset, tamanioReal);
+	}
+	free(paquetito);
 	printf("%i\n",strlen(bufferSet));
 	return bufferSet;
 }
@@ -487,7 +500,7 @@ int insertarArchivoAMongoYAlMDFS (char* path){
 	int cantidadBloques;
 	div_t restoDivision;
 	int a,b,z,offset;
-	t_escribirBloque escribirBloque;
+	t_escribirBloque *escribirBloque;
 	t_matrix datosMatrisAsignacion;
 
 	int socketNodoCopia1, socketNodoCopia2, socketNodoCopia3;
@@ -516,6 +529,7 @@ int insertarArchivoAMongoYAlMDFS (char* path){
 	}
 
 	pmap = mmap(0,mystat.st_size, PROT_READ|PROT_WRITE ,MAP_SHARED,fd,0);
+
 	bloqueAnterior = 0;
 	tamanioRestanteDelArchivo = mystat.st_size;
 
@@ -561,10 +575,8 @@ int insertarArchivoAMongoYAlMDFS (char* path){
 		bloqueALeer = bloqueALeer - bloqueAnterior;
 		contenidoBloque = malloc(bloqueALeer);
 		memcpy(contenidoBloque,pmap+bloqueAnterior,bloqueALeer);
-		bloqueAnterior = bloqueALeer + 1;
+		bloqueAnterior += bloqueALeer;
 		tamanioRestanteDelArchivo = tamanioRestanteDelArchivo - bloqueALeer;
-
-		escribirBloque.data = contenidoBloque;
 
 		socketNodoCopia1 = socketNodo(matris[contadorBloque][0]);
 		socketNodoCopia2 = socketNodo(matris[contadorBloque][1]);
@@ -578,15 +590,24 @@ int insertarArchivoAMongoYAlMDFS (char* path){
 		elBloqueDelNodoSeOcupo(socketNodoCopia2,bloqueNodoCopia2);
 		elBloqueDelNodoSeOcupo(socketNodoCopia3,bloqueNodoCopia3);
 
-		escribirBloque.socket = socketNodoCopia1;
-		escribirBloque.bloque = bloqueNodoCopia1;
-		pthread_create(&hiloNodoCopia1[contC1], NULL, escribirBloqueEnNodo, (void *)&escribirBloque);
-		escribirBloque.socket = socketNodoCopia2;
-		escribirBloque.bloque = bloqueNodoCopia2;
-		pthread_create(&hiloNodoCopia2[contC2], NULL, escribirBloqueEnNodo, (void *)&escribirBloque);
-		escribirBloque.socket = socketNodoCopia3;
-		escribirBloque.bloque = bloqueNodoCopia3;
-		pthread_create(&hiloNodoCopia3[contC3], NULL, escribirBloqueEnNodo, (void *)&escribirBloque);
+		escribirBloque = malloc(sizeof(t_escribirBloque));
+		escribirBloque->data = contenidoBloque;
+		escribirBloque->tamanioData = strlen(escribirBloque->data);
+		escribirBloque->socket = socketNodoCopia1;
+		escribirBloque->bloque = bloqueNodoCopia1;
+		pthread_create(&hiloNodoCopia1[contC1], NULL, (void *)escribirBloqueEnNodo, (void *)escribirBloque);
+		escribirBloque = malloc(sizeof(t_escribirBloque));
+		escribirBloque->data = contenidoBloque;
+		escribirBloque->tamanioData = strlen(escribirBloque->data);
+		escribirBloque->socket = socketNodoCopia2;
+		escribirBloque->bloque = bloqueNodoCopia2;
+		pthread_create(&hiloNodoCopia2[contC2], NULL, (void *)escribirBloqueEnNodo, (void *)escribirBloque);
+		escribirBloque = malloc(sizeof(t_escribirBloque));
+		escribirBloque->data = contenidoBloque;
+		escribirBloque->tamanioData = strlen(escribirBloque->data);
+		escribirBloque->socket = socketNodoCopia3;
+		escribirBloque->bloque = bloqueNodoCopia3;
+		pthread_create(&hiloNodoCopia3[contC3], NULL, (void *)escribirBloqueEnNodo, (void *)escribirBloque);
 
 		pthread_join(hiloNodoCopia1[contC1],NULL);
 		pthread_join(hiloNodoCopia2[contC2],NULL);
@@ -651,6 +672,35 @@ int socketNodo(int idNodo){
 		return -1;
 	}
 	return socketNodo;
+}
+
+int indexDelDirectorio(char* directorio){
+	int index;
+	bson_t *doc;
+	bson_t *query;
+	int cantidad;
+	int idDirectorio;
+	bson_iter_t iter;
+	mongoc_cursor_t *cursor;
+
+	index = -1;
+	query = bson_new ();
+	BSON_APPEND_UTF8(query, "Es" , "Directorio");
+	BSON_APPEND_UTF8(query, "Directorio" , directorio);
+	cantidad = mongoc_collection_count(directorios, MONGOC_QUERY_NONE, query,0,0,NULL,NULL);
+	if(cantidad > 0){
+		cursor = mongoc_collection_find (directorios, MONGOC_QUERY_NONE, 0, 0, 0, query, NULL, NULL);
+		while (mongoc_cursor_next (cursor, &doc)) {
+			if (bson_iter_init (&iter, doc)) {
+				if(bson_iter_find (&iter, "Index"))index = bson_iter_int32(&iter);
+			}
+		}
+		bson_destroy (query);
+		return index;
+	}else{
+
+	}
+	return index;
 }
 
 int primerBloqueLibre(int idNodo){

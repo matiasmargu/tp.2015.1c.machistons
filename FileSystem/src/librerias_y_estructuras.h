@@ -141,6 +141,7 @@ int socketNodo(int idNodo);
 
 t_copia infoBloqueyCopia(int nroBloque, int nroCopia, bson_t *doc4);
 void *atenderMarta(void*arg);
+int indexDelDirectorio(char* directorio);
 
 // Funciones de Consola
 
