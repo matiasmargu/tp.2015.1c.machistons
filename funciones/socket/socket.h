@@ -21,10 +21,9 @@
  typedef struct{
 	char* ip_nodo;
 	char* puerto;
-	t_list* bloques;
+	int numeroBloque;
 	char* nombre_archivo_resultado; //donde va a devolverle el resultado
 	int idNodo;
-	int cantidadBloques;
 }t_marta_job_map;
 
 

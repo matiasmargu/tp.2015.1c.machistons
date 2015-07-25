@@ -34,6 +34,7 @@ void *atenderMarta(void*arg){
 	int enteroPrueba;
 	enteroPrueba = 160;
 	char* nombrePrueba;
+	char *nombreDelArchivoSinDirectorio;
 
 	int offset;
 	int size_to_send;
@@ -57,11 +58,21 @@ void *atenderMarta(void*arg){
 				*(nombreArchivo + tamanioNombreArchivo) = '\0';
 
 				// Aca voy a tener el path del archivo a buscar asique tengo que separar los directorios.
+				//nombreDelArchivoSinDirectorio = strrchr(nombreArchivo, '/')+1;
 				// Buscar en la coleccion directorios el index del ultimo directorio y buscarlo junto con el nombre del archivo
+				// b=0;
+				// for(a=tamanioNombreArchivo-1;b!=1;a--){
+				//	if(nombreArchivo[a]=='/'{
+				//   b=1;
+				// }
+				// }
+				// nombreArchivo[0] hasta [a] es el directorio
+				// memcpy(directorioParaIndex,nombreArchivo,a);
 
+				// indezDelDirectorio(directorio sin la ultima /)
 				query = bson_new ();
 				offset = 0;
-
+				//BSON_APPEND_UTF8(query,"Directorio Padre",  );
 				BSON_APPEND_UTF8(query, "Nombre" , nombreArchivo);
 				cursor = mongoc_collection_find (archivos, MONGOC_QUERY_NONE, 0, 0, 0, query, NULL, NULL);
 

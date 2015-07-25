@@ -63,7 +63,7 @@ int main(void) {
 
 	rutinaMapperTraducida = mapearAMemoriaVirtual(mapper);
 	rutinaReduceTraducida = mapearAMemoriaVirtual(reduce);
-	//printf("rutinaMappper TRADUCIDA  %s\n",rutinaMapperTraducida);
+	printf("rutinaMappper TRADUCIDA  %s\n",rutinaMapperTraducida);
 
 	///MANDAMOS LA LISTA DE ARCHIVOS A MARTA Y EL COMBINER
 
@@ -111,10 +111,12 @@ int main(void) {
 			send(socketMarta, &enteroPrueba, sizeof(int),0);
 			int status = 1; // Estructura que manjea el status de los recieve.
 			status = recive_y_deserialisa_marta_job_mapper(&Marta_Job_Map, socketMarta, tamanioStruct);
+			printf(" id %i\n",Marta_Job_Map.idNodo);
+			printf(" ip %s\n",Marta_Job_Map.ip_nodo);
+			printf(" bloque %i\n",Marta_Job_Map.numeroBloque);
+			printf(" puerto %s\n",Marta_Job_Map.puerto);
 			printf("llego el archivo %s\n",Marta_Job_Map.nombre_archivo_resultado);
-			int caca;
-			caca = list_get(Marta_Job_Map.bloques, 2);
-			printf("numero de la listaa %i\n\n", caca);
+
 
 			if(status){
 				//HANDSHAKE NODO
@@ -133,15 +135,15 @@ int main(void) {
 				send(socketNodo, rutinaMapperTraducida, tamanioTotalMapper,0);
 
 
-			//ACA LEVANTA UN HILO POR CADA BLOQUE A ENVIAR A MAPEAR
-			for(p = 0; p< Marta_Job_Map.cantidadBloques ; p++){
-			map.bloque = list_get(Marta_Job_Map.bloques, p);
+			//ACA LEVANTA UN HILO PARA A ENVIAR A MAPEAR
+
+			map.bloque = Marta_Job_Map.numeroBloque;
 			map.socketNodo = socketNodo;
 			map.nombreArchivoResultado = Marta_Job_Map.nombre_archivo_resultado;
 			map.socketMarta = socketMarta;
 			map.idNodo = Marta_Job_Map.idNodo;
 			pthread_create(&hilomap,NULL, mapearBloque,(void *)&map);
-			}
+
 		}
 			break;
 		case 34: // REALIZAR REDUCE
@@ -193,7 +195,7 @@ int main(void) {
 					estado = recive_y_deserialisa_marta_job_reduce_moverArchivosFinal(&Marta_Job_Archivo_A_Mover, socketMarta, tamanioStruct);
 
 					if(estado){ // es necesario serializarlo para hacer el if estado
-						//HANDSHAKE NODO //AGREGAR EL 22 VER CON NICO
+						//HANDSHAKE NODO
 						socketNodo = crearCliente (Marta_Job_Archivo_A_Mover.ipAConectarse, Marta_Job_Archivo_A_Mover.puertoAconectarse);
 						handshakeNodo = 8;
 						numeroParaNodo = 3;
