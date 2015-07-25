@@ -25,8 +25,6 @@
 	char* nombre_archivo_resultado; //donde va a devolverle el resultado
 	int idNodo;
 	int cantidadBloques;
-
-
 }t_marta_job_map;
 
 
@@ -39,6 +37,15 @@ typedef struct{
 	int cantidadArchivos;
 
 }t_marta_job_reduce;
+
+typedef struct{
+	char* ipAmover;
+	char* puertoAmover;
+	char* archivoAmover;
+	char* puertoAconectarse;
+	char* ipAConectarse;
+}t_para_job;
+
 
 //JOB -> MARTA
 typedef struct{

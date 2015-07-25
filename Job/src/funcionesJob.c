@@ -523,73 +523,43 @@ void* reducirArchivos(t_hilo_reduce *structRecibido){
 }
 
 
-void* reducirArchivosFinal(t_hilo_reduce *structRecibido){
 
 
+char* serializar_nodo_mover(t_para_nodo * bloque,int tamanio){
+	char *serializedPackage = malloc(tamanio);
+	int offset = 0;
+	int size_to_send;
 
+	int tamanioNombre;
+	tamanioNombre = strlen(bloque->archivo) + 1;
+	size_to_send = sizeof(int);
+	memcpy(serializedPackage + offset, &tamanioNombre, size_to_send);
+	offset += size_to_send;
 
-	t_job_nodo_reduce Job_Nodo;
-	t_job_marta_reduce datosParaMarta;
-	int tamanioLista,a, tamanio,enteroPrueba,resultadoReduce, tamanioMarta;
-	char* datosParaNodo;
-	char* archivo;
-	char* resultado;
-	char* structParaMarta;
-	char* unArchivo;
-	char* listaDeArchivos;
+	size_to_send =  strlen(bloque->archivo) + 1;
+	memcpy(serializedPackage + offset, bloque->archivo, size_to_send);
+	offset += size_to_send;
 
-	listaDeArchivos = "[";
-		for(a=0; a< list_size(structRecibido->archivos); a++){
-		unArchivo = list_get(structRecibido->archivos, a);
-		 string_append(&listaDeArchivos, unArchivo);
-		 string_append(&listaDeArchivos, ",");
-		}
-		string_append(&listaDeArchivos, "]");
+	tamanioNombre = strlen(bloque->ip) + 1;
+	size_to_send = sizeof(int);
+	memcpy(serializedPackage + offset, &tamanioNombre, size_to_send);
+	offset += size_to_send;
 
+	size_to_send =  strlen(bloque->ip) + 1;
+	memcpy(serializedPackage + offset,bloque->ip, size_to_send);
+	offset += size_to_send;
 
-		log_info(logger,"Se levanto un hilo para enviar los archivos a reducir,los parametros recibidos son: socketNodo:%i, nombre del archivo de resultado: %s, socketMarta %i, id del Nodo %i y la lista de archivos %s\n",structRecibido->socketNodo,structRecibido->nombreArchivoResultado,structRecibido->socketMarta,structRecibido->idNodo,listaDeArchivos);
-		printf("Se levanto un hilo para enviar los archivos a reducir,los parametros recibidos son: socketNodo:%i, nombre del archivo de resultado: %s, socketMarta %i, id del Nodo %i y la lista de archivos %s\n",structRecibido->socketNodo,structRecibido->nombreArchivoResultado,structRecibido->socketMarta,structRecibido->idNodo,listaDeArchivos);
+	tamanioNombre = strlen(bloque->puerto) + 1;
+	size_to_send = sizeof(int);
+	memcpy(serializedPackage + offset, &tamanioNombre, size_to_send);
+	offset += size_to_send;
 
+	size_to_send =  strlen(bloque->puerto) + 1;
+	memcpy(serializedPackage + offset, bloque->puerto, size_to_send);
+	offset += size_to_send;
 
+	return serializedPackage;
 
-
-
-
-
-	Job_Nodo.nombreArchivoResultado = structRecibido->nombreArchivoResultado;
-	Job_Nodo.archivosAreducir = list_create();
-	list_add_all(Job_Nodo.archivosAreducir,structRecibido->archivos);
-	for(a=0;a<(list_size(Job_Nodo.archivosAreducir));a++){
-		archivo = list_get(Job_Nodo.archivosAreducir, a);
-		tamanioLista += (strlen(archivo)+1);
-
-	}
-	tamanio =sizeof(int)+(strlen(Job_Nodo.nombreArchivoResultado)+1)+(tamanioLista);
-	send(structRecibido->socketNodo, &tamanio, sizeof(int), 0);
-	recv(structRecibido->socketNodo, &enteroPrueba , sizeof(int),0);
-	datosParaNodo = serializar_job_nodo_reduce_final(&Job_Nodo, tamanio);
-	send(structRecibido->socketNodo, datosParaNodo, tamanio, 0);
-
-	//Aca Recibimos Resultado
-	recv(structRecibido->socketNodo, &resultadoReduce, sizeof(int),0);
-		//ACA MANDAMOS A MARTA EL RESULTADO
-		if(resultadoReduce){
-			resultado = "SE REALIZO EL REDUCE";
-			datosParaMarta.idNodo = structRecibido->idNodo;
-			datosParaMarta.nombreArchivo = structRecibido->nombreArchivoResultado;
-			datosParaMarta.resultado = resultadoReduce;
-			datosParaMarta.rutina = 1;
-			tamanioMarta = (sizeof(int)*4) + strlen(datosParaMarta.nombreArchivo) +1;
-			send(structRecibido->socketMarta, &tamanioMarta, sizeof(int),0);
-			recv(structRecibido->socketMarta, &enteroPrueba, sizeof(int),0);
-			structParaMarta = serializar_job_marta_reduce(&datosParaMarta, tamanioMarta);
-			send(structRecibido->socketMarta, structParaMarta, tamanioMarta,0);
-
-				}else{
-		resultado = "NO SE PUDO REALIZAR EL REDUCE";}
-		log_info(logger,"Finalizo el hilo para enviar los archivos a reducir en el nodo %i ,el resultado fue %s \n",structRecibido->idNodo,resultado);
-		printf("Finalizo el hilo para enviar los archivos a reducir en el nodo %i,el resultado fue %s\n",structRecibido->idNodo,resultado);
-				return NULL;
 }
 
 char* serializar_archivoAMover(t_archivoParaMover * archivoAMover,int tamanioSerializacionMover){
@@ -628,4 +598,57 @@ char* serializar_archivoAMover(t_archivoParaMover * archivoAMover,int tamanioSer
 	return serializedPackage;
 }
 
+
+
+int recive_y_deserialisa_marta_job_reduce_moverArchivosFinal(t_para_job *bloque, int socket, uint32_t tamanioTotal){
+		int status;
+		char *buffer = malloc(tamanioTotal);
+		int offset=0;
+
+		recv(socket, buffer, tamanioTotal, 0);
+
+		int tamanioDinamico;
+		memcpy(&tamanioDinamico, buffer + offset, sizeof(int));
+		offset += sizeof(int);
+
+		bloque->ipAmover = malloc(tamanioDinamico);
+		memcpy(bloque->ipAmover, buffer + offset, tamanioDinamico);
+		offset += tamanioDinamico;
+
+		memcpy(&tamanioDinamico, buffer + offset, sizeof(int));
+		offset += sizeof(int);
+
+		bloque->puertoAmover = malloc(tamanioDinamico);
+		memcpy(bloque->puertoAmover, buffer + offset, tamanioDinamico);
+		offset += tamanioDinamico;
+
+
+		memcpy(&tamanioDinamico, buffer + offset, sizeof(int));
+		offset += sizeof(int);
+
+		bloque->archivoAmover = malloc(tamanioDinamico);
+		memcpy(bloque->archivoAmover, buffer + offset, tamanioDinamico);
+		offset += tamanioDinamico;
+
+		memcpy(&tamanioDinamico, buffer + offset, sizeof(int));
+		offset += sizeof(int);
+
+		bloque->ipAConectarse = malloc(tamanioDinamico);
+		memcpy(bloque->ipAConectarse, buffer + offset, tamanioDinamico);
+		offset += tamanioDinamico;
+
+
+		memcpy(&tamanioDinamico, buffer + offset, sizeof(int));
+		offset += sizeof(int);
+
+		bloque->puertoAconectarse = malloc(tamanioDinamico);
+		memcpy(bloque->puertoAconectarse, buffer + offset, tamanioDinamico);
+		offset += tamanioDinamico;
+
+		memcpy(&(bloque->idNodoAconectarse), buffer + offset, sizeof(bloque->idNodoAconectarse));
+		offset += sizeof(bloque->idNodoAconectarse);
+		free(buffer);
+		return status; // aca hay que ver si va status o no
+
+								}
 
