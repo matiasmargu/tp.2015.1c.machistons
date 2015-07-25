@@ -86,6 +86,8 @@ void *atenderNFS(void*arg){
 			send(socket,&entero,sizeof(int),0);
 			recv(socket,&nroDelBloque,sizeof(int),0);
 
+			printf("El nro de bloque: %i\n",nroDelBloque);
+
 			send(socket,&entero,sizeof(int),0);
 			recv(socket,&tamanioBloque,sizeof(int),0);
 

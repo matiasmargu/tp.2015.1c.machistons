@@ -86,7 +86,9 @@ void* atenderJob(void* arg){
 				send(socket, &comando,sizeof(int),0);
 
 				recv(socket,&tamanioTotalIP_P,sizeof(int),0);
+				send(socket, &comando,sizeof(int),0);
 				recive_y_deserializa_NODO_C(&comb,socket,tamanioTotalIP_P);
+				send(socket, &comando,sizeof(int),0);
 
 				int socket_nodo = crearCliente(comb.ip,comb.puerto);
 
