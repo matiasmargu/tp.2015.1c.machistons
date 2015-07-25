@@ -321,35 +321,41 @@ void planificarReduceConCombiner(char* archivoFinal){
 		tabla3->tabla_procesos = list_create();
 
 
-        campoDeTabla->bloque_archivo = 5;
-		campoDeTabla->estado = 3;
-		campoDeTabla->id_nodo = 4;
-		campoDeTabla->nombre_archivo_resultado = "campoTabla1";
+		 campoDeTabla->bloque_archivo = 5;
+					campoDeTabla->estado = 3;
+					campoDeTabla->id_nodo = 4;
+					campoDeTabla->nombre_archivo_resultado = "campoTabla1";
+					campoDeTabla->nombreArchivo = "archivo1";
 
-		campoDeTabla2->bloque_archivo = 2;
-		campoDeTabla2->estado = 0;
-		campoDeTabla2->id_nodo = 2;
-		campoDeTabla2->nombre_archivo_resultado = "campoTabla2";
+					campoDeTabla2->bloque_archivo = 2;
+					campoDeTabla2->estado = 0;
+					campoDeTabla2->id_nodo = 2;
+					campoDeTabla2->nombre_archivo_resultado = "campoTabla2";
+					campoDeTabla2->nombreArchivo = "archivo2";
 
-		campoDeTabla3->bloque_archivo = 4;
-		campoDeTabla3->estado = 1;
-		campoDeTabla3->id_nodo = 7;
-		campoDeTabla3->nombre_archivo_resultado = "campoTabla3";
+					campoDeTabla3->bloque_archivo = 4;
+					campoDeTabla3->estado = 1;
+					campoDeTabla3->id_nodo = 7;
+					campoDeTabla3->nombre_archivo_resultado = "campoTabla3";
+					campoDeTabla3->nombreArchivo = "archivo3";
 
-	    campoDeTabla4->bloque_archivo = 0;
-		campoDeTabla4->estado = 1;
-		campoDeTabla4->id_nodo = 54;
-		campoDeTabla4->nombre_archivo_resultado = "campoTabla4";
+				    campoDeTabla4->bloque_archivo = 0;
+					campoDeTabla4->estado = 1;
+					campoDeTabla4->id_nodo = 54;
+					campoDeTabla4->nombre_archivo_resultado = "campoTabla4";
+					campoDeTabla4->nombreArchivo = "archivo4";
 
-		campoDeTabla5->bloque_archivo = 14;
-		campoDeTabla5->estado = 2;
-		campoDeTabla5->id_nodo = 54;
-		campoDeTabla5->nombre_archivo_resultado = "campoTabla5";
+					campoDeTabla5->bloque_archivo = 14;
+					campoDeTabla5->estado = 2;
+					campoDeTabla5->id_nodo = 54;
+					campoDeTabla5->nombre_archivo_resultado = "campoTabla5";
+					campoDeTabla5->nombreArchivo = "archivo5";
 
-		campoDeTabla6->bloque_archivo = 21;
-		campoDeTabla6->estado = 3;
-		campoDeTabla6->id_nodo = 54;
-		campoDeTabla6->nombre_archivo_resultado = "campoTabla6";
+					campoDeTabla6->bloque_archivo = 21;
+					campoDeTabla6->estado = 3;
+					campoDeTabla6->id_nodo = 54;
+					campoDeTabla6->nombre_archivo_resultado = "campoTabla6";
+					campoDeTabla6->nombreArchivo = "archivo6";
 
 
 		list_add(tabla->tabla_procesos,campoDeTabla);
@@ -407,7 +413,7 @@ void planificarReduceConCombiner(char* archivoFinal){
 		list_add(lista_nodos_estado,nodo6);
 
 
-		        int a,b,c,d,e,aux,variableParaResultadoReduce,tamanioListaJobTabla,tamanioListaTablaDeProcesosPorJob,tamanioListaArchivosAReducirPorNodo;
+		        int a,b,c,d,e=0,aux,variableParaResultadoReduce=0,tamanioListaJobTabla,tamanioListaTablaDeProcesosPorJob,tamanioListaArchivosAReducirPorNodo;
 				int tamanioListaDeNodos,tamanio,tamanioArchivosaReducir;
 				t_archivosAReducirPorNodo *campoDeUnNodo;
 				t_archivosAReducirPorNodo * campoParaLiberar;
@@ -719,42 +725,34 @@ void planificarReduceConCombiner(char* archivoFinal){
 // A PARTIR DE ACA ES PARA EL SIN COMBINER
 
 void planificarSincombiner(char* archivoFinal){
-	t_lista_job2 *tabla;
-		t_lista_job2 *tabla2;
-		t_lista_job2* tabla3;
-		t_tablaProcesos_porJob2 *campoDeTabla;
-		t_tablaProcesos_porJob2 *campoDeTabla2;
-		t_tablaProcesos_porJob2 *campoDeTabla3;
-		t_tablaProcesos_porJob2 *campoDeTabla4;
-		t_tablaProcesos_porJob2 *campoDeTabla5;
-		t_tablaProcesos_porJob2 *campoDeTabla6;
-		t_list* lista_job_tabla;
-		//REDUCE FINAL
-		int tamanioStruct, tamanioListaFinal,m;
-		t_archivosAReducirPorNodo * campoDeListaArchivosAReducirPorNodo3;
-		t_list* listaFinalDeArchivosAReducir;
-		t_marta_job_reduce antesDeSerializar;
-		char* structParaJob;
-		char* archivoA;
-		char* archivo;
 
+	t_lista_job2 *tabla;
+	t_lista_job2 *tabla2;
+	t_lista_job2* tabla3;
+	t_tablaProcesos_porJob2 *campoDeTabla;
+	t_tablaProcesos_porJob2 *campoDeTabla2;
+	t_tablaProcesos_porJob2 *campoDeTabla3;
+	t_tablaProcesos_porJob2 *campoDeTabla4;
+	t_tablaProcesos_porJob2 *campoDeTabla5;
+	t_tablaProcesos_porJob2 *campoDeTabla6;
+	t_list* lista_job_tabla;
 
 		// para probar
-		int tamanioTabla,tamanioCampoDeTabla,tamanioNodo;
-		tamanioTabla=sizeof(int);
-		tamanioNodo = sizeof(char) * 3 + sizeof(int);
-		tamanioCampoDeTabla= tamanioNodo + sizeof(char);
+        int tamanioTabla,tamanioCampoDeTabla,tamanioNodo, contador;
+        tamanioTabla=sizeof(int);
+        tamanioCampoDeTabla= sizeof(int) * 3 + sizeof(char);
+        tamanioNodo = sizeof(char) * 3 + sizeof(int);
 
-		tabla = malloc(tamanioTabla);
+        tabla = malloc(tamanioTabla);
 		tabla2 = malloc(tamanioTabla);
 		tabla3 = malloc(tamanioTabla);
-		campoDeTabla = malloc(tamanioCampoDeTabla);
-		campoDeTabla2 = malloc(tamanioCampoDeTabla);
-		campoDeTabla3 = malloc(tamanioCampoDeTabla);
-		campoDeTabla4 = malloc(tamanioCampoDeTabla);
-		campoDeTabla5 = malloc(tamanioCampoDeTabla);
-		campoDeTabla6 = malloc(tamanioCampoDeTabla);
-		tabla->idJob=4;
+        campoDeTabla = malloc(tamanioCampoDeTabla);
+        campoDeTabla2 = malloc(tamanioCampoDeTabla);
+        campoDeTabla3 = malloc(tamanioCampoDeTabla);
+        campoDeTabla4 = malloc(tamanioCampoDeTabla);
+        campoDeTabla5 = malloc(tamanioCampoDeTabla);
+        campoDeTabla6 = malloc(tamanioCampoDeTabla);
+        tabla->idJob=4;
 		tabla->tabla_procesos = list_create();
 
 		tabla2->idJob=7854;
@@ -765,35 +763,41 @@ void planificarSincombiner(char* archivoFinal){
 		tabla3->tabla_procesos = list_create();
 
 
-		campoDeTabla->bloque_archivo = 5;
-		campoDeTabla->estado = 3;
-		campoDeTabla->id_nodo = 4;
-		campoDeTabla->nombre_archivo_resultado = "campoTabla1";
+		 campoDeTabla->bloque_archivo = 5;
+					campoDeTabla->estado = 3;
+					campoDeTabla->id_nodo = 4;
+					campoDeTabla->nombre_archivo_resultado = "campoTabla1";
+					campoDeTabla->nombreArchivo = "archivo1";
 
-		campoDeTabla2->bloque_archivo = 2;
-		campoDeTabla2->estado = 0;
-		campoDeTabla2->id_nodo = 2;
-		campoDeTabla2->nombre_archivo_resultado = "campoTabla2";
+					campoDeTabla2->bloque_archivo = 2;
+					campoDeTabla2->estado = 0;
+					campoDeTabla2->id_nodo = 2;
+					campoDeTabla2->nombre_archivo_resultado = "campoTabla2";
+					campoDeTabla2->nombreArchivo = "archivo2";
 
-		campoDeTabla3->bloque_archivo = 4;
-		campoDeTabla3->estado = 1;
-		campoDeTabla3->id_nodo = 7;
-		campoDeTabla3->nombre_archivo_resultado = "campoTabla3";
+					campoDeTabla3->bloque_archivo = 4;
+					campoDeTabla3->estado = 1;
+					campoDeTabla3->id_nodo = 7;
+					campoDeTabla3->nombre_archivo_resultado = "campoTabla3";
+					campoDeTabla3->nombreArchivo = "archivo3";
 
-		campoDeTabla4->bloque_archivo = 0;
-		campoDeTabla4->estado = 1;
-		campoDeTabla4->id_nodo = 54;
-		campoDeTabla4->nombre_archivo_resultado = "campoTabla4";
+				    campoDeTabla4->bloque_archivo = 0;
+					campoDeTabla4->estado = 1;
+					campoDeTabla4->id_nodo = 54;
+					campoDeTabla4->nombre_archivo_resultado = "campoTabla4";
+					campoDeTabla4->nombreArchivo = "archivo4";
 
-		campoDeTabla5->bloque_archivo = 14;
-		campoDeTabla5->estado = 2;
-		campoDeTabla5->id_nodo = 54;
-		campoDeTabla5->nombre_archivo_resultado = "campoTabla5";
+					campoDeTabla5->bloque_archivo = 14;
+					campoDeTabla5->estado = 2;
+					campoDeTabla5->id_nodo = 54;
+					campoDeTabla5->nombre_archivo_resultado = "campoTabla5";
+					campoDeTabla5->nombreArchivo = "archivo5";
 
-		campoDeTabla6->bloque_archivo = 21;
-		campoDeTabla6->estado = 3;
-		campoDeTabla6->id_nodo = 54;
-		campoDeTabla6->nombre_archivo_resultado = "campoTabla6";
+					campoDeTabla6->bloque_archivo = 21;
+					campoDeTabla6->estado = 3;
+					campoDeTabla6->id_nodo = 54;
+					campoDeTabla6->nombre_archivo_resultado = "campoTabla6";
+					campoDeTabla6->nombreArchivo = "archivo6";
 
 
 		list_add(tabla->tabla_procesos,campoDeTabla);
@@ -850,161 +854,177 @@ void planificarSincombiner(char* archivoFinal){
 		list_add(lista_nodos_estado,nodo5);
 		list_add(lista_nodos_estado,nodo6);
 
-		int a,b,c,d,e,aux,variableParaResultadoReduce,tamanioListaJobTabla,tamanioListaTablaDeProcesosPorJob,tamanioListaArchivosAReducirPorNodo;
-		int tamanioListaDeNodos,tamanio,tamanioArecibir2;
-		t_para_job* archivoParaJob;
-		int handshakeJob, enteroPrueba,socketJob;
-		char * archivoASerializar;
-		t_lista_job2 *campoDeLaLista;
-		campoDeLaLista = malloc(tamanioTabla);
-		t_tablaProcesos_porJob2 *campoDeLaListaTablaDeProcesos;
-		campoDeLaListaTablaDeProcesos = malloc(tamanioCampoDeTabla);
-		t_list * lista_archivosAReducirPorNodo;
-		t_archivosAReducirPorNodo *campoArchivosAReducirPorNodo;
-		campoArchivosAReducirPorNodo= malloc(tamanioCampoDeTabla);
-		t_archivosAReducirPorNodo *campoAAgregarAListaReducirPorNodo;
-		t_archivosAReducirPorNodo *campoParaAumentarContadores;
-		t_contadorNodo * contadorNodo;
-		t_job_marta_reduce job_marta2;
-		t_para_nodo * archivoAr;
-		t_nodo2 *campoDeListaDeNodo;
-		campoDeListaDeNodo = malloc(tamanioNodo);
-		lista_archivosAReducirPorNodo = list_create();
-		list_clean(lista_archivosAReducirPorNodo);
-		t_moverArchivos * moverArchivos;
-		moverArchivos = malloc(sizeof(char));
-		moverArchivos->archivosAMover = list_create();
-		t_serializarUnArchivoParaMover * archivoAMover;
-		archivoAMover = malloc(sizeof(char) * 3);
+		t_moverArchivos moverArchivos;
+		t_serializarUnArchivoParaMover archivoAMover;
+		t_serializarUnArchivoParaMover archivoAr;
+		        int a,b,c,d,e=0,aux,variableParaResultadoReduce=0,tamanioListaJobTabla,tamanioListaTablaDeProcesosPorJob,tamanioListaArchivosAReducirPorNodo;
+				int tamanioListaDeNodos,tamanio,tamanioArchivosaReducir;
+				t_archivosAReducirPorNodo *campoDeUnNodo;
+				t_archivosAReducirPorNodo * campoParaLiberar;
+				t_marta_job_reduce structAserializar;
+				int handshakeJob, enteroPrueba,tamanioAenviar,tamanioTotalVector, socketJob,tamanioStruct;
+				char* archivo1;
+				char* structAEnviarAJob;
+			    t_lista_job2 *campoDeLaLista;
+			    campoDeLaLista = malloc(tamanioTabla);
+				t_tablaProcesos_porJob2 *campoDeLaListaTablaDeProcesos;
+		        campoDeLaListaTablaDeProcesos = malloc(tamanioCampoDeTabla);
+			    t_list * lista_archivosAReducirPorNodo;
+			    t_archivosAReducirPorNodo *campoArchivosAReducirPorNodo;
+		        campoArchivosAReducirPorNodo= malloc(tamanioCampoDeTabla);
+			    t_archivosAReducirPorNodo *campoAAgregarAListaReducirPorNodo;
+			    t_nodo2 *campoDeListaDeNodo;
+			    campoDeListaDeNodo = malloc(tamanioNodo);
+				lista_archivosAReducirPorNodo = list_create();
+				list_clean(lista_archivosAReducirPorNodo);
+				t_contadorNodo contadorNodo;
+				//REDUCE FINAL
+				t_job_marta_reduce job_marta;
+				t_job_marta_reduce job_marta2;
+				int contador2,r,l,tamanioArecibir,tamanioArecibir2,tamanioCampoParaNodo,tamaniolistaFinalDeArchivosAReducir,p, v,tamanioListaFinal,m, reduceFinal,tamanioListaFinalAEnviar,tamanioStruct2;
+				t_archivosAReducirPorNodo *campoDeListaArchivosAReducirPorNodo;
+				t_archivosAReducirPorNodo *campoDeListaArchivosAReducirPorNodo2;
+				t_archivosAReducirPorNodo * campoDeListaArchivosAReducirPorNodo3;
+				t_list* listaFinalDeArchivosAReducir;
+				t_marta_job_reduce antesDeSerializar;
+				char* structParaJob;
+				char* archivo;
+				contador2 = 0;
+				char *structParaJob2;
+				char* archivoASerializar;
+				t_para_nodo* campoListaParaNodo;
+				t_para_nodo* archivoA;
+				t_para_nodo* campoAAgregar;
+                t_para_job * archivoParaJob;
+				// lo que buscamos es recorrer cada campo de la lista para ordenar por id de nodo la lista de archivos a
+				//reducir
+				tamanioListaJobTabla=list_size(lista_job_tabla);
 
-		tamanioListaJobTabla = list_size(lista_job_tabla);
+				printf("\n\nLos campos de la lista que deberian estar son:\n");
 
-	for(a=0;a<tamanioListaJobTabla;a++){
-		campoDeLaLista=list_get(lista_job_tabla,a);
-		tamanioListaTablaDeProcesosPorJob = list_size(campoDeLaLista->tabla_procesos);
+				for(a=0;a<tamanioListaJobTabla;a++){
+					campoDeLaLista=list_get(lista_job_tabla,a);
+					tamanioListaTablaDeProcesosPorJob = list_size(campoDeLaLista->tabla_procesos);
 
-		for(b=0;b<tamanioListaTablaDeProcesosPorJob;b++){
-			campoDeLaListaTablaDeProcesos = list_get(campoDeLaLista->tabla_procesos,b);
-			tamanioListaArchivosAReducirPorNodo = list_size(lista_archivosAReducirPorNodo);
-			if(tamanioListaArchivosAReducirPorNodo == 0){
-				tamanioCampoDeTabla= sizeof(int) * 2 + strlen(campoDeLaListaTablaDeProcesos->nombreArchivo) + 1 + strlen(campoDeLaListaTablaDeProcesos->nombre_archivo_resultado) + 1;
-				campoAAgregarAListaReducirPorNodo = malloc(tamanioCampoDeTabla);
-				campoAAgregarAListaReducirPorNodo->idNodo =  campoDeLaListaTablaDeProcesos->id_nodo;
-				campoAAgregarAListaReducirPorNodo->archivosAReducir = list_create();
-				list_add(campoAAgregarAListaReducirPorNodo->archivosAReducir,campoDeLaListaTablaDeProcesos->nombre_archivo_resultado);
-				asprintf(&campoAAgregarAListaReducirPorNodo->nombreArchivoResultado,"%s%i","archivo",variableParaResultadoReduce);
-				variableParaResultadoReduce ++;
-				// buscamos el ip y el puerto nodo
-				tamanioListaDeNodos =list_size(lista_nodos_estado);
-				aux=0;
-				for(d=0;d<tamanioListaDeNodos && aux==0;d++){
-					campoDeListaDeNodo = list_get(lista_nodos_estado,d);
-					if(campoDeListaDeNodo->id_nodo==campoDeLaListaTablaDeProcesos->id_nodo){
-						campoAAgregarAListaReducirPorNodo->ipNodo =  campoDeListaDeNodo->ip_nodo;
-						campoAAgregarAListaReducirPorNodo->puertoNodo =  campoDeListaDeNodo->puerto_nodo;
-						aux=1;
+					for(b=0;b<tamanioListaTablaDeProcesosPorJob;b++){
+						campoDeLaListaTablaDeProcesos = list_get(campoDeLaLista->tabla_procesos,b);
+						tamanioListaArchivosAReducirPorNodo = list_size(lista_archivosAReducirPorNodo);
+				    	if(tamanioListaArchivosAReducirPorNodo == 0){
+				    		tamanioCampoDeTabla= sizeof(int) * 2 + strlen(campoDeLaListaTablaDeProcesos->nombreArchivo) + 1 + strlen(campoDeLaListaTablaDeProcesos->nombre_archivo_resultado) + 1;
+				    		campoAAgregarAListaReducirPorNodo = malloc(tamanioCampoDeTabla);
+				    		campoAAgregarAListaReducirPorNodo->idNodo =  campoDeLaListaTablaDeProcesos->id_nodo;
+				    		campoAAgregarAListaReducirPorNodo->archivosAReducir = list_create();
+				    		list_add(campoAAgregarAListaReducirPorNodo->archivosAReducir,campoDeLaListaTablaDeProcesos->nombre_archivo_resultado);
+				    		asprintf(&campoAAgregarAListaReducirPorNodo->nombreArchivoResultado,"%s%i","archivo",variableParaResultadoReduce);
+				    		variableParaResultadoReduce ++;
+				    		// buscamos el ip y el puerto nodo
+				    		tamanioListaDeNodos =list_size(lista_nodos_estado);
+				    		aux=0;
+				    		for(d=0;d<tamanioListaDeNodos && aux==0;d++){
+				    			campoDeListaDeNodo = list_get(lista_nodos_estado,d);
+				    			if(campoDeListaDeNodo->id_nodo==campoDeLaListaTablaDeProcesos->id_nodo){
+				    				campoAAgregarAListaReducirPorNodo->ipNodo =  campoDeListaDeNodo->ip_nodo;
+				    				campoAAgregarAListaReducirPorNodo->puertoNodo =  campoDeListaDeNodo->puerto_nodo;
+				    				aux=1;
 
+				    			}
+				    		}// agrega el campo a la lista
+
+				    		list_add(lista_archivosAReducirPorNodo,campoAAgregarAListaReducirPorNodo);
+				    		campoAAgregarAListaReducirPorNodo = list_get(lista_archivosAReducirPorNodo,e);
+				    		printf("idnodo %i ipnodo %s puertonodo %s nombreDeArchivoResultado %s\n",campoAAgregarAListaReducirPorNodo->idNodo,campoAAgregarAListaReducirPorNodo->ipNodo,campoAAgregarAListaReducirPorNodo->puertoNodo,campoAAgregarAListaReducirPorNodo->nombreArchivoResultado);
+				    		e++;
+				    	}
+				    	else{
+				    	aux=0;
+				    		for(c=0;c <tamanioListaArchivosAReducirPorNodo && aux ==0;c++){
+				    			campoArchivosAReducirPorNodo = list_get(lista_archivosAReducirPorNodo,c);
+				    			if(campoArchivosAReducirPorNodo->idNodo == campoDeLaListaTablaDeProcesos->id_nodo){
+				    				list_add(campoArchivosAReducirPorNodo->archivosAReducir,campoDeLaListaTablaDeProcesos->nombre_archivo_resultado);
+				    				aux =1;
+				    			}
+				    		}
+				    			if(aux==0){//cuando no esta el id del nodo, entonces tiene que agregar todo directo
+				    				printf("Aca deberia entrar 4 veces \n");
+				    				tamanioCampoDeTabla= sizeof(int) * 2 + strlen(campoDeLaListaTablaDeProcesos->nombreArchivo) + 1 + strlen(campoDeLaListaTablaDeProcesos->nombre_archivo_resultado) + 1;
+				    				campoAAgregarAListaReducirPorNodo = malloc(tamanioCampoDeTabla);
+				    				campoAAgregarAListaReducirPorNodo->idNodo =  campoDeLaListaTablaDeProcesos->id_nodo;
+				    				campoAAgregarAListaReducirPorNodo->archivosAReducir = list_create();
+				    				list_add(campoAAgregarAListaReducirPorNodo->archivosAReducir,campoDeLaListaTablaDeProcesos->nombre_archivo_resultado);
+
+				    				asprintf(&campoAAgregarAListaReducirPorNodo->nombreArchivoResultado,"%s%i","archivo",variableParaResultadoReduce);
+				    				variableParaResultadoReduce ++;
+				    				// buscamos el ip y el puerto nodo
+				    				tamanioListaDeNodos =list_size(lista_nodos_estado);
+				    				aux=0;
+				    				for(d=0;d<tamanioListaDeNodos && aux==0;d++){
+				    					campoDeListaDeNodo = list_get(lista_nodos_estado,d);
+				    					if(campoDeListaDeNodo->id_nodo==campoDeLaListaTablaDeProcesos->id_nodo){
+				    						campoAAgregarAListaReducirPorNodo->ipNodo =  campoDeListaDeNodo->ip_nodo;
+				    						campoAAgregarAListaReducirPorNodo->puertoNodo =  campoDeListaDeNodo->puerto_nodo;
+				    						aux=1;
+
+				    					}
+				    				}// agrega el campo a la lista
+				    				list_add(lista_archivosAReducirPorNodo,campoAAgregarAListaReducirPorNodo);
+				    				campoAAgregarAListaReducirPorNodo = list_get(lista_archivosAReducirPorNodo,e);
+				    				printf("idnodo %i ipnodo %s puertonodo %s nombreDeArchivoResultado %s\n",campoAAgregarAListaReducirPorNodo->idNodo,campoAAgregarAListaReducirPorNodo->ipNodo,campoAAgregarAListaReducirPorNodo->puertoNodo,campoAAgregarAListaReducirPorNodo->nombreArchivoResultado);
+				    				e++;
+
+				    			}
+				    	}
 					}
-				}// agrega el campo a la lista
-
-				list_add(lista_archivosAReducirPorNodo,campoAAgregarAListaReducirPorNodo);
-				campoAAgregarAListaReducirPorNodo = list_get(lista_archivosAReducirPorNodo,e);
-				printf("idnodo %i ipnodo %s puertonodo %s nombreDeArchivoResultado %s\n",campoAAgregarAListaReducirPorNodo->idNodo,campoAAgregarAListaReducirPorNodo->ipNodo,campoAAgregarAListaReducirPorNodo->puertoNodo,campoAAgregarAListaReducirPorNodo->nombreArchivoResultado);
-				e++;
-			}
-			else{
-				aux=0;
-				for(c=0;c <tamanioListaArchivosAReducirPorNodo && aux ==0;c++){
-					campoArchivosAReducirPorNodo = list_get(lista_archivosAReducirPorNodo,c);
-					if(campoArchivosAReducirPorNodo->idNodo == campoDeLaListaTablaDeProcesos->id_nodo){
-						list_add(campoArchivosAReducirPorNodo->archivosAReducir,campoDeLaListaTablaDeProcesos->nombre_archivo_resultado);
-						aux =1;
 					}
-				}
-				if(aux==0){//cuando no esta el id del nodo, entonces tiene que agregar todo directo
-					printf("Aca deberia entrar 4 veces \n");
-					tamanioCampoDeTabla= sizeof(int) * 2 + strlen(campoDeLaListaTablaDeProcesos->nombreArchivo) + 1 + strlen(campoDeLaListaTablaDeProcesos->nombre_archivo_resultado) + 1;
-					campoAAgregarAListaReducirPorNodo = malloc(tamanioCampoDeTabla);
-					campoAAgregarAListaReducirPorNodo->idNodo =  campoDeLaListaTablaDeProcesos->id_nodo;
-					campoAAgregarAListaReducirPorNodo->archivosAReducir = list_create();
-					list_add(campoAAgregarAListaReducirPorNodo->archivosAReducir,campoDeLaListaTablaDeProcesos->nombre_archivo_resultado);
 
-					asprintf(&campoAAgregarAListaReducirPorNodo->nombreArchivoResultado,"%s%i","archivo",variableParaResultadoReduce);
-					variableParaResultadoReduce ++;
-					// buscamos el ip y el puerto nodo
-					tamanioListaDeNodos =list_size(lista_nodos_estado);
-					aux=0;
-					for(d=0;d<tamanioListaDeNodos && aux==0;d++){
-						campoDeListaDeNodo = list_get(lista_nodos_estado,d);
-						if(campoDeListaDeNodo->id_nodo==campoDeLaListaTablaDeProcesos->id_nodo){
-							campoAAgregarAListaReducirPorNodo->ipNodo =  campoDeListaDeNodo->ip_nodo;
-							campoAAgregarAListaReducirPorNodo->puertoNodo =  campoDeListaDeNodo->puerto_nodo;
-							aux=1;
 
-						}
-					}// agrega el campo a la lista
-					list_add(lista_archivosAReducirPorNodo,campoAAgregarAListaReducirPorNodo);
-					campoAAgregarAListaReducirPorNodo = list_get(lista_archivosAReducirPorNodo,e);
-					printf("idnodo %i ipnodo %s puertonodo %s nombreDeArchivoResultado %s\n",campoAAgregarAListaReducirPorNodo->idNodo,campoAAgregarAListaReducirPorNodo->ipNodo,campoAAgregarAListaReducirPorNodo->puertoNodo,campoAAgregarAListaReducirPorNodo->nombreArchivoResultado);
-					e++;
 
-				}
-			}
-		}
-	}
+           tamanio = list_size(lista_archivosAReducirPorNodo);
+           printf("\n\nEl tamanio final de la lista es: %i\n",tamanio);
+           printf("Lo que imprime a fuera del for es:\n");
+           for(e=0;e<tamanio;e++){
+        	   campoAAgregarAListaReducirPorNodo = list_get(lista_archivosAReducirPorNodo,e);
+        	   printf("idnodo %i ipnodo %s puertonodo %s nombreDeArchivoResultado %s\n",campoAAgregarAListaReducirPorNodo->idNodo,campoAAgregarAListaReducirPorNodo->ipNodo,campoAAgregarAListaReducirPorNodo->puertoNodo,campoAAgregarAListaReducirPorNodo->nombreArchivoResultado);
+        	   a=list_size(campoAAgregarAListaReducirPorNodo->archivosAReducir);
+        	   printf("%i\n",a);
+          	   for(b=0;b<a;b++){
+        		   printf("Los campos de la lista de archivos a reducir son: %s \n",list_get(campoAAgregarAListaReducirPorNodo->archivosAReducir,b));
+        	   }
+        	   }
 
 //BUSCAMOS EL NODO QUE MAS ARCHIVOS A REDUCIR TIENE
 
 	 tamanio = list_size(lista_archivosAReducirPorNodo);
 
-	 contadorNodo->contador = 0;
+	 contadorNodo.contador = 0;
 	 for(e=0;e<tamanio;e++){
-		 campoParaAumentarContadores = list_get(lista_archivosAReducirPorNodo,e);
-		 a=list_size(campoParaAumentarContadores->archivosAReducir);
+		 campoAAgregarAListaReducirPorNodo = list_get(lista_archivosAReducirPorNodo,e);
+		 a=list_size(campoAAgregarAListaReducirPorNodo->archivosAReducir);
 
-		 if (a > contadorNodo->contador) {
-			 contadorNodo->idNodo = campoParaAumentarContadores->idNodo;
+		 if (a > contadorNodo.contador) {
+			 contadorNodo.contador = a;
+			 contadorNodo.idNodo = campoAAgregarAListaReducirPorNodo->idNodo;
 		 }
 
 	 }
 
-	 printf("\n%i\n",contadorNodo->contador);
 
 			 // con este for ya vamos a tener el puerto el ip y la lista de archivos a mover
 			 aux=0;
 			 for(d=0;d<tamanioListaDeNodos && aux==0;d++){
 				 campoDeListaDeNodo = list_get(lista_nodos_estado,d);
-				 if(contadorNodo->idNodo==campoDeListaDeNodo->id_nodo){
-					 moverArchivos->ipNodo =  campoDeListaDeNodo->ip_nodo;
-					 moverArchivos->puertoNodo = campoDeListaDeNodo->puerto_nodo;
+				 if(contadorNodo.idNodo==campoDeListaDeNodo->id_nodo){
+					 moverArchivos.ipNodo =  campoDeListaDeNodo->ip_nodo;
+					 moverArchivos.puertoNodo = campoDeListaDeNodo->puerto_nodo;
 					 aux=1;
 
 				 	 }
 			 }
 
+			 printf("\ncontador %i ,id %i , ip %s , puerto %s \n",contadorNodo.contador,contadorNodo.idNodo,moverArchivos.ipNodo,moverArchivos.puertoNodo);
 
 				// le mando a mover los archivos al nodo
 
 
-				campoDeListaArchivosAReducirPorNodo3 = list_get(lista_archivosAReducirPorNodo,1);
-				archivoParaJob->ipAConectarse =campoDeListaArchivosAReducirPorNodo3->ipNodo ;
-				archivoParaJob->puertoAconectarse = campoDeListaArchivosAReducirPorNodo3->puertoNodo;
-				for(m=0; m< list_size(listaFinalDeArchivosAReducir); m++){
-					archivoAr =	list_get( listaFinalDeArchivosAReducir,m);
-					archivoParaJob->archivoAmover = archivoAr->archivo;
-					archivoParaJob->ipAmover = archivoAr->ip ;
-					archivoParaJob->puertoAmover = archivoAr->puerto ;
-					tamanioListaFinal += strlen(archivoParaJob->archivoAmover);
-					tamanioListaFinal += strlen(archivoParaJob->ipAmover);
-					tamanioListaFinal += strlen(archivoParaJob->puertoAmover);
-					tamanioListaFinal += strlen(archivoParaJob->puertoAconectarse);
-					tamanioListaFinal += strlen(archivoParaJob->ipAConectarse);
-					send(socketJob, &tamanioListaFinal , sizeof(int),0);
-					recv(socketJob, &enteroPrueba, sizeof(int),0);
-					structParaJob =  serializar_moverParaReduceFinal(&archivoParaJob, tamanioListaFinal);
-					send(socketJob, structParaJob, tamanio, 0);
-					//FALTS VRE SI SE CAE EL NODO
-				}
 			 // ahora hay que decirle al nodo que los mueva
 
 			 int tamanioSerializacionMover;
@@ -1015,14 +1035,14 @@ void planificarSincombiner(char* archivoFinal){
 			 handshakeJob = 33;
 			 send(socketJob, &handshakeJob, sizeof(int),0);
 			 recv(socketJob, &enteroPrueba, sizeof(int),0);
-			 tamanio = list_size(moverArchivos->archivosAMover);
+			 tamanio = list_size(moverArchivos.archivosAMover);
 			 send(socketJob, &tamanio, sizeof(int),0);
 			 recv(socketJob, &enteroPrueba, sizeof(int),0);
 			 for(a=0;a < tamanio;a++){
-				 archivoAMover->ipNodo =moverArchivos->ipNodo;
-				 archivoAMover->puertoNodo = moverArchivos->puertoNodo;
-				 archivo = list_get(moverArchivos->archivosAMover, a);
-				 archivoAMover->archivoAMover = archivo;
+				 archivoAMover.ipNodo =moverArchivos.ipNodo;
+				 archivoAMover.puertoNodo = moverArchivos.puertoNodo;
+				 archivo = list_get(moverArchivos.archivosAMover, a);
+				 archivoAMover.archivoAMover = archivo;
 				 archivoASerializar = serializar_archivoAMover(&archivoAMover,tamanioSerializacionMover);
 				 send(socketJob, &tamanioSerializacionMover, sizeof(int),0);
 				 recv(socketJob, &enteroPrueba, sizeof(int),0);
@@ -1039,14 +1059,14 @@ void planificarSincombiner(char* archivoFinal){
 			 recv(socketJob, &enteroPrueba, sizeof(int),0);
 
 			 antesDeSerializar.archivoResultadoReduce = archivoFinal;
-			 antesDeSerializar.cantidadArchivos = list_size(moverArchivos->archivosAMover);
-			 antesDeSerializar.idNodo = contadorNodo->idNodo;
-			 antesDeSerializar.ipNodo = moverArchivos->ipNodo;
-			 antesDeSerializar.puertoNodo = moverArchivos->puertoNodo;
-			 list_add_all(antesDeSerializar.listaArchivosTemporales, moverArchivos->archivosAMover);
+			 antesDeSerializar.cantidadArchivos = list_size(moverArchivos.archivosAMover);
+			 antesDeSerializar.idNodo = contadorNodo.idNodo;
+			 antesDeSerializar.ipNodo = moverArchivos.ipNodo;
+			 antesDeSerializar.puertoNodo = moverArchivos.puertoNodo;
+			 list_add_all(antesDeSerializar.listaArchivosTemporales, moverArchivos.archivosAMover);
 
-			 for(m=0; m< list_size(moverArchivos->archivosAMover); m++){
-				 archivoA =	list_get( moverArchivos->archivosAMover,m);
+			 for(m=0; m< list_size(moverArchivos.archivosAMover); m++){
+				 archivoA =	list_get( moverArchivos.archivosAMover,m);
 				 tamanioListaFinal += strlen(archivoA);
 				 tamanioListaFinal += 1;
 			 }
