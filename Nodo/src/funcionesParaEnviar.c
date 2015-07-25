@@ -22,7 +22,6 @@ int recive_y_deserializa_NODO_C(t_para_nodo *bloque, int socket, uint32_t tamani
 	memcpy(bloque->ip, buffer + offset, tamanioDinamico);
 	offset += tamanioDinamico;
 
-	tamanioDinamico;
 	memcpy(&tamanioDinamico, buffer + offset, sizeof(int));
 	offset += sizeof(int);
 
@@ -30,7 +29,6 @@ int recive_y_deserializa_NODO_C(t_para_nodo *bloque, int socket, uint32_t tamani
 	memcpy(bloque->puerto, buffer + offset, tamanioDinamico);
 	offset += tamanioDinamico;
 
-	tamanioDinamico;
 	memcpy(&tamanioDinamico, buffer + offset, sizeof(int));
 	offset += sizeof(int);
 
@@ -124,10 +122,12 @@ int recive_y_deserialisa_CHARp(char *script, int socket, uint32_t tamanioTotal){
 char* serializarCHARp(char* Aserializar, int tamanioData){
 	int offset = 0;
 	int size_to_send;
+	int tamanioNombre;
+	char* serializedPackage;
 
-	char *serializedPackage = malloc(tamanioData);
+	serializedPackage = malloc(tamanioData);
 
-	int tamanioNombre = strlen(Aserializar) + 1;
+	tamanioNombre = strlen(Aserializar) + 1;
 	size_to_send = sizeof(int);
 	memcpy(serializedPackage + offset, &tamanioNombre, size_to_send);
 	offset += size_to_send;
