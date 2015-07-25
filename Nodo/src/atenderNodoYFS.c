@@ -26,10 +26,14 @@ void *atenderNFS(void*arg){
 	int variableDelPaquetito = 64*1024;
 	int tamanioReal;
 
-	char* pmap = mapearAMemoriaVirtual(archivo_bin);
+	char* pmap;
 
 	if(string_equals_ignore_case(nodo_nuevo,"SI")){
+		pmap = mapearAMemoriaVirtual(archivo_bin);
+
 		formatearArchivo(pmap);
+
+		munmap(pmap,tamanioArchivo_BIN);
 	}
 
 
@@ -44,6 +48,8 @@ void *atenderNFS(void*arg){
 	switch(entero){
 	//getBloque(numero);
 		case 1:
+			pmap = mapearAMemoriaVirtual(archivo_bin);
+
 			send(socket,&entero,sizeof(int),0);
 			recv(socket,&nroDelBloque,sizeof(int),0);
 
@@ -66,11 +72,17 @@ void *atenderNFS(void*arg){
 			loQueMande = send(socket,bloqueGet,tamanioBloque,0);
 			printf("Lo envie y esto fue el tamaño que envie: %i\n",loQueMande);
 
+			munmap(pmap,tamanioArchivo_BIN);
+			free(pmap);
+
 		//ok = 20;
 		//send(socket,&ok, sizeof(int),0);
 		break;
 	//setBloque(numero,[datos]);
 		case 2:
+
+			pmap = mapearAMemoriaVirtual(archivo_bin);
+
 			send(socket,&entero,sizeof(int),0);
 			recv(socket,&nroDelBloque,sizeof(int),0);
 
@@ -108,45 +120,33 @@ void *atenderNFS(void*arg){
 			msync(pmap,tamanioArchivo_BIN,0);
 			printf("se seteo correctamente\n");
 			liberar(&bufferSet);
+
+			munmap(pmap,tamanioArchivo_BIN);
 			//ok = 20;
 			//send(socket,&ok, sizeof(int),0);
 		break;
 		//getFileContent(nombre);
 		case 3:
-			recv(socket,&tamanioBloque,sizeof(int),0);
-			recive_y_deserialisa_CHARp(direccion, socket, tamanioBloque);
-
-			char* direccionAuxiliar = malloc(strlen(direccion)+strlen(dir_temp)+1);
-
-			direccionAuxiliar = dir_temp;
-
-			strcat(direccionAuxiliar,"/");
-			strcat(direccionAuxiliar,direccion);
-
-			char* file = mapearAMemoriaVirtual(direccionAuxiliar);
-			char* buffer = malloc(strlen(file));
-
-			memcpy(buffer,file,strlen(file));
-
-			mensaje = serializarBloqueDeDatos(buffer,strlen(file));
-
-			int tamanioData = strlen(file);
-			send(socket,&tamanioData,sizeof(int),0);
-			send(socket,mensaje,strlen(file),0);
-			free(mensaje);
-			free(buffer);
+			getFileContent(socket);
 
 			//ok = 20;
 			//send(socket,&ok, sizeof(int),0);
 		break;
 		case 4:
 		//FORMATEO
+
+			pmap = mapearAMemoriaVirtual(archivo_bin);
+
 			printf("Me mando a formatear el archivo\n");
 			formatearArchivo(pmap);
 			printf("Se formateo correctamente\n");
+
+			munmap(pmap,tamanioArchivo_BIN);
 		break;
 		case 5:
 		//FORMATEO DE BLOQUE
+			pmap = mapearAMemoriaVirtual(archivo_bin);
+
 			send(socket,&entero,sizeof(int),0);
 			recv(socket,&nroDelBloque,sizeof(int),0);
 
@@ -154,6 +154,7 @@ void *atenderNFS(void*arg){
 			formatearBloque(pmap,nroDelBloque);
 			printf("Formateo del bloque %i completado\n",nroDelBloque);
 
+			munmap(pmap,tamanioArchivo_BIN);
 		break;
 	}
 }

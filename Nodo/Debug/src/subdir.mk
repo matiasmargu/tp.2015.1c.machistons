@@ -9,6 +9,7 @@ C_SRCS += \
 ../src/atenderNodoYFS.c \
 ../src/funcionesDepuracion.c \
 ../src/funcionesParaConfiguracionYDemas.c \
+../src/funcionesParaElCombiner.c \
 ../src/funcionesParaEnviar.c \
 ../src/funcionesParaEscribir.c \
 ../src/manejoDeMemoria.c \
@@ -20,6 +21,7 @@ OBJS += \
 ./src/atenderNodoYFS.o \
 ./src/funcionesDepuracion.o \
 ./src/funcionesParaConfiguracionYDemas.o \
+./src/funcionesParaElCombiner.o \
 ./src/funcionesParaEnviar.o \
 ./src/funcionesParaEscribir.o \
 ./src/manejoDeMemoria.o \
@@ -31,6 +33,7 @@ C_DEPS += \
 ./src/atenderNodoYFS.d \
 ./src/funcionesDepuracion.d \
 ./src/funcionesParaConfiguracionYDemas.d \
+./src/funcionesParaElCombiner.d \
 ./src/funcionesParaEnviar.d \
 ./src/funcionesParaEscribir.d \
 ./src/manejoDeMemoria.d \

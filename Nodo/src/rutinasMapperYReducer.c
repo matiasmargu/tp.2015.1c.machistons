@@ -160,7 +160,10 @@ void reducer(void* arg){
 	   FILE* fdRed = fopen(tmp,"w");
 	   fputs(buffer,fdRed);
 	   fclose(fdRed);
-	   free(tmp);
+
+	   char* archivoResultado = mapearAMemoriaVirtual(tmp);
+
+	   ordernarAlfabeticamente(red.nombreArchivoResultado,fdRed,sizeof(archivoResultado));
 
 	    //close( pipe_hijoAPadre[0]);
 	  }

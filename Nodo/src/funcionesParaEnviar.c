@@ -7,6 +7,42 @@
 
 #include "variablesGlobales.h"
 
+
+int recive_y_deserializa_NODO_C(t_para_nodo *bloque, int socket, uint32_t tamanioTotal){
+	int status;
+	char* buffer = malloc(tamanioTotal);
+	int offset = 0;
+	int tamanioDinamico;
+
+	recv(socket, buffer, tamanioTotal, 0);
+	memcpy(&tamanioDinamico, buffer + offset, sizeof(int));
+	offset += sizeof(int);
+
+	bloque->ip = malloc(tamanioDinamico);
+	memcpy(bloque->ip, buffer + offset, tamanioDinamico);
+	offset += tamanioDinamico;
+
+	tamanioDinamico;
+	memcpy(&tamanioDinamico, buffer + offset, sizeof(int));
+	offset += sizeof(int);
+
+	bloque->puerto = malloc(tamanioDinamico);
+	memcpy(bloque->puerto, buffer + offset, tamanioDinamico);
+	offset += tamanioDinamico;
+
+	tamanioDinamico;
+	memcpy(&tamanioDinamico, buffer + offset, sizeof(int));
+	offset += sizeof(int);
+
+	bloque->archivo = malloc(tamanioDinamico);
+	memcpy(bloque->archivo, buffer + offset, tamanioDinamico);
+	offset += tamanioDinamico;
+
+	return status;
+	}
+
+
+
 int recive_y_deserializa_EST_REDUCE(t_job_nodo_reduce *bloque, int socket, uint32_t tamanioTotal){
 	int status;
 	char *buffer = malloc(tamanioTotal);
@@ -55,18 +91,12 @@ int recive_y_deserialisa_SET_BLOQUE(estructuraSetBloque *bloque, int socket, uin
 	memcpy(&(bloque->bloque), buffer + offset, sizeof(bloque->bloque));
 	offset += sizeof(bloque->bloque);
 
-	printf("Este es el tamaño del numero de bloques: %i\n",sizeof(bloque->bloque));
-
 	memcpy(&tamanioDinamico, buffer + offset, sizeof(int));
 	offset += sizeof(int);
-
-	printf("Este es el tamaño del bloque de datos que me dijeron: %i\n",tamanioDinamico);
 
 	bloque->data = malloc(tamanioDinamico);
 	memcpy(bloque->data, buffer + offset, tamanioDinamico);
 	offset += tamanioDinamico;
-
-	printf("Este es el tamaño del bloque seteado: %i\n",strlen(bloque->data));
 
 	free(buffer);
 	return status;
