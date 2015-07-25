@@ -120,7 +120,7 @@ int main(void) {
    		    			switch(entero){ // HANDSHAKE
    		    				case 1: // ACA EL JOB LE PASA LISTA DE ARCHIVOS Y EL COMBINER
    		    					socketjob = i;
-   		    					pthread_create(&hilo_job, NULL, atenderJob,(void *)socketjob);//mitrar
+   		    					pthread_create(&hilo_job, NULL, (void *)atenderJob,(void *)socketjob);//mitrar
 
    		    					//recv(socketjob,&prueba,sizeof(int),0);
    		    					//printf("%i/n",prueba);
