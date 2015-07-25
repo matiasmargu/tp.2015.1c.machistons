@@ -24,7 +24,6 @@
 	int numeroBloque;
 	char* nombre_archivo_resultado; //donde va a devolverle el resultado
 	int idNodo;
-
 }t_marta_job_map;
 
 

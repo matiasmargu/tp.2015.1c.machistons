@@ -175,8 +175,8 @@ int recive_y_deserialisa_marta_job_mapper(t_marta_job_map *bloque, int socket, u
 		offset += sizeof(bloque->idNodo);
 
 
-		memcpy(&(bloque->numeroBloque), buffer + offset, sizeof(bloque.numeroBloque));
-		offset += sizeof(bloque.numeroBloque);
+		memcpy(&(bloque->numeroBloque), buffer + offset, sizeof(bloque->numeroBloque));
+		offset += sizeof(bloque->numeroBloque);
 
 
 
@@ -640,8 +640,7 @@ int recive_y_deserialisa_marta_job_reduce_moverArchivosFinal(t_para_job *bloque,
 		memcpy(bloque->puertoAconectarse, buffer + offset, tamanioDinamico);
 		offset += tamanioDinamico;
 
-		memcpy(&(bloque->idNodoAconectarse), buffer + offset, sizeof(bloque->idNodoAconectarse));
-		offset += sizeof(bloque->idNodoAconectarse);
+
 		free(buffer);
 		return status; // aca hay que ver si va status o no
 
