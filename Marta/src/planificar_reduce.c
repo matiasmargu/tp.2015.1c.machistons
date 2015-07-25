@@ -69,6 +69,46 @@ t_list* lista_job_tabla;
 
 
 
+char* serializar_moverParaReduceFinal(t_para_nodo * archivoAMover,int tamanioSerializacionMover){
+	char *serializedPackage = malloc(tamanioSerializacionMover);
+	int offset = 0;
+	int size_to_send;
+
+	int tamanioNombre;
+
+	tamanioNombre = strlen(archivoAMover->ip) + 1;
+	size_to_send = sizeof(int);
+	memcpy(serializedPackage + offset, &tamanioNombre, size_to_send);
+	offset += size_to_send;
+
+	size_to_send =  strlen(archivoAMover->ip) + 1;
+	memcpy(serializedPackage + offset, archivoAMover->ip, size_to_send);
+	offset += size_to_send;
+
+
+	tamanioNombre = strlen(archivoAMover->puerto) + 1;
+	size_to_send = sizeof(int);
+	memcpy(serializedPackage + offset, &tamanioNombre, size_to_send);
+	offset += size_to_send;
+
+	size_to_send =  strlen(archivoAMover->puerto) + 1;
+	memcpy(serializedPackage + offset, archivoAMover->puerto, size_to_send);
+	offset += size_to_send;
+
+
+	tamanioNombre = strlen(archivoAMover->archivo) + 1;
+	size_to_send = sizeof(int);
+	memcpy(serializedPackage + offset, &tamanioNombre, size_to_send);
+	offset += size_to_send;
+
+	size_to_send =  strlen(archivoAMover->archivo) + 1;
+	memcpy(serializedPackage + offset, archivoAMover->archivo, size_to_send);
+	offset += size_to_send;
+
+	return serializedPackage;
+}
+
+
 
 
 
@@ -171,23 +211,6 @@ char* serializar_marta_job_reduce(t_marta_job_reduce *bloque, int tamanioTotal){
 			memcpy(serializedPackage + offset, archivo->archivo, size_to_send);
 			offset += size_to_send;
 
-			tamanioNombre = strlen(archivo->ip) + 1;
-			size_to_send = sizeof(int);
-			memcpy(serializedPackage + offset, &tamanioNombre, size_to_send);
-			offset += size_to_send;
-
-			size_to_send =  strlen(archivo->ip) + 1;
-			memcpy(serializedPackage + offset, archivo->ip, size_to_send);
-			offset += size_to_send;
-
-			tamanioNombre = strlen(archivo->puerto) + 1;
-			size_to_send = sizeof(int);
-			memcpy(serializedPackage + offset, &tamanioNombre, size_to_send);
-			offset += size_to_send;
-
-			size_to_send =  strlen(archivo->puerto) + 1;
-			memcpy(serializedPackage + offset, archivo->puerto, size_to_send);
-			offset += size_to_send;
 					}
 
 
@@ -249,7 +272,8 @@ void planificarReduceConCombiner(){
 	t_list* lista_job_tabla;
 	//REDUCE FINAL
 	t_job_marta_reduce job_marta;
-	int contador2,r,l,tamanioArecibir,p,tamanioStruct, tamanioListaFinal,m, reduceFinal;
+	t_para_nodo* antesDeSerializar1;
+	int contador2,r,l,tamanioArecibir,p,tamanioStruct, v,tamanioListaFinal,m, reduceFinal,tamanioListaFinalAEnviar,tamanioStruct2;
 	t_archivosAReducirPorNodo *campoDeListaArchivosAReducirPorNodo;
 	t_archivosAReducirPorNodo *campoDeListaArchivosAReducirPorNodo2;
 	t_archivosAReducirPorNodo * campoDeListaArchivosAReducirPorNodo3;
@@ -257,9 +281,10 @@ void planificarReduceConCombiner(){
 	t_marta_job_reduce antesDeSerializar;
 	char* structParaJob;
 	contador2 = 0;
+	char *structParaJob2;
 	t_para_nodo* campoListaParaNodo;
 	t_para_nodo* archivoA;
-
+	t_para_nodo* campoAAgregar;
 
 		// para probar
         int tamanioTabla,tamanioCampoDeTabla,tamanioNodo, contador;
@@ -556,29 +581,46 @@ void planificarReduceConCombiner(){
 						send(socketJob, &handshakeJob, sizeof(int),0);
 						recv(socketJob, &enteroPrueba, sizeof(int),0);
 						reduceFinal = 22;
-						send(socketJob, &reduceFinal, sizeof(int),0); //AGREGAR UN CASE EN EL JOB SI ES REDUCE FINAL DENTRO DEL REDUCE
-						recv(socketJob, &enteroPrueba, sizeof(int),0); //agregr al job
+						send(socketJob, &reduceFinal, sizeof(int),0);
+						recv(socketJob, &enteroPrueba, sizeof(int),0);
 
-					//	antesDeSerializar.archivoResultadoReduce =  aca va el qe pasa job al principio hay que ver si viene como parametro o lo tenemos como global
+
+						// le mando a mover los archivos al nodo
+						for(m=0; m< list_size(listaFinalDeArchivosAReducir); m++){
+							archivoA =	list_get( listaFinalDeArchivosAReducir,m);
+							tamanioListaFinal = 0;
+							tamanioListaFinal += strlen(archivoA->archivo);
+							tamanioListaFinalAEnviar += tamanioListaFinal;
+							tamanioListaFinalAEnviar += 1;
+							tamanioListaFinal += strlen(archivoA->ip);
+							tamanioListaFinal += strlen(archivoA->puerto);
+							tamanioListaFinal += 3;
+
+
+
+						tamanioStruct = tamanioListaFinal;
+						send(socketJob, &tamanioStruct , sizeof(int),0);
+						recv(socketJob, &enteroPrueba, sizeof(int),0);
+						structParaJob =  serializar_moverParaReduceFinal(&antesDeSerializar1, tamanioStruct);
+						send(socketJob, structParaJob, tamanioStruct, 0);
+					}
+
+
+						//hacer reduce final de todos los archivos de la listafinal
+						//	antesDeSerializar1.archivoResultadoReduce =  aca va el qe pasa job al principio hay que ver si viene como parametro o lo tenemos como global
 						antesDeSerializar.cantidadArchivos = list_size(listaFinalDeArchivosAReducir);
 						//antesDeSerializar.idNodo =  VER EN QUE NODO SE HACE EL FINAL
 						//antesDeSerializar.ipNodo ver
 						//antesDeSerializar.puertoNodo  ver
-						list_add_all(antesDeSerializar.listaArchivosTemporales, listaFinalDeArchivosAReducir);
-
-						for(m=0; m< list_size(listaFinalDeArchivosAReducir); m++){
-							archivoA =	list_get( listaFinalDeArchivosAReducir,m);
-							tamanioListaFinal += strlen(archivoA->archivo);
-							tamanioListaFinal += strlen(archivoA->ip);
-							tamanioListaFinal += strlen(archivoA->puerto);
-							tamanioListaFinal += 3;
+						for(v=0; v < list_size(listaFinalDeArchivosAReducir); v++){
+							campoAAgregar = list_get(listaFinalDeArchivosAReducir, v);
+					list_add(antesDeSerializar.listaArchivosTemporales,campoAAgregar->archivo );
 						}
-
-						tamanioStruct = (sizeof(int)*2)+strlen(antesDeSerializar.archivoResultadoReduce)+1 + strlen(antesDeSerializar.puertoNodo)+1 + strlen(antesDeSerializar.ipNodo) +1 + tamanioListaFinal;
-						send(socketJob, &tamanioStruct , sizeof(int),0);
-						recv(socketJob, &enteroPrueba, sizeof(int),0);
-						structParaJob = serializar_marta_job_reduce(&antesDeSerializar, tamanioStruct);
-						send(socketJob, structParaJob, tamanioStruct, 0);
+					tamanioStruct2 = (sizeof(int)*2) + strlen(antesDeSerializar.ipNodo) +1 + strlen(antesDeSerializar.puertoNodo)+1+ strlen(antesDeSerializar.archivoResultadoReduce)+1 + tamanioListaFinalAEnviar;
+					send(socketJob, &tamanioStruct2 , sizeof(int),0);
+					recv(socketJob, &enteroPrueba, sizeof(int),0);
+					structParaJob2 =  serializar_marta_job_reduce(&antesDeSerializar, tamanioStruct2);
+					send(socketJob, structParaJob2, tamanioStruct2, 0);
 					}
 				}
 			}
