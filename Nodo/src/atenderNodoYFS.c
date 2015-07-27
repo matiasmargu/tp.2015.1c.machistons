@@ -48,6 +48,7 @@ void *atenderNFS(void*arg){
 	switch(entero){
 	//getBloque(numero);
 		case 1:
+
 			pmap = mapearAMemoriaVirtual(archivo_bin);
 
 			send(socket,&entero,sizeof(int),0);
@@ -68,12 +69,12 @@ void *atenderNFS(void*arg){
 
 			send(socket,&tamanioBloque,sizeof(int),0);
 			recv(socket,&entero,sizeof(int),0);
+			send(socket,&entero,sizeof(int),0);
 
 			loQueMande = send(socket,bloqueGet,tamanioBloque,0);
 			printf("Lo envie y esto fue el tamaño que envie: %i\n",loQueMande);
 
 			munmap(pmap,tamanioArchivo_BIN);
-			free(pmap);
 
 		//ok = 20;
 		//send(socket,&ok, sizeof(int),0);
@@ -85,6 +86,8 @@ void *atenderNFS(void*arg){
 
 			send(socket,&entero,sizeof(int),0);
 			recv(socket,&nroDelBloque,sizeof(int),0);
+
+			printf("El nro de bloque: %i\n",nroDelBloque);
 
 			send(socket,&entero,sizeof(int),0);
 			recv(socket,&tamanioBloque,sizeof(int),0);

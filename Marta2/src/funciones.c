@@ -9,9 +9,6 @@ char* serializar_marta_job_map(t_marta_job_map *bloque, int tamanioTotal){
 			int offset = 0;
 			int size_to_send;
 
-			size_to_send =  sizeof(bloque->cantidadBloques);
-			memcpy(serializedPackage + offset, &(bloque->cantidadBloques), size_to_send);
-			offset += size_to_send;
 
 			int tamanioNombre = strlen(bloque->ip_nodo) + 1;
 			size_to_send = sizeof(int);
@@ -46,23 +43,11 @@ char* serializar_marta_job_map(t_marta_job_map *bloque, int tamanioTotal){
 
 
 
-			//LISTA
-			int tamanioLista = list_size(bloque->bloques);
-			int a, numero;
-
-
-			for(a=0;a< tamanioLista; a++){
-			numero = list_get(bloque->bloques, a);
-			size_to_send = sizeof(int);
-			memcpy(serializedPackage + offset, &numero, size_to_send);
-			offset += size_to_send;
-					}
-
-
 
 
 			return serializedPackage;
 		}
+/*
 
 char* serializar_marta_job_reduce(t_marta_job_reduce *bloque, int tamanioTotal){
 			char *serializedPackage = malloc(tamanioTotal);
@@ -130,7 +115,7 @@ char* serializar_marta_job_reduce(t_marta_job_reduce *bloque, int tamanioTotal){
 
 			return serializedPackage;
 		}
-
+*/
 int cantidadArchivosEnArray(char** strings) {
 	int cantidadArchivosEnArray = 0;
 	while (*strings != NULL) {

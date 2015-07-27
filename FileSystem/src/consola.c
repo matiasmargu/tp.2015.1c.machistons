@@ -19,11 +19,8 @@ void *atenderConsola(void*arg) {
 	char *separador2="\n";
 	char *separator=" ";
 
-	t_matrix datosMatrisAsignacion;
-	int offset,a,b,z;
-	int socketNodito,bloqueNodito;
-
-	char *mensaje; // Para mandar mensajes serializados
+	char md5[MD5_LEN + 1];
+	char *mensaje;
 
 	imprimirMenu();
 	while(1){
@@ -39,7 +36,7 @@ void *atenderConsola(void*arg) {
 					break;
 				case Eliminar_Arch: // 2
 					if(nodosActivos >= nodosNecesarios){
-
+						eliminarArchivo();
 					}else{
 						mensajeEstadoInactivoFS();
 					}
@@ -59,6 +56,7 @@ void *atenderConsola(void*arg) {
 				case Eliminar_Directorio: // 6
 					if(nodosActivos >= nodosNecesarios){
 						eliminarDirectorio();
+						printf("Ingrese 0 para imprimir el menu\n");
 					}else{
 						mensajeEstadoInactivoFS();
 					}
@@ -73,7 +71,6 @@ void *atenderConsola(void*arg) {
 					//printf("%s\n",mensaje);
 					break;
 				case Borrar_Bloque_Arch: // 10
-
 					break;
 				case Copiar_Bloque_Arch: // 11
 					break;
@@ -81,10 +78,13 @@ void *atenderConsola(void*arg) {
 					agregarNodo();
 					break;
 				case Eliminar_Nodo: // 13
-					verificarEstadoFS();
+					eliminarNodo();
 					break;
 				case Copiar_Arch_Al_MDFS: // 14
-					comandoSeparado2=string_split(comandoSeparado[1], separador2);
+					printf("\n""Ingrese la direccion fisica del archivo que desea agregar:\n");
+					fgets(bufferComando,MAXSIZE_COMANDO, stdin);
+					comandoSeparado=string_split(bufferComando, separator);
+					comandoSeparado2=string_split(comandoSeparado[0], separador2);
 					if(insertarArchivoAMongoYAlMDFS(comandoSeparado2[0])== 20){
 						printf("Se agrego correctamente el archivo al MDFS\n"
 								"Ingrese 0 para imprimir el menu\n");
@@ -95,6 +95,16 @@ void *atenderConsola(void*arg) {
 				case Copiar_Arch_Al_FSLocal: // 15
 					break;
 				case Solicitar_MD5: // 16
+					printf("\n""Ingrese el nombre del archivo del que desee calcular el MD5:\n");
+					fgets(bufferComando,MAXSIZE_COMANDO, stdin);
+					comandoSeparado=string_split(bufferComando, separator);
+					comandoSeparado2=string_split(comandoSeparado[1], separador2);
+					if (!CalcFileMD5(comandoSeparado2[0], md5)) {
+						puts("Error en el calculo del MD5.");
+					} else {
+						printf("El MD5 es: %s\n", md5);
+					}
+					printf("Ingrese 0 para imprimir el menu\n");
 					break;
 				case Salir: // 17
 					break;

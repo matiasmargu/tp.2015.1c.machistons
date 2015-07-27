@@ -23,7 +23,7 @@ int main(void) {
 	char *archivo_resultado;
 	char* archivo_resultado_final;
 	int p,a, tamanioCombiner,tamanio_archivo_resultado, tipoOperacion2;
-	int tamanioTotal, tamanioTotalMapper , numeroRutina,CantidadAMover;
+	int tamanioTotal, tamanioTotalMapper , numeroRutina,CantidadAMover, numeroParaNodo;
 	int handshake, handshakeNodo,  socketNodo,tamanioArchivoAMover,caca2,tamanioAEnviarMover,tamanioRecibido,estado2;
 	t_marta_job_map Marta_Job_Map;
 	char* rutinaMapperTraducida;
@@ -61,9 +61,9 @@ int main(void) {
 	int socketMarta = crearCliente (ip_marta,puerto_marta);
 	printf("despues de marta\n");
 
-	//rutinaMapperTraducida = mapearAMemoriaVirtual(mapper);
-	//rutinaReduceTraducida = mapearAMemoriaVirtual(reduce);
-	//printf("rutinaMappper TRADUCIDA  %s\n",rutinaMapperTraducida);
+	rutinaMapperTraducida = mapearAMemoriaVirtual(mapper);
+	rutinaReduceTraducida = mapearAMemoriaVirtual(reduce);
+	printf("rutinaMappper TRADUCIDA  %s\n",rutinaMapperTraducida);
 
 	///MANDAMOS LA LISTA DE ARCHIVOS A MARTA Y EL COMBINER
 
@@ -111,10 +111,12 @@ int main(void) {
 			send(socketMarta, &enteroPrueba, sizeof(int),0);
 			int status = 1; // Estructura que manjea el status de los recieve.
 			status = recive_y_deserialisa_marta_job_mapper(&Marta_Job_Map, socketMarta, tamanioStruct);
+			printf(" id %i\n",Marta_Job_Map.idNodo);
+			printf(" ip %s\n",Marta_Job_Map.ip_nodo);
+			printf(" bloque %i\n",Marta_Job_Map.numeroBloque);
+			printf(" puerto %s\n",Marta_Job_Map.puerto);
 			printf("llego el archivo %s\n",Marta_Job_Map.nombre_archivo_resultado);
-			int caca;
-			caca = list_get(Marta_Job_Map.bloques, 2);
-			printf("numero de la listaa %i\n\n", caca);
+
 
 			if(status){
 				//HANDSHAKE NODO
@@ -133,15 +135,15 @@ int main(void) {
 				send(socketNodo, rutinaMapperTraducida, tamanioTotalMapper,0);
 
 
-			//ACA LEVANTA UN HILO POR CADA BLOQUE A ENVIAR A MAPEAR
-			for(p = 0; p< Marta_Job_Map.cantidadBloques ; p++){
-			map.bloque = list_get(Marta_Job_Map.bloques, p);
+			//ACA LEVANTA UN HILO PARA A ENVIAR A MAPEAR
+
+			map.bloque = Marta_Job_Map.numeroBloque;
 			map.socketNodo = socketNodo;
 			map.nombreArchivoResultado = Marta_Job_Map.nombre_archivo_resultado;
 			map.socketMarta = socketMarta;
 			map.idNodo = Marta_Job_Map.idNodo;
 			pthread_create(&hilomap,NULL, mapearBloque,(void *)&map);
-			}
+
 		}
 			break;
 		case 34: // REALIZAR REDUCE
@@ -181,98 +183,49 @@ int main(void) {
 			list_add_all(datosParaLaReduccion.archivos, Marta_Job_Reduce.listaArchivosTemporales) ; //COPIA UNA LISTA A LA OTRA
 			pthread_create(&hiloreduce,NULL, reducirArchivos,(void *)&datosParaLaReduccion);
 			break;
-			case 22: //REDUCE FINAL FALTA HACER
-							send(socketMarta, &enteroPrueba, sizeof(int),0);
-							recv(socketMarta, &tamanioStruct, sizeof(int),0);
-							send(socketMarta, &enteroPrueba, sizeof(int),0);
 
-							estado = 1; // Estructura que manjea el status de los recieve.
-							estado = recive_y_deserialisa_marta_job_reduce_moverArchivosFinal(&Marta_Job_Archivo_A_Mover, socketMarta, tamanioStruct);
-							if(estado){
-								//HANDSHAKE NODO //AGREGAR EL 22 VER CON NICO
-								socketNodo = crearCliente (Marta_Job_Archivo_A_Mover.ipAConectarse, Marta_Job_Archivo_A_Mover.puertoAconectarse);
-								handshakeNodo = 8;
-								send(socketNodo,&handshakeNodo,sizeof(int),0);
-								recv(socketNodo, &enteroPrueba, sizeof(int),0);
-								tamanioAEnviarMover = strlen(Marta_Job_Archivo_A_Mover.archivoAmover) +1 + strlen(Marta_Job_Archivo_A_Mover.ipAmover)+1 + strlen(Marta_Job_Archivo_A_Mover.puertoAmover)+1;
-								send(socketNodo, &tamanioAEnviarMover, sizeof(int),0);
-								recv(socketNodo, &enteroPrueba, sizeof(int),0);
-								paraNodo->archivo = Marta_Job_Archivo_A_Mover.archivoAmover;
-								paraNodo->ip = Marta_Job_Archivo_A_Mover.ipAmover;
-								paraNodo->puerto = Marta_Job_Archivo_A_Mover.puertoAmover;
-								structParaNodoMover = serializar_nodo_mover(&paraNodo,tamanioAEnviarMover);
-								send(socketNodo,structParaNodoMover, tamanioAEnviarMover,0);
-								recv(socketNodo, &enteroPrueba, sizeof(int),0);
-								send(socketMarta, &enteroPrueba, sizeof(int),0);
-								recv(socketMarta, &tamanioRecibido, sizeof(int),0);
-								estado2 = 1; // Estructura que manjea el status de los recieve.
-								estado2 = recive_y_deserialisa_marta_job_reduce(&Marta_Job_Reduce, socketMarta, tamanioRecibido);
-
-
-							if(estado2){
-								//HANDSHAKE NODO
-										socketNodo = crearCliente (Marta_Job_Reduce.ipNodo, Marta_Job_Reduce.puertoNodo);
-										handshakeNodo = 8;
-										send(socketNodo,&handshakeNodo,sizeof(int),0);
-										recv(socketNodo, &enteroPrueba, sizeof(int),0);
-										//ACA LE MANDA LA RUTINA REDUCE AL NODO
-										numeroRutina = 2; //Le avisa que manda reduce
-										send(socketNodo,&numeroRutina,sizeof(int),0);
-										recv(socketNodo, &enteroPrueba, sizeof(int),0);
-										int tamanioTotalReduce =  strlen(rutinaReduceTraducida)+1;
-										send(socketNodo, &tamanioTotalReduce, sizeof(int),0);
-										recv(socketNodo, &enteroPrueba, sizeof(int),0);
-										send(socketNodo,rutinaReduceTraducida,tamanioTotal,0);
-										recv(socketNodo, &enteroPrueba, sizeof(int),0);
-
-										//ACA LEVANTA UN HILO PARA APLICAR EL REDUCE
-										datosParaLaReduccion.socketNodo = socketNodo;
-										datosParaLaReduccion.nombreArchivoResultado = Marta_Job_Reduce.archivoResultadoReduce;
-										datosParaLaReduccion.archivos = list_create();
-										list_add_all(datosParaLaReduccion.archivos, Marta_Job_Reduce.listaArchivosTemporales) ; //COPIA UNA LISTA A LA OTRA
-										pthread_create(&hiloreduce,NULL, reducirArchivos,(void *)&datosParaLaReduccion);
-										break;
-							}
-
-			break;
-			case 33:
+			case 33: //PARA MOVER
+				send(socketMarta, &enteroPrueba, sizeof(int),0);
 				recv(socketMarta, &CantidadAMover, sizeof(int),0);
 				send(socketMarta, &enteroPrueba, sizeof(int),0);
 				for(a=0;a<CantidadAMover;a++){
 					recv(socketMarta, &tamanioStruct, sizeof(int),0);
 					send(socketMarta, &enteroPrueba, sizeof(int),0);
 					estado = 1;
-				//	estado = recive_y_deserialisa_ArchivoAMover(&archivoAMover, socketMarta, tamanioStruct);
-					// falta hacer la funcion
+					estado = recive_y_deserialisa_marta_job_reduce_moverArchivosFinal(&Marta_Job_Archivo_A_Mover, socketMarta, tamanioStruct);
+
 					if(estado){ // es necesario serializarlo para hacer el if estado
-						socketNodo = crearCliente (archivoAMover->ipNodo, archivoAMover->puertoNodo);
-						handshakeNodo = 22; // con nico acordamos que le mandemos un 22
+						//HANDSHAKE NODO
+						socketNodo = crearCliente (Marta_Job_Archivo_A_Mover.ipAConectarse, Marta_Job_Archivo_A_Mover.puertoAconectarse);
+						handshakeNodo = 8;
+						numeroParaNodo = 3;
 						send(socketNodo,&handshakeNodo,sizeof(int),0);
 						recv(socketNodo, &enteroPrueba, sizeof(int),0);
-						send(socketNodo,&tamanioArchivoAMover,sizeof(int),0);
+						send(socketNodo, &numeroParaNodo, sizeof(int),0);
+						recv (socketNodo, &enteroPrueba, sizeof(int),0 );
+
+						tamanioAEnviarMover = strlen(Marta_Job_Archivo_A_Mover.archivoAmover) +1 + strlen(Marta_Job_Archivo_A_Mover.ipAmover)+1 + strlen(Marta_Job_Archivo_A_Mover.puertoAmover)+1;
+						send(socketNodo, &tamanioAEnviarMover, sizeof(int),0);
 						recv(socketNodo, &enteroPrueba, sizeof(int),0);
-						archivoAMoverAEnviarNodo =serializar_archivoAMover(archivoAMover, tamanioArchivoAMover);
-						send(socketNodo, &tamanioArchivoAMover, sizeof(int),0);
+						paraNodo->archivo = Marta_Job_Archivo_A_Mover.archivoAmover;
+						paraNodo->ip = Marta_Job_Archivo_A_Mover.ipAmover;
+						paraNodo->puerto = Marta_Job_Archivo_A_Mover.puertoAmover;
+						structParaNodoMover = serializar_nodo_mover(&paraNodo,tamanioAEnviarMover);
+						send(socketNodo,structParaNodoMover, tamanioAEnviarMover,0);
 						recv(socketNodo, &enteroPrueba, sizeof(int),0);
-						send(socketNodo,archivoAMoverAEnviarNodo,tamanioTotal,0);
-						recv(socketNodo, &enteroPrueba, sizeof(int),0);
+
 					}
+					}
+					break;
 				}
 				break;
+					case 5: // NO HAY MAS OPERACIONES
+				x= 1 ;
+				break;
 			}
-			break;
-
-		case 5: // NO HAY MAS OPERACIONES
-			x= 1 ;
-			break;
 		}
-
 	}
 
-
-
-}
-	}
 
 	log_info(logger,"Se ha desconectado con Marta, su ip es %s y su puerto %s",ip_marta,puerto_marta);
 	printf("Se ha desconectado con Marta, su ip es %s y su puerto %s  \n",ip_marta,puerto_marta);
