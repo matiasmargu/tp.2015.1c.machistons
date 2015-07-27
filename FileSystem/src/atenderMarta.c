@@ -71,6 +71,7 @@ void *atenderMarta(void*arg){
 				query = bson_new ();
 				offset = 0;
 				//BSON_APPEND_UTF8(query,"Directorio Padre",  );
+				BSON_APPEND_UTF8(query, "Es", "Archivo");
 				BSON_APPEND_UTF8(query, "Nombre" , nombreArchivo);
 				cursor = mongoc_collection_find (archivos, MONGOC_QUERY_NONE, 0, 0, 0, query, NULL, NULL);
 

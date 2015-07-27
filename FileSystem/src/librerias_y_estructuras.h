@@ -160,5 +160,6 @@ void formatear();
 void eliminarDirectorio();
 void crearDirectorio();
 int CalcFileMD5(char *file_name, char *md5_sum);
+void eliminarArchivo();
 
 #endif /* LIBRERIAS_Y_ESTRUCTURAS_H_ */

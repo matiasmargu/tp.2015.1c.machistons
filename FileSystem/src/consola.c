@@ -36,7 +36,7 @@ void *atenderConsola(void*arg) {
 					break;
 				case Eliminar_Arch: // 2
 					if(nodosActivos >= nodosNecesarios){
-
+						eliminarArchivo();
 					}else{
 						mensajeEstadoInactivoFS();
 					}
@@ -71,7 +71,6 @@ void *atenderConsola(void*arg) {
 					//printf("%s\n",mensaje);
 					break;
 				case Borrar_Bloque_Arch: // 10
-
 					break;
 				case Copiar_Bloque_Arch: // 11
 					break;
@@ -82,22 +81,21 @@ void *atenderConsola(void*arg) {
 					eliminarNodo();
 					break;
 				case Copiar_Arch_Al_MDFS: // 14
-					printf("Ingrese la direccion fisica del archivo que desea agregar:\n");
+					printf("\n""Ingrese la direccion fisica del archivo que desea agregar:\n");
 					fgets(bufferComando,MAXSIZE_COMANDO, stdin);
 					comandoSeparado=string_split(bufferComando, separator);
-					comandoSeparado2=string_split(comandoSeparado[1], separador2);
+					comandoSeparado2=string_split(comandoSeparado[0], separador2);
 					if(insertarArchivoAMongoYAlMDFS(comandoSeparado2[0])== 20){
 						printf("Se agrego correctamente el archivo al MDFS\n"
 								"Ingrese 0 para imprimir el menu\n");
-					}else{fgets(bufferComando,MAXSIZE_COMANDO, stdin);
-					comandoSeparado=string_split(bufferComando, separator);
+					}else{
 						printf("Ingrese 0 para imprimir el menu\n");
 					}
 					break;
 				case Copiar_Arch_Al_FSLocal: // 15
 					break;
 				case Solicitar_MD5: // 16
-					printf("Ingrese el nombre del archivo del que desee calcular el MD5:\n");
+					printf("\n""Ingrese el nombre del archivo del que desee calcular el MD5:\n");
 					fgets(bufferComando,MAXSIZE_COMANDO, stdin);
 					comandoSeparado=string_split(bufferComando, separator);
 					comandoSeparado2=string_split(comandoSeparado[1], separador2);

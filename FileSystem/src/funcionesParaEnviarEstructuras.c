@@ -680,6 +680,7 @@ int insertarArchivoAMongoYAlMDFS (char* path){
 	}
 	//
 
+	BSON_APPEND_UTF8(doc, "Es", "Archivo");
 	BSON_APPEND_UTF8(doc, "Nombre", strrchr(path, '/')+1);
 	BSON_APPEND_INT32 (doc, "Tamanio", mystat.st_size);
 	BSON_APPEND_INT32(doc, "Directorio Padre" , directorio);
@@ -795,6 +796,73 @@ int primerBloqueLibre(int idNodo){
 		}
 	bson_destroy (query);
 	return bloque;
+}
+
+void eliminarArchivo(){
+	t_archivo archivo;
+	bson_iter_t iter;
+	t_copia info;
+	int nroBloque;
+	int nroCopia;
+	int cantidad;
+	char bufferComando[MAXSIZE_COMANDO];
+	char **comandoSeparado;
+	char *separator=" ";
+	char **comandoSeparado2;
+	char *separador="\n";
+	int socketNodito;
+
+	const char *nombre;
+	bson_t *doc;
+	bson_t *query;
+	mongoc_cursor_t *cursor;
+
+	query = bson_new ();
+	doc = bson_new ();
+	BSON_APPEND_UTF8(query, "Es", "Archivo");
+	cantidad = mongoc_collection_count(archivos, MONGOC_QUERY_NONE, query,0,0,NULL,NULL);
+	if(cantidad > 0){
+		cursor = mongoc_collection_find (archivos, MONGOC_QUERY_NONE, 0, 0, 0, query, NULL, NULL);
+		printf("\n""Los archivos cargados en el MDFS son los siguientes:\n");
+		while (mongoc_cursor_next (cursor, &doc)) {
+			if (bson_iter_init (&iter, doc)) {
+				if(bson_iter_find (&iter, "Nombre"))nombre = bson_iter_utf8(&iter,NULL);
+				printf(">> Archivo: %s\n",nombre);
+			}
+		}
+		bson_destroy (query);
+		//bson_destroy (doc);
+	}else{
+		printf("No hay archivos para eliminar\n");
+		return;
+	}
+	printf("\n""Ingrese el nombre del Archivo que desee eliminar\n");
+	fgets(bufferComando,MAXSIZE_COMANDO, stdin);
+	comandoSeparado=string_split(bufferComando, separator);
+	comandoSeparado2=string_split(comandoSeparado[0], separador);
+
+	query = bson_new ();
+	doc = bson_new ();
+	BSON_APPEND_UTF8(query, "Es", "Archivo");
+	BSON_APPEND_UTF8(query, "Nombre", comandoSeparado2[0]);
+	cursor = mongoc_collection_find (archivos, MONGOC_QUERY_NONE, 0, 0, 0, query, NULL, NULL);
+	while (mongoc_cursor_next (cursor, &doc)) {
+		if (bson_iter_init (&iter, doc)) {
+			if(bson_iter_find (&iter, "Cantidad Bloques"))archivo.cantidadBloque = bson_iter_int32(&iter);
+			for(nroBloque=0;nroBloque<archivo.cantidadBloque;nroBloque++){
+				for(nroCopia=1;nroCopia<=3;nroCopia++){
+					info = infoBloqueyCopia(nroBloque, nroCopia, doc);
+					socketNodito = socketNodo(info.id_nodo);
+					formatearBloque(socketNodito,info.bloque);
+					elBloqueDelNodoSeOcupo(socketNodito,info.bloque);
+				}
+			}
+		}
+	}
+	mongoc_collection_remove(archivos,MONGOC_REMOVE_NONE,query,NULL,NULL);
+	bson_destroy (query);
+	bson_destroy (doc);
+	printf("Se ha eliminado correctamente el archivo %s del MDFS\n",comandoSeparado2[0]);
 }
 
 int primerBloqueOcupado(int idNodo){
@@ -957,14 +1025,9 @@ int cantidadBloquesLibres(int idNodo){ // Devuelve -1 si no existe el nodo
 	bson_t *doc;
 	bson_t *query;
 	int cantidad;
-	int entero; //Para el handshake
-	int socketNodo;
 	bson_iter_t iter;
 	bson_iter_t iter2;
 	mongoc_cursor_t *cursor;
-	entero = 4;
-	int cantidadBloques;
-	int a;
 	int tamanioArray;
 	int flag;
 
@@ -1010,7 +1073,6 @@ t_matrix calcularCombinacionesDeAsignacion(int cantidadBloquesArch){
 	int contNodos;
 	int mayor,a,z,nodoARestar;
 	t_matrix matris_a_enviar;
-	int tamanioMatris;
 	int offset;
 	int size_to_send;
 	int idCopia1,idCopia2,idCopia3;
