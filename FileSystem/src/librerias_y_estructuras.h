@@ -24,6 +24,7 @@
 #include <commons/log.h>
 #include <commons/string.h>
 #include <commons/collections/list.h>
+#include <ctype.h>
 
 // Libreria para mongodb
 #include <bson.h>
@@ -34,6 +35,11 @@
 #define MAXSIZE_COMANDO 200
 #define MAXCOMANDOS 6
 #define MAXBUFERTECLADO 1000
+
+#define STR_VALUE(val) #val
+#define STR(name) STR_VALUE(name)
+#define PATH_LEN 256
+#define MD5_LEN 32
 
 //
 
@@ -136,6 +142,8 @@ t_matrix calcularCombinacionesDeAsignacion(int cantidadBloquesArch);
 int elegirDirectorioParaArchivo();
 int primerBloqueLibre(int idNodo);
 int socketNodo(int idNodo);
+void eliminarNodo();
+int primerBloqueOcupado(int idNodo);
 
 // Funcion Interfaz Marta
 
@@ -151,5 +159,6 @@ void *atenderConsola(void*arg);
 void formatear();
 void eliminarDirectorio();
 void crearDirectorio();
+int CalcFileMD5(char *file_name, char *md5_sum);
 
 #endif /* LIBRERIAS_Y_ESTRUCTURAS_H_ */

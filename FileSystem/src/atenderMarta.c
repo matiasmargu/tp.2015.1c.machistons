@@ -34,7 +34,6 @@ void *atenderMarta(void*arg){
 	int enteroPrueba;
 	enteroPrueba = 160;
 	char* nombrePrueba;
-	char *nombreDelArchivoSinDirectorio;
 
 	int offset;
 	int size_to_send;
@@ -68,8 +67,7 @@ void *atenderMarta(void*arg){
 				// }
 				// nombreArchivo[0] hasta [a] es el directorio
 				// memcpy(directorioParaIndex,nombreArchivo,a);
-
-				// indezDelDirectorio(directorio sin la ultima /)
+				// indexDelDirectorio(directorio sin la ultima /)
 				query = bson_new ();
 				offset = 0;
 				//BSON_APPEND_UTF8(query,"Directorio Padre",  );
