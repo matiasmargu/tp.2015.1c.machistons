@@ -13,6 +13,7 @@
 
 int main(void) {
 
+
 	pthread_t hiloJob[1000];
 	pthread_t hiloNodo[1000];
 
