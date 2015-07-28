@@ -73,6 +73,7 @@ void *atenderConsola(void*arg) {
 				case Borrar_Bloque_Arch: // 10
 					break;
 				case Copiar_Bloque_Arch: // 11
+					//////calcularCombinacionesDeAsignacion();
 					break;
 				case Agregar_Nodo: // 12
 					agregarNodo();

@@ -27,7 +27,6 @@ int main()
 	fd_set read_fds;
 
 	pthread_t hiloConsola;
-
 	pthread_t hiloMarta[1000];
 	pthread_t hiloNodo[1000];
 	int contHM = 1; // Contador para hilos de marta, varios por si se cae y se vuelve a conectar
@@ -65,12 +64,16 @@ int main()
 	fdmax = listener;
 
 	int entero; //Para el handshake
+	variableDatos = 0;
 
 	logger = log_create("LOG_FILESYSTEM", "log_filesystem" ,false, LOG_LEVEL_INFO);
 
 	for (;;){
 	read_fds = master;
-	select(fdmax+1, &read_fds, NULL, NULL, NULL);
+	if(variableDatos == 0){
+		select(fdmax+1, &read_fds, NULL, NULL, NULL);
+		printf("select activo\n");
+	}
 	for(i = 0; i <= fdmax; i++)
 	{
 	    if(FD_ISSET(i, &read_fds))

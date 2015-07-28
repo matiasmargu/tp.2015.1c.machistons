@@ -503,6 +503,11 @@ char *pedirContenidoBloqueA (int socket, int nroBloque){
 
 	bufferSet=malloc(tamanioBloque);
 
+	variableDatos = 1;
+
+	if(recv(socket,&entero,sizeof(int),0)<0) return "error"; //recibo de prueba
+	if(recv(socket,&entero,sizeof(int),0)<0) return "error"; //recibo de prueba
+
 	offset = 0;
 /*
 	while(tamanioBloque != offset){
@@ -521,7 +526,7 @@ char *pedirContenidoBloqueA (int socket, int nroBloque){
 	*/
 
 	///
-	printf("%d", tamanioBloque);
+	printf("%d\n", tamanioBloque);
 	paquetito = malloc(variableDelPaquetito);
 	while(tamanioBloque != offset){
 		tamanioReal = recv(socket, paquetito, variableDelPaquetito, 0); // recibo los paquetes
@@ -530,6 +535,7 @@ char *pedirContenidoBloqueA (int socket, int nroBloque){
 		printf("offset: %i, tamanioBloque %i, diferencia %i, tamanioReal: %i\n",offset, tamanioBloque, tamanioBloque-offset, tamanioReal);
 	}
 	free(paquetito);
+	variableDatos = 0;
 	printf("%i\n",strlen(bufferSet));
 	return bufferSet;
 }
@@ -854,14 +860,12 @@ void eliminarArchivo(){
 					info = infoBloqueyCopia(nroBloque, nroCopia, doc);
 					socketNodito = socketNodo(info.id_nodo);
 					formatearBloque(socketNodito,info.bloque);
-					elBloqueDelNodoSeOcupo(socketNodito,info.bloque);
+					elBloqueDelNodoSeLibero(socketNodito,info.bloque);
 				}
 			}
 		}
 	}
 	mongoc_collection_remove(archivos,MONGOC_REMOVE_NONE,query,NULL,NULL);
-	bson_destroy (query);
-	bson_destroy (doc);
 	printf("Se ha eliminado correctamente el archivo %s del MDFS\n",comandoSeparado2[0]);
 }
 

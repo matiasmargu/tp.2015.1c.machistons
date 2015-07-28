@@ -92,6 +92,8 @@ int idNodoGlobal;
 int idDirectorioGlobal;
 pthread_mutex_t mutex;
 pthread_mutex_t mutexParaIDDirectorio;
+int socketNodoParaDatos;
+int variableDatos;
 
 // Variables para control de estado FS
 
