@@ -143,9 +143,9 @@ void  *conectarseAlJob(void*arg);
 //int recive_y_deserialisa_job(t_job_marta* job_marta, int socket,uint32_t tamanioTotal );
 //char* serializar_estructura_t_marta_a_job(t_marta_job estructura_t_marta_a_job, int tamanioTotal);
 void aplicarReduce(t_aplicarReduce structRecibido);
-void *atenderJob(void *arg);
+void atenderJob(void *arg);
 void inicializar_pedido_FS();
-void planificarMap(int a);
+void planificarMap(int a,int socketJob);
 
 
 #endif /* LIBRERIAS_Y_ESTRUCTURAS_H_ */

@@ -167,9 +167,9 @@ void cargar_nodos_en_array(int *nodos){
 }
 */
 int buscarPorContadores(t_bloque *bloque){
-	int i;
+	int i,pos;
 	int min = contadores_nodos[0];
-	int pos_id_nodo;
+	int pos_id_nodo=0;
 	int id_nodo = 555;
 	bool flag = false;
 	t_nodo *data_nodo = malloc(sizeof(t_nodo));
@@ -185,20 +185,22 @@ int buscarPorContadores(t_bloque *bloque){
 		data_nodo = list_get(lista_nodos_estado,pos_id_nodo);
 	//-------------------------------------BUSCO SI LA COPIA ESTA EN EL NODO MAS CHICO---------------------------
 		for(i=0;i<3;i++){
-			if(data_nodo->id_nodo == bloque->copias[i].idNodo){
+			if((data_nodo->id_nodo) == (bloque->copias[i].idNodo)){
 				id_nodo = data_nodo->id_nodo;
+				pos = i;
 				flag = true;
 				break;
 			}
 		}
+		contadores_nodos[pos_id_nodo] ++;
 		if(flag == false) contadores_nodos[pos_id_nodo] = 4444;
 
 	} while(flag == false);
 
-	return id_nodo;
+	return pos;
 }
 
-void planificarMap(int id_job){
+void planificarMap(int id_job, int socketJob){
 	/*
 	// PARA PLANIFICAR NECESITO SABER LOS NODOS ACTIVOS. PARA ESO SE LO PIDO AL FS
 	int cantidad_nodos_activos = list_size(lista_nodos_estado);	// ESTO ME LO MANDA EL FS, JUNTO CON LOS NODOS_ACTIVOS
@@ -265,21 +267,22 @@ void planificarMap(int id_job){
     t_job_procesos *tabla_procesos_job = malloc(sizeof(t_job_procesos));
     tabla_procesos_job = list_get(lista_tabla_procesos,id_job);
     t_tablaProcesos_porJob *tabla_procesos;
-    int j,i;
-    int id_nodo = 0;
+    int *bloques = malloc(sizeof(int));
+    int j,i,tamanio_total;
+    int numero_copia = 0;
     t_archivo *un_archivo = malloc(sizeof(t_archivo));
     t_bloque *un_bloque = malloc(sizeof(t_bloque));
 
-    printf("       es        |        id      |        bq       |        nm       |\n");
+    printf("       estado     |        id      |      bloque     |        nm       |\n");
     for(i=0;i<list_size(job->archivos_job);i++){
-    	un_archivo = list_get(lista_archivos,i);
+    	un_archivo = list_get(job->archivos_job,i);
     	for(j=0;j<list_size(un_archivo->bloques);j++){
     		un_bloque = list_get(un_archivo->bloques,j);
-    		id_nodo = buscarPorContadores(un_bloque);
+    		numero_copia = buscarPorContadores(un_bloque);
     		tabla_procesos = malloc(sizeof(t_tablaProcesos_porJob));
     		tabla_procesos->estado = 0; //Estado 0 = espera por enviarse
-    		tabla_procesos->id_nodo = id_nodo;
-    		tabla_procesos->bloque_archivo = un_bloque->NumeroBloque;
+    		tabla_procesos->id_nodo = un_bloque->copias[numero_copia].idNodo;
+    		tabla_procesos->bloque_archivo = un_bloque->copias[numero_copia].Numerobloque;
     		tabla_procesos->nombre_archivo = un_archivo->nombre;
     		list_add(tabla_procesos_job->tabla_procesos,tabla_procesos);
     		printf("       %i        |        %i      |        %i       |        %s       |\n",tabla_procesos->estado,tabla_procesos->id_nodo,tabla_procesos->bloque_archivo,tabla_procesos->nombre_archivo);
@@ -289,4 +292,7 @@ void planificarMap(int id_job){
 
     free(un_archivo);
     free(un_bloque);
+
+
+
 }

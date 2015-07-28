@@ -11,7 +11,7 @@
 void mapper(void* arg){
 
 
-#define SIZE 1024
+#define SIZE 20*1024*1024
 
 	char* buffer=malloc(SIZE);
 	char* bloque;
