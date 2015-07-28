@@ -8,6 +8,7 @@
 #include "librerias_y_estructuras.h"
 
 void inicializar_pedido_FS(char *nombreArch){
+		printf("NOMBRE ARCHIVO EJEMPLO: %s",nombreArch);
 		int tam = strlen(nombreArch);
 		int handshakeFS = 72; // pido info de archivos
 	   	send(socketFS,&handshakeFS, sizeof(int), 0);
@@ -58,9 +59,9 @@ void recive_y_guarda_infoNodo(int tamanio, int socket, void *lista_nodos){
 		offset += tamanio;
 
 
-		printf("idNodo: %i\n ipNodo: %s\n puertoNodo: %s\n\n",infoNodo->id_nodo, infoNodo->ip_nodo, infoNodo->puerto_nodo);
+		printf("idNodo: %i\n ipNodo: %s\n puertoNodo: %s\n",infoNodo->id_nodo, infoNodo->ip_nodo, infoNodo->puerto_nodo);
 		list_add(lista_nodos,infoNodo);
-		printf("tamaño de la lista dentro de la funcion: %i\n",list_size(lista_nodos));
+		printf("tamaño de la lista dentro de la funcion: %i\n\n",list_size(lista_nodos));
 
 		//inicializo los contadores para planificar en 0
 		contadores_nodos[i] = 0;
