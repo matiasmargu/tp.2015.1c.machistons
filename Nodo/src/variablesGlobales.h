@@ -37,6 +37,7 @@
 FILE* nuevoArchivo;
 
 int tamanioArchivo_BIN;
+int variableDatos;
 
 char *ip_nodo;
 int puerto_nodo;
@@ -83,7 +84,7 @@ void *atenderNFS(void*arg);
 void *atenderJob(void* arg);
 
 //Funciones para escribir archivos
-int escribirScript(char* script_virtual, int comando);
+void escribirScript(char* script_virtual, int comando);
 
 //Para laburar con archivos de configuracion
 void crearNuevaConfiguracion();

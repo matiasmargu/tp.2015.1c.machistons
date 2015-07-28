@@ -6,27 +6,22 @@
  */
 #include "variablesGlobales.h"
 
-
-
-int escribirScript(char* script_virtual, int comando){
-	int status = 0;
-	FILE* fileMapper;
-	FILE* fileReducer;
-
-	printf("prueba escribir script\n");
-
+void escribirScript(char* script_virtual, int comando){
 
 	if(comando==1){
-		fileMapper=fopen("/tmp/mapper","w");
+
+		remove("/tmp/mapper");
+		FILE* fileMapper=fopen("/tmp/mapper","w");
 		fputs(script_virtual,fileMapper);
 		fclose(fileMapper);
+
 	}else{
-		fileReducer=fopen("/tmp/reducer","w");
+
+		remove("/tmp/mapper");
+		FILE* fileReducer=fopen("/tmp/reducer","w");
 		fputs(script_virtual,fileReducer);
 		fclose(fileReducer);
 	}
 
 	printf("termino de escribir script\n");
-
-	return status;
 }

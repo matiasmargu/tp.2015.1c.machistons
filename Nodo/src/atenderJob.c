@@ -7,34 +7,32 @@
 #include "variablesGlobales.h"
 
 void* atenderJob(void* arg){
-	char modo[] = "0777";
 	int socket = (int)arg;
 	int comando=1;
 	int tamanioScript;
-	char* direccionAuxiliar=malloc(strlen(dir_temp));
 	char* script_mapper;
 	char* script_reducer;
-	int i;
 	int tamanioTotalIP_P;
+
 
 	t_para_nodo comb;
 
 	pthread_t hiloMapper[1000];
 	pthread_t hiloReducer[1000];
 
-	send(socket, &comando,sizeof(int),0);
 
 	int cont1=0;
 	int cont2=0;
 
-	char* puertoN_aConectar;
+	variableDatos=0;
+
+	send(socket, &comando,sizeof(int),0);
 
 	while(1){
 
-		//77 salio todo bien
-		//66 salio todo mal
-
-		recv(socket, &comando, sizeof(int),0 );
+		if(variableDatos == 0){
+		recv(socket, &comando, sizeof(int),0);
+		printf("Esto me llega una vez: %i\n",comando);
 		switch(comando){
 			case 1: //Este va a ser el map
 				printf("Se levanto un hilo mapper\n");
@@ -51,9 +49,7 @@ void* atenderJob(void* arg){
 
 				escribirScript(script_mapper,1);
 
-				i = strtol(modo, 0, 8);
-				chmod("/tmp/mapper",modo);
-
+				chmod("/tmp/mapper",7777);
 				printf("se asignaron los permisos\n");
 
 				pthread_create(&hiloMapper[cont1], NULL, (void*) mapper,(void*) socket);
@@ -73,9 +69,8 @@ void* atenderJob(void* arg){
 				escribirScript(script_reducer,2);
 				send(socket, &comando,sizeof(int),0);
 
-
-				chmod(direccionAuxiliar,modo);
-
+				chmod("/tmp/reducer","7777");
+				printf("se asignaron los permisos\n");
 
 				pthread_create(&hiloReducer[cont2], NULL,(void*)reducer,(void*) socket);
 				cont2++;
@@ -99,7 +94,7 @@ void* atenderJob(void* arg){
 				break;
 				}
 		}
-	free(direccionAuxiliar);
+	}
 	return NULL;
 }
 

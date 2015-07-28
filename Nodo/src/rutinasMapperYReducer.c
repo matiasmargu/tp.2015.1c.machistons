@@ -16,15 +16,20 @@ void mapper(void* arg){
 	char* buffer=malloc(SIZE);
 	char* bloque;
 
-
+	variableDatos=1;
 
 	int comando =1;
 	int socket = (int) arg;
 	int tamanioDelArchivoResultado;
+	int nroDeBloque;
+	int tamanioDelBloque;
 
 	pid_t pid;
 
 //***************************************************
+
+	send(socket, &comando,sizeof(int),0);
+	recv(socket, &nroDeBloque,sizeof(int),0);
 
 	send(socket, &comando,sizeof(int),0);
 	recv(socket, &tamanioDelArchivoResultado,sizeof(int),0);
@@ -34,10 +39,8 @@ void mapper(void* arg){
 
 	recv(socket, nombreDelArchivoResultado,tamanioDelArchivoResultado,0);
 
-
 	//Deveria recivir el nro del bloque
-	int nroDeBloque=0;
-	int tamanioDelBloque=getBloque(nroDeBloque, bloque);
+	tamanioDelBloque=getBloque(nroDeBloque, bloque);
 
 	eliminarEnters(bloque,tamanioDelBloque);
 
@@ -89,6 +92,7 @@ void mapper(void* arg){
 
 	    close( pipe_hijoAPadre[0]);
 	  }
+	 variableDatos=0;
 	  waitpid( pid, NULL, 0 );
 	  free(buffer);
 	  free(bloque);
@@ -97,6 +101,10 @@ void mapper(void* arg){
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
 void reducer(void* arg){
+
+#define SIZE 20*1024*1024
+
+
 	pid_t pid;
 	int pipe_padreAHijo[2];
 	int pipe_hijoAPadre[2];
@@ -106,14 +114,15 @@ void reducer(void* arg){
 
 	int comando,tamanioDeLaEstructura;
 	t_job_nodo_reduce red;
+	int indice = 0;
+	char* bufferProv;
+	char* buffer;
 
 	recv(socket,&tamanioDeLaEstructura,sizeof(int),0);
 	send(socket, &comando,sizeof(int),0);
 	recive_y_deserializa_EST_REDUCE(&red,socket,tamanioDeLaEstructura);
 
-	int indice = 0;
-	char* bufferProv;
-	char* buffer;
+
 
 	while(!list_is_empty(red.archivosAreducir)){
 		char* nombre=list_remove(red.archivosAreducir,indice);
