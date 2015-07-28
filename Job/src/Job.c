@@ -66,7 +66,7 @@ int main(void) {
 	printf("rutinaMappper TRADUCIDA  %s\n",rutinaMapperTraducida);
 
 	///MANDAMOS LA LISTA DE ARCHIVOS A MARTA Y EL COMBINER
-
+/*
 	handshake = 1;
 	send(socketMarta, &handshake, sizeof(int),0);
 	//COMBINER
@@ -106,6 +106,9 @@ int main(void) {
 	recv(socketMarta, &tipoOperacion, sizeof(int),0);
 	switch(tipoOperacion){
 		case 30: // REALIZAR MAP
+			enteroPrueba = 3;
+
+
 			send(socketMarta, &enteroPrueba, sizeof(int),0);
 			recv(socketMarta, &tamanioStruct, sizeof(int),0);
 			send(socketMarta, &enteroPrueba, sizeof(int),0);
@@ -117,12 +120,20 @@ int main(void) {
 			printf(" puerto %s\n",Marta_Job_Map.puerto);
 			printf("llego el archivo %s\n",Marta_Job_Map.nombre_archivo_resultado);
 
+*/
+			Marta_Job_Map.ip_nodo = "192.168.1.9";
+			Marta_Job_Map.puerto = "6000";
+			Marta_Job_Map.idNodo = 1;
+		    Marta_Job_Map.numeroBloque = 5;
+		    Marta_Job_Map.nombre_archivo_resultado = "pepitoloco";
 
-			if(status){
+			//if(status){
 				//HANDSHAKE NODO
+				printf("por aca tengo q pasar una vez\n");
 			    socketNodo = crearCliente (Marta_Job_Map.ip_nodo, Marta_Job_Map.puerto);
 				handshakeNodo = 8;
 				send(socketNodo,&handshakeNodo,sizeof(int),0);
+				printf("a\n");
 				recv(socketNodo, &enteroPrueba, sizeof(int),0);
 				//ACA LE MANDA LA RUTINA MAPPER AL NODO
 				numeroRutina = 1; // LE AVISA QUE MANDA UNA RUTINA MAP
@@ -142,11 +153,13 @@ int main(void) {
 			map.nombreArchivoResultado = Marta_Job_Map.nombre_archivo_resultado;
 			map.socketMarta = socketMarta;
 			map.idNodo = Marta_Job_Map.idNodo;
+
 			pthread_create(&hilomap,NULL, mapearBloque,(void *)&map);
 
-		}
+/*
 			break;
 		case 34: // REALIZAR REDUCE
+
 			send(socketMarta, &enteroPrueba, sizeof(int),0);
 			recv(socketMarta, &tipoOperacion2, sizeof(int),0);
 			switch(tipoOperacion2){
@@ -226,7 +239,7 @@ int main(void) {
 		}
 	}
 
-
+*/
 	log_info(logger,"Se ha desconectado con Marta, su ip es %s y su puerto %s",ip_marta,puerto_marta);
 	printf("Se ha desconectado con Marta, su ip es %s y su puerto %s  \n",ip_marta,puerto_marta);
 	return EXIT_SUCCESS;

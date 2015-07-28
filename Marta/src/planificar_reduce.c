@@ -614,7 +614,7 @@ void planificarReduceConCombiner(int socketJob, int idJob){
 void planificarSincombiner(int idJob, int socketJob){
 
 		// para probar
-        int tamanioTabla,tamanioCampoDeTabla,tamanioNodo, contador;
+        int tamanioTabla,tamanioCampoDeTabla,tamanioNodo;
         tamanioTabla=sizeof(int);
         tamanioCampoDeTabla= sizeof(int) * 3 + sizeof(char);
         tamanioNodo = sizeof(char) * 3 + sizeof(int);
@@ -623,15 +623,9 @@ void planificarSincombiner(int idJob, int socketJob){
 
 				t_moverArchivos moverArchivos;
 				t_serializarUnArchivoParaMover archivoAMover;
-				t_serializarUnArchivoParaMover archivoAr;
 				int a,b,c,d,e=0,aux,variableParaResultadoReduce=0,tamanioListaJobTabla,tamanioListaTablaDeProcesosPorJob,tamanioListaArchivosAReducirPorNodo;
-				int tamanioListaDeNodos,tamanio,tamanioArchivosaReducir;
-				t_archivosAReducirPorNodo *campoDeUnNodo;
-				t_archivosAReducirPorNodo * campoParaLiberar;
-				t_marta_job_reduce structAserializar;
-				int handshakeJob, enteroPrueba,tamanioAenviar,tamanioTotalVector,tamanioStruct;
-				char* archivo1;
-				char* structAEnviarAJob;
+				int tamanioListaDeNodos,tamanio;
+				int handshakeJob, enteroPrueba,tamanioStruct;
 			    t_infoJob *campoDeLaLista;
 			    campoDeLaLista = malloc(tamanioTabla);
 				t_tablaProcesos_porJob2 *campoDeLaListaTablaDeProcesos;
@@ -646,23 +640,13 @@ void planificarSincombiner(int idJob, int socketJob){
 				list_clean(lista_archivosAReducirPorNodo);
 				t_contadorNodo contadorNodo;
 				//REDUCE FINAL
-				t_job_marta_reduce job_marta;
 				t_job_marta_reduce job_marta2;
-				int contador2,r,l,tamanioArecibir,tamanioArecibir2,tamanioCampoParaNodo,tamaniolistaFinalDeArchivosAReducir,p, v,tamanioListaFinal,m, reduceFinal,tamanioListaFinalAEnviar,tamanioStruct2;
-				t_archivosAReducirPorNodo *campoDeListaArchivosAReducirPorNodo;
-				t_archivosAReducirPorNodo *campoDeListaArchivosAReducirPorNodo2;
-				t_archivosAReducirPorNodo * campoDeListaArchivosAReducirPorNodo3;
-				t_list* listaFinalDeArchivosAReducir;
+				int r,l,tamanioArecibir,tamanioArecibir2,tamanioCampoParaNodo,tamaniolistaFinalDeArchivosAReducir,p, v,tamanioListaFinal,m, reduceFinal,tamanioListaFinalAEnviar,tamanioStruct2;
 				t_marta_job_reduce antesDeSerializar;
 				char* structParaJob;
 				char* archivo;
-				contador2 = 0;
-				char *structParaJob2;
 				char* archivoASerializar;
-				t_para_nodo* campoListaParaNodo;
 				t_para_nodo* archivoA;
-				t_para_nodo* campoAAgregar;
-                t_para_job * archivoParaJob;
 				// lo que buscamos es recorrer cada campo de la lista para ordenar por id de nodo la lista de archivos a
 				//reducir
 				tamanioListaJobTabla=list_size(lista_jobs);

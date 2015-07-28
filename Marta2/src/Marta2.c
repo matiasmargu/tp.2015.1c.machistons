@@ -294,7 +294,7 @@ int recive_y_deserializa_job_marta(t_job_marta_reduce *bloque, int socket, uint3
 // HAY QUE VER DE DONDE SACAMOS EL SOCKET JOB
       //Para mi tiene que venir como parametro cuando llaman a la funcion , ya que marta y job ya
 	  // se van a estar comunicando por el mismo socket cuando le pasa la lista inicial el combiner y demas
-
+/
 void planificarReduceConCombiner(char* archivoFinal){
 
 	t_lista_job2 *tabla;
@@ -1123,5 +1123,74 @@ void planificarSincombiner(char* archivoFinal){
 
 
 */
+#include "funciones.h"
+
+char* serializar_marta_job_map(t_marta_job_map *bloque, int tamanioTotal){
+			char *serializedPackage = malloc(tamanioTotal);
+
+			int offset = 0;
+			int size_to_send;
 
 
+			int tamanioNombre = strlen(bloque->ip_nodo) + 1;
+			size_to_send = sizeof(int);
+			memcpy(serializedPackage + offset, &tamanioNombre, size_to_send);
+			offset += size_to_send;
+
+			size_to_send =  strlen(bloque->ip_nodo) + 1;
+			memcpy(serializedPackage + offset, bloque->ip_nodo, size_to_send);
+			offset += size_to_send;
+
+			tamanioNombre = strlen(bloque->puerto) + 1;
+			size_to_send = sizeof(int);
+			memcpy(serializedPackage + offset, &tamanioNombre, size_to_send);
+			offset += size_to_send;
+
+			size_to_send =  strlen(bloque->puerto) + 1;
+			memcpy(serializedPackage + offset, bloque->puerto, size_to_send);
+			offset += size_to_send;
+
+			tamanioNombre = strlen(bloque->nombre_archivo_resultado) + 1;
+			size_to_send = sizeof(int);
+			memcpy(serializedPackage + offset, &tamanioNombre, size_to_send);
+			offset += size_to_send;
+
+			size_to_send =  strlen(bloque->nombre_archivo_resultado) + 1;
+			memcpy(serializedPackage + offset, bloque->nombre_archivo_resultado, size_to_send);
+			offset += size_to_send;
+
+			size_to_send =  sizeof(bloque->idNodo);
+			memcpy(serializedPackage + offset, &(bloque->idNodo), size_to_send);
+			offset += size_to_send;
+
+			size_to_send =  sizeof(bloque->numeroBloque);
+			memcpy(serializedPackage + offset, &(bloque->numeroBloque), size_to_send);
+			offset += size_to_send;
+
+
+
+
+			return serializedPackage;
+		}
+
+
+int main(void){
+    int tipoOperacion,enteroPrueba;
+    int socketJob;
+    socketJob = crearServidor("3000");
+    tipoOperacion = 30;
+    send(socketJob,&tipoOperacion,sizeof(int),0);
+    recv(socketJob, &enteroPrueba, sizeof(int),0);
+    t_marta_job_map structPrueba;
+    structPrueba.ip_nodo = "192.168.1.9";
+    structPrueba.puerto = "6000";
+    structPrueba.idNodo = 3;
+    structPrueba.numeroBloque = 5;
+    structPrueba.nombre_archivo_resultado = "pepitoloco";
+    int tamanioStructPrueba = (sizeof(int)*5)+ strlen(structPrueba.ip_nodo) +strlen(structPrueba.puerto) + strlen(structPrueba.nombre_archivo_resultado) + 3;
+    send(socketJob,&tamanioStructPrueba,sizeof(int),0);
+    recv(socketJob, &enteroPrueba, sizeof(int),0);
+    char* structAEnviar =  serializar_marta_job_map(&structPrueba, tamanioStructPrueba);
+    send(socketJob,structAEnviar,tamanioStructPrueba,0);
+    return EXIT_SUCCESS;
+}
