@@ -54,12 +54,6 @@
 							</tool>
 						</toolChain>
 					</folderInfo>
-					<fileInfo id="cdt.managedbuild.config.gnu.exe.debug.1112745413.251141492" name="funcionesJob.h" rcbsApplicability="disable" resourcePath="src/funcionesJob.h" toolsToInvoke=""/>
-					<fileInfo id="cdt.managedbuild.config.gnu.exe.debug.1112745413.822684500" name="funcionesJob.c" rcbsApplicability="disable" resourcePath="src/funcionesJob.c" toolsToInvoke="cdt.managedbuild.tool.gnu.c.compiler.exe.debug.1991570943.62914581">
-						<tool id="cdt.managedbuild.tool.gnu.c.compiler.exe.debug.1991570943.62914581" name="GCC C Compiler" superClass="cdt.managedbuild.tool.gnu.c.compiler.exe.debug.1991570943">
-							<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.10134376" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
-						</tool>
-					</fileInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 					</sourceEntries>
