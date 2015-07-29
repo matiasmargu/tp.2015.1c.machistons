@@ -292,7 +292,7 @@ void eliminarDirectorio(){
 void aplicarNodoGlobalYponerNodosNoDisponible(){
 	bson_t *query;
 	bson_t *update;
-	int cantidad,a;
+	int cantidad,a,cantidadD;
 
 	query = bson_new ();
 	update = bson_new ();
@@ -307,11 +307,17 @@ void aplicarNodoGlobalYponerNodosNoDisponible(){
 	bson_destroy (query);
 
 	query = bson_new ();
+	query = BCON_NEW("Es","Directorio");
+	cantidadD = mongoc_collection_count(directorios, MONGOC_QUERY_NONE, query,0,0,NULL,NULL);
+	bson_destroy (query);
+
+	query = bson_new ();
 	query = BCON_NEW("Estado","Disponible");
 	for(a=0;a<=cantidad;a++){
 		mongoc_collection_update(nodos, MONGOC_UPDATE_NONE, query, update, NULL, NULL);
 	}
 	idNodoGlobal = cantidad + 1;
+	idDirectorioGlobal = cantidadD + 1;
 	bson_destroy (query);
 	bson_destroy (update);
 }
@@ -414,7 +420,7 @@ void eliminarNodo(){
 				"Ingrese 0 para imprimir el menu\n", atoi(comandoSeparado[0]));
 		verificarEstadoFS();
 	}else{
-		printf("No hay nodos conectados para agregar\n"
+		printf("No hay nodos conectados para eliminar\n"
 				"Ingrese 0 para imprimir el menu\n");
 	}
 }
@@ -504,32 +510,11 @@ char *pedirContenidoBloqueA (int socket, int nroBloque){
 	bufferSet=malloc(tamanioBloque);
 
 	variableDatos = 1;
-
-	if(recv(socket,&entero,sizeof(int),0)<0) return "error"; //recibo de prueba
-	if(recv(socket,&entero,sizeof(int),0)<0) return "error"; //recibo de prueba
-
 	offset = 0;
-/*
-	while(tamanioBloque != offset){
-		if((tamanioBloque-offset)<variableDelPaquetito){
-			tamanioDelPaquetito = tamanioBloque-offset;
-		}else{
-			tamanioDelPaquetito = variableDelPaquetito;
-		}
-		paquetito = malloc(tamanioDelPaquetito);
-		tamanioReal = recv(socket,paquetito,tamanioDelPaquetito,0); // recibo los paquetes
-		memcpy(bufferSet + offset,paquetito,tamanioReal);
-		offset += tamanioReal;
-		free(paquetito);
-		printf("offset: %i, tamanioBloque %i, diferencia %i, tamanioReal: %i\n",offset, tamanioBloque, tamanioBloque-offset, tamanioReal);
-	}
-	*/
-
-	///
-	printf("%d\n", tamanioBloque);
 	paquetito = malloc(variableDelPaquetito);
 	while(tamanioBloque != offset){
 		tamanioReal = recv(socket, paquetito, variableDelPaquetito, 0); // recibo los paquetes
+		if(tamanioReal < 0) return "error";
 		memcpy(bufferSet + offset, paquetito, tamanioReal);
 		offset += tamanioReal;
 		printf("offset: %i, tamanioBloque %i, diferencia %i, tamanioReal: %i\n",offset, tamanioBloque, tamanioBloque-offset, tamanioReal);
