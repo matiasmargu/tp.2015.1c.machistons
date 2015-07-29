@@ -14,7 +14,7 @@ int main(void) {
 
 	char* rutaArchivoConfiguracion;
 	t_config* archivoConfiguracion;
-	rutaArchivoConfiguracion = "/home/utnso/workspace/Configuracion/job.conf";
+	rutaArchivoConfiguracion = "/home/utnso/git/tp-2015-1c-machistons/Configuracion/job.conf";
 	archivoConfiguracion = config_create(rutaArchivoConfiguracion);
 	char *puerto_marta;
 	char *ip_marta;
@@ -193,6 +193,7 @@ void *aplicarMapperF (t_aplicarMapper *aplicarMapper){
 	if(recv(socketNodo, &entero, sizeof(int),0)<0){ // basura
 		entero = 25;
 		send(socketMarta,&entero,sizeof(int),0);
+		// enviar id proceso
 		return NULL;
 	}
 
@@ -201,6 +202,7 @@ void *aplicarMapperF (t_aplicarMapper *aplicarMapper){
 	if(recv(socketNodo, &entero, sizeof(int),0)<0){ // basura
 		entero = 25;
 		send(socketMarta,&entero,sizeof(int),0);
+		// enviar id proceso
 		return NULL;
 	}
 
@@ -212,6 +214,7 @@ void *aplicarMapperF (t_aplicarMapper *aplicarMapper){
 	if(recv(socketNodo, &entero, sizeof(int),0)<0){ // basura
 		entero = 25;
 		send(socketMarta,&entero,sizeof(int),0);
+		// enviar id proceso
 		return NULL;
 	}
 
