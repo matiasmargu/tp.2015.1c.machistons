@@ -73,46 +73,6 @@ char* serializar_moverParaReduceFinal(t_para_job* archivoAMover,int tamanioSeria
 
 
 
-
-char* serializar_archivoAMover(t_serializarUnArchivoParaMover * archivoAMover,int tamanioSerializacionMover){
-	char *serializedPackage = malloc(tamanioSerializacionMover);
-	int offset = 0;
-	int size_to_send;
-
-	int tamanioNombre;
-	tamanioNombre = strlen(archivoAMover->puertoNodo) + 1;
-	size_to_send = sizeof(int);
-	memcpy(serializedPackage + offset, &tamanioNombre, size_to_send);
-	offset += size_to_send;
-
-	size_to_send =  strlen(archivoAMover->puertoNodo) + 1;
-	memcpy(serializedPackage + offset, archivoAMover->puertoNodo, size_to_send);
-	offset += size_to_send;
-
-	tamanioNombre = strlen(archivoAMover->ipNodo) + 1;
-	size_to_send = sizeof(int);
-	memcpy(serializedPackage + offset, &tamanioNombre, size_to_send);
-	offset += size_to_send;
-
-	size_to_send =  strlen(archivoAMover->ipNodo) + 1;
-	memcpy(serializedPackage + offset, archivoAMover->ipNodo, size_to_send);
-	offset += size_to_send;
-
-	tamanioNombre = strlen(archivoAMover->archivoAMover) + 1;
-	size_to_send = sizeof(int);
-	memcpy(serializedPackage + offset, &tamanioNombre, size_to_send);
-	offset += size_to_send;
-
-	size_to_send =  strlen(archivoAMover->archivoAMover) + 1;
-	memcpy(serializedPackage + offset, archivoAMover->archivoAMover, size_to_send);
-	offset += size_to_send;
-
-	return serializedPackage;
-}
-
-
-
-
 //AGREGO LA SERIALIZACION , ESTA IGUAL QUE COMO SE DESERIALIZA EN JOB
 
 char* serializar_marta_job_reduce(t_marta_job_reduce *bloque, int tamanioTotal){
@@ -223,25 +183,25 @@ void planificarReduceConCombiner(int socketJob, int idJob){
  int handshakeJob, enteroPrueba,tamanioAenviar;
  char* archivo1;
  char* structAEnviarAJob;
- t_infoJob *campoDeLaLista = malloc(sizeof(int) * 2 + sizeof(char));
- t_tablaProcesos_porJob*campoDeLaListaTablaDeProcesos = malloc(sizeof(int) * 4 + sizeof(char) * 2);
+ t_infoJob *campoDeLaLista = malloc(sizeof(t_infoJob));
+ t_tablaProcesos_porJob*campoDeLaListaTablaDeProcesos = malloc(sizeof(t_tablaProcesos_porJob));
  t_list * lista_archivosAReducirPorNodo;
- t_archivosAReducirPorNodo *campoArchivosAReducirPorNodo =  malloc(sizeof(char) * 3 + sizeof(int) * 2);
+ t_archivosAReducirPorNodo *campoArchivosAReducirPorNodo =  malloc(sizeof(t_archivosAReducirPorNodo));
  t_archivosAReducirPorNodo *campoAAgregarAListaReducirPorNodo;
- t_nodo *campoDeListaDeNodo = malloc(sizeof(char) * 2 + sizeof(int));
+ t_nodo *campoDeListaDeNodo = malloc(sizeof(t_nodo));
  lista_archivosAReducirPorNodo = list_create();
  //REDUCE FINAL
- t_job_marta_reduce* job_marta =  malloc(sizeof(char) * 3 + sizeof(int) * 2);
+ t_job_marta_reduce* job_marta =  malloc(sizeof(t_job_marta_reduce));
  int contador2,r,l,tamanioArecibir,p, v,tamanioListaFinal,m, reduceFinal,tamanioListaFinalAEnviar,handshakeParaMover;
- t_archivosAReducirPorNodo *campoDeListaArchivosAReducirPorNodo = malloc(sizeof(char) * 3 + sizeof(int) * 2);
+ t_archivosAReducirPorNodo *campoDeListaArchivosAReducirPorNodo = malloc(sizeof(t_archivosAReducirPorNodo ));
  t_list* listaFinalDeArchivosAReducir;
- t_marta_job_reduce* antesDeSerializar = malloc(sizeof(char) * 3 + sizeof(int) * 2);
+ t_marta_job_reduce* antesDeSerializar = malloc(sizeof(t_marta_job_reduce));
  char* structParaJob;
  contador2 = 0;
  t_para_nodo* campoListaParaNodo;
- t_para_nodo* archivoA = malloc(sizeof(char) * 3);
- t_para_nodo* campoAAgregar = malloc(sizeof(char) * 3);
- t_para_job * archivoParaJob = malloc(sizeof(char) * 5);
+ t_para_nodo* archivoA = malloc(sizeof(t_para_nodo));
+ t_para_nodo* campoAAgregar = malloc(sizeof(t_para_nodo));
+ t_para_job * archivoParaJob = malloc(sizeof(t_para_job ));
  // lo que buscamos es recorrer cada campo de la lista para ordenar por id de nodo la lista de archivos a
  //reducir
 
@@ -264,7 +224,7 @@ void planificarReduceConCombiner(int socketJob, int idJob){
 	 campoDeLaListaTablaDeProcesos = list_get(campoDeLaLista->archivos_job,b);
 	 tamanioListaArchivosAReducirPorNodo = list_size(lista_archivosAReducirPorNodo);
 	 if(tamanioListaArchivosAReducirPorNodo == 0){
-		 campoAAgregarAListaReducirPorNodo = malloc(sizeof(char) * 3 + sizeof(int) * 2);
+		 campoAAgregarAListaReducirPorNodo = malloc(sizeof(t_archivosAReducirPorNodo ));
 		 campoAAgregarAListaReducirPorNodo->idNodo =  campoDeLaListaTablaDeProcesos->id_nodo;
 		 campoAAgregarAListaReducirPorNodo->archivosAReducir = list_create();
 		 list_add(campoAAgregarAListaReducirPorNodo->archivosAReducir,campoDeLaListaTablaDeProcesos->nombre_archivo_resultado);
@@ -297,7 +257,7 @@ void planificarReduceConCombiner(int socketJob, int idJob){
 		 }
 		 if(aux==0){//cuando no esta el id del nodo, entonces tiene que agregar todo directo
 
-			 campoAAgregarAListaReducirPorNodo = malloc(sizeof(char) * 3 + sizeof(int) * 2);
+			 campoAAgregarAListaReducirPorNodo = malloc(sizeof(t_archivosAReducirPorNodo ));
 			 campoAAgregarAListaReducirPorNodo->idNodo =  campoDeLaListaTablaDeProcesos->id_nodo;
 			 campoAAgregarAListaReducirPorNodo->archivosAReducir = list_create();
 			 list_add(campoAAgregarAListaReducirPorNodo->archivosAReducir,campoDeLaListaTablaDeProcesos->nombre_archivo_resultado);
@@ -397,7 +357,7 @@ void planificarReduceConCombiner(int socketJob, int idJob){
 		for(l=0;l< list_size(lista_archivosAReducirPorNodo); l++){ //GUARDO EN LISTAFINALAREDUCIR LOS DATOS DE CADA ARCHIVO REDUCIDO
 			campoDeListaArchivosAReducirPorNodo = list_get(lista_archivosAReducirPorNodo,l);
 
-			campoListaParaNodo =  malloc(sizeof(char) * 3); // tiene 3
+			campoListaParaNodo =  malloc(sizeof(t_para_nodo));
 			campoListaParaNodo->archivo = campoDeListaArchivosAReducirPorNodo->nombreArchivoResultado;
 			campoListaParaNodo->ip = campoDeListaArchivosAReducirPorNodo->ipNodo;
 			campoListaParaNodo->puerto = campoDeListaArchivosAReducirPorNodo->puertoNodo;
@@ -533,25 +493,25 @@ void planificarReduceConCombiner(int socketJob, int idJob){
 void planificarSincombiner(int idJob, int socketJob){
 
 
-	t_para_job* moverArchivos = malloc(sizeof(char) * 5);
+	t_para_job* moverArchivos = malloc(sizeof(t_para_job));
 
 	int a,b,c,d,e=0,aux,variableParaResultadoReduce=0,tamanioListaJobTabla,tamanioListaTablaDeProcesosPorJob,tamanioListaArchivosAReducirPorNodo;
 	int tamanioListaDeNodos,tamanio;
 	int  enteroPrueba,tamanioStruct,handshakeParaMover,tamanioArecibir;
-	t_infoJob *campoDeLaLista = malloc(sizeof(int) * 2 + sizeof(char));
-	t_tablaProcesos_porJob *campoDeLaListaTablaDeProcesos = malloc(sizeof(char) * 3 + sizeof(int) * 2);
+	t_infoJob *campoDeLaLista = malloc(sizeof(t_infoJob));
+	t_tablaProcesos_porJob *campoDeLaListaTablaDeProcesos = malloc(sizeof(t_tablaProcesos_porJob));
 	t_list * lista_archivosAReducirPorNodo;
-	t_archivosAReducirPorNodo *campoArchivosAReducirPorNodo = malloc(sizeof(char) * 3 + sizeof(int) * 2);
+	t_archivosAReducirPorNodo *campoArchivosAReducirPorNodo = malloc(sizeof(t_archivosAReducirPorNodo));
 	t_archivosAReducirPorNodo *campoAAgregarAListaReducirPorNodo ;
-	t_nodo *campoDeListaDeNodo = malloc(sizeof(char) * 2 + sizeof(int));
-	t_job_marta_reduce* job_marta = malloc(sizeof(int) * 3 + sizeof(char));
+	t_nodo *campoDeListaDeNodo = malloc(sizeof(t_nodo));
+	t_job_marta_reduce* job_marta = malloc(sizeof(t_job_marta_reduce));
 	lista_archivosAReducirPorNodo = list_create();
 	list_clean(lista_archivosAReducirPorNodo);
-	t_contadorNodo* contadorNodo = malloc(sizeof(int) * 2);
+	t_contadorNodo* contadorNodo = malloc(sizeof(t_contadorNodo));
 	//REDUCE FINAL
 
 	int  tamanioListaFinal,m,tamanioListaFinalAEnviar;
-	t_marta_job_reduce* antesDeSerializar = malloc(sizeof(int) * 3 + sizeof(char));
+	t_marta_job_reduce* antesDeSerializar = malloc(sizeof(t_marta_job_reduce));
 	char* structParaJob;
 	char* archivo;
 
@@ -573,7 +533,7 @@ void planificarSincombiner(int idJob, int socketJob){
 		campoDeLaListaTablaDeProcesos = list_get(campoDeLaLista->archivos_job,b);
 		tamanioListaArchivosAReducirPorNodo = list_size(lista_archivosAReducirPorNodo);
 		if(tamanioListaArchivosAReducirPorNodo == 0){
-			campoAAgregarAListaReducirPorNodo = malloc(sizeof(char) * 3 + sizeof(int) * 2);
+			campoAAgregarAListaReducirPorNodo = malloc(sizeof(t_archivosAReducirPorNodo));
 			campoAAgregarAListaReducirPorNodo->idNodo =  campoDeLaListaTablaDeProcesos->id_nodo;
 			campoAAgregarAListaReducirPorNodo->archivosAReducir = list_create();
 			list_add(campoAAgregarAListaReducirPorNodo->archivosAReducir,campoDeLaListaTablaDeProcesos->nombre_archivo_resultado);
@@ -605,7 +565,7 @@ void planificarSincombiner(int idJob, int socketJob){
 				}
 			}
 			if(aux==0){//cuando no esta el id del nodo, entonces tiene que agregar todo directo
-				campoAAgregarAListaReducirPorNodo = malloc(sizeof(char) * 3 + sizeof(int) * 2);
+				campoAAgregarAListaReducirPorNodo = malloc(sizeof(t_archivosAReducirPorNodo));
 				campoAAgregarAListaReducirPorNodo->idNodo =  campoDeLaListaTablaDeProcesos->id_nodo;
 				campoAAgregarAListaReducirPorNodo->archivosAReducir = list_create();
 				list_add(campoAAgregarAListaReducirPorNodo->archivosAReducir,campoDeLaListaTablaDeProcesos->nombre_archivo_resultado);
