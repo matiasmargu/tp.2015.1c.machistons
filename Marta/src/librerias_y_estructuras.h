@@ -13,7 +13,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/types.h>
 #include <netdb.h>
 #include <unistd.h>
 #include <stdint.h>
@@ -23,13 +22,14 @@
 #include <./commons/string.h>
 #include <sys/types.h>
 #include <sys/socket.h>
+#include <sys/mman.h>
 #include <socket/socket.h>
 #include <./commons/collections/list.h>
 #include <./commons/bitarray.h>
 #include <pthread.h>
-#include <sys/types.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <ctype.h>
 
 t_log* logger; // Log Global
 
@@ -129,11 +129,20 @@ typedef struct{
 
 typedef struct{
 	int estado; // 0 = todavia no se mando a ejecutar; 1 = en ejecucion; 2 = Fin; 3 = Error
+	int id_map;
 	int bloque_archivo;
 	char *nombre_archivo;
 	char *nombre_archivo_resultado; // del mapeo
 	int id_nodo; //de aca saco ip y puerto
 }t_tablaProcesos_porJob;
+
+typedef struct{
+	char* ip_nodo;
+	char* puerto;
+	int numeroBloque;
+	char* nombre_archivo_resultado; //donde va a devolverle el resultado
+	int id_map;
+}t_marta_job_map;
 
 
 
