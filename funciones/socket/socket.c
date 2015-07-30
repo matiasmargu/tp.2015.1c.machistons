@@ -29,7 +29,7 @@ int crearCliente (char *IP, char *PUERTO){
 	int serverSocket;
 	serverSocket = socket(serverInfo->ai_family, serverInfo->ai_socktype, serverInfo->ai_protocol);
 	connect(serverSocket, serverInfo->ai_addr, serverInfo->ai_addrlen);
-	freeaddrinfo(serverInfo);	// No lo necesitamos mas
+	//freeaddrinfo(serverInfo);	// No lo necesitamos mas
 	return serverSocket;
 }
 /* Ejemplo de uso:
