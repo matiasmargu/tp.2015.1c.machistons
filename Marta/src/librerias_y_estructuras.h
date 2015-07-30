@@ -145,6 +145,31 @@ typedef struct{
 }t_marta_job_map;
 
 
+typedef struct {
+	int idNodo;
+	char* puertoNodo;
+	char * ipNodo;
+	t_list * archivosAReducir;
+    char* nombreArchivoResultado;
+    int estado;
+}t_archivosAReducirPorNodo;
+
+typedef struct {
+	char *puertoNodo;
+	char *ipNodo;
+	t_list * archivosAMover;
+}t_moverArchivos;
+
+typedef struct {
+	char *puertoNodo;
+	char *ipNodo;
+	char * archivoAMover;
+}t_serializarUnArchivoParaMover;
+
+typedef struct {
+	int contador;
+	int idNodo;
+}t_contadorNodo;
 
 int recive_y_guarda_estructura(t_archivo *arch, int socket, uint32_t tamanioTotal);
 void recive_y_guarda_infoNodo(int tamanio, int socket, void *array);
