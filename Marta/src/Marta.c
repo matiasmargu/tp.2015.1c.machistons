@@ -112,7 +112,7 @@ int main(void) {
    		    	{
    		    		if((recv(i, &entero, sizeof(int),0 )) <= 0)
    		    		{
-
+   		    			printf("se callo el socket %i\n",i);
    		    			close(i); // Coneccion perdida
    		    			FD_CLR(i, &master);
    		    		}

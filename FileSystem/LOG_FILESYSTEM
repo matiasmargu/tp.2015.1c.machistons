@@ -1,0 +1,42 @@
+[INFO] 16:28:31:167 log_filesystem/(3468:3468): Se ha conectado un proceso Nodo en el socket: 6
+
+[INFO] 16:39:32:353 log_filesystem/(3706:3706): Se ha conectado un proceso Nodo en el socket: 6
+
+[INFO] 17:33:05:747 log_filesystem/(2700:2700): Se ha conectado un proceso Nodo en el socket: 6
+
+[INFO] 17:34:37:768 log_filesystem/(2700:2700): Se ha perdido la conexion con un Nodo en el socket: 6
+
+[INFO] 17:36:05:918 log_filesystem/(2700:2700): Se ha conectado un proceso Nodo en el socket: 8
+
+[INFO] 17:38:17:72 log_filesystem/(2700:2700): Se ha perdido la conexion con un Nodo en el socket: 8
+
+[INFO] 17:44:45:802 log_filesystem/(2700:2700): Se ha conectado un proceso Nodo en el socket: 8
+
+[INFO] 17:44:47:515 log_filesystem/(2700:2700): Se ha perdido la conexion con un Nodo en el socket: 8
+
+[INFO] 17:47:36:648 log_filesystem/(2700:2700): Se ha conectado un proceso Nodo en el socket: 8
+
+[INFO] 17:47:38:985 log_filesystem/(2700:2700): Se ha perdido la conexion con un Nodo en el socket: 8
+
+[INFO] 17:47:40:154 log_filesystem/(2700:2700): Se ha conectado un proceso Nodo en el socket: 8
+
+[INFO] 17:47:43:659 log_filesystem/(2700:2700): Se ha perdido la conexion con un Nodo en el socket: 8
+
+[INFO] 17:47:44:540 log_filesystem/(2700:2700): Se ha conectado un proceso Nodo en el socket: 8
+
+[INFO] 17:48:06:466 log_filesystem/(2700:2700): Se ha perdido la conexion con un Nodo en el socket: 8
+
+[INFO] 17:48:06:797 log_filesystem/(2700:2700): Se ha conectado un proceso Nodo en el socket: 8
+
+[INFO] 17:48:46:337 log_filesystem/(2700:2700): Se ha perdido la conexion con un Nodo en el socket: 8
+
+[INFO] 17:48:57:134 log_filesystem/(2700:2700): Se ha conectado un proceso Nodo en el socket: 8
+
+[INFO] 17:49:50:448 log_filesystem/(2700:2700): Se ha perdido la conexion con un Nodo en el socket: 8
+
+[INFO] 17:50:57:96 log_filesystem/(2700:2700): Se ha conectado un proceso Nodo en el socket: 8
+
+[INFO] 17:54:06:985 log_filesystem/(2700:2700): Se ha perdido la conexion con un Nodo en el socket: 8
+
+[INFO] 17:54:07:353 log_filesystem/(2700:2700): Se ha conectado un proceso Nodo en el socket: 8
+

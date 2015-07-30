@@ -22,6 +22,10 @@ void *atenderConsola(void*arg) {
 	char md5[MD5_LEN + 1];
 	char *mensaje;
 
+	int a,b,tamanioNombreArchivo;
+	char *nombreArchivo;
+	char *directorioParaIndex;
+
 	imprimirMenu();
 	while(1){
 			fgets(bufferComando,MAXSIZE_COMANDO, stdin);
@@ -73,6 +77,7 @@ void *atenderConsola(void*arg) {
 				case Borrar_Bloque_Arch: // 10
 					break;
 				case Copiar_Bloque_Arch: // 11
+					//////calcularCombinacionesDeAsignacion();
 					break;
 				case Agregar_Nodo: // 12
 					agregarNodo();
@@ -95,10 +100,10 @@ void *atenderConsola(void*arg) {
 				case Copiar_Arch_Al_FSLocal: // 15
 					break;
 				case Solicitar_MD5: // 16
-					printf("\n""Ingrese el nombre del archivo del que desee calcular el MD5:\n");
+					printf("\n""Ingrese el nombre del archivo del que desee calcular el MD5:\n\n");
 					fgets(bufferComando,MAXSIZE_COMANDO, stdin);
 					comandoSeparado=string_split(bufferComando, separator);
-					comandoSeparado2=string_split(comandoSeparado[1], separador2);
+					comandoSeparado2=string_split(comandoSeparado[0], separador2);
 					if (!CalcFileMD5(comandoSeparado2[0], md5)) {
 						puts("Error en el calculo del MD5.");
 					} else {
@@ -139,7 +144,7 @@ void imprimirMenu(void){
 			" 	Operaciones sobre nodos de datos:\n"
 			"	  Agregar: 12 \n"
 			"	  Eliminar: 13 \n"
-			"	Copiar un archivo local al MDFS: 14 DireccionFisicaDelArchivo \n"
+			"	Copiar un archivo local al MDFS: 14 \n"
 			"	Copiar un archivo del MDFS al filesystem local: 15 \n"
 			"	Solicitar el MD5 de un archivo en MDFS: 16 \n"
 			"	SALIR 17 \n");
@@ -173,6 +178,7 @@ void formatear(){
 	BSON_APPEND_UTF8(query, "Es" , "Nodo");
 	cantidad = mongoc_collection_count(nodos, MONGOC_QUERY_NONE, query,0,0,NULL,NULL);
 	if(cantidad > 0){
+		printf("Formateando el MDFS...");
 		cursor = mongoc_collection_find (nodos, MONGOC_QUERY_NONE, 0, 0, 0, query, NULL, NULL);
 		while (mongoc_cursor_next (cursor, &doc)) {
 			if (bson_iter_init (&iter, doc)) {
@@ -184,19 +190,17 @@ void formatear(){
 				}
 			}
 		}
+		sleep(20);
 	}else{
 		printf("No hay nodos conectados para formatear \n");
 	}
 	bson_destroy (query);
 	doc = bson_new ();
-//	if (!mongoc_collection_remove (nodos, MONGOC_DELETE_NONE, doc, NULL, &error)) {
-//		printf ("Delete failed: %s\n", error.message);
-//	}
 	if (!mongoc_collection_remove (archivos, MONGOC_DELETE_NONE, doc, NULL, &error)) {
-		        printf ("Delete failed: %s\n", error.message);
+		printf ("Delete failed: %s\n", error.message);
 	}
 	if (!mongoc_collection_remove (directorios, MONGOC_DELETE_NONE, doc, NULL, &error)) {
-			        printf ("Delete failed: %s\n", error.message);
+		printf ("Delete failed: %s\n", error.message);
 	}
 	idDirectorioGlobal = 1;
 	bson_destroy (doc);

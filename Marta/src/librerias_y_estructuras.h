@@ -13,7 +13,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/types.h>
 #include <netdb.h>
 #include <unistd.h>
 #include <stdint.h>
@@ -23,13 +22,14 @@
 #include <./commons/string.h>
 #include <sys/types.h>
 #include <sys/socket.h>
+#include <sys/mman.h>
 #include <socket/socket.h>
 #include <./commons/collections/list.h>
 #include <./commons/bitarray.h>
 #include <pthread.h>
-#include <sys/types.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <ctype.h>
 
 t_log* logger; // Log Global
 
@@ -129,13 +129,47 @@ typedef struct{
 
 typedef struct{
 	int estado; // 0 = todavia no se mando a ejecutar; 1 = en ejecucion; 2 = Fin; 3 = Error
+	int id_map;
 	int bloque_archivo;
 	char *nombre_archivo;
 	char *nombre_archivo_resultado; // del mapeo
 	int id_nodo; //de aca saco ip y puerto
 }t_tablaProcesos_porJob;
 
+typedef struct{
+	char* ip_nodo;
+	char* puerto;
+	int numeroBloque;
+	char* nombre_archivo_resultado; //donde va a devolverle el resultado
+	int id_map;
+}t_marta_job_map;
 
+
+typedef struct {
+	int idNodo;
+	char* puertoNodo;
+	char * ipNodo;
+	t_list * archivosAReducir;
+    char* nombreArchivoResultado;
+    int estado;
+}t_archivosAReducirPorNodo;
+
+typedef struct {
+	char *puertoNodo;
+	char *ipNodo;
+	t_list * archivosAMover;
+}t_moverArchivos;
+
+typedef struct {
+	char *puertoNodo;
+	char *ipNodo;
+	char * archivoAMover;
+}t_serializarUnArchivoParaMover;
+
+typedef struct {
+	int contador;
+	int idNodo;
+}t_contadorNodo;
 
 int recive_y_guarda_estructura(t_archivo *arch, int socket, uint32_t tamanioTotal);
 void recive_y_guarda_infoNodo(int tamanio, int socket, void *array);

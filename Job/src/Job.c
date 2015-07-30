@@ -1,6 +1,6 @@
 /*
  ============================================================================
- Name        : Job2.c
+ Name        : Job.c
  Author      : 
  Version     :
  Copyright   : Your copyright notice
@@ -8,227 +8,278 @@
  ============================================================================
  */
 
-#include "funcionesJob.h"
+#include "librerias_y_estructuras.h"
 
 int main(void) {
 
 	char* rutaArchivoConfiguracion;
 	t_config* archivoConfiguracion;
-	char *puerto_marta;
-	char *ip_marta;
-	char * mapper;
-	char* reduce;
-	char *combiner;
-	char *lista_archivos;
-	char *archivo_resultado;
-	char* archivo_resultado_final;
-	int p,a, tamanioCombiner,tamanio_archivo_resultado, tipoOperacion2;
-	int tamanioTotal, tamanioTotalMapper , numeroRutina,CantidadAMover, numeroParaNodo;
-	int handshake, handshakeNodo,  socketNodo,tamanioArchivoAMover,caca2,tamanioAEnviarMover,tamanioRecibido,estado2;
-	t_marta_job_map Marta_Job_Map;
-	char* rutinaMapperTraducida;
-	char* rutinaReduceTraducida;
-	t_marta_job_reduce Marta_Job_Reduce;
-	t_marta_job_reduce Marta_Job_Reduce_Final;
-	int enteroPrueba, tipoOperacion, tamanioStruct,x;
-	pthread_t hilomap;
-	t_para_nodo* paraNodo;
-	pthread_t hiloreduce;
-	t_hilo_map map;
-	t_para_job Marta_Job_Archivo_A_Mover;
-	t_hilo_reduce datosParaLaReduccion;
-	char* archivoAMoverAEnviarNodo;
-	char* structParaNodoMover;
-	t_archivoParaMover * archivoAMover;
-	tamanioArchivoAMover = malloc(sizeof(char) * 3);
-	archivoAMover = tamanioArchivoAMover;
-
-	logger = log_create("LOG_JOB", "log_job" ,false, LOG_LEVEL_INFO);
-
 	rutaArchivoConfiguracion = "/home/utnso/git/tp-2015-1c-machistons/Configuracion/job.conf";
 	archivoConfiguracion = config_create(rutaArchivoConfiguracion);
+	char *puerto_marta;
+	char *ip_marta;
+	char *mapper;
+	char *reduce;
+	char *textCombiner;
+	int combiner,x,entero, a, cantidadDeArchivos;
+	char *lista_archivos;
+	char **nombreArchivos;
+	char *archivo_resultado;
+	char *paquete; //paquete para enviar y recibir cosas
+	int offset;
+	int size_to_send;
+	int tamanioTotal, tamanioDinamico;
 
+	t_aplicarMapper *aplicarMapper;
+	t_aplicarReduce *aplicarReduce;
+	t_moverArchivo *moverArchivo;
+
+	pthread_t hiloMapper[1000];
+	pthread_t hiloReduce[1000];
+	pthread_t hiloMoverArch[1000];
+	int contM = 1; // Contador para hilos de Mapper
+	int contR = 1; // Contador para hilos de Reduce
+	int contMA = 1; // Contador para hilos de moverArchivo
 
 	puerto_marta = config_get_string_value(archivoConfiguracion, "PUERTO_MARTA");
 	ip_marta = config_get_string_value(archivoConfiguracion, "IP_MARTA");
 	mapper = config_get_string_value(archivoConfiguracion, "MAPPER");
 	reduce = config_get_string_value(archivoConfiguracion, "REDUCE");
-	combiner = config_get_string_value(archivoConfiguracion, "COMBINER");
+	textCombiner = config_get_string_value(archivoConfiguracion, "COMBINER");
+	if(string_equals_ignore_case(textCombiner,"SI")){
+		combiner = 1;
+	}else{
+		combiner = 0;
+	}
 	lista_archivos = config_get_string_value(archivoConfiguracion, "ARCHIVOS");
+	nombreArchivos = string_get_string_as_array(lista_archivos);
 	archivo_resultado = config_get_string_value(archivoConfiguracion, "RESULTADO");
 
-	printf("antes de marta\n");
-	int socketMarta = crearCliente (ip_marta,puerto_marta);
-	printf("despues de marta\n");
+	logger = log_create("LOG_JOB", "log_job" ,false, LOG_LEVEL_INFO);
 
-	rutinaMapperTraducida = mapearAMemoriaVirtual(mapper);
-	rutinaReduceTraducida = mapearAMemoriaVirtual(reduce);
-	printf("rutinaMappper TRADUCIDA  %s\n",rutinaMapperTraducida);
+	socketMarta = crearCliente (ip_marta,puerto_marta);
 
-	///MANDAMOS LA LISTA DE ARCHIVOS A MARTA Y EL COMBINER
+	rutinaMapper = mapearAMemoriaVirtual(mapper);
+	rutinaReduce = mapearAMemoriaVirtual(reduce);
 
-	handshake = 1;
-	send(socketMarta, &handshake, sizeof(int),0);
-	//COMBINER
-	tamanioCombiner = strlen(combiner)+1;
-	printf("hasta aca llega \n");
-	recv(socketMarta, &enteroPrueba, sizeof(int),0);
-	printf("dasdasdsa\n");
-	log_info(logger,"Se ha establecido la conexion con Marta, su ip es %s y su puerto %s",ip_marta,puerto_marta);
-	printf("Conexion establecida con Marta, su ip es %s y su puerto %s  \n",ip_marta,puerto_marta);
-	send(socketMarta, &tamanioCombiner, sizeof(int),0);
-	recv(socketMarta, &enteroPrueba, sizeof(int),0);
-	send(socketMarta,combiner,tamanioCombiner,0);
+	entero = 1;
+	send(socketMarta, &entero, sizeof(int),0); // Handshake
+	recv(socketMarta, &entero, sizeof(int),0); // basura
 
+	// paquete a enviar a Marta [combiner][tamanioArchivoResultado][nombreResultado][cantidadDeArchivos]([tamanio Archivo1][nombre archivo1])*
+	// * tamanio de Archivo y nombre de archivo son ciclicos depediendo de la cantidad de archivos
 
-	//LISTA DE ARCHIVOS
+	offset = 0;
 
-	tamanioTotal =  strlen(lista_archivos)+1;
-	recv(socketMarta, &enteroPrueba, sizeof(int),0);
-	send(socketMarta, &tamanioTotal, sizeof(int),0);
-	recv(socketMarta, &enteroPrueba, sizeof(int),0);
-	send(socketMarta,lista_archivos,tamanioTotal,0);
-	recv(socketMarta, &enteroPrueba, sizeof(int),0);
+	cantidadDeArchivos = sizeof(nombreArchivos);
 
-	//ACA MANDAMOS EL ARCHIVO RESULTADO A MARTA
+	tamanioTotal = sizeof(int) + sizeof(int) + strlen(archivo_resultado) + 1 + sizeof(int) + (sizeof(int) + strlen(lista_archivos) + 1) * cantidadDeArchivos;
 
-	archivo_resultado_final=strrchr(archivo_resultado,'/');
-	archivo_resultado_final = string_substring_from(archivo_resultado_final, 1);
-	printf("EL ARCHIVOOOOOOOOOO %s \n", archivo_resultado_final);
-	tamanio_archivo_resultado = strlen(archivo_resultado_final)+1;
-	send(socketMarta,&tamanio_archivo_resultado,sizeof(int),0);
-	recv(socketMarta,&enteroPrueba,sizeof(int),0);
-	send(socketMarta,archivo_resultado_final,tamanio_archivo_resultado,0);
+	send(socketMarta,&tamanioTotal, sizeof(int),0); // envio tamanio Total del paquete
+	recv(socketMarta, &entero, sizeof(int),0); // basura
 
-	//ACA RECIBIMOS DE MARTA LA OPERACION A REALIZAR
-	x = 0;
-	while (x!=1){
-	recv(socketMarta, &tipoOperacion, sizeof(int),0);
-	switch(tipoOperacion){
-		case 30: // REALIZAR MAP
-			send(socketMarta, &enteroPrueba, sizeof(int),0);
-			recv(socketMarta, &tamanioStruct, sizeof(int),0);
-			send(socketMarta, &enteroPrueba, sizeof(int),0);
-			int status = 1; // Estructura que manjea el status de los recieve.
-			status = recive_y_deserialisa_marta_job_mapper(&Marta_Job_Map, socketMarta, tamanioStruct);
-			printf(" id %i\n",Marta_Job_Map.idNodo);
-			printf(" ip %s\n",Marta_Job_Map.ip_nodo);
-			printf(" bloque %i\n",Marta_Job_Map.numeroBloque);
-			printf(" puerto %s\n",Marta_Job_Map.puerto);
-			printf("llego el archivo %s\n",Marta_Job_Map.nombre_archivo_resultado);
+	paquete = malloc(tamanioTotal);
 
+	size_to_send =  sizeof(combiner);
+	memcpy(paquete + offset, &(combiner), size_to_send);
+	offset += size_to_send;
 
-			if(status){
-				//HANDSHAKE NODO
-			    socketNodo = crearCliente (Marta_Job_Map.ip_nodo, Marta_Job_Map.puerto);
-				handshakeNodo = 8;
-				send(socketNodo,&handshakeNodo,sizeof(int),0);
-				recv(socketNodo, &enteroPrueba, sizeof(int),0);
-				//ACA LE MANDA LA RUTINA MAPPER AL NODO
-				numeroRutina = 1; // LE AVISA QUE MANDA UNA RUTINA MAP
-				send(socketNodo,&numeroRutina,sizeof(int),0);
-				tamanioTotalMapper = strlen(rutinaMapperTraducida)+1;
-				recv(socketNodo, &enteroPrueba, sizeof(int),0);
-				printf("tamanio script %i\n",tamanioTotalMapper);
-				send(socketNodo, &tamanioTotalMapper, sizeof(int),0);
-				recv(socketNodo, &enteroPrueba, sizeof(int),0);
-				send(socketNodo, rutinaMapperTraducida, tamanioTotalMapper,0);
+	tamanioDinamico = strlen(archivo_resultado) + 1;
+	size_to_send = sizeof(int);
+	memcpy(paquete + offset, &tamanioDinamico, size_to_send);
+	offset += size_to_send;
 
+	size_to_send =  strlen(archivo_resultado) + 1;
+	memcpy(paquete + offset, archivo_resultado, size_to_send);
+	offset += size_to_send;
 
-			//ACA LEVANTA UN HILO PARA A ENVIAR A MAPEAR
+	size_to_send =  sizeof(cantidadDeArchivos);
+	memcpy(paquete + offset, &(cantidadDeArchivos), size_to_send);
+	offset += size_to_send;
 
-			map.bloque = Marta_Job_Map.numeroBloque;
-			map.socketNodo = socketNodo;
-			map.nombreArchivoResultado = Marta_Job_Map.nombre_archivo_resultado;
-			map.socketMarta = socketMarta;
-			map.idNodo = Marta_Job_Map.idNodo;
-			pthread_create(&hilomap,NULL, mapearBloque,(void *)&map);
+	for(a=0;a<cantidadDeArchivos;a++){
+		tamanioDinamico = strlen(nombreArchivos[a]) + 1;
+		size_to_send = sizeof(int);
+		memcpy(paquete + offset, &tamanioDinamico, size_to_send);
+		offset += size_to_send;
 
-		}
-			break;
-		case 34: // REALIZAR REDUCE
-			send(socketMarta, &enteroPrueba, sizeof(int),0);
-			recv(socketMarta, &tipoOperacion2, sizeof(int),0);
-			switch(tipoOperacion2){
-
-			case 20: //REDUCE NORMAL
-			send(socketMarta, &enteroPrueba, sizeof(int),0);
-			recv(socketMarta, &tamanioStruct, sizeof(int),0);
-			send(socketMarta, &enteroPrueba, sizeof(int),0);
-			int estado = 1; // Estructura que manjea el status de los recieve.
-			estado = recive_y_deserialisa_marta_job_reduce(&Marta_Job_Reduce, socketMarta, tamanioStruct);
-			printf("llego el archivo %s\n",Marta_Job_Reduce.archivoResultadoReduce);
-			caca2 = list_get(Marta_Job_Reduce.listaArchivosTemporales, 2);
-			printf("archivo de la listaa %s\n\n", caca2);
-			if(estado){
-				//HANDSHAKE NODO
-			socketNodo = crearCliente (Marta_Job_Reduce.ipNodo, Marta_Job_Reduce.puertoNodo);
-			handshakeNodo = 8;
-			send(socketNodo,&handshakeNodo,sizeof(int),0);
-			recv(socketNodo, &enteroPrueba, sizeof(int),0);
-			//ACA LE MANDA LA RUTINA REDUCE AL NODO
-			numeroRutina = 2; //Le avisa que manda reduce
-			send(socketNodo,&numeroRutina,sizeof(int),0);
-			recv(socketNodo, &enteroPrueba, sizeof(int),0);
-			int tamanioTotalReduce =  strlen(rutinaReduceTraducida)+1;
-			send(socketNodo, &tamanioTotalReduce, sizeof(int),0);
-			recv(socketNodo, &enteroPrueba, sizeof(int),0);
-			send(socketNodo,rutinaReduceTraducida,tamanioTotal,0);
-			recv(socketNodo, &enteroPrueba, sizeof(int),0);
-
-			//ACA LEVANTA UN HILO PARA APLICAR EL REDUCE
-			datosParaLaReduccion.socketNodo = socketNodo;
-			datosParaLaReduccion.nombreArchivoResultado = Marta_Job_Reduce.archivoResultadoReduce;
-			datosParaLaReduccion.archivos = list_create();
-			list_add_all(datosParaLaReduccion.archivos, Marta_Job_Reduce.listaArchivosTemporales) ; //COPIA UNA LISTA A LA OTRA
-			pthread_create(&hiloreduce,NULL, reducirArchivos,(void *)&datosParaLaReduccion);
-			break;
-
-			case 33: //PARA MOVER
-				send(socketMarta, &enteroPrueba, sizeof(int),0);
-				recv(socketMarta, &CantidadAMover, sizeof(int),0);
-				send(socketMarta, &enteroPrueba, sizeof(int),0);
-				for(a=0;a<CantidadAMover;a++){
-					recv(socketMarta, &tamanioStruct, sizeof(int),0);
-					send(socketMarta, &enteroPrueba, sizeof(int),0);
-					estado = 1;
-					estado = recive_y_deserialisa_marta_job_reduce_moverArchivosFinal(&Marta_Job_Archivo_A_Mover, socketMarta, tamanioStruct);
-
-					if(estado){ // es necesario serializarlo para hacer el if estado
-						//HANDSHAKE NODO
-						socketNodo = crearCliente (Marta_Job_Archivo_A_Mover.ipAConectarse, Marta_Job_Archivo_A_Mover.puertoAconectarse);
-						handshakeNodo = 8;
-						numeroParaNodo = 3;
-						send(socketNodo,&handshakeNodo,sizeof(int),0);
-						recv(socketNodo, &enteroPrueba, sizeof(int),0);
-						send(socketNodo, &numeroParaNodo, sizeof(int),0);
-						recv (socketNodo, &enteroPrueba, sizeof(int),0 );
-
-						tamanioAEnviarMover = strlen(Marta_Job_Archivo_A_Mover.archivoAmover) +1 + strlen(Marta_Job_Archivo_A_Mover.ipAmover)+1 + strlen(Marta_Job_Archivo_A_Mover.puertoAmover)+1;
-						send(socketNodo, &tamanioAEnviarMover, sizeof(int),0);
-						recv(socketNodo, &enteroPrueba, sizeof(int),0);
-						paraNodo->archivo = Marta_Job_Archivo_A_Mover.archivoAmover;
-						paraNodo->ip = Marta_Job_Archivo_A_Mover.ipAmover;
-						paraNodo->puerto = Marta_Job_Archivo_A_Mover.puertoAmover;
-						structParaNodoMover = serializar_nodo_mover(&paraNodo,tamanioAEnviarMover);
-						send(socketNodo,structParaNodoMover, tamanioAEnviarMover,0);
-						recv(socketNodo, &enteroPrueba, sizeof(int),0);
-
-					}
-					}
-					break;
-				}
-				break;
-					case 5: // NO HAY MAS OPERACIONES
-				x= 1 ;
-				break;
-			}
-		}
+		size_to_send =  strlen(nombreArchivos[a]) + 1;
+		memcpy(paquete + offset, nombreArchivos[a], size_to_send);
+		offset += size_to_send;
 	}
 
+	send(socketMarta, paquete, tamanioTotal, 0);
 
-	log_info(logger,"Se ha desconectado con Marta, su ip es %s y su puerto %s",ip_marta,puerto_marta);
-	printf("Se ha desconectado con Marta, su ip es %s y su puerto %s  \n",ip_marta,puerto_marta);
+	free(paquete);
+
+	// Espero indicaciones de Marta
+
+	x = 0;
+	while (x!=1){
+	if(recv(socketMarta, &entero, sizeof(int),0)<0) return EXIT_SUCCESS;
+		switch(entero){
+			case 30: // Aplicar Map
+				aplicarMapper = malloc(sizeof(t_aplicarMapper));
+				send(socketMarta, &entero, sizeof(int),0); // basura
+				if(recv(socketMarta, &entero, sizeof(int),0)<0) return EXIT_SUCCESS; // recibo el tamanio del paquete
+
+				paquete = malloc(entero);
+				offset = 0;
+
+				send(socketMarta, &entero, sizeof(int),0); // basura
+				if(recv(socketMarta, paquete, sizeof(int),0)<0) return EXIT_SUCCESS; // recibo el paquete
+				send(socketMarta, &entero, sizeof(int),0); // basura
+
+				// paquete de Marta [tamanioIP][IP][tamanioPuerto][PUERTO][tamanioResultado][Resultado][IdProceso][Bloque]
+
+				memcpy(&tamanioDinamico, paquete + offset, sizeof(int));
+				offset += sizeof(int);
+				memcpy(aplicarMapper->IP, paquete + offset, tamanioDinamico);
+				offset += tamanioDinamico;
+
+				memcpy(&tamanioDinamico, paquete + offset, sizeof(int));
+				offset += sizeof(int);
+				memcpy(aplicarMapper->PUERTO, paquete + offset, tamanioDinamico);
+				offset += tamanioDinamico;
+
+				memcpy(&tamanioDinamico, paquete + offset, sizeof(int));
+				offset += sizeof(int);
+				memcpy(aplicarMapper->resultado, paquete + offset, tamanioDinamico);
+				offset += tamanioDinamico;
+
+				memcpy(&aplicarMapper->id_proceso, paquete + offset, sizeof(int));
+				offset += sizeof(int);
+
+				memcpy(&aplicarMapper->bloque, paquete + offset, sizeof(int));
+				offset += sizeof(int);
+
+				free(paquete);
+
+				pthread_create(&hiloMapper[contM], NULL, (void *)aplicarMapperF, (void *)aplicarMapper); // Hilo Mapper
+
+				contM++;
+				break;
+			case 34: // Aplicar Reduce
+				aplicarReduce = malloc(sizeof(t_aplicarReduce));
+				pthread_create(&hiloReduce[contR], NULL, (void *)aplicarReduceF, (void *)aplicarReduce);
+				contR++;
+				break;
+			case 33: //Mover
+				moverArchivo = malloc(sizeof(t_moverArchivo));
+				pthread_create(&hiloMoverArch[contMA], NULL, (void *)moverArchivoF, (void *)moverArchivo);
+				contMA++;
+				break;
+			case 90: // Fin de ejecucion del Job
+				printf("Se termino de ejecutar el Job\n");
+				x = 1;
+				break;
+			}
+	}
+
 	return EXIT_SUCCESS;
-
 }
+
+void *aplicarMapperF (t_aplicarMapper *aplicarMapper){
+
+	int socketNodo,entero,tamanioTotal, size_to_send, offset, tamanioDinamico;
+	char *paquete;
+
+	printf("ID Proceso: %i, IP: %s, PUERTO: %s, RESULTADO: %s, BLOQUE: %i\n",aplicarMapper->id_proceso,aplicarMapper->IP, aplicarMapper->PUERTO, aplicarMapper->resultado, aplicarMapper->bloque);
+
+	socketNodo = crearCliente(aplicarMapper->IP,aplicarMapper->PUERTO);
+
+	entero = 8;
+	send(socketNodo, &entero, sizeof(int),0); //Handshake
+	if(recv(socketNodo, &entero, sizeof(int),0)<0){ // basura
+		entero = 25;
+		send(socketMarta,&entero,sizeof(int),0);
+		// enviar id proceso
+		return NULL;
+	}
+
+	entero = 1;
+	send(socketNodo, &entero, sizeof(int),0); // Handshake de mapper
+	if(recv(socketNodo, &entero, sizeof(int),0)<0){ // basura
+		entero = 25;
+		send(socketMarta,&entero,sizeof(int),0);
+		// enviar id proceso
+		return NULL;
+	}
+
+	// paquete para aplicar Mapper [bloque][tamanioScript][script]
+
+	tamanioTotal = sizeof(int) + sizeof(int) + strlen(rutinaMapper) + 1;
+
+	send(socketNodo, &tamanioTotal, sizeof(int),0); // tamanioTotal del paquete
+	if(recv(socketNodo, &entero, sizeof(int),0)<0){ // basura
+		entero = 25;
+		send(socketMarta,&entero,sizeof(int),0);
+		// enviar id proceso
+		return NULL;
+	}
+
+	paquete = malloc(tamanioTotal);
+
+	offset = 0;
+
+	size_to_send =  sizeof(aplicarMapper->bloque);
+	memcpy(paquete + offset, &(aplicarMapper->bloque), size_to_send);
+	offset += size_to_send;
+
+	tamanioDinamico = strlen(rutinaMapper) + 1;
+	size_to_send = sizeof(int);
+	memcpy(paquete + offset, &tamanioDinamico, size_to_send);
+	offset += size_to_send;
+
+	size_to_send =  strlen(rutinaMapper) + 1;
+	memcpy(paquete + offset, rutinaMapper, size_to_send);
+	offset += size_to_send;
+
+	send(socketNodo,  paquete, tamanioTotal, 0);
+	free(paquete);
+
+	if(recv(socketNodo, &entero, sizeof(int), 0)<0){   // Espero respuesta del Nodo
+		entero = 25;
+	}
+	// 42 Positivo
+	// 25 Negativo
+	entero = 42;
+	send(socketMarta,&entero,sizeof(int),0);
+	return NULL;
+}
+
+void *aplicarReduceF (t_aplicarReduce *aplicarReduce){
+	return NULL;
+}
+
+void *moverArchivoF (t_moverArchivo *moverArchivo){
+	return NULL;
+}
+
+char* mapearAMemoriaVirtual(char* archivo){
+	char* pmap;
+	int fd;
+	struct stat mystat;
+
+	fd = open(archivo,O_RDWR);
+		if(fd == -1){
+		printf("Error al leer el ARCHIBO_BIN\n");
+		exit(1);
+	}
+
+	if(fstat(fd,&mystat) < 0){
+		printf("Error al establecer fstat\n");
+		close(fd);
+		exit(1);
+	}
+
+	pmap = mmap(0,mystat.st_size, PROT_READ|PROT_WRITE ,MAP_SHARED,fd,0);
+	if(pmap == MAP_FAILED){
+		printf("Error al mapear a memoria\n");
+		close(fd);
+		exit(1);
+	}
+	return pmap;
+}
+
+

@@ -18,14 +18,14 @@
 
 
 //Marta->Job
- typedef struct{
+ /*typedef struct{
 	char* ip_nodo;
 	char* puerto;
 	int numeroBloque;
 	char* nombre_archivo_resultado; //donde va a devolverle el resultado
 	int idNodo;
 }t_marta_job_map;
-
+*/
 
 typedef struct{
 	int idNodo;
