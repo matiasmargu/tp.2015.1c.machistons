@@ -216,7 +216,7 @@ int recive_y_deserializa_job_marta(t_job_marta_reduce *bloque, int socket, uint3
 void planificarReduceConCombiner(int socketJob, int idJob){
 
 
- int a,b,c,d,e=0,auxiliar = 0,aux,variableParaResultadoReduce=0,tamanioListaJobTabla,tamanioListaTablaDeProcesosPorJob,tamanioListaArchivosAReducirPorNodo;
+ int a,b,c,d,auxiliar = 0,aux,variableParaResultadoReduce=0,tamanioListaJobTabla,tamanioListaTablaDeProcesosPorJob,tamanioListaArchivosAReducirPorNodo;
  int tamanioListaDeNodos,tamanio,tamanioArchivosaReducir,contador,tamanioTotalLista,tamanioStruct,tamanioCampoParaNodo;
  t_archivosAReducirPorNodo *campoDeUnNodo = malloc(sizeof(t_archivosAReducirPorNodo));
  t_archivosAReducirPorNodo * campoParaLiberar = malloc(sizeof(t_archivosAReducirPorNodo));
@@ -225,18 +225,14 @@ void planificarReduceConCombiner(int socketJob, int idJob){
  char* archivo1;
  char* structAEnviarAJob;
  t_infoJob *campoDeLaLista = malloc(sizeof(t_infoJob));
-
  t_tablaProcesos_porJob*campoDeLaListaTablaDeProcesos = malloc(sizeof(t_tablaProcesos_porJob));
  t_list * lista_archivosAReducirPorNodo;
  t_archivosAReducirPorNodo *campoArchivosAReducirPorNodo =  malloc(sizeof(t_archivosAReducirPorNodo));
  t_archivosAReducirPorNodo *campoAAgregarAListaReducirPorNodo = malloc(sizeof(t_archivosAReducirPorNodo));
  t_nodo *campoDeListaDeNodo = malloc(sizeof(t_nodo));
-
-
  lista_archivosAReducirPorNodo = list_create();
  //REDUCE FINAL
  t_job_marta_reduce* job_marta = malloc(sizeof(t_job_marta_reduce));
-
  int contador2,r,l,tamanioArecibir,p, v,tamanioListaFinal,m, reduceFinal,tamanioListaFinalAEnviar,handshakeParaMover;
  t_archivosAReducirPorNodo *campoDeListaArchivosAReducirPorNodo = malloc(sizeof(t_archivosAReducirPorNodo));
  t_list* listaFinalDeArchivosAReducir;
@@ -252,7 +248,6 @@ void planificarReduceConCombiner(int socketJob, int idJob){
 
  tamanioListaJobTabla=list_size(lista_jobs);
 
- printf("\n\nLos campos de la lista que deberian estar son:\n");
 
  aux=0;
  //BUSCAMOS LOS DATOS DEL JOB EN LA LISTA DE JOBS
@@ -333,17 +328,7 @@ void planificarReduceConCombiner(int socketJob, int idJob){
 
 
 	 tamanio = list_size(lista_archivosAReducirPorNodo);
-	 printf("\n\nEl tamanio final de la lista es: %i\n",tamanio);
 
-	 for(e=0;e<tamanio;e++){
-		 campoAAgregarAListaReducirPorNodo = list_get(lista_archivosAReducirPorNodo,e);
-		 printf("idnodo %i ipnodo %s puertonodo %s nombreDeArchivoResultado %s\n",campoAAgregarAListaReducirPorNodo->idNodo,campoAAgregarAListaReducirPorNodo->ipNodo,campoAAgregarAListaReducirPorNodo->puertoNodo,campoAAgregarAListaReducirPorNodo->nombreArchivoResultado);
-		 a=list_size(campoAAgregarAListaReducirPorNodo->archivosAReducir);
-		 printf("%i\n",a);
-		 for(b=0;b<a;b++){
-			 printf("Los campos de la lista de archivos a reducir son: %s \n",list_get(campoAAgregarAListaReducirPorNodo->archivosAReducir,b));
-		 }
-	 }
 
 
 //sigo el reduce
@@ -445,8 +430,7 @@ void planificarReduceConCombiner(int socketJob, int idJob){
 
 		//hacer reduce final de todos los archivos de la listafinal
 
-		send(socketJob, &handshakeJob, sizeof(int),0);
-		recv(socketJob, &enteroPrueba, sizeof(int),0);
+
 		reduceFinal = 20;
 		send(socketJob, &reduceFinal, sizeof(int),0);
 		recv(socketJob, &enteroPrueba, sizeof(int),0);
@@ -558,7 +542,7 @@ void planificarSincombiner(int idJob, int socketJob){
 	//reducir
 	tamanioListaJobTabla=list_size(lista_jobs);
 
-	printf("\n\nLos campos de la lista que deberian estar son:\n");
+
 	aux=0;
 	for(a=0;a<tamanioListaJobTabla && aux==0;a++){
 		campoDeLaLista=list_get(lista_jobs,a);
@@ -592,9 +576,7 @@ void planificarSincombiner(int idJob, int socketJob){
 			}// agrega el campo a la lista
 
 			list_add(lista_archivosAReducirPorNodo,campoAAgregarAListaReducirPorNodo);
-			campoAAgregarAListaReducirPorNodo = list_get(lista_archivosAReducirPorNodo,e);
-			printf("idnodo %i ipnodo %s puertonodo %s nombreDeArchivoResultado %s\n",campoAAgregarAListaReducirPorNodo->idNodo,campoAAgregarAListaReducirPorNodo->ipNodo,campoAAgregarAListaReducirPorNodo->puertoNodo,campoAAgregarAListaReducirPorNodo->nombreArchivoResultado);
-			e++;
+
 		}
 		else{
 			aux=0;
