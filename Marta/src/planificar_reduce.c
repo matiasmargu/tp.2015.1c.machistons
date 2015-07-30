@@ -341,7 +341,10 @@ void planificarReduceConCombiner(int socketJob, int idJob){
 	for(a=0; a<tamanio; a++){
 		campoDeUnNodo=list_get(lista_archivosAReducirPorNodo,a);
 		send(socketJob, &handshakeJob, sizeof(int),0);
-		recv(socketJob, &enteroPrueba, sizeof(int),0);
+		if((recv(socketJob, &enteroPrueba, sizeof(int),0)) <1 ) {
+			log_info(logger,"Se ha perdido la conexion con ej Job: %i\n",campoDeLaLista->id_job);
+			exit(1);
+		}
 		tamanioArchivosaReducir = list_size(campoDeUnNodo->archivosAReducir);
 	for(b=0; b< tamanioArchivosaReducir; b++){
 		archivo1 =	list_get(campoDeUnNodo->archivosAReducir,b);
@@ -350,7 +353,10 @@ void planificarReduceConCombiner(int socketJob, int idJob){
 		}
 	tamanioAenviar = (sizeof(int)*2)+ strlen(campoDeUnNodo->ipNodo)+1 +  strlen(campoDeUnNodo->puertoNodo)+1 +  strlen(campoDeUnNodo->nombreArchivoResultado)+1 + tamanioTotalLista;
 	send(socketJob, &tamanioAenviar, sizeof(int), 0);
-	recv(socketJob, &enteroPrueba, sizeof(int),0);
+	if((recv(socketJob, &enteroPrueba, sizeof(int),0)) <1 ) {
+		log_info(logger,"Se ha perdido la conexion con ej Job: %i\n",campoDeLaLista->id_job);
+		exit(1);
+	}
 	structAserializar->archivoResultadoReduce = campoDeUnNodo->nombreArchivoResultado;
 	structAserializar->cantidadArchivos = list_size(campoDeUnNodo->archivosAReducir);
 	structAserializar->idNodo = campoDeUnNodo->idNodo;
@@ -366,7 +372,10 @@ void planificarReduceConCombiner(int socketJob, int idJob){
 
 	 listaFinalDeArchivosAReducir = list_create();
 	 for(a=0;a< contador ; a++){
-		 recv(socketJob, &tamanioArecibir, sizeof(int),0);
+		 if((recv(socketJob, &tamanioArecibir, sizeof(int),0)) <1 ) {
+			 log_info(logger,"Se ha perdido la conexion con ej Job: %i\n",campoDeLaLista->id_job);
+			 exit(1);
+		 }
 		 send(socketJob, &enteroPrueba, sizeof(int),0);
 		 int estado = 1;
 		 estado = recive_y_deserializa_job_marta(job_marta, socketJob, tamanioArecibir);//LO HICE ARRIBA
@@ -389,7 +398,7 @@ void planificarReduceConCombiner(int socketJob, int idJob){
 		for(l=0;l< list_size(lista_archivosAReducirPorNodo); l++){ //GUARDO EN LISTAFINALAREDUCIR LOS DATOS DE CADA ARCHIVO REDUCIDO
 			campoDeListaArchivosAReducirPorNodo = list_get(lista_archivosAReducirPorNodo,l);
 			tamanioCampoParaNodo = 3 + strlen(campoDeListaArchivosAReducirPorNodo->nombreArchivoResultado) + strlen(campoDeListaArchivosAReducirPorNodo->puertoNodo) + strlen(campoDeListaArchivosAReducirPorNodo->ipNodo);
-
+			campoListaParaNodo = malloc(tamanioCampoParaNodo);
 			campoListaParaNodo->archivo = campoDeListaArchivosAReducirPorNodo->nombreArchivoResultado;
 			campoListaParaNodo->ip = campoDeListaArchivosAReducirPorNodo->ipNodo;
 			campoListaParaNodo->puerto = campoDeListaArchivosAReducirPorNodo->puertoNodo;
@@ -419,9 +428,15 @@ void planificarReduceConCombiner(int socketJob, int idJob){
 			tamanioListaFinal += strlen(archivoParaJob->ipAConectarse);
 			handshakeParaMover = 33;
 			send(socketJob, &handshakeParaMover , sizeof(int),0);
-			recv(socketJob, &enteroPrueba, sizeof(int),0);
+			if((recv(socketJob, &enteroPrueba, sizeof(int),0)) <1 ) {
+				log_info(logger,"Se ha perdido la conexion con ej Job: %i\n",campoDeLaLista->id_job);
+				exit(1);
+			}
 			send(socketJob, &tamanioListaFinal , sizeof(int),0);
-			recv(socketJob, &enteroPrueba, sizeof(int),0);
+			if((recv(socketJob, &enteroPrueba, sizeof(int),0)) <1 ) {
+				log_info(logger,"Se ha perdido la conexion con ej Job: %i\n",campoDeLaLista->id_job);
+				exit(1);
+			}
 			structParaJob =  serializar_moverParaReduceFinal(archivoParaJob, tamanioListaFinal);
 			send(socketJob, structParaJob, tamanio, 0);
 			//FALTA VER SI SE CAE EL NODO
@@ -433,8 +448,10 @@ void planificarReduceConCombiner(int socketJob, int idJob){
 
 		reduceFinal = 20;
 		send(socketJob, &reduceFinal, sizeof(int),0);
-		recv(socketJob, &enteroPrueba, sizeof(int),0);
-
+		if((recv(socketJob, &enteroPrueba, sizeof(int),0)) <1 ) {
+			log_info(logger,"Se ha perdido la conexion con ej Job: %i\n",campoDeLaLista->id_job);
+			exit(1);
+		}
 		antesDeSerializar->archivoResultadoReduce = campoDeLaLista->arch_resultado_final;
 		antesDeSerializar->cantidadArchivos = list_size(listaFinalDeArchivosAReducir);
 		antesDeSerializar->idNodo = campoDeListaArchivosAReducirPorNodo->idNodo;
@@ -451,12 +468,18 @@ void planificarReduceConCombiner(int socketJob, int idJob){
 
 		tamanioStruct = (sizeof(int)*2) + strlen(antesDeSerializar->ipNodo) +1 + strlen(antesDeSerializar->puertoNodo)+1+ strlen(antesDeSerializar->archivoResultadoReduce)+1 + tamanioListaFinalAEnviar;
 		send(socketJob, &tamanioStruct , sizeof(int),0);
-		recv(socketJob, &enteroPrueba, sizeof(int),0);
+		if((recv(socketJob, &enteroPrueba, sizeof(int),0)) <1 ) {
+			log_info(logger,"Se ha perdido la conexion con ej Job: %i\n",campoDeLaLista->id_job);
+			exit(1);
+		}
 		structParaJob =  serializar_marta_job_reduce(antesDeSerializar, tamanioStruct);
 		send(socketJob, structParaJob, tamanioStruct, 0);
 
 		//RECIBIMOS EL RESULTADO
-		recv(socketJob, &tamanioArecibir, sizeof(int),0);
+		if((recv(socketJob, &tamanioArecibir, sizeof(int),0)) <1 ) {
+			log_info(logger,"Se ha perdido la conexion con ej Job: %i\n",campoDeLaLista->id_job);
+			exit(1);
+		}
 		send(socketJob, &enteroPrueba, sizeof(int),0);
 		int estado = 1;
 		estado = recive_y_deserializa_job_marta(job_marta, socketJob, tamanioArecibir);
@@ -666,9 +689,15 @@ void planificarSincombiner(int idJob, int socketJob){
 				tamanioListaFinalAEnviar += 1;
 				handshakeParaMover  = 33;
 				send(socketJob, &handshakeParaMover , sizeof(int),0);
-				recv(socketJob, &enteroPrueba, sizeof(int),0);
+				if((recv(socketJob, &enteroPrueba, sizeof(int),0)) <1 ) {
+					log_info(logger,"Se ha perdido la conexion con ej Job: %i\n",campoDeLaLista->id_job);
+					exit(1);
+				}
 				send(socketJob, &tamanioListaFinal , sizeof(int),0);
-				recv(socketJob, &enteroPrueba, sizeof(int),0);
+				if((recv(socketJob, &enteroPrueba, sizeof(int),0)) <1 ) {
+					log_info(logger,"Se ha perdido la conexion con ej Job: %i\n",campoDeLaLista->id_job);
+					exit(1);
+				}
 				structParaJob =  serializar_moverParaReduceFinal(moverArchivos, tamanioListaFinal);
 				send(socketJob, structParaJob, tamanio, 0);
 				//FALTA VER SI SE CAE EL NODO
@@ -684,8 +713,10 @@ void planificarSincombiner(int idJob, int socketJob){
 
 	int reduce = 20;
 	send(socketJob, &reduce, sizeof(int),0);
-	recv(socketJob, &enteroPrueba, sizeof(int),0);
-
+	if((recv(socketJob, &enteroPrueba, sizeof(int),0)) <1 ) {
+		log_info(logger,"Se ha perdido la conexion con ej Job: %i\n",campoDeLaLista->id_job);
+		exit(1);
+	}
 	antesDeSerializar->archivoResultadoReduce = campoDeLaLista->arch_resultado_final;
 	antesDeSerializar->cantidadArchivos = list_size(antesDeSerializar->listaArchivosTemporales);
 	antesDeSerializar->idNodo = contadorNodo->idNodo;
@@ -694,12 +725,18 @@ void planificarSincombiner(int idJob, int socketJob){
 
 	tamanioStruct = (sizeof(int)*2) + strlen(antesDeSerializar->ipNodo) +1 + strlen(antesDeSerializar->puertoNodo)+1+ strlen(antesDeSerializar->archivoResultadoReduce)+1 + tamanioListaFinalAEnviar;
 	send(socketJob, &tamanioStruct , sizeof(int),0);
-	recv(socketJob, &enteroPrueba, sizeof(int),0);
+	if((recv(socketJob, &enteroPrueba, sizeof(int),0)) <1 ) {
+		log_info(logger,"Se ha perdido la conexion con ej Job: %i\n",campoDeLaLista->id_job);
+		exit(1);
+	}
 	structParaJob =  serializar_marta_job_reduce(antesDeSerializar, tamanioStruct);
 	send(socketJob, structParaJob, tamanioStruct, 0);
 
 	//RECIBIMOS EL RESULTADO
-	recv(socketJob, &tamanioArecibir, sizeof(int),0);
+	if((recv(socketJob, &tamanioArecibir, sizeof(int),0)) <1 ) {
+		log_info(logger,"Se ha perdido la conexion con ej Job: %i\n",campoDeLaLista->id_job);
+		exit(1);
+	}
 	send(socketJob, &enteroPrueba, sizeof(int),0);
 	int estado = 1;
 	estado = recive_y_deserializa_job_marta(job_marta, socketJob, tamanioArecibir);
