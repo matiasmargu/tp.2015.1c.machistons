@@ -77,16 +77,17 @@ void mapper(t_mapper* arg){
 
 	 }
 
-	asprintf(&resultado_aux,"%s%s","/tmp/resultadoDelMapPorOrdenar",string_itoa(arg->socket));
+	//asprintf(&resultado_aux,"%s%s","/tmp/resultadoDelMapPorOrdenar",string_itoa(arg->socket));
+	asprintf(&resultado,"%s%s","/tmp/",arg->resultado);
 
-	FILE* fdMapeo = fopen(resultado_aux,"w");
+	FILE* fdMapeo = fopen(resultado,"w");
 	fputs(buffer,fdMapeo);
 	fclose(fdMapeo);
 
-	asprintf(&resultado,"%s%s","/tmp/",arg->resultado);
+	//asprintf(&resultado,"%s%s","/tmp/",arg->resultado);
 	printf("Aca esta el temporal: %s\n",resultado);
 
-	ordernarAlfabeticamente(resultado,resultado_aux);
+	//ordernarAlfabeticamente(resultado,resultado_aux);
 	remove(arg->mapper);
 
 	int entero = 42;
