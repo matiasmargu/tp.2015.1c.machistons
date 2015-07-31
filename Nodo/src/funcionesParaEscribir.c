@@ -21,10 +21,12 @@ char* escribirScript(char* script_virtual, int comando,int socket){
 
 	}else{
 
+		asprintf(&resultado,"%s%s","/tmp/reduce",string_itoa(socket));
 		//remove("/tmp/mapper");
-		FILE* fileReducer=fopen("/tmp/reducer","w");
+		FILE* fileReducer=fopen(resultado,"w");
 		fputs(script_virtual,fileReducer);
 		fclose(fileReducer);
+
 	}
 	return resultado;
 }

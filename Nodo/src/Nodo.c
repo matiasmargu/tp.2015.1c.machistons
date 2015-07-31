@@ -11,7 +11,7 @@
 #include "variablesGlobales.h"
 
 
-int main(void) {
+int main(void){
 
 
 	pthread_t hiloJob[1000];
