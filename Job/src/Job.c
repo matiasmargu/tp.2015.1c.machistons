@@ -165,7 +165,6 @@ int main(void) {
 				free(paqueteDeseliariza);
 
 				pthread_create(&hiloMapper[contM], NULL, (void *)aplicarMapperF, (void *)aplicarMapper); // Hilo Mapper
-				printf("cantidad de hilos: %i\n",contM);
 				contM++;
 				break;
 			case 34: // Aplicar Reduce
@@ -287,8 +286,6 @@ void *aplicarMapperF (t_aplicarMapper *aplicarMapper){
 
 	paquete = malloc(tamanioTotal);
 
-	printf("Resultado del hilo:  estado %i, id_proceso %i, id_job %i\n",estado,aplicarMapper->id_proceso,aplicarMapper->id_job);
-
 	size_to_send =  sizeof(estado);
 	memcpy(paquete + offset, &(estado), size_to_send);
 	offset += size_to_send;
@@ -304,7 +301,6 @@ void *aplicarMapperF (t_aplicarMapper *aplicarMapper){
 	send(socketMarta, paquete, tamanioTotal, 0); // envio paquete
 	contadorHilos++;
 	pthread_mutex_unlock(&mutex);
-	printf("cantidad de Hilos Enviados %i\n",contadorHilos);
 	return NULL;
 }
 
