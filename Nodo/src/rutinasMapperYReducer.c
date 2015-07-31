@@ -58,8 +58,8 @@ void mapper(t_mapper* arg){
 		close( pipe_hijoAPadre[1]);
 		close( pipe_padreAHijo[0]);
 
-		//execv("/tmp/mapper",NULL);
-		system("/tmp/mapper");
+		execv("/tmp/mapper",NULL);
+		//system("/tmp/mapper");
 
 	  }
 	  else
@@ -72,14 +72,14 @@ void mapper(t_mapper* arg){
 	    //write( pipe_padreAHijo[1], "hola faknflanflfan", strlen("hola faknflanflfan") );
 	    close( pipe_padreAHijo[1]);
 
+
+
 	    //Aca leo del hijo
 	    read( pipe_hijoAPadre[0], buffer, SIZE );
 	    close( pipe_hijoAPadre[0]);
-
-	    //char* archivoResultado=mapearAMemoriaVirtual(resultado);
-	    //ordernarAlfabeticamente(resultado,fdMapeo,sizeof(archivoResultado));
 	  }
 	 printf("Este es el resultado: %s\n",buffer);
+	 printf("Este es el tamanio: %i\n",strlen(buffer));
 	 FILE* fdMapeo = fopen("/tmp/resultadoDelMapPorOrdenar","w");
 	 fputs(buffer,fdMapeo);
 	 fclose(fdMapeo);
@@ -89,6 +89,9 @@ void mapper(t_mapper* arg){
 
 	 int entero = 42;
 	 send(arg->socket,&entero,sizeof(int),0);
+
+	 //char* archivoResultado=mapearAMemoriaVirtual(resultado);
+	 //ordernarAlfabeticamente(resultado,fdMapeo,sizeof(archivoResultado));
 
 	variableDatos=0;
 	free(buffer);

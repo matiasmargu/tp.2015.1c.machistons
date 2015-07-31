@@ -50,12 +50,14 @@ int main(void) {
 	}
 
 	//handshakeConFS();
+
 	char* prueba = "hola.txt";
 	t_mapper *test=malloc(sizeof(int)+sizeof(int)+strlen(prueba)+1);
 	test->bloque_map=0;
 	test->resultado=prueba;
 	test->socket=2;
 	mapper(test);
+
 
 //Esta es el select
 
