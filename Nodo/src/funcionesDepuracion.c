@@ -8,19 +8,34 @@
 
 
 //Elimina los enters de un buffer
-void eliminarEnters(char* buffer, int tamanio){
-	int a;
-
-	for(a=0;a<tamanio;a++){
-		char exami= buffer[a];
-
-		if(exami == '\n'){
-			buffer[a]='\0';
-		}
-
-	}
-
+void strip(char *s) {
+    char *p2 = s;
+    while(*s != '\0') {
+    	if(*s != '\t' && *s != '\n') {
+    		*p2++ = *s++;
+    	} else {
+    		++s;
+    	}
+    }
+    *p2 = '\0';
 }
+
+
+int contarENT(char*buffer,int tamanio){
+	int a,bre=1,cont=0;
+	a=0;
+	while((a<tamanio)&&(bre!=0)){
+		if((buffer[a]=='\n')&&(bre!=0)){
+			cont++;
+		}
+		if(a==tamanio){
+			bre =1;
+		}
+		a++;
+	}
+	return cont;
+}
+
 
 void ordernarAlfabeticamente(char* nombreDelArchivoResultado,FILE *fdMape,int tamanioArchivo){
 	pid_t pid;

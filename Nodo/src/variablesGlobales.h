@@ -37,6 +37,7 @@
 FILE* nuevoArchivo;
 
 int tamanioArchivo_BIN;
+int variableDatos;
 
 char *ip_nodo;
 int puerto_nodo;
@@ -52,8 +53,23 @@ char* rutaArchivoConfiguracion;
 t_log* logger; // Log Global
 t_config* archivoConfiguracion;
 
+
+//////////////////////////ESTRUCTURAS/////////////
+
+typedef struct{
+	int bloque_map;
+	int socket;
+	char* resultado;
+}t_mapper;
+
+typedef struct{
+	int tamanio;
+	char *contenido;
+}t_getBloque;
+
+
 //Funciones de mapper y reducer
-void mapper(void* arg);
+void mapper(t_mapper* arg);
 void reducer(void* arg);
 
 //Funciones de memoria
@@ -83,7 +99,7 @@ void *atenderNFS(void*arg);
 void *atenderJob(void* arg);
 
 //Funciones para escribir archivos
-int escribirScript(char* script_virtual, int comando);
+void escribirScript(char* script_virtual, int comando);
 
 //Para laburar con archivos de configuracion
 void crearNuevaConfiguracion();
@@ -95,9 +111,10 @@ void eliminarEnters(char* buffer, int tamanio);
 void formatearArchivo(char* pmap);
 void formatearBloque(char* pmap,int nroDeBloque);
 void ordernarAlfabeticamente(char* nombreDelArchivoResultado,FILE *fdMape,int tamanioArchivo);
+int contarENT(char*buffer,int tamanio);
 
 //Funciones esenciales
-int getBloque(int nroDeBloque, char* bloque);
+t_getBloque getBloque(int nroDelBloque);
 void getFileContent(int socket);
 void pedirContenidoDeUnArchivo(char* nombre,int socket);
 
