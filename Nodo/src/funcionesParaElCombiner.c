@@ -44,7 +44,8 @@ void getFileContent(int socket){
 
 void pedirContenidoDeUnArchivo(char* nombre,int socket){
 	int tamanioDelNombre = strlen(nombre);
-	int tamanioData;
+	int tamanioData,tamanioReal, tamanioLeido, entero;
+	char* contenidoArchivoAux;
 
 	char* dataDelFile;
 	char* copiaDir;
@@ -53,14 +54,21 @@ void pedirContenidoDeUnArchivo(char* nombre,int socket){
 
 	send(socket,&tamanioDelNombre,sizeof(int),0);
 	recv(socket,&tamanioDelNombre,sizeof(int),0);
-	send(socket,&nombre,tamanioDelNombre,0);
+	send(socket,nombre,tamanioDelNombre,0);
 
 	recv(socket,&tamanioData,sizeof(int),0);
 	send(socket,&tamanioData,sizeof(int),0);
 
 	dataDelFile = malloc(tamanioData);
 
-	recv(socket,dataDelFile,tamanioData,0);
+	tamanioLeido=0;
+	while(tamanioLeido!=tamanioData){
+		contenidoArchivoAux=malloc(64*1024);
+		tamanioReal=recv(socket,contenidoArchivoAux,64*1024,0);
+		if(tamanioReal<0) return;
+		memcpy(dataDelFile+tamanioLeido,contenidoArchivoAux,tamanioReal);
+		tamanioLeido+=tamanioReal;
+	}
 
 	asprintf(&copiaDir,"%s%s","/tmp/",nombre);
 

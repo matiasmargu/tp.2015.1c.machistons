@@ -120,6 +120,8 @@ int main(void){
 		    				break;
 		    			case 7: // Este es otro Nodo
 		    				printf("Se ha conectado un Nodo\n");
+		    				entero=20;
+		    				send(i,&entero,sizeof(int),0);
 		    				pthread_create(&hiloNodo[contN],NULL, atenderNFS, (void*)i);
 		    				contN++;
 		    				break;
