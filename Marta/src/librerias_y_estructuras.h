@@ -51,6 +51,7 @@ pthread_mutex_t mutex_cant_nodos;
 pthread_mutex_t mutex_contador_job;
 pthread_mutex_t mutex_lista_jobs;
 pthread_mutex_t mutex_lista_procesos;
+pthread_mutex_t mutex_socket_job;
 
 typedef struct{
 	t_list *lista;
@@ -128,7 +129,7 @@ typedef struct{
 }t_job_procesos;
 
 typedef struct{
-	int estado; // 0 = todavia no se mando a ejecutar; 1 = en ejecucion; 2 = Fin; 3 = Error
+	int estado; // 0 = en ejecucion; 1 = Fin; 2 = Error
 	int id_map;
 	int bloque_archivo;
 	char *nombre_archivo;

@@ -60,6 +60,7 @@ typedef struct{
 	int bloque_map;
 	int socket;
 	char* resultado;
+	char* mapper;
 }t_mapper;
 
 typedef struct{
@@ -99,7 +100,7 @@ void *atenderNFS(void*arg);
 void *atenderJob(void* arg);
 
 //Funciones para escribir archivos
-void escribirScript(char* script_virtual, int comando);
+char* escribirScript(char* script_virtual, int comando,int socket);
 
 //Para laburar con archivos de configuracion
 void crearNuevaConfiguracion();
@@ -110,7 +111,7 @@ void leerID_NODO();
 void eliminarEnters(char* buffer, int tamanio);
 void formatearArchivo(char* pmap);
 void formatearBloque(char* pmap,int nroDeBloque);
-void ordernarAlfabeticamente(char* nombreDelArchivoResultado,FILE *fdMape,int tamanioArchivo);
+void ordernarAlfabeticamente(char* nombreDelArchivoResultado,char* resultado_aux);
 int contarENT(char*buffer,int tamanio);
 
 //Funciones esenciales

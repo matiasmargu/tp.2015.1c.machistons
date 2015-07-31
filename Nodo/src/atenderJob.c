@@ -19,6 +19,7 @@ void* atenderJob(void* arg){
 	int bloque_map;
 	int offset;
 	char* resultado_map;
+	char* dir_map;
 
 
 	t_para_nodo comb;
@@ -37,22 +38,33 @@ void* atenderJob(void* arg){
 
 	while(1){
 
-		if(variableDatos == 0){
-		recv(socket, &comando, sizeof(int),0);
-		printf("Esto me llega una vez: %i\n",comando);
+		if(recv(socket, &comando, sizeof(int),0)<0){
+			printf("Se callo un job\n");
+			return NULL;
+		}
+
+
+		//printf("Esto me llega una vez: %i\n",comando);
 		switch(comando){
 			case 1: //Este va a ser el map
 				printf("Se levanto un hilo mapper\n");
 				offset=0;
 
-
 				send(socket, &comando,sizeof(int),0);
 
-				recv(socket,&tamanioScript,sizeof(int),0);
-				send(socket, &comando,sizeof(int),0);
-
+				if(recv(socket,&tamanioScript,sizeof(int),0)<0){
+					printf("Se callo un job\n");
+					return NULL;
+				}
 				paquete = malloc(tamanioScript);//Hago el espacio para el paquete
-				recv(socket,paquete,tamanioScript,0);//recivo el paquete
+
+				send(socket, &comando,sizeof(int),0);
+
+
+				if(recv(socket,paquete,tamanioScript,0)<0){//recivo el paquete
+					printf("Se callo un job\n");
+					return NULL;
+				}
 
 				memcpy(&(bloque_map), paquete + offset, sizeof(int));//guarto el bloque en bloque_map
 				offset += sizeof(int);
@@ -79,11 +91,14 @@ void* atenderJob(void* arg){
 
 				printf("En el bloque %i hago un map, y me da %s\n",est_map->bloque_map,est_map->resultado);
 
-				escribirScript(script_mapper,1);
+				char* dir_map=escribirScript(script_mapper,1,est_map->socket);
 
-				if(chmod("/tmp/mapper",0777)<0){
+				if(chmod(dir_map,0777)<0){
 					printf("No se le pudieron agregar los permisos\n");
 				}
+
+				est_map->mapper=dir_map;
+
 				printf("Termino la asignacion de permisos\n");
 
 				pthread_create(&hiloMapper[cont1], NULL, (void*) mapper, (void*) est_map);
@@ -100,7 +115,7 @@ void* atenderJob(void* arg){
 				script_reducer=malloc(tamanioScript);
 
 				recv(socket,script_reducer,tamanioScript,0);
-				escribirScript(script_reducer,2);
+				//escribirScript(script_reducer,2);
 				send(socket, &comando,sizeof(int),0);
 
 				chmod("/tmp/reducer",0777);
@@ -128,7 +143,7 @@ void* atenderJob(void* arg){
 				break;
 				}
 		}
-	}
+
 	return NULL;
 }
 

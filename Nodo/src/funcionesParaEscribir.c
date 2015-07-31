@@ -6,22 +6,25 @@
  */
 #include "variablesGlobales.h"
 
-void escribirScript(char* script_virtual, int comando){
+char* escribirScript(char* script_virtual, int comando,int socket){
+
+	char* resultado;
+
 
 	if(comando==1){
 
-		remove("/tmp/mapper");
-		FILE* fileMapper=fopen("/tmp/mapper","w");
+		asprintf(&resultado,"%s%s","/tmp/mapper",string_itoa(socket));
+		//remove("/tmp/mapper");
+		FILE* fileMapper=fopen(resultado,"w");
 		fputs(script_virtual,fileMapper);
 		fclose(fileMapper);
 
 	}else{
 
-		remove("/tmp/mapper");
+		//remove("/tmp/mapper");
 		FILE* fileReducer=fopen("/tmp/reducer","w");
 		fputs(script_virtual,fileReducer);
 		fclose(fileReducer);
 	}
-
-	printf("termino de escribir script\n");
+	return resultado;
 }

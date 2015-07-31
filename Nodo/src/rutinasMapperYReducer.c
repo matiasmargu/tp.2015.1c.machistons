@@ -16,6 +16,7 @@ void mapper(t_mapper* arg){
 	char* bloque=malloc(SIZE);
 
 	char *resultado;
+	char* resultado_aux;
 
 	variableDatos=1;
 
@@ -23,12 +24,12 @@ void mapper(t_mapper* arg){
 	t_getBloque infoBloque;
 
 	pid_t pid;
+	int status;
 
 	printf("el argumento: %i %i %s\n",arg->bloque_map,arg->socket,arg->resultado);
 
 //***************************************************
 
-	//Deberia recivir el nro del bloque
 	infoBloque=getBloque(arg->bloque_map);
 
 	strip(infoBloque.contenido);
@@ -40,11 +41,6 @@ void mapper(t_mapper* arg){
 	pipe(pipe_hijoAPadre);
 
 //*******************************************
-
-	if((pid = fork()) == -1){
-		printf("Error en el fork");
-		exit(1);
-	}
 
 
 	 if ( (pid=fork()) == 0 )
@@ -58,8 +54,9 @@ void mapper(t_mapper* arg){
 		close( pipe_hijoAPadre[1]);
 		close( pipe_padreAHijo[0]);
 
-		//execv("/tmp/mapper",NULL);
-		system("/tmp/mapper");
+		execve(arg->mapper,NULL,NULL);
+		//system("/tmp/mapper");
+		//exit(1);
 
 	  }
 	  else
@@ -72,23 +69,28 @@ void mapper(t_mapper* arg){
 	    //write( pipe_padreAHijo[1], "hola faknflanflfan", strlen("hola faknflanflfan") );
 	    close( pipe_padreAHijo[1]);
 
+	    waitpid(pid,&status,0);
+
 	    //Aca leo del hijo
 	    read( pipe_hijoAPadre[0], buffer, SIZE );
 	    close( pipe_hijoAPadre[0]);
 
-	    //char* archivoResultado=mapearAMemoriaVirtual(resultado);
-	    //ordernarAlfabeticamente(resultado,fdMapeo,sizeof(archivoResultado));
-	  }
-	 printf("Este es el resultado: %s\n",buffer);
-	 FILE* fdMapeo = fopen("/tmp/resultadoDelMapPorOrdenar","w");
-	 fputs(buffer,fdMapeo);
-	 fclose(fdMapeo);
+	 }
 
-	 asprintf(&resultado,"%s%s","/tmp/",arg->resultado);
-	 printf("Aca esta el temporal: %s\n",resultado);
+	asprintf(&resultado_aux,"%s%s","/tmp/resultadoDelMapPorOrdenar",string_itoa(arg->socket));
 
-	 int entero = 42;
-	 send(arg->socket,&entero,sizeof(int),0);
+	FILE* fdMapeo = fopen(resultado_aux,"w");
+	fputs(buffer,fdMapeo);
+	fclose(fdMapeo);
+
+	asprintf(&resultado,"%s%s","/tmp/",arg->resultado);
+	printf("Aca esta el temporal: %s\n",resultado);
+
+	ordernarAlfabeticamente(resultado,resultado_aux);
+	remove(arg->mapper);
+
+	int entero = 42;
+	send(arg->socket,&entero,sizeof(int),0);
 
 	variableDatos=0;
 	free(buffer);
@@ -115,7 +117,9 @@ void reducer(void* arg){
 	char* bufferProv;
 	char* buffer;
 
-	recv(socket,&tamanioDeLaEstructura,sizeof(int),0);
+	if(recv(socket,&tamanioDeLaEstructura,sizeof(int),0)<0){
+		return;
+	}
 	send(socket, &comando,sizeof(int),0);
 	recive_y_deserializa_EST_REDUCE(&red,socket,tamanioDeLaEstructura);
 
@@ -169,7 +173,7 @@ void reducer(void* arg){
 
 	   char* archivoResultado = mapearAMemoriaVirtual(tmp);
 
-	   ordernarAlfabeticamente(red.nombreArchivoResultado,fdRed,sizeof(archivoResultado));
+	   //ordernarAlfabeticamente(red.nombreArchivoResultado,fdRed,sizeof(archivoResultado));
 
 	    //close( pipe_hijoAPadre[0]);
 	  }
