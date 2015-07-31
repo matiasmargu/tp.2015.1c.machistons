@@ -37,12 +37,13 @@ int contarENT(char*buffer,int tamanio){
 }
 
 
-void ordernarAlfabeticamente(char* nombreDelArchivoResultado){
+void ordernarAlfabeticamente(char* nombreDelArchivoResultado,char* resultado_aux){
 
 	pid_t pid;
 	int status;
 
 	char* buffer=malloc(SIZE);
+	char* test;
 
 
 	int pipe_padreAHijo[2];
@@ -50,6 +51,8 @@ void ordernarAlfabeticamente(char* nombreDelArchivoResultado){
 
 	pipe(pipe_padreAHijo);
 	pipe(pipe_hijoAPadre);
+
+	asprintf(&test,"%s%s","sort ",resultado_aux);
 
 	if ( (pid=fork()) == 0 )
 		  { // hijo
@@ -62,7 +65,7 @@ void ordernarAlfabeticamente(char* nombreDelArchivoResultado){
 			close( pipe_hijoAPadre[1]);
 			close( pipe_padreAHijo[0]);
 
-			system("sort /tmp/resultadoDelMapPorOrdenar");
+			system(test);
 			exit(1);
 		  }
 		  else
@@ -89,6 +92,6 @@ void ordernarAlfabeticamente(char* nombreDelArchivoResultado){
 		fputs(buffer,fdCompletado);
 		fclose(fdCompletado);
 
-		system("rm /tmp/resultadoDelMapPorOrdenar");
+		remove(resultado_aux);
 		free(buffer);
 }

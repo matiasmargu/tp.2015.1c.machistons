@@ -114,12 +114,13 @@ int main(void) {
 		    			switch(entero){
 		    			case 8: // Este es el Job
 		    				printf("Se ha conectado un Job\n");
-		    				pthread_create(&hiloJob[contJ], NULL, &atenderJob, (void *)i);
+		    				pthread_create(&hiloJob[contJ], NULL,atenderJob, (void *)i);
+		    				printf("HILOS: %i\n",contJ);
 		    				contJ++;
 		    				break;
 		    			case 7: // Este es otro Nodo
-		    				printf("Se hha conectado un Nodo\n");
-		    				pthread_create(&hiloNodo[contN],NULL, &atenderNFS, (void*)i);
+		    				printf("Se ha conectado un Nodo\n");
+		    				pthread_create(&hiloNodo[contN],NULL, atenderNFS, (void*)i);
 		    				contN++;
 		    				break;
 		    			}

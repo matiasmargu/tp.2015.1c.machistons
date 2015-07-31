@@ -16,6 +16,7 @@ void mapper(t_mapper* arg){
 	char* bloque=malloc(SIZE);
 
 	char *resultado;
+	char* resultado_aux;
 
 	variableDatos=1;
 
@@ -53,7 +54,7 @@ void mapper(t_mapper* arg){
 		close( pipe_hijoAPadre[1]);
 		close( pipe_padreAHijo[0]);
 
-		execve("/tmp/mapper",NULL,NULL);
+		execve(arg->mapper,NULL,NULL);
 		//system("/tmp/mapper");
 		//exit(1);
 
@@ -74,23 +75,22 @@ void mapper(t_mapper* arg){
 	    read( pipe_hijoAPadre[0], buffer, SIZE );
 	    close( pipe_hijoAPadre[0]);
 
-	  }
+	 }
 
+	asprintf(&resultado_aux,"%s%s","/tmp/resultadoDelMapPorOrdenar",string_itoa(arg->socket));
 
-	 FILE* fdMapeo = fopen("/tmp/resultadoDelMapPorOrdenar","w");
-	 fputs(buffer,fdMapeo);
-	 fclose(fdMapeo);
+	FILE* fdMapeo = fopen(resultado_aux,"w");
+	fputs(buffer,fdMapeo);
+	fclose(fdMapeo);
 
-	 asprintf(&resultado,"%s%s","/tmp/",arg->resultado);
-	 printf("Aca esta el temporal: %s\n",resultado);
+	asprintf(&resultado,"%s%s","/tmp/",arg->resultado);
+	printf("Aca esta el temporal: %s\n",resultado);
 
-	 int entero = 42;
-	 send(arg->socket,&entero,sizeof(int),0);
+	ordernarAlfabeticamente(resultado,resultado_aux);
+	remove(arg->mapper);
 
-	 ordernarAlfabeticamente(resultado);
-
-	 entero = 42;
-	 send(arg->socket,&entero,sizeof(int),0);
+	int entero = 42;
+	send(arg->socket,&entero,sizeof(int),0);
 
 	variableDatos=0;
 	free(buffer);
@@ -117,7 +117,9 @@ void reducer(void* arg){
 	char* bufferProv;
 	char* buffer;
 
-	recv(socket,&tamanioDeLaEstructura,sizeof(int),0);
+	if(recv(socket,&tamanioDeLaEstructura,sizeof(int),0)<0){
+		return;
+	}
 	send(socket, &comando,sizeof(int),0);
 	recive_y_deserializa_EST_REDUCE(&red,socket,tamanioDeLaEstructura);
 
