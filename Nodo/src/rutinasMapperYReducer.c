@@ -8,41 +8,30 @@
 #include "variablesGlobales.h"
 
 
-void mapper(void* arg){
-
-
 #define SIZE 20*1024*1024
 
+void mapper(t_mapper* arg){
+
 	char* buffer=malloc(SIZE);
-	char* bloque;
+	char* bloque=malloc(SIZE);
+
+	char *resultado;
 
 	variableDatos=1;
 
-	int comando =1;
-	int socket = (int) arg;
-	int tamanioDelArchivoResultado;
-	int nroDeBloque;
-	int tamanioDelBloque;
+
+	t_getBloque infoBloque;
 
 	pid_t pid;
 
+	printf("el argumento: %i %i %s\n",arg->bloque_map,arg->socket,arg->resultado);
+
 //***************************************************
 
-	send(socket, &comando,sizeof(int),0);
-	recv(socket, &nroDeBloque,sizeof(int),0);
+	//Deberia recivir el nro del bloque
+	infoBloque=getBloque(arg->bloque_map);
 
-	send(socket, &comando,sizeof(int),0);
-	recv(socket, &tamanioDelArchivoResultado,sizeof(int),0);
-	send(socket, &comando,sizeof(int),0);
-
-	char* nombreDelArchivoResultado= malloc(tamanioDelArchivoResultado);
-
-	recv(socket, nombreDelArchivoResultado,tamanioDelArchivoResultado,0);
-
-	//Deveria recivir el nro del bloque
-	tamanioDelBloque=getBloque(nroDeBloque, bloque);
-
-	eliminarEnters(bloque,tamanioDelBloque);
+	strip(infoBloque.contenido);
 
 	int pipe_padreAHijo[2];
 	int pipe_hijoAPadre[2];
@@ -61,14 +50,16 @@ void mapper(void* arg){
 	 if ( (pid=fork()) == 0 )
 	  { // hijo
 
-		close( pipe_padreAHijo[1] ); /* cerramos el lado de escritura del pipe */
-		close( pipe_hijoAPadre[0] ); /* cerramos el lado de lectura del pipe */
-
-
 		dup2(pipe_padreAHijo[0],STDIN_FILENO);
 		dup2(pipe_hijoAPadre[1],STDOUT_FILENO);
 
-		execv("/tmp/mapper",NULL);
+		close( pipe_padreAHijo[1] ); /* cerramos el lado de escritura del pipe */
+		close( pipe_hijoAPadre[0] ); /* cerramos el lado de lectura del pipe */
+		close( pipe_hijoAPadre[1]);
+		close( pipe_padreAHijo[0]);
+
+		//execv("/tmp/mapper",NULL);
+		system("/tmp/mapper");
 
 	  }
 	  else
@@ -77,25 +68,31 @@ void mapper(void* arg){
 	    close( pipe_hijoAPadre[1] ); /* cerramos el lado de escritura del pipe */
 
 	    //Aca escribe en hijo
-	    write( pipe_padreAHijo[1], bloque, tamanioDelBloque );
+	    write( pipe_padreAHijo[1], infoBloque.contenido, infoBloque.tamanio );
+	    //write( pipe_padreAHijo[1], "hola faknflanflfan", strlen("hola faknflanflfan") );
 	    close( pipe_padreAHijo[1]);
 
 	    //Aca leo del hijo
 	    read( pipe_hijoAPadre[0], buffer, SIZE );
-
-	    FILE* fdMapeo = fopen("/tmp/resultadoDelMapPorOrdenar","w");
-	    fputs(buffer,fdMapeo);
-	    fclose(fdMapeo);
-
-	    char* archivoResultado=mapearAMemoriaVirtual(nombreDelArchivoResultado);
-	    ordernarAlfabeticamente(nombreDelArchivoResultado,fdMapeo,sizeof(archivoResultado));
-
 	    close( pipe_hijoAPadre[0]);
+
+	    //char* archivoResultado=mapearAMemoriaVirtual(resultado);
+	    //ordernarAlfabeticamente(resultado,fdMapeo,sizeof(archivoResultado));
 	  }
-	 variableDatos=0;
-	  waitpid( pid, NULL, 0 );
-	  free(buffer);
-	  free(bloque);
+	 printf("Este es el resultado: %s\n",buffer);
+	 FILE* fdMapeo = fopen("/tmp/resultadoDelMapPorOrdenar","w");
+	 fputs(buffer,fdMapeo);
+	 fclose(fdMapeo);
+
+	 asprintf(&resultado,"%s%s","/tmp/",arg->resultado);
+	 printf("Aca esta el temporal: %s\n",resultado);
+
+	 int entero = 42;
+	 send(arg->socket,&entero,sizeof(int),0);
+
+	variableDatos=0;
+	free(buffer);
+	free(bloque);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

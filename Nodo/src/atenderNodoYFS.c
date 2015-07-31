@@ -69,8 +69,6 @@ void *atenderNFS(void*arg){
 
 			send(socket,&tamanioBloque,sizeof(int),0);
 			recv(socket,&entero,sizeof(int),0);
-			send(socket,&entero,sizeof(int),0);
-			send(socket,&entero,sizeof(int),0);
 
 			loQueMande = send(socket,bloqueGet,tamanioBloque,0);
 			printf("Lo envie y esto fue el tamaño que envie: %i\n",loQueMande);

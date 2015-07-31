@@ -14,8 +14,15 @@ void* atenderJob(void* arg){
 	char* script_reducer;
 	int tamanioTotalIP_P;
 
+	char* paquete;
+	int tamanioDinamico;
+	int bloque_map;
+	int offset;
+	char* resultado_map;
+
 
 	t_para_nodo comb;
+	t_mapper* est_map;
 
 	pthread_t hiloMapper[1000];
 	pthread_t hiloReducer[1000];
@@ -36,23 +43,50 @@ void* atenderJob(void* arg){
 		switch(comando){
 			case 1: //Este va a ser el map
 				printf("Se levanto un hilo mapper\n");
+				offset=0;
+
 
 				send(socket, &comando,sizeof(int),0);
 
 				recv(socket,&tamanioScript,sizeof(int),0);
 				send(socket, &comando,sizeof(int),0);
 
+				paquete = malloc(tamanioScript);//Hago el espacio para el paquete
+				recv(socket,paquete,tamanioScript,0);//recivo el paquete
 
-				script_mapper=malloc(tamanioScript);
+				memcpy(&(bloque_map), paquete + offset, sizeof(int));//guarto el bloque en bloque_map
+				offset += sizeof(int);
 
-				recv(socket,script_mapper,tamanioScript,0);
+				memcpy(&tamanioDinamico, paquete + offset, sizeof(int));
+				offset += sizeof(int);
+
+				script_mapper = malloc(tamanioDinamico);
+				memcpy(script_mapper, paquete + offset, tamanioDinamico);
+				offset += tamanioDinamico;
+
+				memcpy(&tamanioDinamico, paquete + offset, sizeof(int));
+				offset += sizeof(int);
+
+				resultado_map = malloc(tamanioDinamico);
+				memcpy(resultado_map, paquete + offset, tamanioDinamico);
+				offset += tamanioDinamico;
+
+				est_map=malloc(sizeof(t_mapper));
+
+				est_map->bloque_map = bloque_map;
+				est_map->socket = socket;
+				est_map->resultado=resultado_map;
+
+				printf("En el bloque %i hago un map, y me da %s\n",est_map->bloque_map,est_map->resultado);
 
 				escribirScript(script_mapper,1);
 
-				chmod("/tmp/mapper",7777);
-				printf("se asignaron los permisos\n");
+				if(chmod("/tmp/mapper",0777)<0){
+					printf("No se le pudieron agregar los permisos\n");
+				}
+				printf("Termino la asignacion de permisos\n");
 
-				pthread_create(&hiloMapper[cont1], NULL, (void*) mapper,(void*) socket);
+				pthread_create(&hiloMapper[cont1], NULL, (void*) mapper, (void*) est_map);
 				cont1++;
 				break;
 
@@ -69,7 +103,7 @@ void* atenderJob(void* arg){
 				escribirScript(script_reducer,2);
 				send(socket, &comando,sizeof(int),0);
 
-				chmod("/tmp/reducer","7777");
+				chmod("/tmp/reducer",0777);
 				printf("se asignaron los permisos\n");
 
 				pthread_create(&hiloReducer[cont2], NULL,(void*)reducer,(void*) socket);
