@@ -23,12 +23,12 @@ void mapper(t_mapper* arg){
 	t_getBloque infoBloque;
 
 	pid_t pid;
+	int status;
 
 	printf("el argumento: %i %i %s\n",arg->bloque_map,arg->socket,arg->resultado);
 
 //***************************************************
 
-	//Deberia recivir el nro del bloque
 	infoBloque=getBloque(arg->bloque_map);
 
 	strip(infoBloque.contenido);
@@ -40,11 +40,6 @@ void mapper(t_mapper* arg){
 	pipe(pipe_hijoAPadre);
 
 //*******************************************
-
-	if((pid = fork()) == -1){
-		printf("Error en el fork");
-		exit(1);
-	}
 
 
 	 if ( (pid=fork()) == 0 )
@@ -58,8 +53,9 @@ void mapper(t_mapper* arg){
 		close( pipe_hijoAPadre[1]);
 		close( pipe_padreAHijo[0]);
 
-		execv("/tmp/mapper",NULL);
+		execve("/tmp/mapper",NULL,NULL);
 		//system("/tmp/mapper");
+		//exit(1);
 
 	  }
 	  else
@@ -72,14 +68,15 @@ void mapper(t_mapper* arg){
 	    //write( pipe_padreAHijo[1], "hola faknflanflfan", strlen("hola faknflanflfan") );
 	    close( pipe_padreAHijo[1]);
 
-
+	    waitpid(pid,&status,0);
 
 	    //Aca leo del hijo
 	    read( pipe_hijoAPadre[0], buffer, SIZE );
 	    close( pipe_hijoAPadre[0]);
+
 	  }
-	 printf("Este es el resultado: %s\n",buffer);
-	 printf("Este es el tamanio: %i\n",strlen(buffer));
+
+
 	 FILE* fdMapeo = fopen("/tmp/resultadoDelMapPorOrdenar","w");
 	 fputs(buffer,fdMapeo);
 	 fclose(fdMapeo);
@@ -90,8 +87,10 @@ void mapper(t_mapper* arg){
 	 int entero = 42;
 	 send(arg->socket,&entero,sizeof(int),0);
 
-	 //char* archivoResultado=mapearAMemoriaVirtual(resultado);
-	 //ordernarAlfabeticamente(resultado,fdMapeo,sizeof(archivoResultado));
+	 ordernarAlfabeticamente(resultado);
+
+	 entero = 42;
+	 send(arg->socket,&entero,sizeof(int),0);
 
 	variableDatos=0;
 	free(buffer);
@@ -172,7 +171,7 @@ void reducer(void* arg){
 
 	   char* archivoResultado = mapearAMemoriaVirtual(tmp);
 
-	   ordernarAlfabeticamente(red.nombreArchivoResultado,fdRed,sizeof(archivoResultado));
+	   //ordernarAlfabeticamente(red.nombreArchivoResultado,fdRed,sizeof(archivoResultado));
 
 	    //close( pipe_hijoAPadre[0]);
 	  }

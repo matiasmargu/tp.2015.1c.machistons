@@ -110,7 +110,7 @@ void leerID_NODO();
 void eliminarEnters(char* buffer, int tamanio);
 void formatearArchivo(char* pmap);
 void formatearBloque(char* pmap,int nroDeBloque);
-void ordernarAlfabeticamente(char* nombreDelArchivoResultado,FILE *fdMape,int tamanioArchivo);
+void ordernarAlfabeticamente(char* nombreDelArchivoResultado);
 int contarENT(char*buffer,int tamanio);
 
 //Funciones esenciales

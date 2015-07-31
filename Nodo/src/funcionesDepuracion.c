@@ -5,7 +5,7 @@
  *      Author: utnso
  */
 #include "variablesGlobales.h"
-
+#define SIZE 20*1024*1024
 
 //Elimina los enters de un buffer
 void strip(char *s) {
@@ -37,10 +37,12 @@ int contarENT(char*buffer,int tamanio){
 }
 
 
-void ordernarAlfabeticamente(char* nombreDelArchivoResultado,FILE *fdMape,int tamanioArchivo){
-	pid_t pid;
+void ordernarAlfabeticamente(char* nombreDelArchivoResultado){
 
-	char* buffer=malloc(tamanioArchivo);
+	pid_t pid;
+	int status;
+
+	char* buffer=malloc(SIZE);
 
 
 	int pipe_padreAHijo[2];
@@ -49,39 +51,44 @@ void ordernarAlfabeticamente(char* nombreDelArchivoResultado,FILE *fdMape,int ta
 	pipe(pipe_padreAHijo);
 	pipe(pipe_hijoAPadre);
 
+	if ( (pid=fork()) == 0 )
+		  { // hijo
 
+			//dup2(pipe_padreAHijo[0],STDIN_FILENO);
+			dup2(pipe_hijoAPadre[1],STDOUT_FILENO);
 
-	if((pid = fork()) == -1){
-		printf("Error en el fork");
-		exit(1);
-	}
+			close( pipe_padreAHijo[1] ); /* cerramos el lado de escritura del pipe */
+			close( pipe_hijoAPadre[0] ); /* cerramos el lado de lectura del pipe */
+			close( pipe_hijoAPadre[1]);
+			close( pipe_padreAHijo[0]);
 
+			system("sort /tmp/resultadoDelMapPorOrdenar");
+			exit(1);
+		  }
+		  else
+		  { // padre
+		    close( pipe_padreAHijo[0] ); /* cerramos el lado de lectura del pipe */
+		    close( pipe_hijoAPadre[1] ); /* cerramos el lado de escritura del pipe */
 
-	 if ( (pid=fork()) == 0 )
-	  { // hijo
+		    //Aca escribe en hijo
+		   // write( pipe_padreAHijo[1],mapRes,strlen(mapRes));
+		    //write( pipe_padreAHijo[1], "hola faknflanflfan", strlen("hola faknflanflfan") );
+		    close( pipe_padreAHijo[1]);
 
-		 close( pipe_padreAHijo[1] ); /* cerramos el lado de escritura del pipe */
-		 close( pipe_hijoAPadre[0] ); /* cerramos el lado de lectura del pipe */
+		    waitpid(pid,&status,0);
 
-		//dup2(pipe_padreAHijo[0],STDIN_FILENO);
-		dup2(pipe_hijoAPadre[1],STDOUT_FILENO);
+		    //Aca leo del hijo
+		    read( pipe_hijoAPadre[0], buffer, SIZE );
+		    close( pipe_hijoAPadre[0]);
 
-		execv("sort",fdMape);
-	  }
-	  else
-	  { // padre
-	    close( pipe_padreAHijo[0] ); // cerramos el lado de lectura del pipe
-	    close( pipe_hijoAPadre[1] ); //cerramos el lado de escritura del pipe
-	    //Aca escribe en hijo
+		  }
 
-		//Aca leo del hijo
-		read( pipe_hijoAPadre[0], buffer, tamanioArchivo );
+		//printf("Este es el resultado del sort: %s\n",buffer);
 
 		FILE* fdCompletado = fopen(nombreDelArchivoResultado,"w");
-		fputs(buffer,tamanioArchivo);
-		fclose(buffer);
+		fputs(buffer,fdCompletado);
+		fclose(fdCompletado);
 
-		close( pipe_hijoAPadre[0]);
-		  }
-	  waitpid( pid, NULL, 0 );
+		system("rm /tmp/resultadoDelMapPorOrdenar");
+		free(buffer);
 }
