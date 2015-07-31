@@ -1170,3 +1170,33 @@ int CalcFileMD5(char *file_name, char *md5_sum)
     pclose(p);
     return i == MD5_LEN;
 }
+
+char *pedirArchivoA(int socket, char *nombre){
+	char *contenidoArchivo;
+	char *contenidoArchivoAux;
+	int entero,tamanioReal,tamanioLeido;
+
+	entero = 3;
+	send(socket,&entero,sizeof(int),0);
+	if(recv(socket,&entero,sizeof(int),0)<0) return "error"; // basura
+
+	entero = strlen(nombre);
+	printf("tamanio del nombre: %i\n",entero);
+	send(socket,&entero,sizeof(int),0); // tamanio nombre
+	if(recv(socket,&entero,sizeof(int),0)<0) return "error"; // basura
+	printf("nombre %s\n",nombre);
+	send(socket,nombre,strlen(nombre),0); // nombre
+	if(recv(socket,&entero,sizeof(int),0)<0) return "error"; // tamanio contenido
+	printf("tamanio :%i\n",entero);
+	contenidoArchivo = malloc(entero);
+	send(socket,&entero,sizeof(int),0); // basura
+	tamanioLeido = 0;
+	while(tamanioLeido != entero){
+		contenidoArchivoAux = malloc(64*1024);
+		tamanioReal = recv(socket,contenidoArchivoAux,64*1024,0);
+		if(tamanioReal < 0) return "error";
+		memcpy(contenidoArchivo+tamanioLeido,contenidoArchivoAux,tamanioReal);
+		tamanioLeido += tamanioReal;
+	}
+	return contenidoArchivo;
+}

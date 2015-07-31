@@ -77,6 +77,10 @@ void *atenderConsola(void*arg) {
 					//printf("%s\n",mensaje);
 					break;
 				case Borrar_Bloque_Arch: // 10
+					mensaje = pedirArchivoA(5,"resultadasoDelReduce");
+					FILE *fd = fopen("/tmp/resultTemp","w");
+					fputs(mensaje,fd);
+					fclose(fd);
 					break;
 				case Copiar_Bloque_Arch: // 11
 					//////calcularCombinacionesDeAsignacion();

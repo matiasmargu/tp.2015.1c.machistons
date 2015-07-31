@@ -163,5 +163,6 @@ void eliminarDirectorio();
 void crearDirectorio();
 int CalcFileMD5(char *file_name, char *md5_sum);
 void eliminarArchivo();
+char *pedirArchivoA(int socket, char *nombre);
 
 #endif /* LIBRERIAS_Y_ESTRUCTURAS_H_ */

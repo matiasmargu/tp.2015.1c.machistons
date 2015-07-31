@@ -71,6 +71,8 @@ typedef struct{
 	char *IP_Destino;
 	char *PUERTO_Destino;
 	char *nombreArchivo;
+	int id_job;
+	int id_proceso;
 }t_moverArchivo;
 
 char* mapearAMemoriaVirtual(char* archivo);
