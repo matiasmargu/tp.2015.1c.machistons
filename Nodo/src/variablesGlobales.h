@@ -67,7 +67,8 @@ typedef struct{
 	int socket;
 	char* resultado;
 	char* reducer;
-	t_list* lista;
+	char* lista[1000];
+	int cant;
 }t_reduce;
 
 typedef struct{

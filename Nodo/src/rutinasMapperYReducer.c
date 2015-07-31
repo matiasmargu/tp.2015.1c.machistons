@@ -108,30 +108,47 @@ void reducer(t_reduce* arg){
 	pipe(pipe_padreAHijo);
 	pipe(pipe_hijoAPadre);
 
-	int indice = 0;
 	int status;
 	char* bufferProv;
 	char* buffer;
 
 	char*resultado;
 	char*resultado_aux;
-	char* elim;
-	char* bufferRed;
+	char* bufferRed=malloc(SIZE);
+	char* nombre;
 
+	int a,offsetRed,tamanioTotal, tamanioResuMap;
 
-	while(!list_is_empty(arg->lista)){
-		char* nombre=list_remove(arg->lista,indice);
+	tamanioTotal = 0;
+	for(a=0;a<arg->cant;a++){
+		asprintf(&nombre,"%s%s","/tmp/",(arg->lista[a]));
 		bufferProv = mapearAMemoriaVirtual(nombre);
-		if(indice == 0){
-			buffer = bufferProv;
-		}else{
-			string_append(buffer,bufferProv);
-		}
-		indice++;
-		asprintf(&elim,"%s%s","/tmp/",nombre);
-		remove(elim);
+		tamanioTotal += strlen(bufferProv);
 	}
 
+	printf("tam total: %i\n",tamanioTotal);
+	buffer = malloc(tamanioTotal);
+	offsetRed = 0;
+
+	a=0;
+	while(a<(arg->cant)){
+		asprintf(&nombre,"%s%s","/tmp/",(arg->lista[a]));
+		printf("nom: %s\n",nombre);
+		bufferProv = mapearAMemoriaVirtual(nombre);
+
+		tamanioResuMap = strlen(bufferProv);
+		memcpy(buffer+offsetRed,bufferProv,tamanioResuMap);
+		offsetRed += tamanioResuMap;
+		//printf("el of: %i el tam: %i\n",offsetRed,tamanioResuMap);
+		//printf("buf1: %i\n",strlen(buffer));
+		remove(nombre);
+		a++;
+	}
+
+	//strip(buffer);
+	//tamanioTotal=strlen(buffer);
+	//bufferRed=malloc(buffer);
+	//printf("buf2: %i\n",strlen(buffer));
 
 	 if ( (pid=fork()) == 0 )
 		  { // hijo
@@ -155,7 +172,7 @@ void reducer(t_reduce* arg){
 		    close( pipe_hijoAPadre[1] ); /* cerramos el lado de escritura del pipe */
 
 		    //Aca escribe en hijo
-		    write( pipe_padreAHijo[1], buffer, strlen(buffer) );
+		    write( pipe_padreAHijo[1], buffer,tamanioTotal);
 		    //write( pipe_padreAHijo[1], "hola faknflanflfan", strlen("hola faknflanflfan") );
 		    close( pipe_padreAHijo[1]);
 
@@ -167,16 +184,20 @@ void reducer(t_reduce* arg){
 
 		 }
 	asprintf(&resultado_aux,"%s%s","/tmp/resultadoDelReducePorOrdenar",string_itoa(arg->socket));
+	printf("%s\n",bufferRed);
 
 	FILE* fdRed = fopen(resultado_aux,"w");
+	//printf("%s\n",bufferRed);
 	fputs(bufferRed,fdRed);
 	fclose(fdRed);
+
 
 	asprintf(&resultado,"%s%s","/tmp/",arg->resultado);
 	printf("Aca esta el temporal: %s\n",resultado);
 
-
 	ordernarAlfabeticamente(resultado,resultado_aux);
+	remove(arg->reducer);
+
 	free(bufferRed);
 	free(buffer);
 

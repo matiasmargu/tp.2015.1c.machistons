@@ -14,6 +14,7 @@ void* atenderJob(void* arg){
 	char* script_reducer;
 	int tamanioTotalIP_P;
 
+	char* listaAux[1000];
 	char* paquete;
 	int tamanioDinamico;
 	int bloque_map;
@@ -25,6 +26,9 @@ void* atenderJob(void* arg){
 	char* dir_map;
 	char* dir_red;
 	int cantidadArch;
+
+	int a;
+	char* pruebita;
 
 
 	t_para_nodo comb;
@@ -121,46 +125,49 @@ void* atenderJob(void* arg){
 				send(socket, &comando,sizeof(int),0);
 
 				recv(socket,&tamanioScript,sizeof(int),0);
-				send(socket, &comando,sizeof(int),0);
-				script_reducer=malloc(tamanioScript);
-
-				recv(socket,script_reducer,tamanioScript,0);
+				printf("tam: %i\n",tamanioScript);
 				send(socket, &comando,sizeof(int),0);
 
 				// paquete a deserializar [tamanioResultado][Resultado][tamanioScript][scrip][cantidadDeArchivos]([tamanioNombreArchivo][Nombre])*
 				// * bucle para archivos
 				paquete=malloc(tamanioScript);
+				recv(socket,paquete,tamanioScript,0);
 
 				memcpy(&tamanioDinamico, paquete + offset, sizeof(int));
 				offset += sizeof(int);
 
 				resultado_script = malloc(tamanioDinamico);
-				memcpy(resultado_map, paquete + offset, tamanioDinamico);
+				memcpy(resultado_script, paquete + offset, tamanioDinamico);
 				offset += tamanioDinamico;
+				//printf("res: %s\n",resultado_script);
 
 				memcpy(&tamanioDinamico, paquete + offset, sizeof(int));
 				offset += sizeof(int);
 
 				script_reducer = malloc(tamanioDinamico);
-				memcpy(script_mapper, paquete + offset, tamanioDinamico);
+				memcpy(script_reducer, paquete + offset, tamanioDinamico);
 				offset += tamanioDinamico;
+				//printf("scr: %s\n",script_reducer);
 
-				memcpy(&cantidadArch,paquete + offset, sizeof(cantidadArch));
-				offset += sizeof(cantidadArch);
-
-				int a;
-				char* archivo;
+				memcpy(&cantidadArch,paquete + offset, sizeof(int));
+				offset += sizeof(int);
+				//printf("cant: %i\n",cantidadArch);
 
 				//deserializa la lista
-				listaArchivos = list_create();
-				for(a=0;a< cantidadArch ; a++){
+				//listaArchivos = list_create();
+				for(a=0; a<cantidadArch ; a++){
+					//printf("o: %i\n",offset);
 					memcpy(&tamanioDinamico, paquete + offset, sizeof(int));
 					offset += sizeof(int);
-					archivo = malloc(tamanioDinamico);
-					memcpy(archivo, paquete + offset, tamanioDinamico);
+					//printf("o dsp: %i\n",offset);
+					//printf("tam din: %i\n",tamanioDinamico);
+
+					pruebita = malloc(tamanioDinamico);
+					memcpy(pruebita, paquete + offset, tamanioDinamico);
 					offset += tamanioDinamico;
-					printf("el archivooo %s \n\n",archivo);
-					list_add(listaArchivos,archivo);
+					//printf("el archivo: %s\n",pruebita);
+					//list_add(listaArchivos,archivo);
+					listaAux[a]=pruebita;
 				}
 
 
@@ -168,7 +175,16 @@ void* atenderJob(void* arg){
 
 				est_red->socket=socket;
 				est_red->resultado=resultado_script;
-				est_red->lista=listaArchivos;
+
+				//printf("socket: %i\nres: %s\n",est_red->socket,est_red->resultado);
+
+				int contaE=0;
+				while(contaE<cantidadArch){
+					est_red->lista[contaE]=listaAux[contaE];
+					//printf("arch: %s\n",est_red->lista[contaE]);
+					contaE++;
+				}
+				est_red->cant=cantidadArch;
 
 				dir_red=escribirScript(script_reducer,2,est_red->socket);
 
@@ -176,8 +192,10 @@ void* atenderJob(void* arg){
 					printf("No se le pudieron agregar los permisos\n");
 				}
 
-
 				est_red->reducer=dir_red;
+
+
+				printf("Este es el archivo resultado: %s\n",est_red->resultado);
 
 				printf("se asignaron los permisos\n");
 
