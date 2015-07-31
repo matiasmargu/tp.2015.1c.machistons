@@ -133,7 +133,7 @@ void reducer(t_reduce* arg){
 	a=0;
 	while(a<(arg->cant)){
 		asprintf(&nombre,"%s%s","/tmp/",(arg->lista[a]));
-		printf("nom: %s\n",nombre);
+		//printf("nom: %s\n",nombre);
 		bufferProv = mapearAMemoriaVirtual(nombre);
 
 		tamanioResuMap = strlen(bufferProv);
@@ -205,4 +205,3 @@ void reducer(t_reduce* arg){
 	return;
 
 }
-
