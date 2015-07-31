@@ -176,10 +176,11 @@ void recive_y_guarda_infoNodo(int tamanio, int socket, void *array);
 void  *conectarseAlJob(void*arg);
 //int recive_y_deserialisa_job(t_job_marta* job_marta, int socket,uint32_t tamanioTotal );
 //char* serializar_estructura_t_marta_a_job(t_marta_job estructura_t_marta_a_job, int tamanioTotal);
-void aplicarReduce(t_aplicarReduce structRecibido);
+
 void atenderJob(void *arg);
 void inicializar_pedido_FS();
 void planificarMap(int a,int socketJob);
+void aplicarReduce(int idJob);
 
 
 #endif /* LIBRERIAS_Y_ESTRUCTURAS_H_ */

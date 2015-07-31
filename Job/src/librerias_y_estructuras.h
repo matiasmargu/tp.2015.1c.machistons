@@ -44,6 +44,7 @@ char* rutinaMapper;
 char* rutinaReduce;
 int contadorHilos;
 pthread_mutex_t mutex;
+pthread_mutex_t mutex_reduce;
 
 typedef struct{
 	char *IP;
@@ -57,8 +58,11 @@ typedef struct{
 typedef struct{
 	char *IP;
 	char *PUERTO;
-	char *listaArchivos;
+	int cantidadArchivos;
+	char *listaArchivos; // paquete serializado
 	char *resultado;
+	int id_job;
+	int id_proceso;
 }t_aplicarReduce;
 
 typedef struct{
@@ -73,5 +77,6 @@ char* mapearAMemoriaVirtual(char* archivo);
 void *aplicarMapperF (t_aplicarMapper *estructura);
 void *aplicarReduceF (t_aplicarReduce *estructura);
 void *moverArchivoF (t_moverArchivo *estructura);
+void respuestaAMarta(int tipo,int idProceso, int idJob, int estado);
 
 #endif /* LIBRERIAS_Y_ESTRUCTURAS_H_ */
