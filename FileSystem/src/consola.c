@@ -179,6 +179,7 @@ void formatear(){
 	cantidad = mongoc_collection_count(nodos, MONGOC_QUERY_NONE, query,0,0,NULL,NULL);
 	if(cantidad > 0){
 		printf("Formateando el MDFS...");
+		sleep(20);
 		cursor = mongoc_collection_find (nodos, MONGOC_QUERY_NONE, 0, 0, 0, query, NULL, NULL);
 		while (mongoc_cursor_next (cursor, &doc)) {
 			if (bson_iter_init (&iter, doc)) {
@@ -190,7 +191,6 @@ void formatear(){
 				}
 			}
 		}
-		sleep(20);
 	}else{
 		printf("No hay nodos conectados para formatear \n");
 	}

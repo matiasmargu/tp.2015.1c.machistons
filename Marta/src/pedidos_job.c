@@ -9,8 +9,9 @@
 #include "librerias_y_estructuras.h"
 
 void serializar_map_job(int socketJob, int tamanio_total, t_marta_job_map *estructura, int bloque){
-	int tamanio;
+	int tamanio = 0;
 	int offset = 0;
+	int tam = 0;
 	printf("TAMAÑO TOTAL: %i\n",tamanio_total);
 	char *buffer = malloc(tamanio_total);
 	//ip
@@ -88,6 +89,7 @@ void atenderJob(void *arg){
 	send(socketFS,&handshakeFS,sizeof(int),0);
 	int tamanio_total = 0;
 	lista_nodos_estado = list_create();
+	printf("12354\n");
 
 	recv(socketFS,&tamanio_total,sizeof(int),0);
 	send(socketFS,&handshakeFS,sizeof(int),0);
@@ -160,7 +162,6 @@ void atenderJob(void *arg){
 	tabla_procesos_job = list_get(lista_tabla_procesos,job->id_job);
 	t_tablaProcesos_porJob *tablaProcesos = malloc(sizeof(t_tablaProcesos_porJob));
 	printf("TAMAÑO DE LA LISTA EN EL CONTROL: %i\n",list_size(tabla_procesos_job->tabla_procesos));
-	char *ip = "192.168.1.45";
 	for(i=0;i<list_size(tabla_procesos_job->tabla_procesos);i++){
 		tablaProcesos = list_get(tabla_procesos_job->tabla_procesos,i);
 		//printf("ID DEL NODO: %i", tablaProcesos->id_nodo);
@@ -179,46 +180,7 @@ void atenderJob(void *arg){
 		tamanio_total = strlen(enviar_nodo->ip_nodo) + strlen(enviar_nodo->puerto) + strlen(enviar_nodo->nombre_archivo_resultado) + (sizeof(int)*5);
 		send(socketJob,&tamanio_total,sizeof(int),0);
 		if(recv(socketJob,&handshakeJob,sizeof(int),0)<0) return;
-		//serializar_map_job(socketJob, tamanio_total, enviar_nodo, bloque);
-
-			offset = 0;
-			printf("TAMAÑO TOTAL: %i\n",tamanio_total);
-			free(buffer);
-			buffer = malloc(tamanio_total);
-			//ip
-			printf("ip: %s\n", enviar_nodo->ip_nodo);
-			tamanio = strlen(ip);
-			printf("TAMAÑO IP: %i\n",tamanio);
-			memcpy(buffer+offset,&tamanio,sizeof(int));
-			offset += sizeof(int);
-			memcpy(buffer+offset,ip,tamanio);
-			offset += tamanio;
-			//puerto
-			printf("puerto: %s\n", enviar_nodo->puerto);
-			tamanio = strlen(enviar_nodo->puerto);
-			memcpy(buffer+offset,&tamanio,sizeof(int));
-			offset += sizeof(int);
-			memcpy(buffer+offset,enviar_nodo->puerto,tamanio);
-			offset += tamanio;
-			//archivo resultado
-			printf("resultado final: %s\n", enviar_nodo->nombre_archivo_resultado);
-			tamanio = strlen(enviar_nodo->nombre_archivo_resultado);
-			memcpy(buffer+offset,&tamanio,sizeof(int));
-			offset += sizeof(int);
-			memcpy(buffer+offset,enviar_nodo->nombre_archivo_resultado,tamanio);
-			offset += tamanio;
-			//id map
-			printf("id: %i\n", enviar_nodo->id_map);
-			memcpy(buffer+offset,&(enviar_nodo->id_map),sizeof(int));
-			offset += sizeof(int);
-			//bloque
-			printf("bloque: %i", bloque);
-			memcpy(buffer+offset,&(bloque),sizeof(int));
-			offset += sizeof(int);
-
-			printf("buffer: %s\n",buffer);
-
-			send(socketJob,buffer,tamanio_total,0);
+		serializar_map_job(socketJob, tamanio_total, enviar_nodo, bloque);
 	}
 
 

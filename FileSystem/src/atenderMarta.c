@@ -42,7 +42,6 @@ void *atenderMarta(void*arg){
 	int tamanioDinamico;
 	send(socketMarta, &enteroPrueba,sizeof(int),0);
 
-
 	for(;;){
 		if(recv(socketMarta, &entero, sizeof(int),0)< 0) return NULL; // Entero para aceptar el pedido de Marta
 		switch(entero){
