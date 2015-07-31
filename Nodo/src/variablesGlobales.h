@@ -64,6 +64,14 @@ typedef struct{
 }t_mapper;
 
 typedef struct{
+	int socket;
+	char* resultado;
+	char* reducer;
+	char* lista[1000];
+	int cant;
+}t_reduce;
+
+typedef struct{
 	int tamanio;
 	char *contenido;
 }t_getBloque;
@@ -71,7 +79,7 @@ typedef struct{
 
 //Funciones de mapper y reducer
 void mapper(t_mapper* arg);
-void reducer(void* arg);
+void reducer(t_reduce* arg);
 
 //Funciones de memoria
 char* mapearAMemoriaVirtual(char* archivo_bin);

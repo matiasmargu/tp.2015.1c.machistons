@@ -129,6 +129,7 @@ void *atenderNFS(void*arg){
 		break;
 		//getFileContent(nombre);
 		case 3:
+			printf("antes\n");
 			getFileContent(socket);
 
 			//ok = 20;

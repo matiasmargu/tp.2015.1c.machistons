@@ -9,38 +9,37 @@
 
 void getFileContent(int socket){
 	int tamanioDelNombre;
+	int entero = 45;
 
 	char* nombreAguardar;
 	char* copiaDir;
 	char* fileGetContent;
 	char* mensaje;
 
-	send(socket,&tamanioDelNombre,sizeof(int),0);//Para que no se boludee
-
+	send(socket,&entero,sizeof(int),0);//Para que no se boludee
 	recv(socket,&tamanioDelNombre,sizeof(int),0);
-	send(socket,&tamanioDelNombre,sizeof(int),0);
 	nombreAguardar = malloc(tamanioDelNombre);
+	send(socket,&entero,sizeof(int),0);
 
-	recive_y_deserialisa_CHARp(nombreAguardar, socket, tamanioDelNombre);
-
-	copiaDir=string_duplicate(dir_temp);
-	string_append(&copiaDir,nombreAguardar);
+	recv(socket,nombreAguardar,tamanioDelNombre,0);
+	*(nombreAguardar + tamanioDelNombre) = '\0';
+	printf("tam: %i\n",tamanioDelNombre);
+	printf("nom: %s\n",nombreAguardar);
+	asprintf(&copiaDir,"%s%s","/tmp/",nombreAguardar);
+	*(copiaDir + tamanioDelNombre + strlen("/tmp/")) = '\0';
+	printf("dir: %s\n",copiaDir);
 
 	fileGetContent = mapearAMemoriaVirtual(copiaDir);
 	char* buffer = malloc(strlen(fileGetContent));
 
 	memcpy(buffer,fileGetContent,strlen(fileGetContent));
 
-	mensaje = serializarBloqueDeDatos(buffer,strlen(fileGetContent));
 
 	int tamanioData = strlen(fileGetContent);
+	printf("tam data: %i\n",tamanioData);
 	send(socket,&tamanioData,sizeof(int),0);
 	recv(socket,&tamanioDelNombre,sizeof(int),0);
-	send(socket,mensaje,strlen(fileGetContent),0);
-
-	free(mensaje);
-	free(buffer);
-
+	send(socket,buffer,tamanioData,0);
 }
 
 void pedirContenidoDeUnArchivo(char* nombre,int socket){
@@ -61,10 +60,9 @@ void pedirContenidoDeUnArchivo(char* nombre,int socket){
 
 	dataDelFile = malloc(tamanioData);
 
-	recive_y_deserialisa_CHARp(dataDelFile, socket, tamanioData);
+	recv(socket,dataDelFile,tamanioData,0);
 
-	copiaDir=string_duplicate(dir_temp);
-	string_append(&copiaDir,nombre);
+	asprintf(&copiaDir,"%s%s","/tmp/",nombre);
 
 	FILE* fdAGuardar = fopen(copiaDir,"w");
 	fputs(dataDelFile,fdAGuardar);
