@@ -12,29 +12,36 @@ int recive_y_deserializa_NODO_C(t_para_nodo *bloque, int socket, uint32_t tamani
 	int status;
 	char* buffer = malloc(tamanioTotal);
 	int offset = 0;
-	int tamanioDinamico;
+	int tamanioDinamico=0;
 
 	recv(socket, buffer, tamanioTotal, 0);
+
 	memcpy(&tamanioDinamico, buffer + offset, sizeof(int));
 	offset += sizeof(int);
+	//printf("tam din: %i\n",tamanioDinamico);
 
 	bloque->ip = malloc(tamanioDinamico);
 	memcpy(bloque->ip, buffer + offset, tamanioDinamico);
 	offset += tamanioDinamico;
+	//printf("ip: %s\n",bloque->ip);
 
 	memcpy(&tamanioDinamico, buffer + offset, sizeof(int));
 	offset += sizeof(int);
+	//printf("tam din: %i\n",tamanioDinamico);
 
 	bloque->puerto = malloc(tamanioDinamico);
 	memcpy(bloque->puerto, buffer + offset, tamanioDinamico);
 	offset += tamanioDinamico;
+	//printf("puerto: %s\n",bloque->puerto);
 
 	memcpy(&tamanioDinamico, buffer + offset, sizeof(int));
 	offset += sizeof(int);
+	//printf("tam din: %i\n",tamanioDinamico);
 
 	bloque->archivo = malloc(tamanioDinamico);
 	memcpy(bloque->archivo, buffer + offset, tamanioDinamico);
 	offset += tamanioDinamico;
+	//printf("arch: %s\n",bloque->archivo);
 
 	return status;
 	}

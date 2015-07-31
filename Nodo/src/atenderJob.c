@@ -31,7 +31,7 @@ void* atenderJob(void* arg){
 	char* pruebita;
 
 
-	t_para_nodo comb;
+	t_para_nodo* comb;
 	t_mapper* est_map;
 	t_reduce* est_red;
 	t_list* listaArchivos;
@@ -209,15 +209,20 @@ void* atenderJob(void* arg){
 
 				recv(socket,&tamanioTotalIP_P,sizeof(int),0);
 				send(socket, &comando,sizeof(int),0);
-				recive_y_deserializa_NODO_C(&comb,socket,tamanioTotalIP_P);
-				send(socket, &comando,sizeof(int),0);
+				//printf("tam: %i\n",tamanioTotalIP_P);
+				comb=malloc(sizeof(t_para_nodo));
+				recive_y_deserializa_NODO_C(comb,socket,tamanioTotalIP_P);
 
-				int socket_nodo = crearCliente(comb.ip,comb.puerto);
+
+				//printf("Este es el IP: %s\nEste es el PUERTO: %s\nEste es el nombre del arch: %s\n",comb->ip,comb->puerto,comb->archivo);
+
+				int socket_nodo = crearCliente(comb->ip,comb->puerto);
 
 				comando=3;
 
 				send(socket_nodo,&comando,sizeof(int),0);
-				pedirContenidoDeUnArchivo(comb.archivo,socket_nodo);
+				pedirContenidoDeUnArchivo(comb->archivo,socket_nodo);
+				send(socket, &comando,sizeof(int),0);
 				break;
 				}
 		}
