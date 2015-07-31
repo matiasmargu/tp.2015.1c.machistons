@@ -100,7 +100,9 @@ void planificarMap(int id_job, int socketJob){
     		printf("control2\n");
     		tabla_procesos->nombre_archivo_resultado = malloc(strlen(archivo_resultado_map3));*/
     		tabla_procesos->nombre_archivo_resultado = "PUTO";
+    		pthread_mutex_lock(&mutex_lista_procesos);
     		list_add(tabla_procesos_job->tabla_procesos,tabla_procesos);
+    		pthread_mutex_unlock(&mutex_lista_procesos);
     		contador_id ++;
     		printf("       %i        |       %i        |        %i      |        %i       |        %s       |        %s       |\n",tabla_procesos->id_map,tabla_procesos->estado,tabla_procesos->id_nodo,tabla_procesos->bloque_archivo,tabla_procesos->nombre_archivo,tabla_procesos->nombre_archivo_resultado);
 

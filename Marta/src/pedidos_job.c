@@ -8,46 +8,75 @@
 
 #include "librerias_y_estructuras.h"
 
-void serializar_map_job(int socketJob, int tamanio_total, t_marta_job_map *estructura, int bloque){
+void serializar_map_job(int socketJob, int tamanio_total, t_marta_job_map *estructura, int bloque, int id_job){
 	int tamanio = 0;
 	int offset = 0;
-	int tam = 0;
-	printf("TAMAÑO TOTAL: %i\n",tamanio_total);
 	char *buffer = malloc(tamanio_total);
 	//ip
-	printf("ip: %s\n", estructura->ip_nodo);
 	tamanio = strlen(estructura->ip_nodo) + 1;
 	memcpy(buffer+offset,&tamanio,sizeof(int));
 	offset += sizeof(int);
 	memcpy(buffer+offset,estructura->ip_nodo,tamanio);
 	offset += tamanio;
 	//puerto
-	printf("puerto: %s\n", estructura->puerto);
 	tamanio = strlen(estructura->puerto) + 1;
 	memcpy(buffer+offset,&tamanio,sizeof(int));
 	offset += sizeof(int);
 	memcpy(buffer+offset,estructura->puerto,tamanio);
 	offset += tamanio;
 	//archivo resultado
-	printf("resultado final: %s\n", estructura->nombre_archivo_resultado);
 	tamanio = strlen(estructura->nombre_archivo_resultado) + 1;
 	memcpy(buffer+offset,&tamanio,sizeof(int));
 	offset += sizeof(int);
 	memcpy(buffer+offset,estructura->nombre_archivo_resultado,tamanio);
 	offset += tamanio;
 	//id map
-	printf("id: %i\n", estructura->id_map);
 	memcpy(buffer+offset,&(estructura->id_map),sizeof(int));
 	offset += sizeof(int);
 	//bloque
-	printf("bloque: %i", bloque);
 	memcpy(buffer+offset,&(bloque),sizeof(int));
 	offset += sizeof(int);
+	//idJob
+	memcpy(buffer+offset,&(id_job),sizeof(int));
+	offset += sizeof(int);
 
-	printf("buffer: %s\n",buffer);
 
 	send(socketJob,buffer,tamanio_total,0);
 }
+
+int esperar_que_terminen(int id_job){
+	int i,j;
+
+	bool flag = false;
+	t_job_procesos *job_procesos = malloc(sizeof(t_job_procesos));
+	t_tablaProcesos_porJob *tabla_procesos = malloc(sizeof(t_tablaProcesos_porJob));
+
+	job_procesos = list_get(lista_tabla_procesos, id_job);
+
+
+	while(1){
+		sleep(5);
+		j=0;
+		while((flag != true)  && (j<cant_nodos)){
+			for(i=0;i<list_size(job_procesos->tabla_procesos);i++){
+				tabla_procesos = list_get(job_procesos->tabla_procesos,i);
+				if(tabla_procesos->estado == 2) return 1;
+				else{
+					if(tabla_procesos->estado == 0) {
+						flag = true;
+						break;
+					}
+				}
+			}
+			j++;
+		}
+	}
+
+
+
+	return 0;
+}
+
 
 void atenderJob(void *arg){
 	int socketJob = (int)arg;
@@ -57,7 +86,6 @@ void atenderJob(void *arg){
 	int enteroPrueba = 0;
 	int offset = 0;
 	int tamanio, cantidad_archivos,i;
-	lista_jobs = list_create();
 
 
 	//EMPIEZA LA INTERFAZ CON FS
@@ -176,12 +204,13 @@ void atenderJob(void *arg){
 		int handshakeJob = 30;
 		send(socketJob,&handshakeJob,sizeof(int),0);
 		if(recv(socketJob,&handshakeJob,sizeof(int),0)<0) return;
-		printf("%i\n",i);
-		tamanio_total = strlen(enviar_nodo->ip_nodo) + strlen(enviar_nodo->puerto) + strlen(enviar_nodo->nombre_archivo_resultado) + (sizeof(int)*5);
+		tamanio_total = strlen(enviar_nodo->ip_nodo) + strlen(enviar_nodo->puerto) + strlen(enviar_nodo->nombre_archivo_resultado) + (sizeof(int)*6) + 3;
 		send(socketJob,&tamanio_total,sizeof(int),0);
 		if(recv(socketJob,&handshakeJob,sizeof(int),0)<0) return;
-		serializar_map_job(socketJob, tamanio_total, enviar_nodo, bloque);
+		serializar_map_job(socketJob, tamanio_total, enviar_nodo, bloque,job->id_job);
+		//sleep(1);
 	}
 
+	//esperar_que_terminen(job->id_job);
 
 }
