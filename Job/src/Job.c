@@ -16,8 +16,8 @@ int main(void) {
 	t_config* archivoConfiguracion;
 	rutaArchivoConfiguracion = "/home/utnso/git/tp-2015-1c-machistons/Configuracion/job.conf";
 	archivoConfiguracion = config_create(rutaArchivoConfiguracion);
-	char *puerto_marta;
-	char *ip_marta;
+	contadorHilos=0;
+	int socketMarta;
 	char *mapper;
 	char *reduce;
 	char *textCombiner;
@@ -25,6 +25,7 @@ int main(void) {
 	char *lista_archivos;
 	char **nombreArchivos;
 	char *archivo_resultado;
+	int tamanioPaquete;
 	char *paquete; //paquete para enviar y recibir cosas
 	char *paqueteDeseliariza;
 	int offset;
@@ -114,7 +115,6 @@ int main(void) {
 	free(paquete);
 
 	// Espero indicaciones de Marta
-	char* IP;
 
 	x = 0;
 	while (x!=1){
@@ -122,57 +122,49 @@ int main(void) {
 		switch(entero){
 			case 30: // Aplicar Map
 				aplicarMapper = malloc(sizeof(t_aplicarMapper));
+
 				send(socketMarta, &entero, sizeof(int),0); // basura
-				if(recv(socketMarta, &entero, sizeof(int),0)<0) return EXIT_SUCCESS; // recibo el tamanio del paquete
+				if(recv(socketMarta, &tamanioPaquete, sizeof(int),0)<0) return EXIT_SUCCESS; // recibo el tamanio del paquete
 
-				printf("tamanio paquete: %i\n",entero);
-
-				paqueteDeseliariza = malloc(entero);
+				paqueteDeseliariza = malloc(tamanioPaquete);
 				offset = 0;
 
 				send(socketMarta, &entero, sizeof(int),0); // basura
-				if(recv(socketMarta, paqueteDeseliariza, sizeof(int),0)<0) return EXIT_SUCCESS; // recibo el paquete
+				if(recv(socketMarta, paqueteDeseliariza, tamanioPaquete,0)<0) return EXIT_SUCCESS; // recibo el paquete
 				send(socketMarta, &entero, sizeof(int),0); // basura
 
-				// paquete de Marta [tamanioIP][IP][tamanioPuerto][PUERTO][tamanioResultado][Resultado][IdProceso][Bloque]
+				// paquete de Marta [tamanioIP][IP][tamanioPuerto][PUERTO][tamanioResultado][Resultado][IdProceso][Bloque][Id Job]
 
 				memcpy(&tamanioDinamico, paqueteDeseliariza + offset, sizeof(int));
 				offset += sizeof(int);
-				printf("%i\n",tamanioDinamico);
-				IP = malloc(tamanioDinamico);
-				memcpy(IP, paqueteDeseliariza + offset, tamanioDinamico);
+				aplicarMapper->IP = malloc(tamanioDinamico);
+				memcpy(aplicarMapper->IP, paqueteDeseliariza + offset, tamanioDinamico);
 				offset += tamanioDinamico;
 
-				printf("%s\n",IP);
-
 				memcpy(&tamanioDinamico, paqueteDeseliariza + offset, sizeof(int));
 				offset += sizeof(int);
+				aplicarMapper->PUERTO = malloc(tamanioDinamico);
 				memcpy(aplicarMapper->PUERTO, paqueteDeseliariza + offset, tamanioDinamico);
 				offset += tamanioDinamico;
 
-				printf("%s\n",aplicarMapper->PUERTO);
-
 				memcpy(&tamanioDinamico, paqueteDeseliariza + offset, sizeof(int));
 				offset += sizeof(int);
+				aplicarMapper->resultado = malloc(tamanioDinamico);
 				memcpy(aplicarMapper->resultado, paqueteDeseliariza + offset, tamanioDinamico);
 				offset += tamanioDinamico;
-
-				printf("%s\n",aplicarMapper->resultado);
 
 				memcpy(&aplicarMapper->id_proceso, paqueteDeseliariza + offset, sizeof(int));
 				offset += sizeof(int);
 
-				printf("%i\n",aplicarMapper->id_proceso);
-
 				memcpy(&aplicarMapper->bloque, paqueteDeseliariza + offset, sizeof(int));
+				offset += sizeof(int);
+
+				memcpy(&aplicarMapper->id_job, paqueteDeseliariza + offset, sizeof(int));
 				offset += sizeof(int);
 
 				free(paqueteDeseliariza);
 
-				printf("ID Proceso: %i, IP: %s, PUERTO: %s, RESULTADO: %s, BLOQUE: %i\n",aplicarMapper->id_proceso,aplicarMapper->IP, aplicarMapper->PUERTO, aplicarMapper->resultado, aplicarMapper->bloque);
-
 				pthread_create(&hiloMapper[contM], NULL, (void *)aplicarMapperF, (void *)aplicarMapper); // Hilo Mapper
-
 				contM++;
 				break;
 			case 34: // Aplicar Reduce
@@ -197,11 +189,11 @@ int main(void) {
 
 void *aplicarMapperF (t_aplicarMapper *aplicarMapper){
 
-	int socketNodo,entero,tamanioTotal, size_to_send, offset, tamanioDinamico;
+	int socketNodo,entero,tamanioTotal, size_to_send, offset, tamanioDinamico, estado, socketMarta;
 	char *paquete;
 
-	printf("ID Proceso: %i, IP: %s, PUERTO: %s, RESULTADO: %s, BLOQUE: %i\n",aplicarMapper->id_proceso,aplicarMapper->IP, aplicarMapper->PUERTO, aplicarMapper->resultado, aplicarMapper->bloque);
-
+	socketMarta = crearCliente(ip_marta,puerto_marta);
+/*
 	socketNodo = crearCliente(aplicarMapper->IP,aplicarMapper->PUERTO);
 
 	entero = 8;
@@ -222,9 +214,9 @@ void *aplicarMapperF (t_aplicarMapper *aplicarMapper){
 		return NULL;
 	}
 
-	// paquete para aplicar Mapper [bloque][tamanioScript][script]
+	// paquete para aplicar Mapper [bloque][tamanioScript][script][tamanioResultado][Resultado]
 
-	tamanioTotal = sizeof(int) + sizeof(int) + strlen(rutinaMapper) + 1;
+	tamanioTotal = sizeof(int) + sizeof(int) + strlen(rutinaMapper) + 1 + sizeof(int) + strlen(aplicarMapper->resultado) + 1;
 
 	send(socketNodo, &tamanioTotal, sizeof(int),0); // tamanioTotal del paquete
 	if(recv(socketNodo, &entero, sizeof(int),0)<0){ // basura
@@ -251,20 +243,69 @@ void *aplicarMapperF (t_aplicarMapper *aplicarMapper){
 	memcpy(paquete + offset, rutinaMapper, size_to_send);
 	offset += size_to_send;
 
+	tamanioDinamico = strlen(aplicarMapper->resultado) + 1;
+	size_to_send = sizeof(int);
+	memcpy(paquete + offset, &tamanioDinamico, size_to_send);
+	offset += size_to_send;
+
+	size_to_send =  strlen(aplicarMapper->resultado) + 1;
+	memcpy(paquete + offset, aplicarMapper->resultado, size_to_send);
+	offset += size_to_send;
+
 	send(socketNodo,  paquete, tamanioTotal, 0);
 	free(paquete);
+
+	printf("esperando respuesta del nodo\n");
 
 	if(recv(socketNodo, &entero, sizeof(int), 0)<0){   // Espero respuesta del Nodo
 		entero = 25;
 	}
-	// 42 Positivo
-	// 25 Negativo
+	printf("Respuesta del Nodo: %i\n",entero);
+	if(recv(socketNodo, &entero, sizeof(int), 0)<0){   // Espero respuesta del Nodo
+		entero = 25;
+	}
+	printf("Respuesta del Nodo: %i\n",entero);
+	 */
+
+	// estados Mapper: 1 fin y 2 error.
+
+	estado = 1;
+
 	entero = 42;
-	send(socketMarta,&entero,sizeof(int),0);
+	pthread_mutex_lock(&mutex);
+	send(socketMarta,&entero,sizeof(int),0); // Handshake de Mapper
+	if(recv(socketMarta,&entero,sizeof(int),0)<0) return NULL; // basura
+
+	// paquete a enviar Marta [estado][id proceso][id job]
+
+	tamanioTotal = sizeof(int)*3;
+	offset = 0;
+
+	send(socketMarta,&tamanioTotal, sizeof(int),0); // envio tamanio Total del paquete
+	if(recv(socketMarta, &entero, sizeof(int),0)<0) return EXIT_SUCCESS; // basura
+
+	paquete = malloc(tamanioTotal);
+
+	size_to_send =  sizeof(estado);
+	memcpy(paquete + offset, &(estado), size_to_send);
+	offset += size_to_send;
+
+	size_to_send =  sizeof(aplicarMapper->id_proceso);
+	memcpy(paquete + offset, &(aplicarMapper->id_proceso), size_to_send);
+	offset += size_to_send;
+
+	size_to_send =  sizeof(aplicarMapper->id_job);
+	memcpy(paquete + offset, &(aplicarMapper->id_job), size_to_send);
+	offset += size_to_send;
+
+	send(socketMarta, paquete, tamanioTotal, 0); // envio paquete
+	contadorHilos++;
+	pthread_mutex_unlock(&mutex);
 	return NULL;
 }
 
 void *aplicarReduceF (t_aplicarReduce *aplicarReduce){
+	printf("llega\n");
 	return NULL;
 }
 

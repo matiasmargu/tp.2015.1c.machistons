@@ -25,7 +25,6 @@ int main()
 	fd_set master;
 	fd_set read_fds;
 
-
 	pthread_t hiloConsola;
 	pthread_t hiloMarta[1000];
 	pthread_t hiloNodo[1000];

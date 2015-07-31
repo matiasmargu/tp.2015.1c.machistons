@@ -19,6 +19,8 @@ void *atenderConsola(void*arg) {
 	char *separador2="\n";
 	char *separator=" ";
 
+	char* resultado;
+
 	char md5[MD5_LEN + 1];
 	char *mensaje;
 
