@@ -38,9 +38,12 @@
 
 t_log* logger; // Log Global
 
-int socketMarta;
+char *puerto_marta;
+char *ip_marta;
 char* rutinaMapper;
 char* rutinaReduce;
+int contadorHilos;
+pthread_mutex_t mutex;
 
 typedef struct{
 	char *IP;
@@ -48,6 +51,7 @@ typedef struct{
 	int bloque;
 	char *resultado;
 	int id_proceso;
+	int id_job;
 }t_aplicarMapper;
 
 typedef struct{

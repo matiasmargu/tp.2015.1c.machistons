@@ -494,7 +494,6 @@ char *pedirContenidoBloqueA (int socket, int nroBloque){
 	char *bufferSet;
 	int offset;
 	char *paquetito;
-	int tamanioDelPaquetito;
 	int tamanioReal;
 
 	entero = 1;
@@ -517,11 +516,9 @@ char *pedirContenidoBloqueA (int socket, int nroBloque){
 		if(tamanioReal < 0) return "error";
 		memcpy(bufferSet + offset, paquetito, tamanioReal);
 		offset += tamanioReal;
-		printf("offset: %i, tamanioBloque %i, diferencia %i, tamanioReal: %i\n",offset, tamanioBloque, tamanioBloque-offset, tamanioReal);
 	}
 	free(paquetito);
 	variableDatos = 0;
-	printf("%i\n",strlen(bufferSet));
 	return bufferSet;
 }
 
