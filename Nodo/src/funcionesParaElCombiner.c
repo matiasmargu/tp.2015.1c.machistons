@@ -60,10 +60,9 @@ void pedirContenidoDeUnArchivo(char* nombre,int socket){
 
 	dataDelFile = malloc(tamanioData);
 
-	recive_y_deserialisa_CHARp(dataDelFile, socket, tamanioData);
+	recv(socket,dataDelFile,tamanioData,0);
 
-	copiaDir=string_duplicate(dir_temp);
-	string_append(&copiaDir,nombre);
+	asprintf(&copiaDir,"%s%s","/tmp/",nombre);
 
 	FILE* fdAGuardar = fopen(copiaDir,"w");
 	fputs(dataDelFile,fdAGuardar);

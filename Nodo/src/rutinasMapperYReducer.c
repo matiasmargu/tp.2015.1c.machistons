@@ -77,17 +77,16 @@ void mapper(t_mapper* arg){
 
 	 }
 
-	//asprintf(&resultado_aux,"%s%s","/tmp/resultadoDelMapPorOrdenar",string_itoa(arg->socket));
-	asprintf(&resultado,"%s%s","/tmp/",arg->resultado);
+	asprintf(&resultado_aux,"%s%s","/tmp/resultadoDelMapPorOrdenar",string_itoa(arg->socket));
 
-	FILE* fdMapeo = fopen(resultado,"w");
+	FILE* fdMapeo = fopen(resultado_aux,"w");
 	fputs(buffer,fdMapeo);
 	fclose(fdMapeo);
 
-	//asprintf(&resultado,"%s%s","/tmp/",arg->resultado);
+	asprintf(&resultado,"%s%s","/tmp/",arg->resultado);
 	printf("Aca esta el temporal: %s\n",resultado);
 
-	//ordernarAlfabeticamente(resultado,resultado_aux);
+	ordernarAlfabeticamente(resultado,resultado_aux);
 	remove(arg->mapper);
 
 	int entero = 42;
@@ -185,18 +184,17 @@ void reducer(t_reduce* arg){
 
 		 }
 	asprintf(&resultado_aux,"%s%s","/tmp/resultadoDelReducePorOrdenar",string_itoa(arg->socket));
-	printf("%s\n",bufferRed);
+	asprintf(&resultado,"%s%s","/tmp/",arg->resultado);
+	//printf("%s\n",bufferRed);
 
-	FILE* fdRed = fopen(resultado_aux,"w");
+	FILE* fdRed = fopen(resultado,"w");
 	//printf("%s\n",bufferRed);
 	fputs(bufferRed,fdRed);
 	fclose(fdRed);
 
-
-	asprintf(&resultado,"%s%s","/tmp/",arg->resultado);
 	printf("Aca esta el temporal: %s\n",resultado);
 
-	ordernarAlfabeticamente(resultado,resultado_aux);
+	//ordernarAlfabeticamente(resultado,resultado_aux);
 	remove(arg->reducer);
 
 	free(bufferRed);
