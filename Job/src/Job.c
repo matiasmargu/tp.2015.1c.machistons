@@ -34,6 +34,7 @@ int main(void) {
 	int tamanioTotal, tamanioDinamico;
 	char *nombreArchivoTemporal;
 	int tamanioTotalDeLosArchivosReduce;
+	char *listaAuxiliarArchivos[1000];
 
 	t_aplicarMapper *aplicarMapper;
 	t_aplicarReduce *aplicarReduce;
@@ -120,7 +121,7 @@ int main(void) {
 	// Espero indicaciones de Marta
 
 	a=0;
-	entero = 30;
+	entero = 33;
 
 	x = 0;
 	while (a!=26){
@@ -169,13 +170,14 @@ int main(void) {
 				offset += sizeof(int);
 
 				free(paqueteDeseliariza);
-*/
+*//////////////////////////
 				aplicarMapper->IP="192.168.1.117";
 				aplicarMapper->PUERTO="6000";
 				aplicarMapper->bloque = a;
 				aplicarMapper->resultado = malloc(strlen("resultadoMap")+string_itoa(a));
 				asprintf(&aplicarMapper->resultado,"%s%s","resultadoMap",string_itoa(a));
 				a++;
+////////////////////
 				pthread_create(&hiloMapper[contM], NULL, (void *)aplicarMapperF, (void *)aplicarMapper); // Hilo Mapper
 				contM++;
 				sleep(2);
@@ -184,7 +186,7 @@ int main(void) {
 			case 34: // Aplicar Reduce
 
 				aplicarReduce = malloc(sizeof(t_aplicarReduce));
-
+/*
 				send(socketMarta, &entero, sizeof(int),0); // basura
 				if(recv(socketMarta, &tamanioPaquete, sizeof(int),0)<0) return EXIT_SUCCESS; // recibo el tamanio del paquete
 
@@ -225,46 +227,124 @@ int main(void) {
 				memcpy(&aplicarReduce->cantidadArchivos, paqueteDeseliariza + offset, sizeof(int));
 				offset += sizeof(int);
 
-				// REVISAR COMO MANDAR
-
-				//char *arrayDeArchivos[aplicarReduce->cantidadArchivos];
-				/*
 				tamanioTotalDeLosArchivosReduce = 0;
 
 				for(a=0;a<aplicarReduce->cantidadArchivos;a++){
+
 					memcpy(&tamanioDinamico, paqueteDeseliariza + offset, sizeof(int));
 					offset += sizeof(int);
 					nombreArchivoTemporal = malloc(tamanioDinamico);
 					memcpy(nombreArchivoTemporal, paqueteDeseliariza + offset, tamanioDinamico);
 					offset += tamanioDinamico;
-					arrayDeArchivos[a] = nombreArchivoTemporal;
 
+					listaAuxiliarArchivos[a] = nombreArchivoTemporal;
+					tamanioDinamico = strlen(nombreArchivoTemporal) + 1 + sizeof(int);
 					tamanioTotalDeLosArchivosReduce += tamanioDinamico;
 				}
+
+				free(paqueteDeseliariza);
+*//////////////////////////////
+
+				aplicarReduce->IP = "192.168.1.117";
+				aplicarReduce->PUERTO = "6000";
+				aplicarReduce->resultado = "resultadasoDelReduce";
+				aplicarReduce->cantidadArchivos = 26;
+
+				tamanioTotalDeLosArchivosReduce = 0;
+
+				for(a=0;a<aplicarReduce->cantidadArchivos;a++){
+					asprintf(&nombreArchivoTemporal,"%s%s","resultadoMap",string_itoa(a));
+					listaAuxiliarArchivos[a] = nombreArchivoTemporal;
+					tamanioDinamico = strlen(nombreArchivoTemporal) + 1 + sizeof(int);
+					tamanioTotalDeLosArchivosReduce += tamanioDinamico;
+				}
+
+/////////////////
 
 				aplicarReduce->listaArchivos = malloc(tamanioTotalDeLosArchivosReduce);
 				offset = 0;
 
 				for(a=0;a<aplicarReduce->cantidadArchivos;a++){
-					tamanioDinamico = strlen(arrayDeArchivos[a]) + 1;
+					tamanioDinamico = strlen(listaAuxiliarArchivos[a]) + 1;
 					size_to_send = sizeof(int);
 					memcpy(aplicarReduce->listaArchivos + offset, &tamanioDinamico, size_to_send);
 					offset += size_to_send;
 
-					size_to_send =  strlen(arrayDeArchivos[a]) + 1;
-					memcpy(aplicarReduce->listaArchivos + offset, arrayDeArchivos[a], size_to_send);
+					size_to_send =  strlen(listaAuxiliarArchivos[a]) + 1;
+					memcpy(aplicarReduce->listaArchivos + offset, listaAuxiliarArchivos[a], size_to_send);
 					offset += size_to_send;
 				}
-*/
-				free(paqueteDeseliariza);
 
 				pthread_create(&hiloReduce[contR], NULL, (void *)aplicarReduceF, (void *)aplicarReduce);
 				contR++;
+
+				sleep(2000);
+
 				break;
+
 			case 33: //Mover
+
 				moverArchivo = malloc(sizeof(t_moverArchivo));
+/*/////////////////////////
+				send(socketMarta, &entero, sizeof(int),0); // basura
+				if(recv(socketMarta, &tamanioPaquete, sizeof(int),0)<0) return EXIT_SUCCESS; // recibo el tamanio del paquete
+
+				paqueteDeseliariza = malloc(tamanioPaquete);
+				offset = 0;
+
+				send(socketMarta, &entero, sizeof(int),0); // basura
+				if(recv(socketMarta, paqueteDeseliariza, tamanioPaquete,0)<0) return EXIT_SUCCESS; // recibo el paquete
+				send(socketMarta, &entero, sizeof(int),0); // basura
+
+				// paquete de Marta [tamanioIPOrigen][IPOrigen][tamanioPuertoO][PUERTOO][tamanioIPDestino][IPDestino][tamanioPuertoD][PUERTOD][IdProceso][Id Job][tamanioArchivo][nombreArchivo]
+
+				memcpy(&tamanioDinamico, paqueteDeseliariza + offset, sizeof(int));
+				offset += sizeof(int);
+				moverArchivo->IP_Origen = malloc(tamanioDinamico);
+				memcpy(moverArchivo->IP_Origen, paqueteDeseliariza + offset, tamanioDinamico);
+				offset += tamanioDinamico;
+
+				memcpy(&tamanioDinamico, paqueteDeseliariza + offset, sizeof(int));
+				offset += sizeof(int);
+				moverArchivo->PUERTO_Origen = malloc(tamanioDinamico);
+				memcpy(moverArchivo->PUERTO_Origen, paqueteDeseliariza + offset, tamanioDinamico);
+				offset += tamanioDinamico;
+
+				memcpy(&tamanioDinamico, paqueteDeseliariza + offset, sizeof(int));
+				offset += sizeof(int);
+				moverArchivo->IP_Destino = malloc(tamanioDinamico);
+				memcpy(moverArchivo->IP_Destino, paqueteDeseliariza + offset, tamanioDinamico);
+				offset += tamanioDinamico;
+
+				memcpy(&tamanioDinamico, paqueteDeseliariza + offset, sizeof(int));
+				offset += sizeof(int);
+				moverArchivo->PUERTO_Destino = malloc(tamanioDinamico);
+				memcpy(moverArchivo->PUERTO_Destino, paqueteDeseliariza + offset, tamanioDinamico);
+				offset += tamanioDinamico;
+
+				memcpy(&moverArchivo->id_proceso, paqueteDeseliariza + offset, sizeof(int));
+				offset += sizeof(int);
+
+				memcpy(&moverArchivo->id_job, paqueteDeseliariza + offset, sizeof(int));
+				offset += sizeof(int);
+
+				memcpy(&tamanioDinamico, paqueteDeseliariza + offset, sizeof(int));
+				offset += sizeof(int);
+				moverArchivo->nombreArchivo = malloc(tamanioDinamico);
+				memcpy(moverArchivo->nombreArchivo, paqueteDeseliariza + offset, tamanioDinamico);
+				offset += tamanioDinamico;
+
+				free(paqueteDeseliariza);
+*/////////////////////////////////
+				moverArchivo->IP_Destino = "192.168.1.116";
+				moverArchivo->PUERTO_Destino = "6000";
+				moverArchivo->IP_Origen = "192.168.1.117";
+				moverArchivo->PUERTO_Origen = "6000";
+				moverArchivo->nombreArchivo = "resultadasoDelReduce";
+////////////////////
 				pthread_create(&hiloMoverArch[contMA], NULL, (void *)moverArchivoF, (void *)moverArchivo);
 				contMA++;
+				sleep(2000);
 				break;
 			case 90: // Fin de ejecucion del Job
 				printf("Se termino de ejecutar el Job\n");
@@ -379,10 +459,12 @@ void *aplicarMapperF (t_aplicarMapper *aplicarMapper){
 
 void *aplicarReduceF (t_aplicarReduce *aplicarReduce){
 
-	int socketNodo,entero,tamanioTotal, size_to_send, offset, tamanioDinamico, estado, socketMarta,a;
+	int socketNodo,entero,tamanioTotal, size_to_send, offset, tamanioDinamico, estado,a;
 	char *paquete;
 	char *nombreArchivoTemporal;
+	int tamanioNombresTotal;
 
+	tamanioNombresTotal = 0;
 	offset = 0;
 	char *arrayDeArchivos[aplicarReduce->cantidadArchivos];
 
@@ -423,9 +505,70 @@ void *aplicarReduceF (t_aplicarReduce *aplicarReduce){
 		return NULL;
 	}
 
-	// paquete para aplicar Reduce
+	// paquete para aplicar Reduce [tamanioResultado][Resultado][tamanioScript][script][cantidadDeArchivos]([tamanioNombre][nombreArch])*
+	tamanioNombresTotal = 0;
+	for(a=0;a<aplicarReduce->cantidadArchivos;a++){
+		tamanioNombresTotal += strlen(arrayDeArchivos[a]) + 1 + sizeof(int);
+	}
+	tamanioTotal = sizeof(int) + strlen(aplicarReduce->resultado) + 1 + sizeof(int) + strlen(rutinaReduce) + 1 + sizeof(int) + tamanioNombresTotal;
 
+	send(socketNodo, &tamanioTotal, sizeof(int),0); // tamanioTotal del paquete
+	if(recv(socketNodo, &entero, sizeof(int),0)<0){ // basura
+		// estados Mapper: 1 fin y 2 error.
+		estado = 2;
+		pthread_mutex_lock(&mutex);
+		respuestaAMarta(25,aplicarReduce->id_proceso,aplicarReduce->id_job,estado);
+		pthread_mutex_unlock(&mutex);
+		return NULL;
+	}
 
+	paquete = malloc(tamanioTotal);
+
+	offset = 0;
+
+	tamanioDinamico = strlen(aplicarReduce->resultado) + 1;
+	size_to_send = sizeof(int);
+	memcpy(paquete + offset, &tamanioDinamico, size_to_send);
+	offset += size_to_send;
+
+	size_to_send =  strlen(aplicarReduce->resultado) + 1;
+	memcpy(paquete + offset, aplicarReduce->resultado, size_to_send);
+	offset += size_to_send;
+
+	tamanioDinamico = strlen(rutinaReduce) + 1;
+	size_to_send = sizeof(int);
+	memcpy(paquete + offset, &tamanioDinamico, size_to_send);
+	offset += size_to_send;
+
+	size_to_send =  strlen(rutinaReduce) + 1;
+	memcpy(paquete + offset, rutinaReduce, size_to_send);
+	offset += size_to_send;
+
+	size_to_send =  sizeof(aplicarReduce->cantidadArchivos);
+	memcpy(paquete + offset, &(aplicarReduce->cantidadArchivos), size_to_send);
+	offset += size_to_send;
+
+	for(a=0;a<aplicarReduce->cantidadArchivos;a++){
+		tamanioDinamico = strlen(arrayDeArchivos[a]) + 1;
+		size_to_send = sizeof(int);
+		memcpy(paquete + offset, &tamanioDinamico, size_to_send);
+		offset += size_to_send;
+
+		size_to_send =  strlen(arrayDeArchivos[a]) + 1;
+		memcpy(paquete + offset, arrayDeArchivos[a], size_to_send);
+		offset += size_to_send;
+	}
+
+	send(socketNodo,  paquete, tamanioTotal, 0);
+
+	if(recv(socketNodo, &entero, sizeof(int), 0)<0){   // Espero respuesta del Nodo
+		// estados Mapper: 1 fin y 2 error.
+		estado = 2;
+		pthread_mutex_lock(&mutex);
+		respuestaAMarta(42,aplicarReduce->id_proceso,aplicarReduce->id_job,estado);
+		pthread_mutex_unlock(&mutex);
+		return NULL;
+	}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////// FIN INTERFAZ NODO /////////////////////////////////////////////////////////
@@ -440,6 +583,109 @@ void *aplicarReduceF (t_aplicarReduce *aplicarReduce){
 }
 
 void *moverArchivoF (t_moverArchivo *moverArchivo){
+
+	// FALTA SABER EL TIPO PARA MANDARLE A MARTA LA RESPUESTA
+
+	int socketNodo,entero,tamanioTotal, size_to_send, offset, tamanioDinamico, estado,a;
+	char *paquete;
+	int tipo;
+	char *nombreArchivoTemporal;
+	int tamanioNombresTotal;
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////// INICIO INTERFAZ NODO /////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	socketNodo = crearCliente(moverArchivo->IP_Origen,moverArchivo->PUERTO_Origen);
+
+	entero = 8;
+	send(socketNodo, &entero, sizeof(int),0); //Handshake
+	if(recv(socketNodo, &entero, sizeof(int),0)<0){ // basura
+		// estados Mover Archivo: 1 fin y 2 error.
+		estado = 2;
+		pthread_mutex_lock(&mutex);
+		respuestaAMarta(tipo,moverArchivo->id_proceso,moverArchivo->id_job,estado);
+		pthread_mutex_unlock(&mutex);
+		return NULL;
+	}
+
+	entero = 3;
+	send(socketNodo, &entero, sizeof(int),0); // Handshake de moverArchivo
+	if(recv(socketNodo, &entero, sizeof(int),0)<0){ // basura
+		// estados Mover Archivo: 1 fin y 2 error.
+		estado = 2;
+		pthread_mutex_lock(&mutex);
+		respuestaAMarta(tipo,moverArchivo->id_proceso,moverArchivo->id_job,estado);
+		pthread_mutex_unlock(&mutex);
+		return NULL;
+	}
+
+	// paquete para aplicar MoverArchivo [tamanioIP][IP][tamanioPuerto][Puerto][tamanioNombre][Nombre]
+
+	tamanioTotal = sizeof(int) + strlen(moverArchivo->IP_Destino) + 1 + sizeof(int) + strlen(moverArchivo->PUERTO_Destino) + 1 + sizeof(int) + strlen(moverArchivo->nombreArchivo) + 1;
+
+	send(socketNodo, &tamanioTotal, sizeof(int),0); // tamanioTotal del paquete
+	if(recv(socketNodo, &entero, sizeof(int),0)<0){ // basura
+		// estados Mover Archivo: 1 fin y 2 error.
+		estado = 2;
+		pthread_mutex_lock(&mutex);
+		respuestaAMarta(tipo,moverArchivo->id_proceso,moverArchivo->id_job,estado);
+		pthread_mutex_unlock(&mutex);
+		return NULL;
+	}
+
+	paquete = malloc(tamanioTotal);
+
+	offset = 0;
+
+	tamanioDinamico = strlen(moverArchivo->IP_Destino) + 1;
+	size_to_send = sizeof(int);
+	memcpy(paquete + offset, &tamanioDinamico, size_to_send);
+	offset += size_to_send;
+
+	size_to_send =  strlen(moverArchivo->IP_Destino) + 1;
+	memcpy(paquete + offset, moverArchivo->IP_Destino, size_to_send);
+	offset += size_to_send;
+
+	tamanioDinamico = strlen(moverArchivo->PUERTO_Destino) + 1;
+	size_to_send = sizeof(int);
+	memcpy(paquete + offset, &tamanioDinamico, size_to_send);
+	offset += size_to_send;
+
+	size_to_send =  strlen(moverArchivo->PUERTO_Destino) + 1;
+	memcpy(paquete + offset, moverArchivo->PUERTO_Destino, size_to_send);
+	offset += size_to_send;
+
+	tamanioDinamico = strlen(moverArchivo->nombreArchivo) + 1;
+	size_to_send = sizeof(int);
+	memcpy(paquete + offset, &tamanioDinamico, size_to_send);
+	offset += size_to_send;
+
+	size_to_send =  strlen(moverArchivo->nombreArchivo) + 1;
+	memcpy(paquete + offset, moverArchivo->nombreArchivo, size_to_send);
+	offset += size_to_send;
+
+	send(socketNodo,  paquete, tamanioTotal, 0);
+
+	free(paquete);
+
+	if(recv(socketNodo, &entero, sizeof(int), 0)<0){   // Espero respuesta del Nodo
+		// estados Mover Archivo: 1 fin y 2 error.
+		estado = 2;
+		pthread_mutex_lock(&mutex);
+		respuestaAMarta(tipo,moverArchivo->id_proceso,moverArchivo->id_job,estado);
+		pthread_mutex_unlock(&mutex);
+		return NULL;
+	}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////// FIN INTERFAZ NODO /////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	// estados Mover Archivo: 1 fin y 2 error.
+	estado = 1;
+	pthread_mutex_lock(&mutex);
+	respuestaAMarta(tipo,moverArchivo->id_proceso,moverArchivo->id_job,estado);
+	pthread_mutex_unlock(&mutex);
 	return NULL;
 }
 
