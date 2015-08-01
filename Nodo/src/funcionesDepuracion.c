@@ -89,7 +89,7 @@ void ordernarAlfabeticamente(char* nombreDelArchivoResultado,char* resultado_aux
 
 		  }
 
-		printf("Este es el resultado del sort: %s\n",bufferAUX);
+		//printf("Este es el resultado del sort: %s\n",bufferAUX);
 
 		FILE* fdCompletado = fopen(nombreDelArchivoResultado,"w");
 		fputs(bufferAUX,fdCompletado);
@@ -97,7 +97,7 @@ void ordernarAlfabeticamente(char* nombreDelArchivoResultado,char* resultado_aux
 
 		remove(resultado_aux);
 		free(bufferAUX);
-		return;
+		//return;
 }
 
 void aparear(char* file1,char* file2,char* file3){
@@ -156,13 +156,14 @@ char* aparearYelim(char*lista[1000],int cantArch,char* nombre){
 	char* aux;
 	char* resultado;
 
+	cantArch--;
+
 	asprintf(&resultado,"%s%s","/tmp/",nombre);
-	printf("Este es el nombre. %s\n",nombre);
+	printf("Este es el nombre: %s\n",nombre);
+	printf("Esta es la cantidad: %i\n",cantArch);
 
-
-
-	printf("Este es el 0: %s\n",lista[0]);
 	for(a=0;a<cantArch;a++){
+
 		asprintf(&aux,"%s%s","/tmp/Red",string_itoa(a));
 
 		if(a==0){
@@ -182,6 +183,7 @@ char* aparearYelim(char*lista[1000],int cantArch,char* nombre){
 	fputs(buf,fp);
 	fclose(fp);
 
+	cantArch++;
 	for(a=0;a<cantArch;a++){
 		asprintf(&primero,"%s%s","/tmp/",lista[a]);
 		asprintf(&aux,"%s%s","/tmp/Red",string_itoa(a));

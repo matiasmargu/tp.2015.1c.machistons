@@ -5,6 +5,7 @@
  *      Author: utnso
  */
 #include "variablesGlobales.h"
+#include <errno.h>
 
 char* mapearAMemoriaVirtual(char* archivo){
 	char* pmap;
@@ -25,7 +26,7 @@ char* mapearAMemoriaVirtual(char* archivo){
 
 	pmap = mmap(0,mystat.st_size, PROT_READ|PROT_WRITE ,MAP_SHARED,fd,0);
 	if(pmap == MAP_FAILED){
-		printf("Error al mapear a memoria\n");
+		printf("Error al mapear a memoria: %s\n",strerror(errno));
 		close(fd);
 		exit(1);
 	}
@@ -43,7 +44,7 @@ char* mapearDeFD_charp(int fd){
 		exit(1);
 	}
 
-	pmap = mmap(0,mystat.st_size, PROT_READ|PROT_WRITE ,MAP_SHARED,fd,0);
+	pmap = mmap(0,mystat.st_size, PROT_READ|PROT_WRITE ,MAP_SHARED|MAP_NORESERVE,fd,0);
 	if(pmap == MAP_FAILED){
 		printf("Error al mapear a memoria\n");
 		close(fd);
@@ -124,6 +125,7 @@ t_getBloque getBloque(int nroDelBloque){
 	int tamanioBloque, tamanioBloqueExacto;
 	char *bloque;
 	char* pmap;
+
 
 	pmap = mapearAMemoriaVirtual(archivo_bin);
 	tamanioBloque=tamanioEspecifico(pmap,nroDelBloque);

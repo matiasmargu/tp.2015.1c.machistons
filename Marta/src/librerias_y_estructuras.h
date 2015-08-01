@@ -38,9 +38,14 @@ int socketFS;
 int contador_cant_job;
 char *ip_fs;
 char *puerto_fs;
-int idJobGlobal;
 int cant_nodos;
 int *contadores_nodos;
+char *listaNombreArchivosReduce[1000];
+char *listaNombreArchivosMap[1000];
+int contador_archivos_reduce;
+int contador_archivos_map;
+pthread_mutex_t mutex_contador_archivos_map;
+pthread_mutex_t mutex_contador_archivos_reduce;
 t_list *lista_archivos; // guarda t_archivo
 t_list *lista_jobs; //t_infoJob
 t_list *lista_nodos_estado;
@@ -52,10 +57,6 @@ pthread_mutex_t mutex_contador_job;
 pthread_mutex_t mutex_lista_jobs;
 pthread_mutex_t mutex_lista_procesos;
 pthread_mutex_t mutex_socket_job;
-
-typedef struct{
-	t_list *lista;
-}t_prueba;
 
 typedef struct{
 	char* nombre;
@@ -88,40 +89,12 @@ typedef struct{
 }t_nodo;
 
 typedef struct{
-	char* nombre_arch;
-	int id_job;
-	int bloque;
-	char estado; // M = MAP; R = REDUCE
-}t_datos;
-
-typedef struct{
-	char* nombre_arch;
-	int bloque_arch;
-	t_bitarray *bitmap;
-}t_cargaBitarray_aux;
-
-typedef struct{
-	int idNodo;
-	int cantidadArchivosTemporales;
-	char** vectorArchivosTemporales;
-}t_nodoPorArchivo;
-
-typedef struct{
-	int socketJob;
-	int idNodo;
-	int cantidadArchivosTemporales;
-	t_list* vectorArchivosTemporales;
-	char* archivoResultadoReduce;
-}t_aplicarReduce;
-
-typedef struct{
-	int idNodo;
-	char* ipNodo;
-	char* puertoNodo;
-	int cantidadArchivosTemporales;
-	char** vector_archivos_temporales;
-	char* archivoResultadoReduce;
-}t_nodos;
+	int id_nodo;
+	int id_reduce;
+	int estado;
+	char *nombre_resultado_reduce;
+	t_list *lista_nombre_map;
+}t_reduce;
 
 typedef struct{
 	int idJob;
@@ -146,42 +119,14 @@ typedef struct{
 }t_marta_job_map;
 
 
-typedef struct {
-	int idNodo;
-	char* puertoNodo;
-	char * ipNodo;
-	t_list * archivosAReducir;
-    char* nombreArchivoResultado;
-    int estado;
-}t_archivosAReducirPorNodo;
-
-typedef struct {
-	char *puertoNodo;
-	char *ipNodo;
-	t_list * archivosAMover;
-}t_moverArchivos;
-
-typedef struct {
-	char *puertoNodo;
-	char *ipNodo;
-	char * archivoAMover;
-}t_serializarUnArchivoParaMover;
-
-typedef struct {
-	int contador;
-	int idNodo;
-}t_contadorNodo;
 
 int recive_y_guarda_estructura(t_archivo *arch, int socket, uint32_t tamanioTotal);
 void recive_y_guarda_infoNodo(int tamanio, int socket, void *array);
 void  *conectarseAlJob(void*arg);
-//int recive_y_deserialisa_job(t_job_marta* job_marta, int socket,uint32_t tamanioTotal );
-//char* serializar_estructura_t_marta_a_job(t_marta_job estructura_t_marta_a_job, int tamanioTotal);
-
 void atenderJob(void *arg);
 void inicializar_pedido_FS();
 void planificarMap(int a,int socketJob);
-void aplicarReduce(int idJob);
+void planificarReduce(int id_job, int socketJob);
 
 
 #endif /* LIBRERIAS_Y_ESTRUCTURAS_H_ */
