@@ -164,5 +164,10 @@ void crearDirectorio();
 int CalcFileMD5(char *file_name, char *md5_sum);
 void eliminarArchivo();
 char *pedirArchivoA(int socket, char *nombre);
+int espacioLibre();
+void muestroEspacioLibre();
+int insertarArchivoAMongoYAlMDFSPARARESULTADOS (char* path, int directorio);
+void agregarArchivoResultadoAMongo(int idNodo,char* nombre);
+char *rearmarArchivo();
 
 #endif /* LIBRERIAS_Y_ESTRUCTURAS_H_ */

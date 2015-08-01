@@ -63,11 +63,11 @@ int main(void) {
 
 	logger = log_create("LOG_JOB", "log_job" ,false, LOG_LEVEL_INFO);
 
-//	socketMarta = crearCliente (ip_marta,puerto_marta);
+	socketMarta = crearCliente (ip_marta,puerto_marta);
 
 	rutinaMapper = mapearAMemoriaVirtual(mapper);
 	rutinaReduce = mapearAMemoriaVirtual(reduce);
-/*
+
 	entero = 1;
 	send(socketMarta, &entero, sizeof(int),0); // Handshake
 	if(recv(socketMarta, &entero, sizeof(int),0)<0) return EXIT_SUCCESS; // basura
@@ -117,19 +117,16 @@ int main(void) {
 	send(socketMarta, paquete, tamanioTotal, 0);
 
 	free(paquete);
-*/
+
 	// Espero indicaciones de Marta
 
-	a=0;
-	entero = 33;
-
 	x = 0;
-	while (a!=26){
-//	if(recv(socketMarta, &entero, sizeof(int),0)<0) return EXIT_SUCCESS;
+	while (x!=1){
+	if(recv(socketMarta, &entero, sizeof(int),0)<0) return EXIT_SUCCESS;
 		switch(entero){
 			case 30: // Aplicar Map
 				aplicarMapper = malloc(sizeof(t_aplicarMapper));
-/*
+
 				send(socketMarta, &entero, sizeof(int),0); // basura
 				if(recv(socketMarta, &tamanioPaquete, sizeof(int),0)<0) return EXIT_SUCCESS; // recibo el tamanio del paquete
 
@@ -170,14 +167,14 @@ int main(void) {
 				offset += sizeof(int);
 
 				free(paqueteDeseliariza);
-*//////////////////////////
+/*
 				aplicarMapper->IP="192.168.1.117";
 				aplicarMapper->PUERTO="6000";
 				aplicarMapper->bloque = a;
 				aplicarMapper->resultado = malloc(strlen("resultadoMap")+string_itoa(a));
 				asprintf(&aplicarMapper->resultado,"%s%s","resultadoMap",string_itoa(a));
 				a++;
-////////////////////
+*////////////////////
 				pthread_create(&hiloMapper[contM], NULL, (void *)aplicarMapperF, (void *)aplicarMapper); // Hilo Mapper
 				contM++;
 				sleep(2);
@@ -186,7 +183,7 @@ int main(void) {
 			case 34: // Aplicar Reduce
 
 				aplicarReduce = malloc(sizeof(t_aplicarReduce));
-/*
+
 				send(socketMarta, &entero, sizeof(int),0); // basura
 				if(recv(socketMarta, &tamanioPaquete, sizeof(int),0)<0) return EXIT_SUCCESS; // recibo el tamanio del paquete
 
@@ -243,12 +240,12 @@ int main(void) {
 				}
 
 				free(paqueteDeseliariza);
-*//////////////////////////////
+/*
 
 				aplicarReduce->IP = "192.168.1.117";
 				aplicarReduce->PUERTO = "6000";
 				aplicarReduce->resultado = "resultadasoDelReduce";
-				aplicarReduce->cantidadArchivos = 26;
+				aplicarReduce->cantidadArchivos = 9;
 
 				tamanioTotalDeLosArchivosReduce = 0;
 
@@ -259,7 +256,7 @@ int main(void) {
 					tamanioTotalDeLosArchivosReduce += tamanioDinamico;
 				}
 
-/////////////////
+*/////////////////
 
 				aplicarReduce->listaArchivos = malloc(tamanioTotalDeLosArchivosReduce);
 				offset = 0;
@@ -277,15 +274,13 @@ int main(void) {
 
 				pthread_create(&hiloReduce[contR], NULL, (void *)aplicarReduceF, (void *)aplicarReduce);
 				contR++;
-
-				sleep(2000);
-
+				sleep(2);
 				break;
 
 			case 33: //Mover
 
 				moverArchivo = malloc(sizeof(t_moverArchivo));
-/*/////////////////////////
+
 				send(socketMarta, &entero, sizeof(int),0); // basura
 				if(recv(socketMarta, &tamanioPaquete, sizeof(int),0)<0) return EXIT_SUCCESS; // recibo el tamanio del paquete
 
@@ -335,16 +330,16 @@ int main(void) {
 				offset += tamanioDinamico;
 
 				free(paqueteDeseliariza);
-*/////////////////////////////////
-				moverArchivo->IP_Destino = "192.168.1.116";
+/*
+				moverArchivo->IP_Destino = "192.168.1.117";
 				moverArchivo->PUERTO_Destino = "6000";
-				moverArchivo->IP_Origen = "192.168.1.117";
-				moverArchivo->PUERTO_Origen = "6000";
+				moverArchivo->IP_Origen = "127.0.0.1";
+				moverArchivo->PUERTO_Origen = "6001";
 				moverArchivo->nombreArchivo = "resultadasoDelReduce";
-////////////////////
+*/
 				pthread_create(&hiloMoverArch[contMA], NULL, (void *)moverArchivoF, (void *)moverArchivo);
 				contMA++;
-				sleep(2000);
+				sleep(2);
 				break;
 			case 90: // Fin de ejecucion del Job
 				printf("Se termino de ejecutar el Job\n");
@@ -364,7 +359,7 @@ void *aplicarMapperF (t_aplicarMapper *aplicarMapper){
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////// INICIO INTERFAZ NODO /////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+/*
 	socketNodo = crearCliente(aplicarMapper->IP,aplicarMapper->PUERTO);
 
 	entero = 8;
@@ -441,7 +436,7 @@ void *aplicarMapperF (t_aplicarMapper *aplicarMapper){
 		pthread_mutex_unlock(&mutex);
 		return NULL;
 	}
-
+*/
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////// FIN INTERFAZ NODO /////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -480,7 +475,7 @@ void *aplicarReduceF (t_aplicarReduce *aplicarReduce){
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////// INICIO INTERFAZ NODO /////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+/*
 	socketNodo = crearCliente(aplicarReduce->IP,aplicarReduce->PUERTO);
 
 	entero = 8;
@@ -506,6 +501,7 @@ void *aplicarReduceF (t_aplicarReduce *aplicarReduce){
 	}
 
 	// paquete para aplicar Reduce [tamanioResultado][Resultado][tamanioScript][script][cantidadDeArchivos]([tamanioNombre][nombreArch])*
+
 	tamanioNombresTotal = 0;
 	for(a=0;a<aplicarReduce->cantidadArchivos;a++){
 		tamanioNombresTotal += strlen(arrayDeArchivos[a]) + 1 + sizeof(int);
@@ -569,7 +565,7 @@ void *aplicarReduceF (t_aplicarReduce *aplicarReduce){
 		pthread_mutex_unlock(&mutex);
 		return NULL;
 	}
-
+*/
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////// FIN INTERFAZ NODO /////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -595,7 +591,7 @@ void *moverArchivoF (t_moverArchivo *moverArchivo){
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////// INICIO INTERFAZ NODO /////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+/*
 	socketNodo = crearCliente(moverArchivo->IP_Origen,moverArchivo->PUERTO_Origen);
 
 	entero = 8;
@@ -677,7 +673,7 @@ void *moverArchivoF (t_moverArchivo *moverArchivo){
 		pthread_mutex_unlock(&mutex);
 		return NULL;
 	}
-
+*/
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////// FIN INTERFAZ NODO /////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -690,7 +686,7 @@ void *moverArchivoF (t_moverArchivo *moverArchivo){
 }
 
 void respuestaAMarta(int tipo,int idProceso, int idJob, int estado){
-/*
+
 	int socketNodo,entero,tamanioTotal, size_to_send, offset, tamanioDinamico, socketMarta;
 	char *paquete;
 
@@ -721,7 +717,7 @@ void respuestaAMarta(int tipo,int idProceso, int idJob, int estado){
 	memcpy(paquete + offset, &(idJob), size_to_send);
 	offset += size_to_send;
 
-	send(socketMarta, paquete, tamanioTotal, 0); // envio paquete*/
+	send(socketMarta, paquete, tamanioTotal, 0); // envio paquete
 }
 
 char* mapearAMemoriaVirtual(char* archivo){

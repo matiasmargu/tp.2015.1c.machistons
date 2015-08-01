@@ -36,6 +36,7 @@ void *atenderMarta(void*arg){
 	char* nombrePrueba;
 	char *directorioParaIndex;
 	int a,b;
+	char *paquete;
 
 	int offset;
 	int size_to_send;
@@ -176,6 +177,18 @@ void *atenderMarta(void*arg){
 					liberarMensaje(&paqueteAEnviar);
 				}
 				bson_destroy (query);
+				break;
+			case 37: // Archivo para agregar al MDFS
+				send(socketMarta, &entero,sizeof(int),0); // basura
+
+				// paquete de Marta [idNodo][tamanioNombre][Nombre]
+				// el nombre debe venir con el path que se encuentra cargado en el Job
+
+				if(recv(socketMarta,&tamanioTotal,sizeof(int),0)<0) return NULL; // recivo tamanio del paquete
+				send(socketMarta, &entero,sizeof(int),0); // basura
+
+				if(recv(socketMarta,paquete,tamanioTotal,0)<0) return NULL;
+				agregarArchivoResultadoAMongo(10,"/tmp/holautiewsnsduvsbduvbfubd/resultado");
 				break;
 		}
 	}

@@ -602,8 +602,9 @@ int insertarArchivoAMongoYAlMDFS (char* path){
 	if(directorio == -1) return -1;
 
 	//
+	printf("Espere por favor...\n");
 	for(contadorBloque=0;contadorBloque < cantidadBloques;contadorBloque++){
-
+		printf("Copiando el bloque %i...\n",contadorBloque);
 		if(tamanioRestanteDelArchivo >= tamanioBloque){
 			bloqueALeer = tamanioBloque + bloqueAnterior;
 			while(pmap[bloqueALeer] != '\n'){
@@ -672,7 +673,6 @@ int insertarArchivoAMongoYAlMDFS (char* path){
 	BSON_APPEND_UTF8(doc, "Nombre", strrchr(path, '/')+1);
 	BSON_APPEND_INT32 (doc, "Tamanio", mystat.st_size);
 	BSON_APPEND_INT32(doc, "Directorio Padre" , directorio);
-	BSON_APPEND_UTF8(doc, "Direccion Fisica", path);
 	BSON_APPEND_UTF8(doc, "Estado", "Disponible");
 	BSON_APPEND_INT32(doc, "Cantidad Bloques", cantidadBloques);
 	BSON_APPEND_ARRAY(doc, "Bloques", doc2);
@@ -1179,15 +1179,11 @@ char *pedirArchivoA(int socket, char *nombre){
 	entero = 3;
 	send(socket,&entero,sizeof(int),0);
 	if(recv(socket,&entero,sizeof(int),0)<0) return "error"; // basura
-
 	entero = strlen(nombre);
-	printf("tamanio del nombre: %i\n",entero);
 	send(socket,&entero,sizeof(int),0); // tamanio nombre
 	if(recv(socket,&entero,sizeof(int),0)<0) return "error"; // basura
-	printf("nombre %s\n",nombre);
 	send(socket,nombre,strlen(nombre),0); // nombre
 	if(recv(socket,&entero,sizeof(int),0)<0) return "error"; // tamanio contenido
-	printf("tamanio :%i\n",entero);
 	contenidoArchivo = malloc(entero);
 	send(socket,&entero,sizeof(int),0); // basura
 	tamanioLeido = 0;
@@ -1198,5 +1194,395 @@ char *pedirArchivoA(int socket, char *nombre){
 		memcpy(contenidoArchivo+tamanioLeido,contenidoArchivoAux,tamanioReal);
 		tamanioLeido += tamanioReal;
 	}
+	return contenidoArchivo;
+}
+
+int espacioLibre(){
+	bson_t *doc;
+	bson_t *query;
+	int cantidad;
+	bson_iter_t iter;
+	mongoc_cursor_t *cursor;
+	int contNodos;
+	int mayor,a,z,nodoARestar,idCopia1,idCopia2,idCopia3;
+	int cantidadBloquesArch = 1;
+
+	doc = bson_new ();
+	query = bson_new ();
+	BSON_APPEND_UTF8 (query, "Conexion", "Conectado");
+	BSON_APPEND_UTF8(query, "Es" , "Nodo");
+	BSON_APPEND_UTF8(query, "Estado", "Disponible");
+	cantidad = mongoc_collection_count(nodos, MONGOC_QUERY_NONE, query,0,0,NULL,NULL);
+
+	t_nodoVector vectorBloquesNodos[cantidad];
+	t_nodoVector vectorBloquesNodosAux[cantidad];
+	contNodos = 0;
+
+	if(cantidad > 0){
+		cursor = mongoc_collection_find (nodos, MONGOC_QUERY_NONE, 0, 0, 0, query, NULL, NULL);
+		while (mongoc_cursor_next (cursor, &doc)) {
+			if (bson_iter_init (&iter, doc)) {
+				if(bson_iter_find (&iter, "ID Nodo")) vectorBloquesNodos[contNodos].idNodo = bson_iter_int32(&iter);
+				vectorBloquesNodos[contNodos].bloquesLibres = cantidadBloquesLibres(vectorBloquesNodos[contNodos].idNodo);
+				contNodos++;
+			}
+		}
+	}else{
+		return -1;
+	}
+
+	for(a=0; a<cantidad;a++){
+		vectorBloquesNodosAux[a].idNodo = vectorBloquesNodos[a].idNodo;
+		vectorBloquesNodosAux[a].bloquesLibres = vectorBloquesNodos[a].bloquesLibres;
+	}
+
+	while(1){
+
+		for(a=0; a<cantidad;a++){
+				vectorBloquesNodos[a].idNodo = vectorBloquesNodosAux[a].idNodo;
+				vectorBloquesNodos[a].bloquesLibres = vectorBloquesNodosAux[a].bloquesLibres;
+		}
+
+		for(a=0; a<cantidadBloquesArch ; a++){
+
+			// Asigno el ID de la primer Copia
+			mayor = 0;
+			for(z=0; z<cantidad; z++){
+				if(vectorBloquesNodos[z].bloquesLibres > mayor){
+					mayor = vectorBloquesNodos[z].bloquesLibres;
+					idCopia1 = vectorBloquesNodos[z].idNodo;
+					nodoARestar = z;
+				}
+			}
+			vectorBloquesNodos[nodoARestar].bloquesLibres--;
+
+			// Asigno el ID de la segunda Copia
+			mayor= 0;
+			for(z=0; z<cantidad; z++){
+				if(vectorBloquesNodos[z].bloquesLibres > mayor){
+					if(vectorBloquesNodos[z].idNodo != idCopia1){
+						mayor = vectorBloquesNodos[z].bloquesLibres;
+						idCopia2 = vectorBloquesNodos[z].idNodo;
+						nodoARestar = z;
+					}
+				}
+			}
+			vectorBloquesNodos[nodoARestar].bloquesLibres--;
+
+			// Asigno el ID de la tercer Copia
+			mayor= 0;
+			for(z=0; z<cantidad; z++){
+				if(vectorBloquesNodos[z].bloquesLibres > mayor){
+					if((vectorBloquesNodos[z].idNodo != idCopia1) && (vectorBloquesNodos[z].idNodo != idCopia2)){
+						mayor = vectorBloquesNodos[z].bloquesLibres;
+						idCopia3 = vectorBloquesNodos[z].idNodo;
+						nodoARestar = z;
+					}
+				}
+			}
+			vectorBloquesNodos[nodoARestar].bloquesLibres--;
+		}
+
+		for(a=0; a<cantidad;a++){
+			if(vectorBloquesNodos[a].bloquesLibres < 0){
+				return cantidadBloquesArch -1;
+			}
+		}
+		cantidadBloquesArch++;
+	}
+	return cantidadBloquesArch;
+}
+
+void muestroEspacioLibre(){
+	long long bloques;
+	long long tamAux;
+	long long tamanioBloque = 20 *1024 *1024;
+
+	bloques =espacioLibre();
+	tamAux = (tamanioBloque * bloques);
+	if((tamAux*bloques) > (1024 * 1024)){
+		tamAux = (tamanioBloque * bloques) / (1024 * 1024);
+		printf("Tamanio Libre del FileSystem %d MegaBytes \n",tamAux);
+		log_info(logger,"Tamanio Libre del FileSystem %d MegaBytes \n",tamAux);
+	}else{
+		tamAux = (tamanioBloque * bloques);
+		printf("Tamanio Libre del FileSystem %d Bytes \n",tamAux);
+		log_info(logger,"Tamanio Libre del FileSystem %d Bytes \n",tamAux);
+	}
+}
+
+void agregarArchivoResultadoAMongo(int idNodo,char* nombre){
+	int socket;
+	char *mensaje;
+	char *rutaDelArch;
+	int directorio;
+	char *directorioBuscado;
+	int a = strlen(nombre);
+	while(nombre[a]!='/'){
+		a--;
+	}
+	directorioBuscado = malloc(a);
+	memcpy(directorioBuscado,nombre+0,a);
+	*(directorioBuscado + a) = '\0';
+
+	directorio = indexDelDirectorio(directorioBuscado);
+
+	asprintf(&rutaDelArch,"%s%s","/tmp/",strrchr(nombre, '/')+1);
+
+	socket = socketNodo(idNodo);
+	mensaje = pedirArchivoA(socket,nombre);
+	FILE *fd = fopen(rutaDelArch,"w");
+	fputs(mensaje,fd);
+	fclose(fd);
+	printf("Se procede a agregar el archivo %s al MDFS \n",strrchr(nombre, '/')+1);
+	insertarArchivoAMongoYAlMDFSPARARESULTADOS(rutaDelArch,directorio);
+	printf("El archivo %s, se ha agregado correctamente\n",strrchr(nombre, '/')+1);
+	remove(rutaDelArch);
+}
+
+int insertarArchivoAMongoYAlMDFSPARARESULTADOS (char* path, int directorio){
+	bson_t *doc;
+	bson_t *doc2;
+	bson_t *doc3;
+	bson_error_t error;
+	int fd, contadorBloque;
+	struct stat mystat;
+	int cantidadBloques;
+	div_t restoDivision;
+	int a,b,z,offset;
+	t_escribirBloque *escribirBloque;
+	t_matrix datosMatrisAsignacion;
+
+	int socketNodoCopia1, socketNodoCopia2, socketNodoCopia3;
+	int bloqueNodoCopia1, bloqueNodoCopia2, bloqueNodoCopia3;
+	int contC1,contC2,contC3;
+	pthread_t hiloNodoCopia1[1000];
+	pthread_t hiloNodoCopia2[1000];
+	pthread_t hiloNodoCopia3[1000];
+
+	char *pmap;
+
+	char *contenidoBloque;
+	long long tamanioBloque = 20971520; // Tamanio 20 MB
+	long long bloqueALeer;
+	long long bloqueAnterior;
+	long long tamanioRestanteDelArchivo;
+
+	fd = open(path,O_RDWR);
+	fstat(fd,&mystat);
+	restoDivision = div(mystat.st_size,tamanioBloque);
+	if(restoDivision.rem > 0){
+		cantidadBloques = restoDivision.quot + 1;
+	}else{
+		cantidadBloques = restoDivision.quot;
+	}
+
+	pmap = mmap(0,mystat.st_size, PROT_READ|PROT_WRITE ,MAP_SHARED,fd,0);
+
+	bloqueAnterior = 0;
+	tamanioRestanteDelArchivo = mystat.st_size;
+
+	doc = bson_new ();
+	doc2 = bson_new ();
+
+	// Combinaciones
+	datosMatrisAsignacion = calcularCombinacionesDeAsignacion(cantidadBloques);
+	if(datosMatrisAsignacion.tamanio == -1){
+		printf("No hay espacio suficiente para almacenar el archivo\n");
+		return -1;
+	}
+	offset = 0;
+	int matris[cantidadBloques][3];
+	for(a=0;a<cantidadBloques;a++){
+		for(b=0;b<3;b++){
+			memcpy(&matris[a][b], datosMatrisAsignacion.datosDeMatrix + offset, sizeof(int));
+			offset += sizeof(int);
+		}
+	}
+	printf("\n");
+	printf("La asignacion de bloques es la siguiente:\n\n");
+	printf("Nro Bloque | Copia 1 | Copia 2 | Copia 3 |\n");
+	for(z=0; z<cantidadBloques; z++){
+		printf("    %i      |    %i    |    %i    |    %i    |\n",z,matris[z][0],matris[z][1],matris[z][2]);
+	}
+	//
+	printf("Espere por favor...\n");
+	for(contadorBloque=0;contadorBloque < cantidadBloques;contadorBloque++){
+		printf("Copiando el bloque %i...\n",contadorBloque);
+		if(tamanioRestanteDelArchivo >= tamanioBloque){
+			bloqueALeer = tamanioBloque + bloqueAnterior;
+			while(pmap[bloqueALeer] != '\n'){
+				bloqueALeer = bloqueALeer - 1;
+			}
+		}else{
+			bloqueALeer = mystat.st_size;
+		}
+		bloqueALeer = bloqueALeer - bloqueAnterior;
+		contenidoBloque = malloc(bloqueALeer);
+		memcpy(contenidoBloque,pmap+bloqueAnterior,bloqueALeer);
+		bloqueAnterior += bloqueALeer;
+		tamanioRestanteDelArchivo = tamanioRestanteDelArchivo - bloqueALeer;
+
+		socketNodoCopia1 = socketNodo(matris[contadorBloque][0]);
+		socketNodoCopia2 = socketNodo(matris[contadorBloque][1]);
+		socketNodoCopia3 = socketNodo(matris[contadorBloque][2]);
+
+		bloqueNodoCopia1 = primerBloqueLibre(matris[contadorBloque][0]);
+		bloqueNodoCopia2 = primerBloqueLibre(matris[contadorBloque][1]);
+		bloqueNodoCopia3 = primerBloqueLibre(matris[contadorBloque][2]);
+
+		elBloqueDelNodoSeOcupo(socketNodoCopia1,bloqueNodoCopia1);
+		elBloqueDelNodoSeOcupo(socketNodoCopia2,bloqueNodoCopia2);
+		elBloqueDelNodoSeOcupo(socketNodoCopia3,bloqueNodoCopia3);
+
+		escribirBloque = malloc(sizeof(t_escribirBloque));
+		escribirBloque->data = contenidoBloque;
+		escribirBloque->tamanioData = strlen(escribirBloque->data);
+		escribirBloque->socket = socketNodoCopia1;
+		escribirBloque->bloque = bloqueNodoCopia1;
+		pthread_create(&hiloNodoCopia1[contC1], NULL, (void *)escribirBloqueEnNodo, (void *)escribirBloque);
+		escribirBloque = malloc(sizeof(t_escribirBloque));
+		escribirBloque->data = contenidoBloque;
+		escribirBloque->tamanioData = strlen(escribirBloque->data);
+		escribirBloque->socket = socketNodoCopia2;
+		escribirBloque->bloque = bloqueNodoCopia2;
+		pthread_create(&hiloNodoCopia2[contC2], NULL, (void *)escribirBloqueEnNodo, (void *)escribirBloque);
+		escribirBloque = malloc(sizeof(t_escribirBloque));
+		escribirBloque->data = contenidoBloque;
+		escribirBloque->tamanioData = strlen(escribirBloque->data);
+		escribirBloque->socket = socketNodoCopia3;
+		escribirBloque->bloque = bloqueNodoCopia3;
+		pthread_create(&hiloNodoCopia3[contC3], NULL, (void *)escribirBloqueEnNodo, (void *)escribirBloque);
+
+		pthread_join(hiloNodoCopia1[contC1],NULL);
+		pthread_join(hiloNodoCopia2[contC2],NULL);
+		pthread_join(hiloNodoCopia3[contC3],NULL);
+
+		contC1++;
+		contC2++;
+		contC3++;
+
+		doc3 = bson_new ();
+		agregarCopia(doc3, "1", matris[contadorBloque][0], bloqueNodoCopia1);
+		agregarCopia(doc3, "2", matris[contadorBloque][1], bloqueNodoCopia2);
+		agregarCopia(doc3, "3", matris[contadorBloque][2], bloqueNodoCopia3);
+
+		BSON_APPEND_DOCUMENT(doc2, string_itoa(contadorBloque), doc3);
+		bson_destroy (doc3);
+		free(contenidoBloque);
+	}
+	//
+
+	BSON_APPEND_UTF8(doc, "Es", "Archivo");
+	BSON_APPEND_UTF8(doc, "Nombre", strrchr(path, '/')+1);
+	BSON_APPEND_INT32 (doc, "Tamanio", mystat.st_size);
+	BSON_APPEND_INT32(doc, "Directorio Padre" , directorio);
+	BSON_APPEND_UTF8(doc, "Estado", "Disponible");
+	BSON_APPEND_INT32(doc, "Cantidad Bloques", cantidadBloques);
+	BSON_APPEND_ARRAY(doc, "Bloques", doc2);
+
+	if (!mongoc_collection_insert (archivos, MONGOC_INSERT_NONE, doc, NULL, &error)) {
+	        log_error(logger, error.message);
+	}
+
+	bson_destroy (doc);
+	bson_destroy (doc2);
+	munmap(pmap,strlen(pmap));
+	return 20;
+}
+
+char *rearmarArchivo(){
+	char* contenido;
+	t_archivo archivo;
+	bson_iter_t iter;
+	t_copia info;
+	int nroBloque;
+	int nroCopia;
+	int cantidad;
+	char bufferComando[MAXSIZE_COMANDO];
+	char **comandoSeparado;
+	char *separator=" ";
+	char **comandoSeparado2;
+	char *separador="\n";
+	int socketNodito;
+	char* contenidoAux;
+	int idDirectorio,tamanioDinamico,offset;
+	char *separador2="\n";
+	char *contenidoArchivo;
+
+	const char *nombre;
+	bson_t *doc;
+	bson_t *query;
+	mongoc_cursor_t *cursor;
+
+	query = bson_new ();
+	doc = bson_new ();
+	BSON_APPEND_UTF8(query, "Es", "Archivo");
+	cantidad = mongoc_collection_count(archivos, MONGOC_QUERY_NONE, query,0,0,NULL,NULL);
+	if(cantidad > 0){
+		cursor = mongoc_collection_find (archivos, MONGOC_QUERY_NONE, 0, 0, 0, query, NULL, NULL);
+		printf("\n""Los archivos cargados en el MDFS son los siguientes:\n");
+		while (mongoc_cursor_next (cursor, &doc)) {
+			if (bson_iter_init (&iter, doc)) {
+				if(bson_iter_find (&iter, "Nombre"))nombre = bson_iter_utf8(&iter,NULL);
+				printf(">> Archivo: %s\n",nombre);
+				}
+		}
+		bson_destroy (query);
+		//bson_destroy (doc);
+	}else{
+		printf("No hay archivos para copiar\n");
+		return "error";
+	}
+	printf("\n""Ingrese el nombre del Archivo que desee copiar\n");
+	fgets(bufferComando,MAXSIZE_COMANDO, stdin);
+	comandoSeparado=string_split(bufferComando, separator);
+	comandoSeparado2=string_split(comandoSeparado[0], separador);
+
+	offset = 0;
+
+	query = bson_new ();
+	doc = bson_new ();
+	BSON_APPEND_UTF8(query, "Es", "Archivo");
+	BSON_APPEND_UTF8(query, "Nombre", comandoSeparado2[0]);
+	cursor = mongoc_collection_find (archivos, MONGOC_QUERY_NONE, 0, 0, 0, query, NULL, NULL);
+	while (mongoc_cursor_next (cursor, &doc)) {
+		if (bson_iter_init (&iter, doc)) {
+			if(bson_iter_find (&iter, "Cantidad Bloques"))archivo.cantidadBloque = bson_iter_int32(&iter);
+			if(bson_iter_find (&iter, "Tamanio"))archivo.tamanio = bson_iter_int32(&iter);
+			contenidoArchivo = malloc(archivo.tamanio);
+			for(nroBloque=0;nroBloque<archivo.cantidadBloque;nroBloque++){
+					nroCopia = 1;
+					info = infoBloqueyCopia(nroBloque, nroCopia, doc);
+					socketNodito = socketNodo(info.id_nodo);
+					if(socketNodito<0){
+						nroCopia = 2;
+						info = infoBloqueyCopia(nroBloque, nroCopia, doc);
+						socketNodito = socketNodo(info.id_nodo);
+						if(socketNodito<0){
+							nroCopia = 3;
+							info = infoBloqueyCopia(nroBloque, nroCopia, doc);
+							socketNodito = socketNodo(info.id_nodo);
+							if(socketNodito<0){
+								return "error";
+							}
+						}
+					}
+					contenidoAux = pedirContenidoBloqueA(socketNodito,nroBloque);
+					tamanioDinamico = strlen(contenidoAux);
+					memcpy(contenidoArchivo+offset,contenidoAux,tamanioDinamico);
+					offset += tamanioDinamico;
+				}
+			}
+		}
+	printf("Ingrese la direccion fisica en donde desea guardar el archivo:\n"
+			"Ejemplo: /tmp/%s\n",comandoSeparado2[0]);
+	fgets(bufferComando,MAXSIZE_COMANDO, stdin);
+	comandoSeparado=string_split(bufferComando, separator);
+	comandoSeparado2=string_split(comandoSeparado[0], separador2);
+	FILE *fd = fopen(comandoSeparado[0],"w");
+	fputs(contenidoArchivo,fd);
+	fclose(fd);
+
 	return contenidoArchivo;
 }

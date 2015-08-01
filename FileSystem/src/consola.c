@@ -19,14 +19,8 @@ void *atenderConsola(void*arg) {
 	char *separador2="\n";
 	char *separator=" ";
 
-	char* resultado;
-
 	char md5[MD5_LEN + 1];
 	char *mensaje;
-
-	int a,b,tamanioNombreArchivo;
-	char *nombreArchivo;
-	char *directorioParaIndex;
 
 	imprimirMenu();
 	while(1){
@@ -70,20 +64,12 @@ void *atenderConsola(void*arg) {
 				case Renombrar_Directorio: // 7
 					break;
 				case Mover_Directorio: // 8
-					printf("%i\n",formatearBloque(atoi(comandoSeparado[1]),atoi(comandoSeparado[2])));
 					break;
 				case Ver_Bloque_Arch: // 9
-					mensaje = pedirContenidoBloqueA(atoi(comandoSeparado[1]), 0);
-					//printf("%s\n",mensaje);
 					break;
 				case Borrar_Bloque_Arch: // 10
-					mensaje = pedirArchivoA(5,"resultadasoDelReduce");
-					FILE *fd = fopen("/tmp/resultTemp","w");
-					fputs(mensaje,fd);
-					fclose(fd);
 					break;
 				case Copiar_Bloque_Arch: // 11
-					//////calcularCombinacionesDeAsignacion();
 					break;
 				case Agregar_Nodo: // 12
 					agregarNodo();
@@ -104,6 +90,8 @@ void *atenderConsola(void*arg) {
 					}
 					break;
 				case Copiar_Arch_Al_FSLocal: // 15
+					mensaje = rearmarArchivo();
+					if(mensaje == "error") printf("Se produjo un error. Reintentelo.\n");
 					break;
 				case Solicitar_MD5: // 16
 					printf("\n""Ingrese el nombre del archivo del que desee calcular el MD5:\n\n");
@@ -130,7 +118,6 @@ void *atenderConsola(void*arg) {
 }
 
 void imprimirMenu(void){
-
 	printf("  Los comandos se ingresan con su numero \n"
 			" 		COMANDOS \n"
 			"	Formatear el MDFS: 1 \n"
@@ -153,7 +140,13 @@ void imprimirMenu(void){
 			"	Copiar un archivo local al MDFS: 14 \n"
 			"	Copiar un archivo del MDFS al filesystem local: 15 \n"
 			"	Solicitar el MD5 de un archivo en MDFS: 16 \n"
-			"	SALIR 17 \n");
+			"	SALIR 17 \n"
+			"\n");
+
+	muestroEspacioLibre();
+	printf("Cantidad de Nodos Activos: %i\n"
+			"Cantidad de Nodos Necesarios: %i\n"
+			, nodosActivos, nodosNecesarios);
 	return ;
 }
 
@@ -184,7 +177,7 @@ void formatear(){
 	BSON_APPEND_UTF8(query, "Es" , "Nodo");
 	cantidad = mongoc_collection_count(nodos, MONGOC_QUERY_NONE, query,0,0,NULL,NULL);
 	if(cantidad > 0){
-		printf("Formateando el MDFS...");
+		printf("Formateando el MDFS...\n");
 		sleep(20);
 		cursor = mongoc_collection_find (nodos, MONGOC_QUERY_NONE, 0, 0, 0, query, NULL, NULL);
 		while (mongoc_cursor_next (cursor, &doc)) {
