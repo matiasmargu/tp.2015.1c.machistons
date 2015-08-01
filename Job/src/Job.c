@@ -167,17 +167,9 @@ int main(void) {
 				offset += sizeof(int);
 
 				free(paqueteDeseliariza);
-/*
-				aplicarMapper->IP="192.168.1.117";
-				aplicarMapper->PUERTO="6000";
-				aplicarMapper->bloque = a;
-				aplicarMapper->resultado = malloc(strlen("resultadoMap")+string_itoa(a));
-				asprintf(&aplicarMapper->resultado,"%s%s","resultadoMap",string_itoa(a));
-				a++;
-*////////////////////
+
 				pthread_create(&hiloMapper[contM], NULL, (void *)aplicarMapperF, (void *)aplicarMapper); // Hilo Mapper
 				contM++;
-				sleep(2);
 				break;
 
 			case 34: // Aplicar Reduce
@@ -237,26 +229,10 @@ int main(void) {
 					listaAuxiliarArchivos[a] = nombreArchivoTemporal;
 					tamanioDinamico = strlen(nombreArchivoTemporal) + 1 + sizeof(int);
 					tamanioTotalDeLosArchivosReduce += tamanioDinamico;
+
 				}
 
 				free(paqueteDeseliariza);
-/*
-
-				aplicarReduce->IP = "192.168.1.117";
-				aplicarReduce->PUERTO = "6000";
-				aplicarReduce->resultado = "resultadasoDelReduce";
-				aplicarReduce->cantidadArchivos = 9;
-
-				tamanioTotalDeLosArchivosReduce = 0;
-
-				for(a=0;a<aplicarReduce->cantidadArchivos;a++){
-					asprintf(&nombreArchivoTemporal,"%s%s","resultadoMap",string_itoa(a));
-					listaAuxiliarArchivos[a] = nombreArchivoTemporal;
-					tamanioDinamico = strlen(nombreArchivoTemporal) + 1 + sizeof(int);
-					tamanioTotalDeLosArchivosReduce += tamanioDinamico;
-				}
-
-*/////////////////
 
 				aplicarReduce->listaArchivos = malloc(tamanioTotalDeLosArchivosReduce);
 				offset = 0;
@@ -274,7 +250,6 @@ int main(void) {
 
 				pthread_create(&hiloReduce[contR], NULL, (void *)aplicarReduceF, (void *)aplicarReduce);
 				contR++;
-				sleep(2);
 				break;
 
 			case 33: //Mover
@@ -330,16 +305,9 @@ int main(void) {
 				offset += tamanioDinamico;
 
 				free(paqueteDeseliariza);
-/*
-				moverArchivo->IP_Destino = "192.168.1.117";
-				moverArchivo->PUERTO_Destino = "6000";
-				moverArchivo->IP_Origen = "127.0.0.1";
-				moverArchivo->PUERTO_Origen = "6001";
-				moverArchivo->nombreArchivo = "resultadasoDelReduce";
-*/
+
 				pthread_create(&hiloMoverArch[contMA], NULL, (void *)moverArchivoF, (void *)moverArchivo);
 				contMA++;
-				sleep(2);
 				break;
 			case 90: // Fin de ejecucion del Job
 				printf("Se termino de ejecutar el Job\n");
@@ -347,7 +315,6 @@ int main(void) {
 				break;
 			}
 	}
-	sleep(5);
 	return EXIT_SUCCESS;
 }
 
@@ -359,7 +326,7 @@ void *aplicarMapperF (t_aplicarMapper *aplicarMapper){
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////// INICIO INTERFAZ NODO /////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/*
+
 	socketNodo = crearCliente(aplicarMapper->IP,aplicarMapper->PUERTO);
 
 	entero = 8;
@@ -436,7 +403,7 @@ void *aplicarMapperF (t_aplicarMapper *aplicarMapper){
 		pthread_mutex_unlock(&mutex);
 		return NULL;
 	}
-*/
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////// FIN INTERFAZ NODO /////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -470,12 +437,13 @@ void *aplicarReduceF (t_aplicarReduce *aplicarReduce){
 		memcpy(nombreArchivoTemporal, aplicarReduce->listaArchivos + offset, tamanioDinamico);
 		offset += tamanioDinamico;
 		arrayDeArchivos[a] = nombreArchivoTemporal;
+		printf("EN EL HILO: ID Proceso: %i, ResultadoReduce: %s ,Cantidad Archivos: %i, Archivo: %s\n",aplicarReduce->id_proceso,aplicarReduce->resultado,aplicarReduce->cantidadArchivos,arrayDeArchivos[a]);
 	}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////// INICIO INTERFAZ NODO /////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/*
+
 	socketNodo = crearCliente(aplicarReduce->IP,aplicarReduce->PUERTO);
 
 	entero = 8;
@@ -565,7 +533,7 @@ void *aplicarReduceF (t_aplicarReduce *aplicarReduce){
 		pthread_mutex_unlock(&mutex);
 		return NULL;
 	}
-*/
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////// FIN INTERFAZ NODO /////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -588,10 +556,12 @@ void *moverArchivoF (t_moverArchivo *moverArchivo){
 	char *nombreArchivoTemporal;
 	int tamanioNombresTotal;
 
+	tipo = 90;
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////// INICIO INTERFAZ NODO /////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/*
+
 	socketNodo = crearCliente(moverArchivo->IP_Origen,moverArchivo->PUERTO_Origen);
 
 	entero = 8;
@@ -673,7 +643,7 @@ void *moverArchivoF (t_moverArchivo *moverArchivo){
 		pthread_mutex_unlock(&mutex);
 		return NULL;
 	}
-*/
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////// FIN INTERFAZ NODO /////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -716,6 +686,8 @@ void respuestaAMarta(int tipo,int idProceso, int idJob, int estado){
 	size_to_send =  sizeof(idJob);
 	memcpy(paquete + offset, &(idJob), size_to_send);
 	offset += size_to_send;
+
+	printf("Tipo: %i, ID Proceso : %i, ID Job : %i\n",tipo,idProceso,idJob);
 
 	send(socketMarta, paquete, tamanioTotal, 0); // envio paquete
 }
