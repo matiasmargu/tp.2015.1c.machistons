@@ -50,6 +50,7 @@ t_list *lista_archivos; // guarda t_archivo
 t_list *lista_jobs; //t_infoJob
 t_list *lista_nodos_estado;
 t_list *lista_tabla_procesos;
+t_list *lista_procesos_reduce;
 pthread_mutex_t mutex ;//= PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutex_nodos;// = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutex_cant_nodos;
@@ -57,6 +58,8 @@ pthread_mutex_t mutex_contador_job;
 pthread_mutex_t mutex_lista_jobs;
 pthread_mutex_t mutex_lista_procesos;
 pthread_mutex_t mutex_socket_job;
+pthread_mutex_t mutex_socket_fs;
+pthread_mutex_t mutex_procesos_reduce;
 
 typedef struct{
 	char* nombre;
@@ -90,6 +93,7 @@ typedef struct{
 
 typedef struct{
 	int id_nodo;
+	int id_job;
 	int id_reduce;
 	int estado;
 	char *nombre_resultado_reduce;

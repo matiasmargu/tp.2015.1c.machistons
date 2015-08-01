@@ -42,6 +42,7 @@ void serializar_map_job(int socketJob, int tamanio_total, t_marta_job_map *estru
 
 
 	send(socketJob,buffer,tamanio_total,0);
+	sleep(2);
 }
 
 int esperar_que_terminen(int id_job){
@@ -109,18 +110,19 @@ void atenderJob(void *arg){
 	int handshakeFS;
 	job->archivos_job = list_create();
 	socketFS = crearCliente(ip_fs, puerto_fs);
+	pthread_mutex_lock(&mutex_socket_fs);
 	handshakeFS = 25;
 	send(socketFS,&handshakeFS,sizeof(int),0);
 	recv(socketFS,&handshakeFS, sizeof(int),0);
 	handshakeFS = 68;
 	send(socketFS,&handshakeFS,sizeof(int),0);
 	int tamanio_total = 0;
-	lista_nodos_estado = list_create();
-	printf("12354\n");
+
 
 	recv(socketFS,&tamanio_total,sizeof(int),0);
 	send(socketFS,&handshakeFS,sizeof(int),0);
 	recive_y_guarda_infoNodo(tamanio_total, socketFS, lista_nodos_estado);
+	pthread_mutex_unlock(&mutex_socket_fs);
 
 	//ACA RECIBIMOS LA LISTA DE ARCHIVOS DE JOB COMO UN CHAR*
 	memcpy(&cantidad_archivos, buffer+offset, sizeof(int));
@@ -149,10 +151,12 @@ void atenderJob(void *arg){
 
 
 		//--------------------------------ACA SE CONECTA CON FS-------------------------------------------------------
+		pthread_mutex_lock(&mutex_socket_fs);
 		inicializar_pedido_FS(nombreArch);
 
 		recv(socketFS,&tamanio_total,sizeof(int),0);
 		send(socketFS,&handshakeFS,sizeof(int),0);
+		pthread_mutex_unlock(&mutex_socket_fs);
 
 		printf("tamamnio total: %i\n", tamanio_total);
 		t_archivo *archivo_prueba = malloc(sizeof(t_archivo));
@@ -192,21 +196,30 @@ void atenderJob(void *arg){
 	for(i=0;i<list_size(tabla_procesos_job->tabla_procesos);i++){
 		tablaProcesos = list_get(tabla_procesos_job->tabla_procesos,i);
 		//printf("ID DEL NODO: %i", tablaProcesos->id_nodo);
-		nodo = list_get(lista_nodos_estado,(tablaProcesos->id_nodo) - 1);
+		nodo = list_get(lista_nodos_estado,(tablaProcesos->id_nodo));
 		//cargo los datos para enviar
 		enviar_nodo->ip_nodo = nodo->ip_nodo;
 		enviar_nodo->puerto = nodo->puerto_nodo;
 		enviar_nodo->id_map = tablaProcesos->id_map;
 		enviar_nodo->nombre_archivo_resultado = tablaProcesos->nombre_archivo_resultado;
+		printf("%s\n",enviar_nodo->nombre_archivo_resultado);
 		bloque = tablaProcesos->bloque_archivo;
 		//inicializo la conexion
+		pthread_mutex_lock(&mutex_socket_job);
 		int handshakeJob = 30;
 		send(socketJob,&handshakeJob,sizeof(int),0);
-		if(recv(socketJob,&handshakeJob,sizeof(int),0)<0) return;
+		if(recv(socketJob,&handshakeJob,sizeof(int),0)<0){
+			printf("Se cae el job\n");
+			return;
+		}
 		tamanio_total = strlen(enviar_nodo->ip_nodo) + strlen(enviar_nodo->puerto) + strlen(enviar_nodo->nombre_archivo_resultado) + (sizeof(int)*6) + 3;
 		send(socketJob,&tamanio_total,sizeof(int),0);
-		if(recv(socketJob,&handshakeJob,sizeof(int),0)<0) return;
+		if(recv(socketJob,&handshakeJob,sizeof(int),0)<0){
+			printf("Se cae el job\n");
+			return;
+		}
 		serializar_map_job(socketJob, tamanio_total, enviar_nodo, bloque,job->id_job);
+		pthread_mutex_unlock(&mutex_socket_job);
 		//sleep(1);
 	}
 

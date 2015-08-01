@@ -52,10 +52,6 @@ int buscarPorContadores(t_bloque *bloque){
 
 void planificarMap(int id_job, int socketJob){
 
-	char *str_job;
-	char *str_id_map;
-	int job_prueba;
-	job_prueba = 1;
     //---------------------OBTENGO LA INFO DEL JOB--------------------------------------
     t_infoJob *job = malloc(sizeof(t_infoJob));
     job = list_get(lista_jobs,id_job);
@@ -74,8 +70,7 @@ void planificarMap(int id_job, int socketJob){
     	printf("CONTADOR NODO %i: %i\n",k,contadores_nodos[k]);
     }
     int contador_id = 0;
-    char *nombre;
-    char *nombre2;
+
     printf("|        id       |       estado     |        id      |      bloque     |        nm       |         nm       |\n");
     for(i=0;i<list_size(job->archivos_job);i++){
     	un_archivo = list_get(job->archivos_job,i);

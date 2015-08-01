@@ -63,6 +63,7 @@ int main(void) {
 
 	t_job_procesos *job_procesos;
 	t_tablaProcesos_porJob *proceso;
+	t_reduce *procesos_reduce;
 	int tamanio_total,offset, estado, id_proceso, id_job;
 	char *buffer;
 	offset = 0;
@@ -73,6 +74,9 @@ int main(void) {
    	// Empieza el select
 	lista_tabla_procesos = list_create();
 	lista_jobs = list_create();
+	lista_procesos_reduce = list_create();
+	lista_nodos_estado = list_create();
+
 
    	for (;;){
    		read_fds = master;
@@ -109,22 +113,17 @@ int main(void) {
    		    			switch(entero){ // HANDSHAKE
    		    				case 1: // ACA EL JOB LE PASA LISTA DE ARCHIVOS Y EL COMBINER
    		    					socketjob = i;
-   		    					pthread_create(&hilo_job, NULL, (void *)atenderJob,(void *)socketjob);//mitrar
-
-   		    					//recv(socketjob,&prueba,sizeof(int),0);
-   		    					//printf("%i/n",prueba);
-   		    					//send(socketjob,prueba,sizeof(int),0);// este para el entero
-   		    					//send(socketjob,2,sizeof(int),0);
+   		    					pthread_create(&hilo_job, NULL, (void *)atenderJob,(void *)socketjob);
    		    					break;
    		    				case 42: //ACA EL JOB LE PASA EL RESULTADO DEL MAP
-   		    					//pthread_mutex_lock(&mutex_socket_job);
+   		    					pthread_mutex_lock(&mutex_socket_job);
    		    					estado = 25;
    		    					id_proceso = 555;
    		    					id_job = 666;
    		    					offset = 0;
    		    					socketjob = i;
-   		    					//pthread_create(&hilo_job, NULL, recibirResultadoMap,(void *)socketjob);
    		    					prueba = 100;
+
    		    					send(socketjob,&prueba,sizeof(int),0);
    		    					recv(socketjob,&tamanio_total,sizeof(int),0);
    		    					buffer = malloc(tamanio_total);
@@ -151,16 +150,47 @@ int main(void) {
    		    					//printf("PROCESO: %i\n",id_proceso);
    		    					free(buffer);
    		    					contador ++;
-   		    					//pthread_mutex_unlock(&mutex_socket_job);
+   		    					pthread_mutex_unlock(&mutex_socket_job);
    		    					printf("CONTADOR: %i\n",contador);
 
    		    				    break;
    		    				case 25: //ACA EL JOB LE PASA EL RESULTADO DEL REDUCE
-   		    					socketjob = i;/*
-   		    					pthread_create(&hilo_job, NULL, recibirResultadoReduce,(void *)socketjob);
-                                */
-   		    					recv(socketjob,&prueba,sizeof(int),0);
-   		    					printf("%i/n",prueba);
+   		    					pthread_mutex_lock(&mutex_socket_job);
+   		    					estado = 25;
+   		    					id_proceso = 555;
+   		    					id_job = 666;
+   		    					offset = 0;
+   		    					socketjob = i;
+   		    					prueba = 100;
+
+   		    					send(socketjob,&prueba,sizeof(int),0);
+   		    					recv(socketjob,&tamanio_total,sizeof(int),0);
+   		    					buffer = malloc(tamanio_total);
+   		    					send(socketjob,&prueba,sizeof(int),0);
+   		    					recv(socketjob,buffer,tamanio_total,0);
+
+   		    					memcpy(&estado,buffer+offset,sizeof(int));
+   		    					offset += sizeof(int);
+   		    					memcpy(&id_proceso,buffer+offset,sizeof(int));
+   		    					offset += sizeof(int);
+   		    					memcpy(&id_job,buffer+offset,sizeof(int));
+   		    					offset += sizeof(int);
+
+   		    					procesos_reduce = malloc(sizeof(t_reduce));
+   		    					for(i=0;i<list_size(lista_procesos_reduce);i++){
+   		    						procesos_reduce = list_get(lista_procesos_reduce, i);
+   		    						if(procesos_reduce->id_job == id_job){
+   		    							procesos_reduce->estado = estado;
+   		    							pthread_mutex_lock(&mutex_procesos_reduce);
+   		    							list_replace(lista_procesos_reduce, i, procesos_reduce);
+   		    							pthread_mutex_unlock(&mutex_procesos_reduce);
+   		    						}
+   		    					}
+
+   		    					free(buffer);
+   		    					contador ++;
+   		    					pthread_mutex_unlock(&mutex_socket_job);
+   		    					printf("CONTADOR: %i\n",contador);
 
 
    		    					break;
