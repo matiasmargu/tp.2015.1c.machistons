@@ -35,6 +35,8 @@
 
 
 FILE* nuevoArchivo;
+pthread_mutex_t mutexJob;
+pthread_mutex_t mutexNodo;
 
 int tamanioArchivo_BIN;
 int variableDatos;

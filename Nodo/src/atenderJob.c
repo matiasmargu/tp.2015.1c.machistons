@@ -194,8 +194,10 @@ void* atenderJob(void* arg){
 				cont2++;
 				break;
 			case 3:
+				//pthread_mutex_lock(&mutexNodo);
 				printf("Se levanto un movimiento de archivos\n");
 
+				pthread_mutex_lock(&mutexNodo);
 				send(socket, &comando,sizeof(int),0);
 
 				if(recv(socket,&tamanioTotalIP_P,sizeof(int),0)<0) return NULL;
@@ -208,12 +210,20 @@ void* atenderJob(void* arg){
 				//printf("Este es el IP: %s\nEste es el PUERTO: %s\nEste es el nombre del arch: %s\n",comb->ip,comb->puerto,comb->archivo);
 
 				int socket_nodo = crearCliente(comb->ip,comb->puerto);
-
+				comando=7;
+				send(socket_nodo,&comando,sizeof(int),0);
+				printf("IP: %s\n PUERTO: %s\n",comb->ip,comb->puerto);
+				recv(socket_nodo,&comando,sizeof(int),0);
 				comando=3;
 
 				send(socket_nodo,&comando,sizeof(int),0);
+				pthread_mutex_unlock(&mutexNodo);
+
 				pedirContenidoDeUnArchivo(comb->archivo,socket_nodo);
+
+				pthread_mutex_lock(&mutexNodo);
 				send(socket, &comando,sizeof(int),0);
+				pthread_mutex_unlock(&mutexNodo);
 				break;
 				}
 		}

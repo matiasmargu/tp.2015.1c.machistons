@@ -129,8 +129,9 @@ void *atenderNFS(void*arg){
 		break;
 		//getFileContent(nombre);
 		case 3:
-			printf("antes\n");
+			//pthread_mutex_lock(&mutexJob);
 			getFileContent(socket);
+			//pthread_mutex_unlock(&mutexJob);
 
 			//ok = 20;
 			//send(socket,&ok, sizeof(int),0);
