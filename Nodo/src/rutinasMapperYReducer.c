@@ -129,7 +129,7 @@ void reducer(t_reduce* arg){
 	resultado=aparearYelim(arg->lista,arg->cant,arg->resultado);
 
 	buffer=mapearAMemoriaVirtual(resultado);
-	bufferRed=malloc(buffer);
+	bufferRed=malloc(strlen(buffer));
 
 	 if ( (pid=fork()) == 0 )
 		  { // hijo
@@ -174,8 +174,8 @@ void reducer(t_reduce* arg){
 	//ordernarAlfabeticamente(resultado,resultado_aux);
 	remove(arg->reducer);
 
-	free(bufferRed);
-	free(buffer);
+	//free(bufferRed);
+	//free(buffer);
 
 	int entero = 42;
 	send(arg->socket,&entero,sizeof(int),0);
