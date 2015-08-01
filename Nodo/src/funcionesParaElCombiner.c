@@ -71,7 +71,6 @@ void pedirContenidoDeUnArchivo(char* nombre,int socket){
 	}
 
 	asprintf(&copiaDir,"%s%s","/tmp/",nombre);
-
 	FILE* fdAGuardar = fopen(copiaDir,"w");
 	fputs(dataDelFile,fdAGuardar);
 	fclose(fdAGuardar);

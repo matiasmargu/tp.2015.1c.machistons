@@ -89,7 +89,7 @@ void ordernarAlfabeticamente(char* nombreDelArchivoResultado,char* resultado_aux
 
 		  }
 
-		printf("Este es el resultado del sort: %s\n",bufferAUX);
+		//printf("Este es el resultado del sort: %s\n",bufferAUX);
 
 		FILE* fdCompletado = fopen(nombreDelArchivoResultado,"w");
 		fputs(bufferAUX,fdCompletado);
@@ -97,7 +97,7 @@ void ordernarAlfabeticamente(char* nombreDelArchivoResultado,char* resultado_aux
 
 		remove(resultado_aux);
 		free(bufferAUX);
-		return;
+		//return;
 }
 
 void aparear(char* file1,char* file2,char* file3){
@@ -180,10 +180,6 @@ char* aparearYelim(char*lista[1000],int cantArch,char* nombre){
 	char *buf=mapearAMemoriaVirtual(aux);
 
 	FILE* fp = fopen(resultado,"w");
-	fputs(buf,fp);
-	fclose(fp);
-
-	FILE* hola = fopen("/tmp/gil.txt","w");
 	fputs(buf,fp);
 	fclose(fp);
 

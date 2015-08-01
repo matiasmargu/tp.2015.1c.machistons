@@ -95,6 +95,7 @@ void mapper(t_mapper* arg){
 	variableDatos=0;
 	free(buffer);
 	free(bloque);
+	free(infoBloque.contenido);
 	return;
 }
 

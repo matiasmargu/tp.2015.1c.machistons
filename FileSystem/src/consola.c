@@ -91,7 +91,7 @@ void *atenderConsola(void*arg) {
 					break;
 				case Copiar_Arch_Al_FSLocal: // 15
 					mensaje = rearmarArchivo();
-					if(mensaje == "error") printf("Se produjo un error. Reintentelo.\n");
+					if(string_equals_ignore_case(mensaje,"error")) printf("Se produjo un error. Reintentelo.\n");
 					break;
 				case Solicitar_MD5: // 16
 					printf("\n""Ingrese el nombre del archivo del que desee calcular el MD5:\n\n");
@@ -178,7 +178,6 @@ void formatear(){
 	cantidad = mongoc_collection_count(nodos, MONGOC_QUERY_NONE, query,0,0,NULL,NULL);
 	if(cantidad > 0){
 		printf("Formateando el MDFS...\n");
-		sleep(20);
 		cursor = mongoc_collection_find (nodos, MONGOC_QUERY_NONE, 0, 0, 0, query, NULL, NULL);
 		while (mongoc_cursor_next (cursor, &doc)) {
 			if (bson_iter_init (&iter, doc)) {
@@ -203,5 +202,6 @@ void formatear(){
 	}
 	idDirectorioGlobal = 1;
 	bson_destroy (doc);
+	sleep(40);
 	printf("El MDFS ha sido formateado correctamente \n");
 }
