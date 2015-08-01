@@ -99,65 +99,100 @@ void ordernarAlfabeticamente(char* nombreDelArchivoResultado,char* resultado_aux
 		free(bufferAUX);
 		return;
 }
-void ordenar(char* buffer,char* nombre){
 
-	pid_t pid;
-	int status;
+void aparear(char* file1,char* file2,char* file3){
+	FILE* arch1=fopen(file1,"r");
+	FILE* arch2=fopen(file2,"r");
+	FILE* resul=fopen(file3,"w");
 
-	char* bufferAUX=malloc(SIZE);
-	char* test;
+	char* str1=malloc(1024);
+	char* str2=malloc(1024);
 
-	int pipe_padreAHijo[2];
-	int pipe_hijoAPadre[2];
+	fgets(str1,1024,arch1);
+	fgets(str2,1024,arch2);
 
-	pipe(pipe_padreAHijo);
-	pipe(pipe_hijoAPadre);
+	//printf("hola\n");
+	while((!feof(arch1))&&(!feof(arch2))){
+		if((strcmp(str1,str2)<0)){
+			fputs(str1,resul);
+			fgets(str1,1024,arch1);
+		}else{
+			fputs(str2,resul);
+			fgets(str2,1024,arch2);
+		}
+	}
 
-	FILE* ff=fopen(nombre,"w");
-	fputs(buffer,ff);
-	fclose(ff);
+	if((feof(arch1)) && (feof(arch2))){
+		fclose(arch1);
+		fclose(arch2);
+		fclose(resul);
+		return;
+	}else{
+		if(feof(arch1)){
+			fputs(str2,resul);
+			while(!feof(arch2)){
+				fgets(str2,1024,arch2);
+				fputs(str2,resul);
+			}
+		}else{
+			fputs(str1,resul);
+			while(!feof(arch1)){
+				fgets(str1,1024,arch1);
+				fputs(str1,resul);
+			}
+		}
 
-	asprintf(&test,"%s%s","sort ",nombre);
-	printf("%s\n",test);
+		fclose(arch1);
+		fclose(arch2);
+		fclose(resul);
+	}
+	return;
+}
+char* aparearYelim(char*lista[1000],int cantArch,char* nombre){
 
-	if ( (pid=fork()) == 0 )
-		  { // hijo
+	int a=0;
+	char* primero;
+	char *segundo;
+	char* aux;
+	char* resultado;
 
-			//dup2(pipe_padreAHijo[0],STDIN_FILENO);
-			dup2(pipe_hijoAPadre[1],STDOUT_FILENO);
+	asprintf(&resultado,"%s%s","/tmp/",nombre);
+	printf("Este es el nombre. %s\n",nombre);
 
-			close( pipe_padreAHijo[1] ); /* cerramos el lado de escritura del pipe */
-			close( pipe_hijoAPadre[0] ); /* cerramos el lado de lectura del pipe */
-			close( pipe_hijoAPadre[1]);
-			close( pipe_padreAHijo[0]);
 
-			system(test);
-			exit(1);
-			//execv(test,NULL);
-		  }
-		  else
-		  { // padre
-		    close( pipe_padreAHijo[0] ); /* cerramos el lado de lectura del pipe */
-		    close( pipe_hijoAPadre[1] ); /* cerramos el lado de escritura del pipe */
 
-		    //Aca escribe en hijo
-		   // write( pipe_padreAHijo[1],mapRes,strlen(mapRes));
-		    //write( pipe_padreAHijo[1], "hola faknflanflfan", strlen("hola faknflanflfan") );
-		    close( pipe_padreAHijo[1]);
+	printf("Este es el 0: %s\n",lista[0]);
+	for(a=0;a<cantArch;a++){
+		asprintf(&aux,"%s%s","/tmp/Red",string_itoa(a));
 
-		    waitpid(pid,&status,0);
+		if(a==0){
+			asprintf(&primero,"%s%s","/tmp/",lista[a]);
+			asprintf(&segundo,"%s%s","/tmp/",lista[a+1]);
+		}else{
+			asprintf(&primero,"%s%s","/tmp/Red",string_itoa(a-1));
+			asprintf(&segundo,"%s%s","/tmp/",lista[a+1]);
+		}
 
-		    //Aca leo del hijo
-		    read( pipe_hijoAPadre[0], bufferAUX, SIZE );
-		    close( pipe_hijoAPadre[0]);
+		aparear(primero,segundo,aux);
+	}
 
-		  }
+	char *buf=mapearAMemoriaVirtual(aux);
 
-	ff=fopen(nombre,"w");
-	fputs(bufferAUX,ff);
-	fclose(ff);
+	FILE* fp = fopen(resultado,"w");
+	fputs(buf,fp);
+	fclose(fp);
+
+	for(a=0;a<cantArch;a++){
+		asprintf(&primero,"%s%s","/tmp/",lista[a]);
+		asprintf(&aux,"%s%s","/tmp/Red",string_itoa(a));
+		remove(primero);
+		remove(aux);
+	}
+
+	return resultado;
 
 }
+
 
 
 
