@@ -89,7 +89,7 @@ void ordernarAlfabeticamente(char* nombreDelArchivoResultado,char* resultado_aux
 
 		  }
 
-		printf("Este es el resultado del sort: %s\n",bufferAUX);
+		//printf("Este es el resultado del sort: %s\n",bufferAUX);
 
 		FILE* fdCompletado = fopen(nombreDelArchivoResultado,"w");
 		fputs(bufferAUX,fdCompletado);
@@ -97,7 +97,7 @@ void ordernarAlfabeticamente(char* nombreDelArchivoResultado,char* resultado_aux
 
 		remove(resultado_aux);
 		free(bufferAUX);
-		return;
+		//return;
 }
 
 void aparear(char* file1,char* file2,char* file3){
