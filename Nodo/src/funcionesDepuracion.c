@@ -183,10 +183,6 @@ char* aparearYelim(char*lista[1000],int cantArch,char* nombre){
 	fputs(buf,fp);
 	fclose(fp);
 
-	FILE* hola = fopen("/tmp/gil.txt","w");
-	fputs(buf,fp);
-	fclose(fp);
-
 	cantArch++;
 	for(a=0;a<cantArch;a++){
 		asprintf(&primero,"%s%s","/tmp/",lista[a]);
