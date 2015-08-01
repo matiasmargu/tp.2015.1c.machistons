@@ -43,6 +43,7 @@ char *ip_marta;
 char* rutinaMapper;
 char* rutinaReduce;
 int contadorHilos;
+int contadorGlobal;
 pthread_mutex_t mutex;
 pthread_mutex_t mutex_reduce;
 
