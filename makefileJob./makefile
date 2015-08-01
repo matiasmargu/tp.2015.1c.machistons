@@ -4,7 +4,7 @@ CC := gcc
 
 ARCHIVOS :=  socket.o Job.o
 NOMBREFINAL := job
-LIBRERIAS := -lpthread $(pwd)funciones/Debug/libfunciones.so
+LIBRERIAS := -lpthread $(pwd)funciones/Debug/libcommons.so
 
 instalar: $(ARCHIVOS)
 	$(CC) -o $(NOMBREFINAL) $(ARCHIVOS) -I$(LIBH4S) -I$(LIBCOMM) -I$(LIBAS) -L$(LIBH4SEXEC) -L$(LIBCOMMEXEC) -L$(LIBASEXEC) $(LIBRERIAS)
