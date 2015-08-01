@@ -126,29 +126,10 @@ void reducer(t_reduce* arg){
 		tamanioTotal += strlen(bufferProv);
 	}
 
-	printf("tam total: %i\n",tamanioTotal);
-	buffer = malloc(tamanioTotal);
-	offsetRed = 0;
+	resultado=aparearYelim(arg->lista,arg->cant,arg->resultado);
 
-	a=0;
-	while(a<(arg->cant)){
-		asprintf(&nombre,"%s%s","/tmp/",(arg->lista[a]));
-		printf("nom: %s\n",nombre);
-		bufferProv = mapearAMemoriaVirtual(nombre);
-
-		tamanioResuMap = strlen(bufferProv);
-		memcpy(buffer+offsetRed,bufferProv,tamanioResuMap);
-		offsetRed += tamanioResuMap;
-		//printf("el of: %i el tam: %i\n",offsetRed,tamanioResuMap);
-		//printf("buf1: %i\n",strlen(buffer));
-		remove(nombre);
-		a++;
-	}
-
-	//strip(buffer);
-	//tamanioTotal=strlen(buffer);
-	//bufferRed=malloc(buffer);
-	//printf("buf2: %i\n",strlen(buffer));
+	buffer=mapearAMemoriaVirtual(resultado);
+	bufferRed=malloc(buffer);
 
 	 if ( (pid=fork()) == 0 )
 		  { // hijo
@@ -172,7 +153,7 @@ void reducer(t_reduce* arg){
 		    close( pipe_hijoAPadre[1] ); /* cerramos el lado de escritura del pipe */
 
 		    //Aca escribe en hijo
-		    write( pipe_padreAHijo[1], buffer,tamanioTotal);
+		    write( pipe_padreAHijo[1], buffer,strlen(buffer));
 		    //write( pipe_padreAHijo[1], "hola faknflanflfan", strlen("hola faknflanflfan") );
 		    close( pipe_padreAHijo[1]);
 
@@ -183,12 +164,8 @@ void reducer(t_reduce* arg){
 		    close( pipe_hijoAPadre[0]);
 
 		 }
-	asprintf(&resultado_aux,"%s%s","/tmp/resultadoDelReducePorOrdenar",string_itoa(arg->socket));
-	asprintf(&resultado,"%s%s","/tmp/",arg->resultado);
-	//printf("%s\n",bufferRed);
 
 	FILE* fdRed = fopen(resultado,"w");
-	//printf("%s\n",bufferRed);
 	fputs(bufferRed,fdRed);
 	fclose(fdRed);
 
@@ -205,4 +182,3 @@ void reducer(t_reduce* arg){
 	return;
 
 }
-

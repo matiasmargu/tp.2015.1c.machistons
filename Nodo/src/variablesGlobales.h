@@ -121,6 +121,8 @@ void formatearArchivo(char* pmap);
 void formatearBloque(char* pmap,int nroDeBloque);
 void ordernarAlfabeticamente(char* nombreDelArchivoResultado,char* resultado_aux);
 int contarENT(char*buffer,int tamanio);
+void ordenar(char* buffer,char* nombre);
+char* aparearYelim(char*lista[1000],int cantArch,char* nombre);
 
 //Funciones esenciales
 t_getBloque getBloque(int nroDelBloque);

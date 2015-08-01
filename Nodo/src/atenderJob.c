@@ -49,10 +49,7 @@ void* atenderJob(void* arg){
 
 	while(1){
 
-		if(recv(socket, &comando, sizeof(int),0)<0){
-			printf("Se callo un job\n");
-			return NULL;
-		}
+		if(recv(socket, &comando, sizeof(int),0)<0)return NULL;
 
 
 		//printf("Esto me llega una vez: %i\n",comando);
@@ -64,19 +61,13 @@ void* atenderJob(void* arg){
 
 				send(socket, &comando,sizeof(int),0);
 
-				if(recv(socket,&tamanioScript,sizeof(int),0)<0){
-					printf("Se callo un job\n");
-					return NULL;
-				}
+				if(recv(socket,&tamanioScript,sizeof(int),0)<0) return NULL;
 				paquete = malloc(tamanioScript);//Hago el espacio para el paquete
 
 				send(socket, &comando,sizeof(int),0);
 
 
-				if(recv(socket,paquete,tamanioScript,0)<0){//recivo el paquete
-					printf("Se callo un job\n");
-					return NULL;
-				}
+				if(recv(socket,paquete,tamanioScript,0)<0)return NULL;
 
 				memcpy(&(bloque_map), paquete + offset, sizeof(int));//guarto el bloque en bloque_map
 				offset += sizeof(int);
@@ -124,14 +115,14 @@ void* atenderJob(void* arg){
 
 				send(socket, &comando,sizeof(int),0);
 
-				recv(socket,&tamanioScript,sizeof(int),0);
+				if((recv(socket,&tamanioScript,sizeof(int),0)<0)) return NULL;
 				printf("tam: %i\n",tamanioScript);
 				send(socket, &comando,sizeof(int),0);
 
 				// paquete a deserializar [tamanioResultado][Resultado][tamanioScript][scrip][cantidadDeArchivos]([tamanioNombreArchivo][Nombre])*
 				// * bucle para archivos
 				paquete=malloc(tamanioScript);
-				recv(socket,paquete,tamanioScript,0);
+				if(recv(socket,paquete,tamanioScript,0)<0)return NULL;
 
 				memcpy(&tamanioDinamico, paquete + offset, sizeof(int));
 				offset += sizeof(int);
@@ -207,7 +198,7 @@ void* atenderJob(void* arg){
 
 				send(socket, &comando,sizeof(int),0);
 
-				recv(socket,&tamanioTotalIP_P,sizeof(int),0);
+				if(recv(socket,&tamanioTotalIP_P,sizeof(int),0)<0) return NULL;
 				send(socket, &comando,sizeof(int),0);
 				//printf("tam: %i\n",tamanioTotalIP_P);
 				comb=malloc(sizeof(t_para_nodo));
@@ -226,7 +217,5 @@ void* atenderJob(void* arg){
 				break;
 				}
 		}
-
-	return NULL;
 }
 
