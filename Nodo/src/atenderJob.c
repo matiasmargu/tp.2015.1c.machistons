@@ -194,6 +194,7 @@ void* atenderJob(void* arg){
 				cont2++;
 				break;
 			case 3:
+				pthread_mutex_lock(&mutex_reduce);
 				printf("Se levanto un movimiento de archivos\n");
 
 				send(socket, &comando,sizeof(int),0);
@@ -217,6 +218,7 @@ void* atenderJob(void* arg){
 				send(socket_nodo,&comando,sizeof(int),0);
 				pedirContenidoDeUnArchivo(comb->archivo,socket_nodo);
 				send(socket, &comando,sizeof(int),0);
+				pthread_mutex_unlock(&mutex_reduce);
 				break;
 				}
 		}

@@ -52,6 +52,7 @@ char* rutaArchivoConfiguracion;
 
 t_log* logger; // Log Global
 t_config* archivoConfiguracion;
+pthread_mutex_t mutex_reduce;
 
 
 //////////////////////////ESTRUCTURAS/////////////

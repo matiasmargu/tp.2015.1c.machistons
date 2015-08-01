@@ -13,10 +13,7 @@ char* mapearAMemoriaVirtual(char* archivo){
 	struct stat mystat;
 
 	fd = open(archivo,O_RDWR);
-		if(fd == -1){
-		printf("Error al leer el ARCHIBO_BIN\n");
-		exit(1);
-	}
+	if(fd == -1) return NULL;
 
 	if(fstat(fd,&mystat) < 0){
 		printf("Error al establecer fstat\n");

@@ -49,7 +49,7 @@ void pedirContenidoDeUnArchivo(char* nombre,int socket){
 
 	char* dataDelFile;
 	char* copiaDir;
-
+	sleep(10);
 	recv(socket,&tamanioData,sizeof(int),0);//Para que no se boludee
 
 	send(socket,&tamanioDelNombre,sizeof(int),0);

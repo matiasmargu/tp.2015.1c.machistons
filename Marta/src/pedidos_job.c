@@ -185,7 +185,7 @@ void atenderJob(void *arg){
 
 	planificarMap(job->id_job,socketJob);
 
-	int bloque;
+	int bloque,j;
 	t_marta_job_map *enviar_nodo = malloc(sizeof(t_marta_job_map));
 	t_nodo *nodo = malloc(sizeof(t_nodo));
 
@@ -196,7 +196,10 @@ void atenderJob(void *arg){
 	for(i=0;i<list_size(tabla_procesos_job->tabla_procesos);i++){
 		tablaProcesos = list_get(tabla_procesos_job->tabla_procesos,i);
 		//printf("ID DEL NODO: %i", tablaProcesos->id_nodo);
-		nodo = list_get(lista_nodos_estado,(tablaProcesos->id_nodo));
+		for(j=0;j < list_size(lista_nodos_estado);j++){
+			nodo = list_get(lista_nodos_estado, j);
+			if(tablaProcesos->id_nodo == nodo->id_nodo) break;
+		}
 		//cargo los datos para enviar
 		enviar_nodo->ip_nodo = nodo->ip_nodo;
 		enviar_nodo->puerto = nodo->puerto_nodo;

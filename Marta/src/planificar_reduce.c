@@ -16,6 +16,27 @@
 //envio tamaño total
 //[tam_ip_origen][ip_origen][tam_puerto_origen][puerto_origen][tam_ip_dest][ip_dest][tam_puerto_dest][puerto_dest][id_proceso_reduce][id_job][tam_nombre_arch][nombre_arch]
 
+//handshake = 37
+//envio tamaño total
+//[id_nodo][tamaño_nombre_resultado_final][nombre_resultado_final]
+
+void serializar_resultado_final(int socketjob, int tamanio_total, int id_nodo, t_infoJob *job){
+	int offset = 0;
+	int tam;
+	char *buffer = malloc(sizeof(tamanio_total));
+
+	memcpy(buffer+offset, &id_nodo, sizeof(int));
+	offset += sizeof(int);
+
+	tam = strlen(job->arch_resultado_final);
+	memcpy(buffer+offset, &tam, sizeof(int));
+	offset += sizeof(int);
+	memcpy(buffer+offset, job->arch_resultado_final, tam);
+	offset += tam;
+
+	send(socketjob, buffer, tamanio_total, 0);
+}
+
 void serializar_mover_reduce(int tamanio_total, int socketjob, t_nodo *nodo_dest, t_nodo *nodo_origen, t_reduce *reduce_nodo){
 	char *buffer = malloc(tamanio_total);
 	int offset = 0;
@@ -271,4 +292,16 @@ void planificarReduce(int id_job, int socketJob){
 		}
 	}
 	sleep(60);
+
+
+	t_infoJob *job = malloc(sizeof(t_infoJob));
+	job = list_get(lista_jobs,id_job);
+
+	handshakeJob = 37;
+	tamanio_total = sizeof(int)*2 + strlen(job->arch_resultado_final) + 1;
+	send(socketJob, &handshakeJob, sizeof(int), 0);
+	recv(socketJob, &handshakeJob, sizeof(int), 0);
+	send(socketJob, &tamanio_total, sizeof(int), 0);
+	//serializar_resultado_final();
+
 }

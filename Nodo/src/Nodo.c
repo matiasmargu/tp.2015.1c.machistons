@@ -33,7 +33,7 @@ int main(void){
 	log_info(logger, "Se creo correctamente el archivo de configuracion");
 	//printf("Se escribio en el log\n");
 
-	rutaArchivoConfiguracion = "/home/utnso/git/tp-2015-1c-machistons/Configuracion/nodo.conf";
+	rutaArchivoConfiguracion = "/home/utnso/workspace/Configuracion/nodo1.conf";
 	archivoConfiguracion = config_create(rutaArchivoConfiguracion);
 
 
