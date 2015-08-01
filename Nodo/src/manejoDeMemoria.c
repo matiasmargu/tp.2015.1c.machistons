@@ -13,7 +13,13 @@ char* mapearAMemoriaVirtual(char* archivo){
 	struct stat mystat;
 
 	fd = open(archivo,O_RDWR);
+<<<<<<< HEAD
 	if(fd == -1) return NULL;
+=======
+	if(fd==-1){
+		return NULL;
+	}
+>>>>>>> 03f844682401e2b9f554468ec2cb877360f738f3
 
 	if(fstat(fd,&mystat) < 0){
 		printf("Error al establecer fstat\n");

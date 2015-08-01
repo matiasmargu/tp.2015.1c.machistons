@@ -1302,10 +1302,12 @@ void muestroEspacioLibre(){
 	tamAux = (tamanioBloque * bloques);
 	if((tamAux*bloques) > (1024 * 1024)){
 		tamAux = (tamanioBloque * bloques) / (1024 * 1024);
+		if(tamAux<0) tamAux = 0;
 		printf("Tamanio Libre del FileSystem %d MegaBytes \n",tamAux);
 		log_info(logger,"Tamanio Libre del FileSystem %d MegaBytes \n",tamAux);
 	}else{
 		tamAux = (tamanioBloque * bloques);
+		if(tamAux<0) tamAux = 0;
 		printf("Tamanio Libre del FileSystem %d Bytes \n",tamAux);
 		log_info(logger,"Tamanio Libre del FileSystem %d Bytes \n",tamAux);
 	}

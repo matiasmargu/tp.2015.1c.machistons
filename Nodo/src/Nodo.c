@@ -119,6 +119,7 @@ int main(void){
 		    				contJ++;
 		    				break;
 		    			case 7: // Este es otro Nodo
+
 		    				printf("Se ha conectado un Nodo\n");
 		    				entero=20;
 		    				send(i,&entero,sizeof(int),0);

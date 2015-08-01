@@ -16,10 +16,12 @@ void getFileContent(int socket){
 	char* fileGetContent;
 	char* mensaje;
 
+	pthread_mutex_lock(&mutexJob);
 	send(socket,&entero,sizeof(int),0);//Para que no se boludee
 	recv(socket,&tamanioDelNombre,sizeof(int),0);
 	nombreAguardar = malloc(tamanioDelNombre);
 	send(socket,&entero,sizeof(int),0);
+	pthread_mutex_unlock(&mutexJob);
 
 	recv(socket,nombreAguardar,tamanioDelNombre,0);
 	*(nombreAguardar + tamanioDelNombre) = '\0';

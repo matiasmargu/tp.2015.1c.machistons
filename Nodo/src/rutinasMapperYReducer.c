@@ -130,7 +130,15 @@ void reducer(t_reduce* arg){
 	resultado=aparearYelim(arg->lista,arg->cant,arg->resultado);
 
 	buffer=mapearAMemoriaVirtual(resultado);
+<<<<<<< HEAD
 	if(buffer==NULL) return;
+=======
+
+	if(buffer==NULL){
+		return;
+	}
+
+>>>>>>> 03f844682401e2b9f554468ec2cb877360f738f3
 	bufferRed=malloc(strlen(buffer));
 
 	 if ( (pid=fork()) == 0 )
