@@ -146,18 +146,21 @@ int main(void) {
 				aplicarMapper->IP = malloc(tamanioDinamico);
 				memcpy(aplicarMapper->IP, paqueteDeseliariza + offset, tamanioDinamico);
 				offset += tamanioDinamico;
+				*(aplicarMapper->IP + tamanioDinamico)= '\0';
 
 				memcpy(&tamanioDinamico, paqueteDeseliariza + offset, sizeof(int));
 				offset += sizeof(int);
 				aplicarMapper->PUERTO = malloc(tamanioDinamico);
 				memcpy(aplicarMapper->PUERTO, paqueteDeseliariza + offset, tamanioDinamico);
 				offset += tamanioDinamico;
+				*(aplicarMapper->PUERTO + tamanioDinamico)= '\0';
 
 				memcpy(&tamanioDinamico, paqueteDeseliariza + offset, sizeof(int));
 				offset += sizeof(int);
 				aplicarMapper->resultado = malloc(tamanioDinamico);
 				memcpy(aplicarMapper->resultado, paqueteDeseliariza + offset, tamanioDinamico);
 				offset += tamanioDinamico;
+				*(aplicarMapper->resultado + tamanioDinamico)= '\0';
 
 				memcpy(&aplicarMapper->id_proceso, paqueteDeseliariza + offset, sizeof(int));
 				offset += sizeof(int);
@@ -170,7 +173,7 @@ int main(void) {
 
 				free(paqueteDeseliariza);
 
-				//pthread_create(&hiloMapper[contM], NULL, (void *)aplicarMapperF, (void *)aplicarMapper); // Hilo Mapper
+				pthread_create(&hiloMapper[contM], NULL, (void *)aplicarMapperF, (void *)aplicarMapper); // Hilo Mapper
 				contM++;
 				break;
 
@@ -196,18 +199,21 @@ int main(void) {
 				aplicarReduce->IP = malloc(tamanioDinamico);
 				memcpy(aplicarReduce->IP, paqueteDeseliariza + offset, tamanioDinamico);
 				offset += tamanioDinamico;
+				*(aplicarReduce->IP + tamanioDinamico)= '\0';
 
 				memcpy(&tamanioDinamico, paqueteDeseliariza + offset, sizeof(int));
 				offset += sizeof(int);
 				aplicarReduce->PUERTO = malloc(tamanioDinamico);
 				memcpy(aplicarReduce->PUERTO, paqueteDeseliariza + offset, tamanioDinamico);
 				offset += tamanioDinamico;
+				*(aplicarReduce->PUERTO + tamanioDinamico)= '\0';
 
 				memcpy(&tamanioDinamico, paqueteDeseliariza + offset, sizeof(int));
 				offset += sizeof(int);
 				aplicarReduce->resultado = malloc(tamanioDinamico);
 				memcpy(aplicarReduce->resultado, paqueteDeseliariza + offset, tamanioDinamico);
 				offset += tamanioDinamico;
+				*(aplicarReduce->resultado + tamanioDinamico)= '\0';
 
 				memcpy(&aplicarReduce->id_proceso, paqueteDeseliariza + offset, sizeof(int));
 				offset += sizeof(int);
@@ -275,24 +281,28 @@ int main(void) {
 				moverArchivo->IP_Origen = malloc(tamanioDinamico);
 				memcpy(moverArchivo->IP_Origen, paqueteDeseliariza + offset, tamanioDinamico);
 				offset += tamanioDinamico;
+				*(moverArchivo->IP_Origen + tamanioDinamico)= '\0';
 
 				memcpy(&tamanioDinamico, paqueteDeseliariza + offset, sizeof(int));
 				offset += sizeof(int);
 				moverArchivo->PUERTO_Origen = malloc(tamanioDinamico);
 				memcpy(moverArchivo->PUERTO_Origen, paqueteDeseliariza + offset, tamanioDinamico);
 				offset += tamanioDinamico;
+				*(moverArchivo->PUERTO_Origen + tamanioDinamico)= '\0';
 
 				memcpy(&tamanioDinamico, paqueteDeseliariza + offset, sizeof(int));
 				offset += sizeof(int);
 				moverArchivo->IP_Destino = malloc(tamanioDinamico);
 				memcpy(moverArchivo->IP_Destino, paqueteDeseliariza + offset, tamanioDinamico);
 				offset += tamanioDinamico;
+				*(moverArchivo->IP_Destino + tamanioDinamico)= '\0';
 
 				memcpy(&tamanioDinamico, paqueteDeseliariza + offset, sizeof(int));
 				offset += sizeof(int);
 				moverArchivo->PUERTO_Destino = malloc(tamanioDinamico);
 				memcpy(moverArchivo->PUERTO_Destino, paqueteDeseliariza + offset, tamanioDinamico);
 				offset += tamanioDinamico;
+				*(moverArchivo->PUERTO_Destino + tamanioDinamico)= '\0';
 
 				memcpy(&moverArchivo->id_proceso, paqueteDeseliariza + offset, sizeof(int));
 				offset += sizeof(int);
@@ -305,8 +315,9 @@ int main(void) {
 				moverArchivo->nombreArchivo = malloc(tamanioDinamico);
 				memcpy(moverArchivo->nombreArchivo, paqueteDeseliariza + offset, tamanioDinamico);
 				offset += tamanioDinamico;
+				*(moverArchivo->nombreArchivo + tamanioDinamico)= '\0';
 				printf("ID PROCESO %i, IP ORIGEN: %s, PUERTO ORIGEN: %s, IP DESTINO %s, PUERTO DESTINO %s, ARCHIVO %s\n ",moverArchivo->id_proceso,moverArchivo->IP_Origen,moverArchivo->PUERTO_Origen,moverArchivo->IP_Destino,moverArchivo->PUERTO_Destino,moverArchivo->nombreArchivo);
-				free(paqueteDeseliariza);
+				//free(paqueteDeseliariza);
 
 				pthread_create(&hiloMoverArch[contMA], NULL, (void *)moverArchivoF, (void *)moverArchivo);
 				contMA++;
@@ -634,9 +645,9 @@ void *moverArchivoF (t_moverArchivo *moverArchivo){
 	size_to_send =  strlen(moverArchivo->nombreArchivo) + 1;
 	memcpy(paquete + offset, moverArchivo->nombreArchivo, size_to_send);
 	offset += size_to_send;
-
+	printf("IP PARA NICO : %s, PUERTO PARA NICO : %s, ARCHIVO QUE TIENE Q PEDIR: %s\n",moverArchivo->IP_Origen,moverArchivo->PUERTO_Origen,moverArchivo->nombreArchivo);
 	send(socketNodo,  paquete, tamanioTotal, 0);
-
+	sleep(20);
 	free(paquete);
 
 	if(recv(socketNodo, &entero, sizeof(int), 0)<0){   // Espero respuesta del Nodo
