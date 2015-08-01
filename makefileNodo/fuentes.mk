@@ -1,0 +1,13 @@
+DIR_INICIO := $(pwd)
+
+# MACHISTONS-PANEL
+LIBAS := $(DIR_INICIO)
+LIBASEXEC := $(DIR_INICIO)
+
+# COMMONS
+LIBCOMM := $(DIR_INICIO)/funciones/commons
+LIBCOMMEXEC := $(DIR_INICIO)/funciones/commons
+
+# HU4SOCKETS
+LIBH4S := $(DIR_INICIO)/funciones/socket
+LIBH4SEXEC := $(LIBH4S)
