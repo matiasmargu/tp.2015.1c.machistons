@@ -46,15 +46,14 @@ void serializar_map_job(int socketJob, int tamanio_total, t_marta_job_map *estru
 
 int esperar_que_terminen(int id_job){
 	int i,j;
-
+	bool termino = false;
 	bool flag = false;
 	t_job_procesos *job_procesos = malloc(sizeof(t_job_procesos));
 	t_tablaProcesos_porJob *tabla_procesos = malloc(sizeof(t_tablaProcesos_porJob));
 
 	job_procesos = list_get(lista_tabla_procesos, id_job);
 
-
-	while(1){
+	while(termino == false){
 		sleep(5);
 		j=0;
 		while((flag != true)  && (j<cant_nodos)){
@@ -66,14 +65,14 @@ int esperar_que_terminen(int id_job){
 						flag = true;
 						break;
 					}
+					else{
+						termino = true;
+					}
 				}
 			}
 			j++;
 		}
 	}
-
-
-
 	return 0;
 }
 
@@ -211,6 +210,9 @@ void atenderJob(void *arg){
 		//sleep(1);
 	}
 
-	//esperar_que_terminen(job->id_job);
+	//sleep(60);
+	esperar_que_terminen(job->id_job);
+	printf("---------------------Entra al planificador Reduce---------------------\n");
+	planificarReduce(job->id_job, socketJob);
 
 }

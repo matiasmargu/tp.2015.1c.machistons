@@ -13,12 +13,18 @@
 
 
 int main(void) {
+	int z;
+	for(z=0;z<1000;z++){
+		asprintf(&listaNombreArchivosReduce[z],"%s%i","REDUCE-",z);
+	}
+	for(z=0;z<1000;z++){
+		asprintf(&listaNombreArchivosMap[z],"%s%i","MAP-",z);
+	}
+
 
 	contador_cant_job = 0;
 	char* rutaArchivoConfiguracion = "/home/utnso/git/tp-2015-1c-machistons/Configuracion/marta.conf";
-	char* archivoAFSAEnviar;
-	char *combiner;
-	int tamanioCombiner,d, puerto_job, entero, socketjob,tamanioTotalAFS,prueba;
+	int puerto_job, entero, socketjob,prueba;
 	t_config* archivoConfiguracion;
 	archivoConfiguracion = config_create(rutaArchivoConfiguracion);
 
@@ -33,9 +39,6 @@ int main(void) {
 
 	fd_set master;
 	fd_set read_fds;
-
-	pthread_t hiloConsola;
-	pthread_t hiloMarta;
 
 	struct sockaddr_in serveraddr;
 	struct sockaddr_in clientaddr;
@@ -60,33 +63,12 @@ int main(void) {
 
 	t_job_procesos *job_procesos;
 	t_tablaProcesos_porJob *proceso;
-	t_infoJob *job;
 	int tamanio_total,offset, estado, id_proceso, id_job;
 	char *buffer;
 	offset = 0;
-
-
-	/*
-	   	t_archivo archivo_prueba;
-	   	archivo_prueba.bloques = list_create();
-
-	   	recive_y_guarda_estructura(archivo_prueba,socketFS,tamanio_total);
-	   	printf("dsadasdas\n");
-	   	t_bloque *bloque = list_get(archivo_prueba.bloques,14);
-	   	t_copia *copia = list_get(bloque->copias,1);
-	   	printf("idNodo: %i\n numBloque: %i\n", copia->idNodo, copia->Numerobloque);
-
-
-	   	printf("gaston traga penes\n");
-
-		*/
 	int contador = 0;
 
-
-
 	// Termina Configuracion
-
-
 
    	// Empieza el select
 	lista_tabla_procesos = list_create();
@@ -156,8 +138,6 @@ int main(void) {
    		    					memcpy(&id_job,buffer+offset,sizeof(int));
    		    					offset += sizeof(int);
 
-   		    					job = malloc(sizeof(t_infoJob));
-   		    					job = list_get(lista_jobs,id_job);
    		    					job_procesos = malloc(sizeof(t_job_procesos));
    		    					job_procesos = list_get(lista_tabla_procesos, id_job);
 

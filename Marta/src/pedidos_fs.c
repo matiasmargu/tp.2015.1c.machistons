@@ -13,7 +13,6 @@ void inicializar_pedido_FS(char *nombreArch){
 		int handshakeFS = 72; // pido info de archivos
 	   	send(socketFS,&handshakeFS, sizeof(int), 0);
 	   	recv(socketFS,&handshakeFS, sizeof(int),0);
-
 	   	send(socketFS,&tam, sizeof(int), 0);
 	   	recv(socketFS,&handshakeFS, sizeof(int),0);
 	   	printf("Nombre_archivo: %s\n",nombreArch);
